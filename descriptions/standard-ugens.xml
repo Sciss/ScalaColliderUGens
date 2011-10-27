@@ -2,47 +2,208 @@
     <file name="ChaosUGens">
         <ugen name="CuspN">
             <rate name="audio"/>
-            <arg name="freq" default="SampleRate.ir * 0.5"/>
-            <arg name="a" default="1"/>
-            <arg name="b" default="1.9"/>
-            <arg name="xi" default="0"/>
+            <doc>
+                <text>
+                    A non-interpolating sound generator based on the difference equation:
+                    {{{
+                    x[n+1] = a - b * sqrt(abs(x[n]))
+                    }}}
+                </text>
+            </doc>
+            <arg name="freq" default="SampleRate.ir * 0.5">
+            <doc>
+                Iteration frequency in Hertz
+            </doc>
+            </arg>
+            <arg name="a" default="1">
+            <doc>
+                Equation variable
+            </doc>
+            </arg>
+            <arg name="b" default="1.9">
+            <doc>
+                Equation variable
+            </doc>
+            </arg>
+            <arg name="xi" default="0">
+            <doc>
+                Initial value of x
+            </doc>
+            </arg>
         </ugen>
         <ugen name="CuspL">
             <rate name="audio"/>
-            <arg name="freq" default="SampleRate.ir * 0.5"/>
-            <arg name="a" default="1"/>
-            <arg name="b" default="1.9"/>
-            <arg name="xi" default="0"/>
+            <doc>
+                <text>
+                    A linear-interpolating sound generator based on the difference equation:
+                    {{{
+                    x[n+1] = a - b * sqrt(abs(x[n]))
+                    }}}
+                </text>
+            </doc>
+            <arg name="freq" default="SampleRate.ir * 0.5">
+            <doc>
+                Iteration frequency in Hertz
+            </doc>
+            </arg>
+            <arg name="a" default="1">
+            <doc>
+                Equation variable
+            </doc>
+            </arg>
+            <arg name="b" default="1.9">
+            <doc>
+                Equation variable
+            </doc>
+            </arg>
+            <arg name="xi" default="0">
+            <doc>
+                Initial value of x
+            </doc>
+            </arg>
         </ugen>
         <ugen name="FBSineN">
             <rate name="audio"/>
-            <arg name="freq" default="SampleRate.ir * 0.5"/>
-            <arg name="im" default="1"/>
-            <arg name="fb" default="0.1"/>
-            <arg name="a" default="1.1"/>
-            <arg name="c" default="0.5"/>
-            <arg name="xi" default="0.1"/>
-            <arg name="yi" default="0.1"/>
+            <doc>
+                <text>
+                    A non-interpolating sound generator based on the difference equations:
+                    {{{
+                        x[n+1] = sin(im * y[n] + fb * x[n])
+                        y[n+1] = (a * y[n] + c) % 2pi
+                    }}}
+                    This uses a linear congruential function to drive the phase indexing of a sine wave. For  im = 1 ,  fb = 0 , and  a = 1 a normal sinewave results.
+                </text>
+            </doc>
+            <arg name="freq" default="SampleRate.ir * 0.5">
+            <doc>
+                Iteration frequency in Hertz
+            </doc>
+            </arg>
+            <arg name="im" default="1">
+            <doc>
+                Index multiplier amount
+            </doc>
+            </arg>
+            <arg name="fb" default="0.1">
+            <doc>
+                Feedback amount
+            </doc>
+            </arg>
+            <arg name="a" default="1.1">
+            <doc>
+                Phase multiplier amount
+            </doc>
+            </arg>
+            <arg name="c" default="0.5">
+            <doc>
+                Phase increment amount
+            </doc>
+            </arg>
+            <arg name="xi" default="0.1">
+            <doc>
+                Initial value of x
+            </doc>
+            </arg>
+            <arg name="yi" default="0.1">
+            <doc>
+                Initial value of y
+            </doc>
+            </arg>
         </ugen>
         <ugen name="FBSineL">
             <rate name="audio"/>
-            <arg name="freq" default="SampleRate.ir * 0.5"/>
-            <arg name="im" default="1"/>
-            <arg name="fb" default="0.1"/>
-            <arg name="a" default="1.1"/>
-            <arg name="c" default="0.5"/>
-            <arg name="xi" default="0.1"/>
-            <arg name="yi" default="0.1"/>
+            <doc>
+                <text>
+                    A non-interpolating sound generator based on the difference equations:
+                    {{{
+                        x[n+1] = sin(im * y[n] + fb * x[n])
+                        y[n+1] = (a * y[n] + c) % 2pi
+                    }}}
+                    This uses a linear congruential function to drive the phase indexing of a sine wave. For  im = 1 ,  fb = 0 , and  a = 1 a normal sinewave results.
+                </text>
+            </doc>
+            <arg name="freq" default="SampleRate.ir * 0.5">
+            <doc>
+                Iteration frequency in Hertz
+            </doc>
+            <arg name="im" default="1">
+            <doc>
+                Index multiplier amount
+            </doc>
+            </arg>
+            <arg name="fb" default="0.1">
+            <doc>
+                Feedback amount
+            </doc>
+            </arg>
+            <arg name="a" default="1.1">
+            <doc>
+                Phase multiplier amount
+            </doc>
+            </arg>
+            <arg name="c" default="0.5">
+            <doc>
+                Phase increment amount
+            </doc>
+            </arg>
+            <arg name="xi" default="0.1">
+            <doc>
+                Initial value of x
+            </doc>
+            </arg>
+            <arg name="yi" default="0.1">
+            <doc>
+                Initial value of y
+            </doc>
+            </arg>
         </ugen>
         <ugen name="FBSineC">
             <rate name="audio"/>
-            <arg name="freq" default="SampleRate.ir * 0.5"/>
-            <arg name="im" default="1"/>
-            <arg name="fb" default="0.1"/>
-            <arg name="a" default="1.1"/>
-            <arg name="c" default="0.5"/>
-            <arg name="xi" default="0.1"/>
-            <arg name="yi" default="0.1"/>
+            <doc>
+                <text>
+                    A non-interpolating sound generator based on the difference equations:
+                    {{{
+                        x[n+1] = sin(im * y[n] + fb * x[n])
+                        y[n+1] = (a * y[n] + c) % 2pi
+                    }}}
+                    This uses a linear congruential function to drive the phase indexing of a sine wave. For  im = 1 ,  fb = 0 , and  a = 1 a normal sinewave results.
+                </text>
+            </doc>
+            <arg name="freq" default="SampleRate.ir * 0.5">
+            <doc>
+                Iteration frequency in Hertz
+            </doc>
+            </arg>
+            <arg name="im" default="1">
+            <doc>
+                Index multiplier amount
+            </doc>
+            </arg>
+            <arg name="fb" default="0.1">
+            <doc>
+                Feedback amount
+            </doc>
+            </arg>
+            <arg name="a" default="1.1">
+            <doc>
+                Phase multiplier amount
+            </doc>
+            </arg>
+            <arg name="c" default="0.5">
+            <doc>
+                Phase increment amount
+            </doc>
+            </arg>
+            <arg name="xi" default="0.1">
+            <doc>
+                Initial value of x
+            </doc>
+            </arg>
+            <arg name="yi" default="0.1">
+            <doc>
+                Initial value of y
+            </doc>
+            </arg>
         </ugen>
         <ugen name="GbmanN">
             <rate name="audio"/>
