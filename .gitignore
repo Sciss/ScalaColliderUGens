@@ -6,4 +6,5 @@ out/
 index.html
 style.css
 _creation/
-.idea/workspace.xml
+.idea/
+.idea_modules/

@@ -9,6 +9,7 @@
                     x[n+1] = a - b * sqrt(abs(x[n]))
                     }}}
                 </text>
+                <see>ugen.CuspL</see>
             </doc>
             <arg name="freq" default="SampleRate.ir * 0.5">
                 <doc>
@@ -40,6 +41,7 @@
                     x[n+1] = a - b * sqrt(abs(x[n]))
                     }}}
                 </text>
+                <see>ugen.CuspN</see>
             </doc>
             <arg name="freq" default="SampleRate.ir * 0.5">
                 <doc>
@@ -73,6 +75,8 @@
                     }}}
                     This uses a linear congruential function to drive the phase indexing of a sine wave. For  im = 1 ,  fb = 0 , and  a = 1 a normal sinewave results.
                 </text>
+                <see>ugen.FBSineL</see>
+                <see>ugen.FBSineC</see>
             </doc>
             <arg name="freq" default="SampleRate.ir * 0.5">
                 <doc>
@@ -121,6 +125,8 @@
                     }}}
                     This uses a linear congruential function to drive the phase indexing of a sine wave. For  im = 1 ,  fb = 0 , and  a = 1 a normal sinewave results.
                 </text>
+                <see>ugen.FBSineN</see>
+                <see>ugen.FBSineC</see>
             </doc>
             <arg name="freq" default="SampleRate.ir * 0.5">
                 <doc>
@@ -169,6 +175,8 @@
                     }}}
                     This uses a linear congruential function to drive the phase indexing of a sine wave. For  im = 1 ,  fb = 0 , and  a = 1 a normal sinewave results.
                 </text>
+                <see>ugen.FBSineN</see>
+                <see>ugen.FBSineL</see>
             </doc>
             <arg name="freq" default="SampleRate.ir * 0.5">
                 <doc>
@@ -208,142 +216,693 @@
         </ugen>
         <ugen name="GbmanN">
             <rate name="audio"/>
-            <arg name="freq" default="SampleRate.ir * 0.5"/>
-            <arg name="xi" default="1.2"/>
-            <arg name="yi" default="2.1"/>
+            <doc>
+                <text>
+                    A non-interpolating sound generator based on the difference equations:
+                    {{{
+                            x[n+1] = 1 - y[n] + abs(x[n])
+                            y[n+1] = x[n]
+                    }}}
+                    The behavior of the system is only dependent on its initial conditions.
+                    Reference: Devaney, R. L. "The Gingerbreadman." Algorithm 3, 15-16, Jan. 1992.
+                </text>
+                <see>ugen.GbmanL</see>
+            </doc>
+            <arg name="freq" default="SampleRate.ir * 0.5">
+            <doc>
+                Iteration frequency in Hertz
+            </doc>
+            </arg>
+            <arg name="xi" default="1.2">
+            </arg>
+            <doc>
+                Initial value of x
+            </doc>
+            <arg name="yi" default="2.1">
+            <doc>
+                Initial value of y
+            </doc>
+            </arg>
         </ugen>
         <ugen name="GbmanL">
             <rate name="audio"/>
-            <arg name="freq" default="SampleRate.ir * 0.5"/>
-            <arg name="xi" default="1.2"/>
-            <arg name="yi" default="2.1"/>
+            <arg name="freq" default="SampleRate.ir * 0.5">
+                <doc>
+                    Iteration frequency in Hertz
+                </doc>
+            </arg>
+            <arg name="xi" default="1.2">
+            </arg>
+                <doc>
+                    Initial value of x
+                </doc>
+            <arg name="yi" default="2.1">
+                <doc>
+                    Initial value of y
+                </doc>
+            </arg>
+            <doc>
+                <text>
+                    A linear-interpolating sound generator based on the difference equations:
+                    {{{
+                            x[n+1] = 1 - y[n] + abs(x[n])
+                            y[n+1] = x[n]
+                    }}}
+                    The behavior of the system is only dependent on its initial conditions.
+                    Reference: Devaney, R. L. "The Gingerbreadman." Algorithm 3, 15-16, Jan. 1992.
+                </text>
+                <see>ugen.GbmanN</see>
+            </doc>
         </ugen>
         <ugen name="HenonN">
             <rate name="audio"/>
-            <arg name="freq" default="SampleRate.ir * 0.5"/>
-            <arg name="a" default="1.4"/>
-            <arg name="b" default="0.3"/>
-            <arg name="x0" default="0"/>
-            <arg name="x1" default="0"/>
+            <arg name="freq" default="SampleRate.ir * 0.5">
+                <doc>
+                    Iteration frequency in Hertz
+                </doc>
+            </arg>
+            <arg name="a" default="1.4">
+                <doc>
+                    Equation variable
+                </doc>
+            </arg>
+            <arg name="b" default="0.3">
+                <doc>
+                    Equation variable
+                </doc>
+            </arg>
+            <arg name="x0" default="0">
+                <doc>
+                    Initial value of x
+                </doc>
+            </arg>
+            <arg name="x1" default="0">
+                <doc>
+                    Second value of x
+                </doc>
+            </arg>
+            <doc>
+                <text>
+                   A non-interpolating sound generator based on the difference equation:
+                   {{{
+                       x[n+2] = 1 - a * pow(x[n+1], 2) + b * x[n]
+                   }}}
+                   This equation was discovered by French astronomer Michel Hénon while studying the orbits of stars in globular clusters.
+                </text>
+                <see>ugen.HenonL</see>
+                <see>ugen.HenonC</see>
+            </doc>
         </ugen>
         <ugen name="HenonL">
             <rate name="audio"/>
-            <arg name="freq" default="SampleRate.ir * 0.5"/>
-            <arg name="a" default="1.4"/>
-            <arg name="b" default="0.3"/>
-            <arg name="x0" default="0"/>
-            <arg name="x1" default="0"/>
+            <arg name="freq" default="SampleRate.ir * 0.5">
+                <doc>
+                    Iteration frequency in Hertz
+                </doc>
+            </arg>
+            <arg name="a" default="1.4">
+                <doc>
+                    Equation variable
+                </doc>
+            </arg>
+            <arg name="b" default="0.3">
+                <doc>
+                    Equation variable
+                </doc>
+            </arg>
+            <arg name="x0" default="0">
+                <doc>
+                    Initial value of x
+                </doc>
+            </arg>
+            <arg name="x1" default="0">
+                <doc>
+                    Second value of x
+                </doc>
+            </arg>
+            <doc>
+                <text>
+                    A linear-interpolating sound generator based on the difference equation:
+                    {{{
+                        x[n+2] = 1 - a * pow(x[n+1], 2) + b * x[n]
+                    }}}
+                    This equation was discovered by French astronomer Michel Hénon while studying the orbits of stars in globular clusters.
+                </text>
+                <see>ugen.HenonL</see>
+                <see>ugen.HenonC</see>
+            </doc>
         </ugen>
         <ugen name="HenonC">
             <rate name="audio"/>
-            <arg name="freq" default="SampleRate.ir * 0.5"/>
-            <arg name="a" default="1.4"/>
-            <arg name="b" default="0.3"/>
-            <arg name="x0" default="0"/>
-            <arg name="x1" default="0"/>
+            <arg name="freq" default="SampleRate.ir * 0.5">
+                <doc>
+                    Iteration frequency in Hertz
+                </doc>
+            </arg>
+            <arg name="a" default="1.4">
+                <doc>
+                    Equation variable
+                </doc>
+            </arg>
+            <arg name="b" default="0.3">
+                <doc>
+                    Equation variable
+                </doc>
+            </arg>
+            <arg name="x0" default="0">
+                <doc>
+                    Initial value of x
+                </doc>
+            </arg>
+            <arg name="x1" default="0">
+                <doc>
+                    Second value of x
+                </doc>
+            </arg>
+            <doc>
+                <text>
+                    A cubic-interpolating sound generator based on the difference equation:
+                    {{{
+                        x[n+2] = 1 - a * pow(x[n+1], 2) + b * x[n]
+                    }}}
+                    This equation was discovered by French astronomer Michel Hénon while studying the orbits of stars in globular clusters.
+                </text>
+                <see>ugen.HenonL</see>
+                <see>ugen.HenonC</see>
+            </doc>
         </ugen>
         <ugen name="LatoocarfianN">
             <rate name="audio"/>
-            <arg name="freq" default="SampleRate.ir * 0.5"/>
-            <arg name="a" default="1"/>
-            <arg name="b" default="3"/>
-            <arg name="c" default="0.5"/>
-            <arg name="d" default="0.5"/>
-            <arg name="xi" default="0.5"/>
-            <arg name="yi" default="0.5"/>
+            <arg name="freq" default="SampleRate.ir * 0.5">
+                <doc>
+                    Iteration frequency in Hertz.
+                </doc>
+            </arg>
+            <arg name="a" default="1">
+                <doc>
+                    Equation variable
+                </doc>
+            </arg>
+            <arg name="b" default="3">
+                <doc>
+                    Equation variable
+                </doc>
+            </arg>
+            <arg name="c" default="0.5">
+                <doc>
+                    Equation variable
+                </doc>
+            </arg>
+            <arg name="d" default="0.5">
+                <doc>
+                    Equation variable
+                </doc>
+            </arg>
+            <arg name="xi" default="0.5">
+                <doc>
+                    Initial value of x
+                </doc>
+            </arg>
+            <arg name="yi" default="0.5">
+                <doc>
+                    Initial value of y
+                </doc>
+            </arg>
+            <doc>
+                <text>
+                    A non-interpolating sound generator based on a function given in Clifford Pickover's book Chaos In
+                    Wonderland, pg 26. The function is:
+                    {{{
+                    x[n+1] = sin(b * y[n]) + c * sin(b * x[n])
+                    y[n+1] = sin(a * y[n]) + d * sin(a * x[n])
+                    }}}
+                    According to Pickover, parameters a and b should be in the range from -3 to +3, and parameters c and
+                    d should be in the range from 0.5 to 1.5. The function can, depending on the parameters given, give
+                    continuous chaotic output, converge to a single value (silence) or oscillate in a cycle (tone).
+                    NOTE: This UGen is experimental and not optimized currently, so is rather hoggish of CPU.
+                </text>
+            </doc>
         </ugen>
         <ugen name="LatoocarfianL">
             <rate name="audio"/>
-            <arg name="freq" default="SampleRate.ir * 0.5"/>
-            <arg name="a" default="1"/>
-            <arg name="b" default="3"/>
-            <arg name="c" default="0.5"/>
-            <arg name="d" default="0.5"/>
-            <arg name="xi" default="0.5"/>
-            <arg name="yi" default="0.5"/>
+            <arg name="freq" default="SampleRate.ir * 0.5">
+                <doc>
+                    Iteration frequency in Hertz
+                </doc>
+            </arg>
+            <arg name="a" default="1">
+                <doc>
+                    Equation variable
+                </doc>
+            </arg>
+            <arg name="b" default="3">
+                <doc>
+                    Equation variable
+                </doc>
+            </arg>
+            <arg name="c" default="0.5">
+                <doc>
+                    Equation variable
+                </doc>
+            </arg>
+            <arg name="d" default="0.5">
+                <doc>
+                    Equation variable
+                </doc>
+            </arg>
+            <arg name="xi" default="0.5">
+                <doc>
+                    Initial value of x
+                </doc>
+            </arg>
+            <arg name="yi" default="0.5">
+                <doc>
+                    Initial value of y
+                </doc>
+            </arg>
+            <doc>
+                <text>
+                    A linear-interpolating sound generator based on a function given in Clifford Pickover's book Chaos
+                    In Wonderland, pg 26. The function is:
+                    {{{
+                    x[n+1] = sin(b * y[n]) + c * sin(b * x[n])
+                    y[n+1] = sin(a * y[n]) + d * sin(a * x[n])
+                    }}}
+                    According to Pickover, parameters a and b should be in the range from -3 to +3, and parameters c and
+                    d should be in the range from 0.5 to 1.5. The function can, depending on the parameters given, give
+                    continuous chaotic output, converge to a single value (silence) or oscillate in a cycle (tone).
+                    NOTE: This UGen is experimental and not optimized currently, so is rather hoggish of CPU.
+                </text>
+            </doc>
         </ugen>
         <ugen name="LatoocarfianC">
             <rate name="audio"/>
-            <arg name="freq" default="SampleRate.ir * 0.5"/>
-            <arg name="a" default="1"/>
-            <arg name="b" default="3"/>
-            <arg name="c" default="0.5"/>
-            <arg name="d" default="0.5"/>
-            <arg name="xi" default="0.5"/>
-            <arg name="yi" default="0.5"/>
+            <arg name="freq" default="SampleRate.ir * 0.5">
+                <doc>
+                    Iteration frequency in Hertz.
+                </doc>
+            </arg>
+            <arg name="a" default="1">
+                <doc>
+                    Equation variable
+                </doc>
+            </arg>
+            <arg name="b" default="3">
+                <doc>
+                    Equation variable
+                </doc>
+            </arg>
+            <arg name="c" default="0.5">
+                <doc>
+                    Equation variable
+                </doc>
+            </arg>
+            <arg name="d" default="0.5">
+                <doc>
+                    Equation variable
+                </doc>
+            </arg>
+            <arg name="xi" default="0.5">
+                <doc>
+                    Initial value of x
+                </doc>
+            </arg>
+            <arg name="yi" default="0.5">
+                <doc>
+                    Initial value of y
+                </doc>
+            </arg>
+            <doc>
+                <text>
+                    A cubic-interpolating sound generator based on a function given in Clifford Pickover's book Chaos In
+                    Wonderland, pg 26. The function is:
+                    {{{
+                    x[n+1] = sin(b * y[n]) + c * sin(b * x[n])
+                    y[n+1] = sin(a * y[n]) + d * sin(a * x[n])
+                    }}}
+                    According to Pickover, parameters a and b should be in the range from -3 to +3, and parameters c and
+                    d should be in the range from 0.5 to 1.5. The function can, depending on the parameters given, give
+                    continuous chaotic output, converge to a single value (silence) or oscillate in a cycle (tone).
+                    NOTE: This UGen is experimental and not optimized currently, so is rather hoggish of CPU.
+                </text>
+            </doc>
         </ugen>
         <ugen name="LinCongN">
             <rate name="audio"/>
-            <arg name="freq" default="SampleRate.ir * 0.5"/>
-            <arg name="a" default="1.1"/>
-            <arg name="c" default="0.13"/>
-            <arg name="m" default="1.0"/>
-            <arg name="xi" default="0"/>
+            <doc>
+                <text>
+                    A non-interpolating sound generator based on the difference equation:
+                    {{{
+                    x[n+1] = (a * x[n] + c) % m
+                    }}}
+                    The output signal is automatically scaled to a range of [-1, 1].
+                </text>
+                <see>ugen.LinCongL</see>
+                <see>ugen.LinCongC</see>
+            </doc>
+            <arg name="freq" default="SampleRate.ir * 0.5">
+                <doc>
+                    Iteration frequency in Hertz
+                </doc>
+            </arg>
+            <arg name="a" default="1.1">
+                <doc>
+                    Multiplier amount
+                </doc>
+            </arg>
+            <arg name="c" default="0.13">
+                <doc>
+                    Increment amount
+                </doc>
+            </arg>
+            <arg name="m" default="1.0">
+                <doc>
+                    Modulus amount
+                </doc>
+            </arg>
+            <arg name="xi" default="0">
+                <doc>
+                    Initial value of x
+                </doc>
+            </arg>
         </ugen>
         <ugen name="LinCongL">
             <rate name="audio"/>
-            <arg name="freq" default="SampleRate.ir * 0.5"/>
-            <arg name="a" default="1.1"/>
-            <arg name="c" default="0.13"/>
-            <arg name="m" default="1.0"/>
-            <arg name="xi" default="0"/>
+            <doc>
+                <text>
+                    A linear-interpolating sound generator based on the difference equation:
+                    {{{
+                    x[n+1] = (a * x[n] + c) % m
+                    }}}
+                    The output signal is automatically scaled to a range of [-1, 1].
+                </text>
+                <see>ugen.LinCongN</see>
+                <see>ugen.LinCongC</see>
+            </doc>
+            <arg name="freq" default="SampleRate.ir * 0.5">
+                <doc>
+                    Iteration frequency in Hertz
+                </doc>
+            </arg>
+            <arg name="a" default="1.1">
+                <doc>
+                    Multiplier amount
+                </doc>
+            </arg>
+            <arg name="c" default="0.13">
+                <doc>
+                    Increment amount
+                </doc>
+            </arg>
+            <arg name="m" default="1.0">
+                <doc>
+                    Modulus amount
+                </doc>
+            </arg>
+            <arg name="xi" default="0">
+                <doc>
+                    Initial value of x
+                </doc>
+            </arg>
         </ugen>
         <ugen name="LinCongC">
             <rate name="audio"/>
-            <arg name="freq" default="SampleRate.ir * 0.5"/>
-            <arg name="a" default="1.1"/>
-            <arg name="c" default="0.13"/>
-            <arg name="m" default="1.0"/>
-            <arg name="xi" default="0"/>
+            <doc>
+                <text>
+                    A cubic-interpolating sound generator based on the difference equation:
+                    {{{
+                        x[n+1] = (a * x[n] + c) % m
+                    }}}
+                    The output signal is automatically scaled to a range of [-1, 1].
+                </text>
+                <see>ugen.LinCongN</see>
+                <see>ugen.LinCongL</see>
+            </doc>
+            <arg name="freq" default="SampleRate.ir * 0.5">
+                <doc>
+                    Iteration frequency in Hertz
+                </doc>
+            </arg>
+            <arg name="a" default="1.1">
+                <doc>
+                    Multiplier amount
+                </doc>
+            </arg>
+            <arg name="c" default="0.13">
+                <doc>
+                    Increment amount
+                </doc>
+            </arg>
+            <arg name="m" default="1.0">
+                <doc>
+                    Modulus amount
+                </doc>
+            </arg>
+            <arg name="xi" default="0">
+                <doc>
+                    Initial value of x
+                </doc>
+            </arg>
         </ugen>
         <ugen name="LorenzL">
             <rate name="audio"/>
-            <arg name="freq" default="SampleRate.ir * 0.5"/>
-            <arg name="s" default="10"/>
-            <arg name="r" default="28"/>
-            <arg name="b" default="2.667"/>
-            <arg name="h" default="0.05"/>
-            <arg name="xi" default="0.1"/>
-            <arg name="yi" default="0"/>
-            <arg name="zi" default="0"/>
+            <doc>
+                <text>
+                    A strange attractor discovered by Edward N. Lorenz while studying mathematical models of the
+                    atmosphere. The system is composed of three ordinary differential equations:
+                    {{{
+                        x' = s * (y - x)
+                        y' = x * (r - z) - y
+                        z' = x * y - b * z
+                    }}}
+                    The time step amount h determines the rate at which the ODE is evaluated. Higher values will
+                    increase the rate, but cause more instability. A safe choice is the default amount of 0.05.
+                </text>
+            </doc>
+            <arg name="freq" default="SampleRate.ir * 0.5">
+                <doc>
+                    Iteration frequency in Hertz
+                </doc>
+            </arg>
+            <arg name="s" default="10">
+                <doc>
+                    Equation variable
+                </doc>
+            </arg>
+            <arg name="r" default="28">
+                <doc>
+                    Equation variable
+                </doc>
+            </arg>
+            <arg name="b" default="2.667">
+                <doc>
+                    Equation variable
+                </doc>
+            </arg>
+            <arg name="h" default="0.05">
+                <doc>
+                    Integration time step
+                </doc>
+            </arg>
+            <arg name="xi" default="0.1">
+                <doc>
+                    Initial value of x
+                </doc>
+            </arg>
+            <arg name="yi" default="0">
+                <doc>
+                    Initial value of y
+                </doc>
+            </arg>
+            <arg name="zi" default="0">
+                <doc>
+                    Initial value of z
+                </doc>
+            </arg>
         </ugen>
         <ugen name="QuadN">
             <rate name="audio"/>
-            <arg name="freq" default="SampleRate.ir * 0.5"/>
-            <arg name="a" default="1"/>
-            <arg name="b" default="-1"/>
-            <arg name="c" default="-0.75"/>
-            <arg name="xi" default="0"/>
+            <doc>
+                <text>
+                    A non-interpolating sound generator based on the difference equation:
+                    {{{
+                    x[n+1] = a * pow(x[n], 2) + b * x[n] + c
+                    }}}
+                </text>
+                <see>ugen.QuadL</see>
+                <see>ugen.QuadC</see>
+            </doc>
+            <arg name="freq" default="SampleRate.ir * 0.5">
+                <doc>
+                    Iteration frequency in Hertz
+                </doc>
+            </arg>
+            <arg name="a" default="1">
+                <doc>
+                    Equation variable
+                </doc>
+            </arg>
+            <arg name="b" default="-1">
+                <doc>
+                    Equation variable
+                </doc>
+            </arg>
+            <arg name="c" default="-0.75">
+                <doc>
+                    Equation variable
+                </doc>
+            </arg>
+            <arg name="xi" default="0">
+                <doc>
+                    Initial value of x
+                </doc>
+            </arg>
         </ugen>
         <ugen name="QuadL">
             <rate name="audio"/>
-            <arg name="freq" default="SampleRate.ir * 0.5"/>
-            <arg name="a" default="1"/>
-            <arg name="b" default="-1"/>
-            <arg name="c" default="-0.75"/>
-            <arg name="xi" default="0"/>
+            <doc>
+                <text>
+                    A linear-interpolating sound generator based on the difference equation:
+                    {{{
+                        x[n+1] = a * pow(x[n], 2) + b * x[n] + c
+                    }}}
+                </text>
+                <see>ugen.QuadN</see>
+                <see>ugen.QuadC</see>
+            </doc>
+            <arg name="freq" default="SampleRate.ir * 0.5">
+                <doc>
+                    Iteration frequency in Hertz
+                </doc>
+            </arg>
+            <arg name="a" default="1">
+                <doc>
+                    Equation variable
+                </doc>
+            </arg>
+            <arg name="b" default="-1">
+                <doc>
+                    Equation variable
+                </doc>
+            </arg>
+            <arg name="c" default="-0.75">
+                <doc>
+                    Equation variable
+                </doc>
+            </arg>
+            <arg name="xi" default="0">
+                <doc>
+                    Initial value of x
+                </doc>
+            </arg>
         </ugen>
         <ugen name="QuadC">
             <rate name="audio"/>
-            <arg name="freq" default="SampleRate.ir * 0.5"/>
-            <arg name="a" default="1"/>
-            <arg name="b" default="-1"/>
-            <arg name="c" default="-0.75"/>
-            <arg name="xi" default="0"/>
+            <doc>
+                <text>
+                    A cubic-interpolating sound generator based on the difference equation:
+                    {{{
+                        x[n+1] = a * pow(x[n], 2) + b * x[n] + c
+                    }}}
+                </text>
+                <see>ugen.QuadN</see>
+                <see>ugen.QuadL</see>
+            </doc>
+            <arg name="freq" default="SampleRate.ir * 0.5">
+                <doc>
+                    Iteration frequency in Hertz
+                </doc>
+            </arg>
+            <arg name="a" default="1">
+                <doc>
+                    Equation variable
+                </doc>
+            </arg>
+            <arg name="b" default="-1">
+                <doc>
+                    Equation variable
+                </doc>
+            </arg>
+            <arg name="c" default="-0.75">
+                <doc>
+                    Equation variable
+                </doc>
+            </arg>
+            <arg name="xi" default="0">
+                <doc>
+                    Initial value of x
+                </doc>
+            </arg>
         </ugen>
         <ugen name="StandardN">
             <rate name="audio"/>
-            <arg name="freq" default="SampleRate.ir * 0.5"/>
-            <arg name="k" default="1.0"/>
-            <arg name="xi" default="0.5"/>
-            <arg name="yi" default="0"/>
+            <doc>
+                <text>
+                    A non-interpolating sound generator based on the difference equations:
+                    {{{
+                        x[n+1] = (x[n] + y[n+1]) % 2pi
+                        y[n+1] = (y[n] + k * sin(x[n])) % 2pi
+                    }}}
+                    The standard map is an area preserving map of a cylinder discovered by the plasma physicist Boris
+                    Chirikov.
+                </text>
+                <see>ugen.StandardL</see>
+            </doc>
+            <arg name="freq" default="SampleRate.ir * 0.5">
+                <doc>
+                    Iteration frequency in Hertz
+                </doc>
+            </arg>
+            <arg name="k" default="1.0">
+                <doc>
+                    Perturbation amount
+                </doc>
+            </arg>
+            <arg name="xi" default="0.5">
+                <doc>
+                    Initial value of x
+                </doc>
+            </arg>
+            <arg name="yi" default="0">
+                <doc>
+                    Initial value of y
+                </doc>
+            </arg>
         </ugen>
         <ugen name="StandardL">
             <rate name="audio"/>
-            <arg name="freq" default="SampleRate.ir * 0.5"/>
-            <arg name="k" default="1.0"/>
-            <arg name="xi" default="0.5"/>
-            <arg name="yi" default="0"/>
+            <doc>
+                <text>
+                    A linear-interpolating sound generator based on the difference equations:
+                    {{{
+                        x[n+1] = (x[n] + y[n+1]) % 2pi
+                        y[n+1] = (y[n] + k * sin(x[n])) % 2pi
+                    }}}
+                    The standard map is an area preserving map of a cylinder discovered by the plasma physicist Boris
+                    Chirikov.
+                </text>
+                <see>ugen.StandardN</see>
+            </doc>
+            <arg name="freq" default="SampleRate.ir * 0.5">
+                <doc>
+                    Iteration frequency in Hertz
+                </doc>
+            </arg>
+            <arg name="k" default="1.0">
+                <doc>
+                    Perturbation amount
+                </doc>
+            </arg>
+            <arg name="xi" default="0.5">
+                <doc>
+                    Initial value of x
+                </doc>
+            </arg>
+            <arg name="yi" default="0">
+                <doc>
+                    Initial value of y
+                </doc>
+            </arg>
         </ugen>
     </file>
 
@@ -426,52 +985,196 @@
         </ugen>
         <ugen name="NumInputBuses">
             <rate name="scalar" implied="true"/>
+            <doc>
+                <text>Number of input busses.</text>
+                <see>ugen.NumAudioBuses</see>
+                <see>ugen.NumControlBuses</see>
+                <see>ugen.NumBuffers</see>
+                <see>ugen.NumOutputBuses</see>
+                <see>ugen.NumRunningSynths</see>
+            </doc>
         </ugen>
         <ugen name="NumOutputBuses">
             <rate name="scalar" implied="true"/>
+            <doc>
+                <text>Number of output busses.</text>
+                <see>ugen.NumAudioBuses</see>
+                <see>ugen.NumControlBuses</see>
+                <see>ugen.NumBuffers</see>
+                <see>ugen.NumInputBuses</see>
+                <see>ugen.NumRunningSynths</see>
+            </doc>
         </ugen>
         <ugen name="NumAudioBuses">
             <rate name="scalar" implied="true"/>
+            <doc>
+                <text>Number of audio busses.</text>
+                <see>ugen.NumControlBuses</see>
+                <see>ugen.NumBuffers</see>
+                <see>ugen.NumInputBuses</see>
+                <see>ugen.NumOutputBuses</see>
+                <see>ugen.NumRunningSynths</see>
+            </doc>
         </ugen>
         <ugen name="NumControlBuses">
             <rate name="scalar" implied="true"/>
+            <doc>
+                <text>Number of control busses.</text>
+                <see>ugen.NumAudioBuses</see>
+                <see>ugen.NumBuffers</see>
+                <see>ugen.NumInputBuses</see>
+                <see>ugen.NumOutputBuses</see>
+                <see>ugen.NumRunningSynths</see>
+            </doc>
         </ugen>
         <ugen name="NumBuffers">
             <rate name="scalar" implied="true"/>
+            <doc>
+                <text>Number of open buffers.</text>
+                <see>ugen.NumAudioBuses</see>
+                <see>ugen.NumControlBuses</see>
+                <see>ugen.NumInputBuses</see>
+                <see>ugen.NumOutputBuses</see>
+                <see>ugen.NumRunningSynths</see>
+            </doc>
         </ugen>
         <ugen name="NumRunningSynths">
             <rate name="scalar" implied="true"/>
+            <doc>
+                <text>Number of currently running synths.</text>
+                <see>ugen.NumAudioBuses</see>
+                <see>ugen.NumControlBuses</see>
+                <see>ugen.NumBuffers</see>
+                <see>ugen.NumInputBuses</see>
+                <see>ugen.NumOutputBuses</see>
+            </doc>
         </ugen>
 
         <ugen name="BufSampleRate">
             <rate name="scalar"/>
+            <doc>
+                <text>
+                    Returns the buffer's current sample rate.
+                </text>
+            </doc>
             <rate name="control"/>
-            <arg name="buf"/>
+            <doc>
+                <text>
+                    Returns the buffer's current sample rate.
+                </text>
+            </doc>
+            <arg name="buf">
+            <doc>
+                Buffer index.
+            </doc>
+            </arg>
         </ugen>
         <ugen name="BufRateScale">
             <rate name="scalar"/>
+            <doc>
+                <text>
+                    Returns a ratio by which the playback of the buffer at the provided index is to be scaled relative to the current sample rate of the server.
+                    {{{
+                        buffer sample rate / server sample rate
+                    }}}
+                </text>
+            </doc>
             <rate name="control"/>
-            <arg name="buf"/>
+            <doc>
+                <text>
+                    Returns a ratio by which the playback of the buffer at the provided index is to be scaled relative to the current sample rate of the server.
+                    {{{
+                        buffer sample rate / server sample rate
+                    }}}
+                </text>
+            </doc>
+            <arg name="buf">
+                <doc>
+                    Buffer index.
+                </doc>
+            </arg>
         </ugen>
         <ugen name="BufSamples">
             <rate name="scalar"/>
+            <doc>
+                <text>
+                    Returns the current number of allocated samples in the Buffer at the provided index. A sample is not the same as a frame (compare with [[ugen.BufFrames]] ); a frame includes the samples in each channel of the buffer. Only for a mono buffer are samples the same as frames.
+                      {{{
+                          samples = frames * numChannels
+                      }}}
+                </text>
+            </doc>
             <rate name="control"/>
-            <arg name="buf"/>
+            <doc>
+                <text>
+                    Returns the current number of allocated samples in the Buffer at the provided index. A sample is not the same as a frame (compare with [[ugen.BufFrames]] ); a frame includes the samples in each channel of the buffer. Only for a mono buffer are samples the same as frames.
+                      {{{
+                          samples = frames * numChannels
+                      }}}
+                </text>
+            </doc>
+            <arg name="buf">
+                <doc>
+                    Buffer index.
+                </doc>
+            </arg>
         </ugen>
         <ugen name="BufFrames">
             <rate name="scalar"/>
+            <doc>
+                <text>
+                    Returns the number of allocated frames of the buffer at the provided index.
+                </text>
+            </doc>
             <rate name="control"/>
-            <arg name="buf"/>
+            <doc>
+                <text>
+                    Returns the number of allocated frames of the buffer at the provided index.
+                    </text>
+            </doc>
+            <arg name="buf">
+                <doc>
+                    Buffer index.
+                </doc>
+            </arg>
         </ugen>
         <ugen name="BufChannels">
             <rate name="scalar"/>
+            <doc>
+                <text>
+                    Returns the current number of channels of the buffer at the provided index.
+                </text>
+            </doc>
             <rate name="control"/>
-            <arg name="buf"/>
+            <doc>
+                <text>
+                    Returns the current number of channels of the buffer at the provided index.
+                </text>
+            </doc>
+            <arg name="buf">
+                <doc>
+                    Buffer index.
+                </doc>
+            </arg>
         </ugen>
         <ugen name="BufDur">
             <rate name="scalar"/>
+            <doc>
+                <text>
+                    Returns the current duration of the buffer at the provided index.
+                </text>
+            </doc>
             <rate name="control"/>
-            <arg name="buf"/>
+            <doc>
+                <text>
+                    Returns the current duration of the buffer at the provided index.
+                </text>
+            </doc>
+            <arg name="buf">
+                <doc>
+                    Buffer index.
+                </doc>
+            </arg>
         </ugen>
 
         <ugen name="PlayBuf" readsbuf="true" sideeffect="true" doneflag="true">
@@ -543,7 +1246,19 @@
         </ugen> -->
         <ugen name="RecordBuf" writesbuf="true" doneflag="true">
             <rate name="control"/>
+            <doc>
+                <text>
+                    Records input into a Buffer.
+                    If recLevel is 1.0 and preLevel is 0.0 then the new input overwrites the old data. If they are both 1.0 then the new data is added to the existing data. (Any other settings are also valid.)
+                </text>
+            </doc>
             <rate name="audio"/>
+            <doc>
+                <text>
+                    Records input into a Buffer.
+                    If recLevel is 1.0 and preLevel is 0.0 then the new input overwrites the old data. If they are both 1.0 then the new data is added to the existing data. (Any other settings are also valid.)
+                </text>
+            </doc>
             <arg name="buf" pos="1"/>
             <arg name="offset" default="0" pos="2"/>
             <arg name="recLevel" default="1" pos="3"/>
@@ -720,142 +1435,570 @@
         <!-- do these set the done flag? XXX -->
         <ugen name="BufDelayN" readsbuf="true" writesbuf="true">
             <rate name="audio"/>
-            <arg name="buf"/>
-            <arg name="in"/>
-            <arg name="delayTime" default="0.2"/>
+            <arg name="buf">
+                <doc>
+                    Buffer index.
+                </doc>
+            </arg>
+            <arg name="in">
+                <doc>
+                    The input signal.
+                </doc>
+            </arg>
+            <arg name="delayTime" default="0.2">
+                <doc>
+                    Delay time in seconds.
+                </doc>
+            </arg>
+            <doc>
+                <text>
+                    Simple delay line with no interpolation which uses a buffer for its internal memory.
+                </text>
+                <see>ugen.BufDelayL</see>
+                <see>ugen.BufDelayC</see>
+            </doc>
         </ugen>
         <ugen name="BufDelayL" readsbuf="true" writesbuf="true">
             <rate name="audio"/>
-            <arg name="buf"/>
-            <arg name="in"/>
-            <arg name="delayTime" default="0.2"/>
+            <arg name="buf">
+                <doc>
+                    Buffer index.
+                </doc>
+            </arg>
+            <arg name="in">
+                <doc>
+                    The input signal.
+                </doc>
+            </arg>
+            <arg name="delayTime" default="0.2">
+                <doc>
+                    Delay time in seconds.
+                </doc>
+            </arg>
+            <doc>
+                <text>
+                    Simple delay line with linear interpolation which uses a buffer for its internal memory.
+                </text>
+                <see>ugen.BufDelayN</see>
+                <see>ugen.BufDelayC</see>
+            </doc>
         </ugen>
         <ugen name="BufDelayC" readsbuf="true" writesbuf="true">
             <rate name="audio"/>
-            <arg name="buf"/>
-            <arg name="in"/>
-            <arg name="delayTime" default="0.2"/>
+            <arg name="buf">
+                <doc>
+                    Buffer index.
+                </doc>
+            </arg>
+            <arg name="in">
+                <doc>
+                    The input signal.
+                </doc>
+            </arg>
+            <arg name="delayTime" default="0.2">
+                <doc>
+                    Delay time in seconds.
+                </doc>
+            </arg>
+            <doc>
+                <text>
+                    Simple delay line with cubic interpolation which uses a buffer for its internal memory.
+                </text>
+                <see>ugen.BufDelayN</see>
+                <see>ugen.BufDelayL</see>
+            </doc>
         </ugen>
         <ugen name="BufCombN" readsbuf="true" writesbuf="true">
             <rate name="audio"/>
-            <arg name="buf"/>
-            <arg name="in"/>
-            <arg name="delayTime" default="0.2"/>
-            <arg name="decayTime" default="1"/>
+            <arg name="buf">
+                <doc>
+                    Buffer index.
+                </doc>
+            </arg>
+            <arg name="in">
+                <doc>
+                    The input signal.
+                </doc>
+            </arg>
+            <arg name="delayTime" default="0.2">
+                <doc>
+                    Delay time in seconds.
+                </doc>
+            </arg>
+            <arg name="decayTime" default="1">
+                <doc>
+                    Time for the echoes to decay by 60 decibels. If this time is negative then the feedback
+                    coefficient will be negative, thus emphasizing only odd harmonics at an octave lower.
+                </doc>
+            </arg>
+            <doc>
+                <text>
+                    Comb delay line with no interpolation which uses a buffer for its internal memory.
+                </text>
+                <see>ugen.BufCombL</see>
+                <see>ugen.BufCombC</see>
+            </doc>
         </ugen>
         <ugen name="BufCombL" readsbuf="true" writesbuf="true">
             <rate name="audio"/>
-            <arg name="buf"/>
-            <arg name="in"/>
-            <arg name="delayTime" default="0.2"/>
-            <arg name="decayTime" default="1"/>
+            <arg name="buf">
+                <doc>
+                    Buffer index.
+                </doc>
+            </arg>
+            <arg name="in">
+                <doc>
+                    The input signal.
+                </doc>
+            </arg>
+            <arg name="delayTime" default="0.2">
+                <doc>
+                    Delay time in seconds.
+                </doc>
+            </arg>
+            <arg name="decayTime" default="1">
+                <doc>
+                    Time for the echoes to decay by 60 decibels. If this time is negative then the feedback
+                    coefficient will be negative, thus emphasizing only odd harmonics at an octave lower.
+                </doc>
+            </arg>
+            <doc>
+                <text>
+                    Comb delay line with linear interpolation which uses a buffer for its internal memory.
+                </text>
+                <see>ugen.BufCombN</see>
+                <see>ugen.BufCombC</see>
+            </doc>
         </ugen>
         <ugen name="BufCombC" readsbuf="true" writesbuf="true">
             <rate name="audio"/>
-            <arg name="buf"/>
-            <arg name="in"/>
-            <arg name="delayTime" default="0.2"/>
-            <arg name="decayTime" default="1"/>
+            <arg name="buf">
+                <doc>
+                    Buffer index.
+                </doc>
+            </arg>
+            <arg name="in">
+                <doc>
+                    The input signal.
+                </doc>
+            </arg>
+            <arg name="delayTime" default="0.2">
+                <doc>
+                    Delay time in seconds.
+                </doc>
+            </arg>
+            <arg name="decayTime" default="1">
+                <doc>
+                    Time for the echoes to decay by 60 decibels. If this time is negative then the feedback
+                    coefficient will be negative, thus emphasizing only odd harmonics at an octave lower.
+                </doc>
+            </arg>
+            <doc>
+                <text>
+                    Comb delay line with cubic interpolation which uses a buffer for its internal memory.
+                </text>
+                <see>ugen.BufCombN</see>
+                <see>ugen.BufCombL</see>
+            </doc>
         </ugen>
         <ugen name="BufAllpassN" readsbuf="true" writesbuf="true">
             <rate name="audio"/>
-            <arg name="buf"/>
-            <arg name="in"/>
-            <arg name="delayTime" default="0.2"/>
-            <arg name="decayTime" default="1"/>
+            <arg name="buf">
+                <doc>
+                    Buffer index.
+                </doc>
+            </arg>
+            <arg name="in">
+                <doc>
+                    The input signal.
+                </doc>
+            </arg>
+            <arg name="delayTime" default="0.2">
+                <doc>
+                    Delay time in seconds.
+                </doc>
+            </arg>
+            <arg name="decayTime" default="1">
+                <doc>
+                    Time for the echoes to decay by 60 decibels. If this time is negative then the feedback
+                    coefficient will be negative, thus emphasizing only odd harmonics at an octave lower.
+                </doc>
+            </arg>
+            <doc>
+                <text>
+                    All pass delay line with no interpolation which uses a buffer for its internal memory.
+                </text>
+                <see>ugen.BufAllpassL</see>
+                <see>ugen.BufAllpassC</see>
+            </doc>
         </ugen>
         <ugen name="BufAllpassL" readsbuf="true" writesbuf="true">
             <rate name="audio"/>
-            <arg name="buf"/>
-            <arg name="in"/>
-            <arg name="delayTime" default="0.2"/>
-            <arg name="decayTime" default="1"/>
+            <arg name="buf">
+                <doc>
+                    Buffer index.
+                </doc>
+            </arg>
+            <arg name="in">
+                <doc>
+                    The input signal.
+                </doc>
+            </arg>
+            <arg name="delayTime" default="0.2">
+                <doc>
+                    Delay time in seconds.
+                </doc>
+            </arg>
+            <arg name="decayTime" default="1">
+                <doc>
+                    Time for the echoes to decay by 60 decibels. If this time is negative then the feedback
+                    coefficient will be negative, thus emphasizing only odd harmonics at an octave lower.
+                </doc>
+            </arg>
+            <doc>
+                <text>
+                    All pass delay line with linear interpolation which uses a buffer for its internal memory.
+                </text>
+                <see>ugen.BufAllpassN</see>
+                <see>ugen.BufAllpassC</see>
+            </doc>
         </ugen>
         <ugen name="BufAllpassC" readsbuf="true" writesbuf="true">
             <rate name="audio"/>
-            <arg name="buf"/>
-            <arg name="in"/>
-            <arg name="delayTime" default="0.2"/>
-            <arg name="decayTime" default="1"/>
+            <arg name="buf">
+                <doc>
+                    Buffer index.
+                </doc>
+            </arg>
+            <arg name="in">
+                <doc>
+                    The input signal.
+                </doc>
+            </arg>
+            <arg name="delayTime" default="0.2">
+                <doc>
+                    Delay time in seconds.
+                </doc>
+            </arg>
+            <arg name="decayTime" default="1">
+                <doc>
+                    Time for the echoes to decay by 60 decibels. If this time is negative then the feedback
+                    coefficient will be negative, thus emphasizing only odd harmonics at an octave lower.
+                </doc>
+            </arg>
+            <doc>
+                <text>
+                    All pass delay line with cubic interpolation which uses a buffer for its internal memory.
+                </text>
+                <see>ugen.BufAllpassN</see>
+                <see>ugen.BufAllpassL</see>
+            </doc>
         </ugen>
-
         <ugen name="DelayN">
             <rate name="control"/>
             <rate name="audio"/>
-            <arg name="in"/>
-            <arg name="maxDelayTime" default="0.2"/>
-            <arg name="delayTime" default="0.2"/>
+            <arg name="in">
+                <doc>
+                    The input signal.
+                </doc>
+            </arg>
+            <arg name="maxDelayTime" default="0.2">
+                <doc>
+                    The maximum delay time in seconds. used to initialize the delay buffer size.
+                </doc>
+            </arg>
+            <arg name="delayTime" default="0.2">
+                <doc>
+                    Delay time in seconds.
+                </doc>
+            </arg>
+            <doc>
+              <text>
+                  Simple delay line with no interpolation.
+              </text>
+              <see>ugen.DelayL</see>
+              <see>ugen.DelayC</see>
+            </doc>
         </ugen>
         <ugen name="DelayL">
             <rate name="control"/>
             <rate name="audio"/>
-            <arg name="in"/>
-            <arg name="maxDelayTime" default="0.2"/>
-            <arg name="delayTime" default="0.2"/>
+            <arg name="in">
+                <doc>
+                    The input signal.
+                </doc>
+            </arg>
+            <arg name="maxDelayTime" default="0.2">
+                <doc>
+                    The maximum delay time in seconds. used to initialize the delay buffer size.
+                </doc>
+            </arg>
+            <arg name="delayTime" default="0.2">
+                <doc>
+                    Delay time in seconds.
+                </doc>
+            </arg>
+            <doc>
+              <text>
+                  Simple delay line with linear interpolation.
+              </text>
+              <see>ugen.DelayN</see>
+              <see>ugen.DelayC</see>
+            </doc>
         </ugen>
         <ugen name="DelayC">
             <rate name="control"/>
             <rate name="audio"/>
-            <arg name="in"/>
-            <arg name="maxDelayTime" default="0.2"/>
-            <arg name="delayTime" default="0.2"/>
+            <arg name="in">
+                <doc>
+                    The input signal.
+                </doc>
+            </arg>
+            <arg name="maxDelayTime" default="0.2">
+                <doc>
+                    The maximum delay time in seconds. used to initialize the delay buffer size.
+                </doc>
+            </arg>
+            <arg name="delayTime" default="0.2">
+                <doc>
+                    Delay time in seconds.
+                </doc>
+            </arg>
+            <doc>
+              <text>
+                  Simple delay line with cubic interpolation.
+              </text>
+              <see>ugen.DelayN</see>
+              <see>ugen.DelayL</see>
+            </doc>
         </ugen>
         <ugen name="CombN">
             <rate name="audio"/>
             <rate name="control"/>
-            <arg name="in"/>
-            <arg name="maxDelayTime" default="0.2"/>
-            <arg name="delayTime" default="0.2"/>
-            <arg name="decayTime" default="1"/>
+            <arg name="in">
+                <doc>
+                    The input signal.
+                </doc>
+            </arg>
+            <arg name="maxDelayTime" default="0.2">
+                <doc>
+                    The maximum delay time in seconds. used to initialize the delay buffer size.
+                </doc>
+            </arg>
+            <arg name="delayTime" default="0.2">
+                <doc>
+                    Delay time in seconds.
+                </doc>
+            </arg>
+            <arg name="decayTime" default="1">
+                <doc>
+                    Time for the echoes to decay by 60 decibels. If this time is negative then the feedback
+                    coefficient will be negative, thus emphasizing only odd harmonics at an octave lower.
+                </doc>
+            </arg>
+            <doc>
+              <text>
+                  Comb delay line with no interpolation.
+              </text>
+              <see>ugen.CombL</see>
+              <see>ugen.CombC</see>
+            </doc>
         </ugen>
         <ugen name="CombL">
             <rate name="audio"/>
             <rate name="control"/>
-            <arg name="in"/>
-            <arg name="maxDelayTime" default="0.2"/>
-            <arg name="delayTime" default="0.2"/>
-            <arg name="decayTime" default="1"/>
+            <arg name="in">
+                <doc>
+                    The input signal.
+                </doc>
+            </arg>
+            <arg name="maxDelayTime" default="0.2">
+                <doc>
+                    The maximum delay time in seconds. used to initialize the delay buffer size.
+                </doc>
+            </arg>
+            <arg name="delayTime" default="0.2">
+                <doc>
+                    Delay time in seconds.
+                </doc>
+            </arg>
+            <arg name="decayTime" default="1">
+                <doc>
+                    Time for the echoes to decay by 60 decibels. If this time is negative then the feedback
+                    coefficient will be negative, thus emphasizing only odd harmonics at an octave lower.
+                </doc>
+            </arg>
+            <doc>
+              <text>
+                  Comb delay line with linear interpolation.
+              </text>
+              <see>ugen.CombN</see>
+              <see>ugen.CombC</see>
+            </doc>
         </ugen>
         <ugen name="CombC">
             <rate name="audio"/>
             <rate name="control"/>
-            <arg name="in"/>
-            <arg name="maxDelayTime" default="0.2"/>
-            <arg name="delayTime" default="0.2"/>
-            <arg name="decayTime" default="1"/>
+            <arg name="in">
+                <doc>
+                    The input signal.
+                </doc>
+            </arg>
+            <arg name="maxDelayTime" default="0.2">
+                <doc>
+                    The maximum delay time in seconds. used to initialize the delay buffer size.
+                </doc>
+            </arg>
+            <arg name="delayTime" default="0.2">
+                <doc>
+                    Delay time in seconds.
+                </doc>
+            </arg>
+            <arg name="decayTime" default="1">
+                <doc>
+                    Time for the echoes to decay by 60 decibels. If this time is negative then the feedback
+                    coefficient will be negative, thus emphasizing only odd harmonics at an octave lower.
+                </doc>
+            </arg>
+            <doc>
+              <text>
+                  Comb delay line with cubic interpolation.
+              </text>
+              <see>ugen.CombN</see>
+              <see>ugen.CombL</see>
+            </doc>
         </ugen>
         <ugen name="AllpassN">
-            <rate name="control"/>
             <rate name="audio"/>
-            <arg name="in"/>
-            <arg name="maxDelayTime" default="0.2"/>
-            <arg name="delayTime" default="0.2"/>
-            <arg name="decayTime" default="1"/>
+            <rate name="control"/>
+            <arg name="in">
+                <doc>
+                    The input signal.
+                </doc>
+            </arg>
+            <arg name="maxDelayTime" default="0.2">
+                <doc>
+                    The maximum delay time in seconds. used to initialize the delay buffer size.
+                </doc>
+            </arg>
+            <arg name="delayTime" default="0.2">
+                <doc>
+                    Delay time in seconds.
+                </doc>
+            </arg>
+            <arg name="decayTime" default="1">
+                <doc>
+                    Time for the echoes to decay by 60 decibels. If this time is negative then the feedback
+                    coefficient will be negative, thus emphasizing only odd harmonics at an octave lower.
+                </doc>
+            </arg>
+            <doc>
+              <text>
+                  All pass delay line with no interpolation.
+              </text>
+              <see>ugen.AllpassL</see>
+              <see>ugen.AllpassC</see>
+            </doc>
         </ugen>
         <ugen name="AllpassL">
-            <rate name="control"/>
             <rate name="audio"/>
-            <arg name="in"/>
-            <arg name="maxDelayTime" default="0.2"/>
-            <arg name="delayTime" default="0.2"/>
-            <arg name="decayTime" default="1"/>
+            <rate name="control"/>
+            <arg name="in">
+                <doc>
+                    The input signal.
+                </doc>
+            </arg>
+            <arg name="maxDelayTime" default="0.2">
+                <doc>
+                    The maximum delay time in seconds. used to initialize the delay buffer size.
+                </doc>
+            </arg>
+            <arg name="delayTime" default="0.2">
+                <doc>
+                    Delay time in seconds.
+                </doc>
+            </arg>
+            <arg name="decayTime" default="1">
+                <doc>
+                    Time for the echoes to decay by 60 decibels. If this time is negative then the feedback
+                    coefficient will be negative, thus emphasizing only odd harmonics at an octave lower.
+                </doc>
+            </arg>
+            <doc>
+              <text>
+                  All pass delay line with linear interpolation.
+              </text>
+              <see>ugen.AllpassN</see>
+              <see>ugen.AllpassC</see>
+            </doc>
         </ugen>
         <ugen name="AllpassC">
-            <rate name="control"/>
             <rate name="audio"/>
-            <arg name="in"/>
-            <arg name="maxDelayTime" default="0.2"/>
-            <arg name="delayTime" default="0.2"/>
-            <arg name="decayTime" default="1"/>
+            <rate name="control"/>
+            <arg name="in">
+                <doc>
+                    The input signal.
+                </doc>
+            </arg>
+            <arg name="maxDelayTime" default="0.2">
+                <doc>
+                    The maximum delay time in seconds. used to initialize the delay buffer size.
+                </doc>
+            </arg>
+            <arg name="delayTime" default="0.2">
+                <doc>
+                    Delay time in seconds.
+                </doc>
+            </arg>
+            <arg name="decayTime" default="1">
+                <doc>
+                    Time for the echoes to decay by 60 decibels. If this time is negative then the feedback
+                    coefficient will be negative, thus emphasizing only odd harmonics at an octave lower.
+                </doc>
+            </arg>
+            <doc>
+              <text>
+                  All pass delay line with cubic interpolation.
+              </text>
+              <see>ugen.AllpassN</see>
+              <see>ugen.AllpassL</see>
+            </doc>
         </ugen>
-
         <ugen name="PitchShift">
             <rate name="audio" implied="true"/>
-            <arg name="in"/>
-            <arg name="winSize" default="0.2"/>
-            <arg name="pitchRatio" default="1"/>
-            <arg name="pitchDispersion" default="0"/>
-            <arg name="timeDispersion" default="0"/>
+            <arg name="in">
+                <doc>
+                    The input signal.
+                </doc>
+            </arg>
+            <arg name="winSize" default="0.2">
+                <doc>
+                    The size of the grain window in seconds. This value cannot be modulated.
+                </doc>
+            </arg>
+            <arg name="pitchRatio" default="1">
+                <doc>
+                    The ratio of the pitch shift. Must be from 0 to 4.
+                </doc>
+            </arg>
+            <arg name="pitchDispersion" default="0">
+                <doc>
+                    The maximum random deviation of the pitch from the pitchRatio .
+                </doc>
+            </arg>
+            <arg name="timeDispersion" default="0">
+                <doc>
+                    A random offset of from zero to timeDispersion seconds is added to the delay of each grain.
+                    Use of some dispersion can alleviate a hard comb filter effect due to uniform grain placement.
+                    It can also be an effect in itself. timeDispersion can be no larger than windowSize .
+                </doc>
+            </arg>
+            <doc>
+              <text>
+                  A time domain granular pitch shifter. Grains have a triangular amplitude
+                  envelope and an overlap of 4:1.
+              </text>
+            </doc>
         </ugen>
         <!-- this should exist according to plugin sources...
         <ugen name="GrainTap"/>
@@ -863,15 +2006,63 @@
         <ugen name="TGrains" readsbuf="true">  <!-- accepts demand rate -->
             <rate name="audio" implied="true"/>
             <outputs num="numChannels"/>
-            <arg name="numChannels" type="Int"/>
-            <arg name="trig"/>
-            <arg name="buf"/>
-            <arg name="speed" default="1"/>
-            <arg name="centerPos" default="0"/>
-            <arg name="dur" default="0.1"/>
-            <arg name="pan" default="0"/>
-            <arg name="amp" default="0.1"/>
-            <arg name="interp" default="4"/>
+            <arg name="numChannels" type="Int">
+                <doc>
+                    Number of output channels.
+                </doc>
+            </arg>
+            <arg name="trig">
+                <doc>
+                    At each trigger, the following arguments are sampled and used as the arguments of a new grain.
+                    A trigger occurs when a signal changes from non-positive to positive value.
+                    If the trigger is audio rate then the grains will start with sample accuracy.
+                </doc>
+            </arg>
+            <arg name="buf">
+                <doc>
+                    The buffer index. It must be a one channel (mono) buffer.
+                </doc>
+            </arg>
+            <arg name="speed" default="1">
+                <doc>
+                    1.0 is normal, 2.0 is one octave up, 0.5 is one octave down -1.0 is backwards normal rate… etc.
+                </doc>
+            </arg>
+            <arg name="centerPos" default="0">
+                <doc>
+                    The position in the buffer in seconds at which the grain envelope will reach maximum amplitude.
+                </doc>
+            </arg>
+            <arg name="dur" default="0.1">
+                <doc>
+                    Duration of the grain in seconds.
+                </doc>
+            </arg>
+            <arg name="pan" default="0">
+                <doc>
+                    A value from -1 to 1. Determines where to pan the output in the same manner as [[ugen.PanAz]].
+                </doc>
+            </arg>
+            <arg name="amp" default="0.1">
+                <doc>
+                    Amplitude of the grain.
+                </doc>
+            </arg>
+            <arg name="interp" default="4">
+                <doc>
+                    1, 2, or 4. Determines whether the grain uses (1) no interpolation, (2) linear interpolation,
+                    or (4) cubic interpolation.
+                </doc>
+            </arg>
+            <doc>
+              <text>
+                  Triggers generate grains from a buffer. Each grain has a Hanning envelope
+                  {{{
+                    (sin2(x) for x from 0 to π)
+                  }}}
+                  and is panned between two channels of multiple outputs.
+              </text>
+            </doc>
         </ugen>
         <ugen name="ScopeOut" writesbuf="true"> <!-- XXX zero outputs? -->
             <rate name="audio"/>
@@ -881,27 +2072,94 @@
         </ugen>
         <ugen name="Pluck">
             <rate name="audio" implied="true"/>
-            <arg name="in"/>
-            <arg name="trig" default="1"/>
-            <arg name="maxDelayTime" default="0.2"/>
-            <arg name="delayTime" default="0.2"/>
-            <arg name="decayTime" default="1"/>
-            <arg name="coef" default="0.5"/>
+            <arg name="in">
+                <doc>
+                    An excitation signal.
+                </doc>
+            </arg>
+            <arg name="trig" default="1">
+                <doc>
+                    Upon a negative to positive transition, the excitation signal will be fed into the delay line.
+                </doc>
+            </arg>
+            <arg name="maxDelayTime" default="0.2">
+                <doc>
+                    Maximum delay time in seconds (initializes the internal delay buffer).
+                </doc>
+            </arg>
+            <arg name="delayTime" default="0.2">
+                <doc>
+                    Delay time in seconds.
+                </doc>
+            </arg>
+            <arg name="decayTime" default="1">
+                <doc>
+                    Time for the echoes to decay by 60 decibels. Negative times emphasize odd partials.
+                </doc>
+            </arg>
+            <arg name="coef" default="0.5">
+                <doc>
+                    the coef of the internal OnePole filter. Values should be between -1 and +1
+                    (larger values will be unstable... so be careful!).
+                </doc>
+            </arg>
+            <doc>
+              <text>
+                  A Karplus-Strong UGen.
+              </text>
+            </doc>
         </ugen>
-
         <ugen name="DelTapWr" writesbuf="true">
             <rate name="audio"/>
             <rate name="control"/>
-            <arg name="buf"/>
-            <arg name="in"/>
+            <arg name="buf">
+                <doc>
+                    The buffer to write signal into. Max delay time is based on buffer size.
+                    @return phase - `DelTapWr outputs its current sample value for use in the phase`
+                    argument in DelTapRd
+                </doc>
+            </arg>
+            <arg name="in">
+                <doc>
+                    The input signal.
+                </doc>
+            </arg>
+            <doc>
+              <text>
+                  Write to a buffer for a `DelTapRd` UGen
+              </text>
+              <see>ugen.DelTapRd</see>
+            </doc>
         </ugen>
         <ugen name="DelTapRd" readsbuf="true">
             <rate name="audio"/>
             <rate name="control"/>
-            <arg name="buf"/>
-            <arg name="phase"/>
-            <arg name="delayTime"/>
-            <arg name="interp" default="1"/>
+            <arg name="buf">
+                <doc>
+                    Buffer where DelTapWr has written signal. Max delay time is based on buffer size.
+                </doc>
+            </arg>
+            <arg name="phase">
+                <doc>
+                    the current phase of the DelTapWr UGen. This is the output of DelTapWr.
+                </doc>
+            </arg>
+            <arg name="delayTime">
+                <doc>
+                    Delay time in seconds.
+                </doc>
+            </arg>
+            <arg name="interp" default="1">
+                <doc>
+                    The kind of interpolation to be used. 1 is none, 2 is linear, 4 is cubic..
+                </doc>
+            </arg>
+            <doc>
+              <text>
+                  Tap a delay line from a `DelTapWr` UGen.
+              </text>
+              <see>ugen.DelTapWr</see>
+            </doc>
         </ugen>
 
         <!-- XXX TODO
