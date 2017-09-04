@@ -72,8 +72,8 @@ Before you submit your pull request consider the following guidelines:
     git push origin issue-descriptive-name-branch
     ```
 
-- In GitHub, send a pull request to the upstream master branch. Be aware that sometimes ongoing
-  work might occur in a branch such as 'work'. If you see that such branch is way ahead of master,
+- In GitHub, send a pull request to the upstream `work` branch, if such branch exist, otherwise use the
+  upstream `master` branch. If you are uncertain about which branch to merge against,
   consult with us first (through the issue tracker) to determine the best point of merge.
 - If we suggest changes then:
     - Please make the required updates.

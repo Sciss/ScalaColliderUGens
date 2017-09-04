@@ -29,6 +29,6 @@ class ParserSpec extends FlatSpec {
   "A ClassGenerator" should "be able to process a spec" in {
     val cusp  = UGenSpec.standardUGens("Dseries")
     val gen   = new ClassGenerator
-    gen.performSpec(cusp)
+    gen.performSpec(cusp, thirdParty = None)
   }
 }

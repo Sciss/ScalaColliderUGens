@@ -27,7 +27,7 @@ All artifacts are published to Maven Central, and are available as follows:
     "de.sciss" %% "scalacolliderugens-core" % v
     "de.sciss" %% "scalacolliderugens-plugins" % v
 
-The current stable version `v` is `"1.16.5"`.
+The current stable version `v` is `"1.16.6"`.
 
 The `spec` contains the XML meta data, `api` contains basic types without specific UGens, `core` contains the standard UGens included with SuperCollider, and `plugins` will include the third-party plugins managed by the [sc3-plugins](https://github.com/supercollider/sc3-plugins) project (still incomplete).
 
@@ -51,6 +51,31 @@ To synthesize the source code for a given UGen description XML file, run as foll
     > run -d path/to/scala/source/output path/to/descriptions.xml
 
 The generated source files then need to be compiled against `scalacolliderugens-core`.
+
+If you want to contribute UGen descriptions, there are two existing sbt sub-projects to consider:
+
+- `core` creates class files for the UGens included in the standard SuperCollider distribution. 
+  If you are not editing an existing XML file, you need to ensure a new XML file is included 
+  in `UGenSpec.standardPlugins`.
+- `plugins` creates class files for the UGens included in the
+  [sc3-plugins](https://github.com/supercollider/sc3-plugins) umbrella project. Again, if you are not
+  editing an existing XML file, you need to ensure a new XML file is included, this time in the list 
+  `UGenSpec.thirdPartyPlugins`.
+- if you are planning to contribute the description of a plugin that is neither in the standard UGens nor in
+  the sc3-plugins project, please consult first where those classes should be published. Most likely, we
+  will add another sbt sub-project similar to the `plugins` project. If you look at its code, you will see that
+  you have to change the call to `runUGenGenerator` so that instead of `args = "--plugins" :: Nil` you
+  provide an explicit list of paths to the XML files you wish to generate sources from.
+  
+Please have a good look at the current XML files and try to follow the documentation style used there. In particular
+
+- try to be precise about the technical description of the behaviour of the UGen and its arguments. Try to think
+  of the typical case where you would consult the API doc of the UGen. Which are the behavioural aspects you would
+  want to look up, such as initialisation conditions, precise triggering behaviour, interaction of parameters,
+  differences to related UGens.
+- each argument should be described in terms of its behaviour, the physical units (if any), the allowed or
+  expected value ranges, and corner cases.
+- ideally, each UGen should be documented along with a concise example (in the XML file).
 
 ### format of ugen XML descriptions
 

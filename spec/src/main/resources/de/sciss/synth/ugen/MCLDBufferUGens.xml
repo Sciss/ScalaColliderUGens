@@ -1,4 +1,4 @@
-<ugens revision="9"> <!-- extension from sc3-plugins -->
+<ugens revision="10" third-party="MCLDUGens"> <!-- extension from sc3-plugins -->
     <!-- all documented. missing: GaussClass -->
     <ugen name="Logger" writes-buf="true">
         <rate name="control"/>

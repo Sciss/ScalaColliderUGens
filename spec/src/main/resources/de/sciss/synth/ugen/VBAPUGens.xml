@@ -1,4 +1,4 @@
-<ugens revision="5">
+<ugens revision="6" third-party="VBAPUGens"> <!-- extension from sc3-plugins -->
     <!-- all documented, except example for CircleRamp -->
     <ugen name="VBAP">
         <output variadic="numChannels"/>

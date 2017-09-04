@@ -40,11 +40,15 @@ final class ClassGenerator {
 
   def performFile(node: xml.Node, dir: File, name: String, docs: Boolean = true,
                   forceOverwrite: Boolean = false): Unit = try {
-    val revision  = (node \ "@revision").text.toInt
-    val fName     = s"$name.scala"
-    val f         = new File(dir, fName)
-    val write     = forceOverwrite || !f.isFile || {
-      val source = Source.fromFile(f, CHARSET)
+    val revision    = (node \ "@revision").text.toInt
+    val thirdParty  = {
+      val txt = (node \ "@third-party").text
+      if (txt.isEmpty) None else Some(txt)
+    }
+    val fName       = s"$name.scala"
+    val f           = new File(dir, fName)
+    val write       = forceOverwrite || !f.isFile || {
+      val source    = Source.fromFile(f, CHARSET)
       try {
         val it = source.getLines()
         !it.hasNext || {
@@ -64,7 +68,7 @@ final class ClassGenerator {
       }
       val specs = specs0.filterNot(_.attr.contains(HasSourceCode))
       val res = specs.nonEmpty
-      if (res) performSpecs(specs, f, revision)
+      if (res) performSpecs(specs, f, revision = revision, thirdParty = thirdParty)
       res
     }
     if (hasFile) println(f.absolutePath)
@@ -75,17 +79,11 @@ final class ClassGenerator {
       throw e
   }
 
-  def performSpecs(specs: Seq[UGenSpec], file: File, revision: Int): Unit = {
+  def performSpecs(specs: Seq[UGenSpec], file: File, revision: Int, thirdParty: Option[String]): Unit = {
     val out = new FileOutputStream(file)
     try {
       // create class trees
-      val classes: List[Tree] = specs.flatMap(performSpec)(breakOut)
-
-//      val imports = Import(MyIdent("UGenSource"), ImportSelector.wild :: Nil) :: Nil /* imports0 */
-//
-//      // the package definition defines the `synth` and `ugen` packages, adds the imports and then the classes
-//      val pkg     = PackageDef(MySelect(MySelect(MyIdent("de"), "sciss"), "synth"),
-//        PackageDef(MyIdent("ugen"), imports ::: classes) :: Nil)
+      val classes: List[Tree] = specs.flatMap(spec => performSpec(spec, thirdParty = thirdParty))(breakOut)
 
       val header =
         """package de.sciss.synth
@@ -367,7 +365,8 @@ final class ClassGenerator {
     def mkString: String = s"$comments${body.mkString}"
   }
 
-  private def wrapDoc(spec: UGenSpec, tree: Tree, body: Boolean, args: Boolean, examples: Boolean): Tree = {
+  private def wrapDoc(spec: UGenSpec, tree: Tree, body: Boolean, args: Boolean, examples: Boolean,
+                      thirdParty: Option[String]): Tree = {
     if (spec.doc.isEmpty) return tree
     val doc       = spec.doc.get
     val bodyDoc   = if (body) doc.body  else Nil
@@ -413,11 +412,15 @@ final class ClassGenerator {
       body0 ++ ("" :: "===Examples===" :: "" :: exList)
     }
 
-    val body2 = if (!warnPos) body1 else {
-      feed(body1, "@note The argument order is different from its sclang counterpart." :: Nil)
+    val body2 = thirdParty.fold(body1) { pluginName =>
+      feed(body1, s"This is a third-party UGen ($pluginName)." :: Nil)
     }
 
-    val body3 = if (argDocs.isEmpty) body2 else {
+    val body3 = if (!warnPos) body2 else {
+      feed(body2, "@note The argument order is different from its sclang counterpart." :: Nil)
+    }
+
+    val body4 = if (argDocs.isEmpty) body3 else {
       val argLines = argDocs.flatMap { case (aName, aDoc) =>
         val aDocL = linesWrap(aDoc, DocWidth - ParamColumns) // 80 - 23 = 57 columns
         aDocL.zipWithIndex.map { case (ln, idx) =>
@@ -426,16 +429,16 @@ final class ClassGenerator {
           tab + ln
         }
       }
-      feed(body2, argLines)
+      feed(body3, argLines)
     }
 
-    val body4 = if (linkDocs.isEmpty) body3 else {
+    val body5 = if (linkDocs.isEmpty) body4 else {
       val linkLines = linkDocs.map { link0 => s"@see ${mkLink(link0)}" }
-      feed(body3, linkLines)
+      feed(body4, linkLines)
     }
 
     // `body == false` is used for methods; in that case do not prepend new-lines
-    val comm = body4.mkString(if (body) s"\n/** " else s"/** ", "\n  * ", "\n  */\n")
+    val comm = body5.mkString(if (body) s"\n/** " else s"/** ", "\n  * ", "\n  */\n")
     DocTree(comm, tree)
   }
 
@@ -598,7 +601,7 @@ final class ClassGenerator {
   private val strMake1            = "make1"
   private val strTimes            = "Times"
 
-  def performSpec(spec: UGenSpec): List[Tree] = {
+  def performSpec(spec: UGenSpec, thirdParty: Option[String]): List[Tree] = {
     import spec.{name => uName, _}
 
     val impliedRate = rates match {
@@ -680,7 +683,8 @@ final class ClassGenerator {
           ret     = uName, // TypeDef(NoMods, typeName(name), Nil, EmptyTree),
           body    = methodBody             // rhs
         )
-        mName -> wrapDoc(spec, df, /* indent = 1, */ body = false, args = true, examples = false)
+        mName -> wrapDoc(spec, df, /* indent = 1, */ body = false, args = true, examples = false,
+          thirdParty = None)
       }
 
       // whether the number of arguments is non-zero and there are defaults for all of them
@@ -720,7 +724,7 @@ final class ClassGenerator {
         parents = Nil,
         body    = objectMethodDefs  // body
       )
-      wrapDoc(spec, mod, /* indent = 0, */ body = true, args = false, examples = true) :: Nil
+      wrapDoc(spec, mod, /* indent = 0, */ body = true, args = false, examples = true, thirdParty = thirdParty) :: Nil
     } else Nil
 
     // a `MaybeRate` is used when no rate is implied and an input generally uses a same-as-ugen constraint.
@@ -1093,7 +1097,8 @@ final class ClassGenerator {
         parents = caseClassParents  // parents
       )
 
-    val caseClassWithDoc = wrapDoc(spec, caseClassDef, body = true, args = true, examples = false)
+    val caseClassWithDoc = wrapDoc(spec, caseClassDef, body = true, args = true, examples = false,
+      thirdParty = thirdParty)
     objectDef ::: (caseClassWithDoc :: Nil)
   }
 }

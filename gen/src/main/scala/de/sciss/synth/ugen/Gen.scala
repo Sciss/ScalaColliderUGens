@@ -28,15 +28,15 @@ object Gen extends App {
   }
   case object CustomUGens extends Input {
     def switch = ""
-    def plugins = Nil
+    def plugins: List[String] = Nil
   }
   case object StandardUGens extends Input {
     def switch = "--standard"
-    def plugins = UGenSpec.standardPlugins
+    def plugins: List[String] = UGenSpec.standardPlugins
   }
   case object ThirdPartyUGens extends Input {
     def switch = "--plugins"
-    def plugins = UGenSpec.thirdPartyPlugins
+    def plugins: List[String] = UGenSpec.thirdPartyPlugins
   }
 
   case class Config(input: Input = CustomUGens, forceOverwrite: Boolean = false, outDir: File = new File("out"),

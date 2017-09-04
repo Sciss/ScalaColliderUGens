@@ -1,4 +1,4 @@
-<ugens revision="1"> <!-- extension from sc3-plugins -->
+<ugens revision="2" third-party="MdaUGens"> <!-- extension from sc3-plugins -->
     <!-- all documented -->
     <ugen name="MdaPiano">
         <rate name="audio"/>
@@ -19,7 +19,7 @@
         </arg>
         <arg name="gate" default="1">
             <doc>
-                note-on occurs when gate goes from nonpositive to positive; note-off occurs when it goes from positive to nonpositive.
+                note-on occurs when gate goes from non-positive to positive; note-off occurs when it goes from positive to non-positive.
                 Most of the other controls are only updated when a new note-on occurs.
             </doc>
         </arg>
@@ -40,7 +40,7 @@
         </arg>
         <arg name="hardness" default="0.8">
             <doc>
-                adjusts sample keyranges up or down to change the "size" and brightness of the piano.
+                adjusts sample key-ranges up or down to change the "size" and brightness of the piano.
             </doc>
         </arg>
         <arg name="velHard" default="0.8">
@@ -87,8 +87,10 @@
         </arg>
         <doc>
             <text>
-                A piano synthesiser (originally a VST plugin by Paul Kellett, ported to SC by Dan Stowell).
-                This UGen is not polyphonic (but can be retriggered to play notes in sequence).
+                A piano synthesiser UGen. It is not polyphonic, but it can be retriggered to play notes in sequence.
+
+                The original VST plugin by Paul Kellett was ported to SuperCollider by Dan Stowell.
+                Most likely the arguments are in the normalized range 0 to 1.
             </text>
             <!-- TODO: example -->
         </doc>

@@ -1,7 +1,7 @@
 lazy val baseName       = "ScalaColliderUGens"
 lazy val baseNameL      = baseName.toLowerCase
 
-lazy val projectVersion = "1.16.6-SNAPSHOT"
+lazy val projectVersion = "1.16.6"
 lazy val mimaVersion    = "1.16.4"
 
 name := baseName
@@ -108,15 +108,14 @@ lazy val core = Project(id = s"$baseNameL-core", base = file("core")).
   dependsOn(api).
   settings(commonSettings).
   settings(
-    description := "UGen classes for ScalaCollider",
+    description := "Standard UGens",
     licenses := lgpl,
     sourceGenerators in Compile <+= ugenGenerator in Compile,
     ugenGenerator in Compile := {
-      val spc   = (resourceDirectory   in Compile in spec).value
       val src   = (sourceManaged       in Compile        ).value
       val cp    = (dependencyClasspath in Runtime in gen ).value
       val st    = streams.value
-      runUGenGenerator("--standard", spc, src, cp.files, st.log)
+      runUGenGenerator(description.value, outputDir = src, cp = cp.files, log = st.log, args = "--standard" :: Nil)
     },
     mappings in (Compile, packageSrc) ++= {
       val base  = (sourceManaged  in Compile).value
@@ -130,31 +129,42 @@ lazy val plugins = Project(id = s"$baseNameL-plugins", base = file("plugins")).
   dependsOn(core).
   settings(commonSettings).
   settings(
-    description := "Additional third-party UGens for ScalaCollider",
+    description := "Additional third-party UGens",
     licenses := lgpl,
     sourceGenerators in Compile <+= ugenGenerator in Compile,
     ugenGenerator in Compile := {
-      val spc   = (resourceDirectory   in Compile in spec).value
       val src   = (sourceManaged       in Compile        ).value
       val cp    = (dependencyClasspath in Runtime in gen ).value
       val st    = streams.value
-      runUGenGenerator("--plugins", spc, src, cp.files, st.log)
+      runUGenGenerator(description.value, outputDir = src, cp = cp.files, log = st.log, args = "--plugins" :: Nil)
     },
     mimaPreviousArtifacts := Set("de.sciss" %% s"$baseNameL-plugins" % mimaVersion)
   )
 
-def runUGenGenerator(switch: String, specDir: File, outputDir: File, cp: Seq[File], log: Logger): Seq[File] = {
+/** @param name       purely informational string emitted through the sbt log
+  * @param outputDir  target directory, e.g. `sourceManaged`
+  * @param cp         dependency classpath
+  * @param log        such as `streams.value.log`
+  * @param args       the arguments to pass to the `Gen` main program.
+  *                   this can be a simple switch to select ugens, such
+  *                   as `--standard` or `--plugins`, or a list of paths
+  *                   to XML descriptions.
+  * @return           the list of generated source files
+  */
+def runUGenGenerator(name: String, outputDir: File, cp: Seq[File], log: Logger,
+                     args: Seq[String]): Seq[File] = {
   val mainClass   = "de.sciss.synth.ugen.Gen"
   val tmp         = java.io.File.createTempFile("sources", ".txt")
   val os          = new java.io.FileOutputStream(tmp)
 
-  log.info("Generating UGen source code in " + outputDir + " for specs in " + specDir)
+  log.info(s"Generating UGen source code in $outputDir for $name")
 
   try {
     val outs  = CustomOutput(os)
     val fOpt  = ForkOptions(javaHome = None, outputStrategy = Some(outs), /* runJVMOptions = Nil, */ bootJars = cp,
         workingDirectory = None, connectInput = false)
-    val res: Int = Fork.scala(config = fOpt, arguments = mainClass :: switch :: "-d" :: outputDir.getAbsolutePath :: Nil)
+    val res: Int = Fork.scala(config = fOpt,
+      arguments = mainClass :: "-d" :: outputDir.getAbsolutePath :: args.toList)
 
     if (res != 0) {
       sys.error(s"UGen class file generator failed with exit code $res")
