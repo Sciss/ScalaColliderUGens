@@ -1,0 +1,97 @@
+<ugens revision="1"> <!-- extension from sc3-plugins -->
+    <!-- all documented -->
+    <ugen name="MdaPiano">
+        <rate name="audio"/>
+        <output name="left">
+            <doc>
+                left channel.
+            </doc>
+        </output>
+        <output name="right">
+            <doc>
+                right channel.
+            </doc>
+        </output>
+        <arg name="freq" default="440">
+            <doc>
+                Frequency of the note in Hz.
+            </doc>
+        </arg>
+        <arg name="gate" default="1">
+            <doc>
+                note-on occurs when gate goes from nonpositive to positive; note-off occurs when it goes from positive to nonpositive.
+                Most of the other controls are only updated when a new note-on occurs.
+            </doc>
+        </arg>
+        <arg name="velocity" default="100">
+            <doc>
+                velocity (range is 0 to 127)
+            </doc>
+        </arg>
+        <arg name="decay" default="0.8">
+            <doc>
+                The time for notes to decay after the initial strike.
+            </doc>
+        </arg>
+        <arg name="release" default="0.8">
+            <doc>
+                The time for notes to decay after the key is released.
+            </doc>
+        </arg>
+        <arg name="hardness" default="0.8">
+            <doc>
+                adjusts sample keyranges up or down to change the "size" and brightness of the piano.
+            </doc>
+        </arg>
+        <arg name="velHard" default="0.8">
+            <doc>
+            </doc>
+        </arg>
+        <arg name="muffle" default="0.8">
+            <doc>
+                gentle low pass filter.
+            </doc>
+        </arg>
+        <arg name="velMuff" default="0.8">
+            <doc>
+            </doc>
+        </arg>
+        <arg name="velCurve" default="0.8">
+            <doc>
+            </doc>
+        </arg>
+        <arg name="stereo" default="0.2">
+            <doc>
+                Width of the stereo effect (which makes low notes sound towards the left, high notes towards the right). 0 to 1.
+            </doc>
+        </arg>
+        <arg name="tune" default="0.5">
+            <doc>
+                Overall tuning.
+            </doc>
+        </arg>
+        <arg name="random" default="0.1">
+            <doc>
+                Randomness in note tuning.
+            </doc>
+        </arg>
+        <arg name="stretch" default="0.1">
+            <doc>
+                Stretches the tuning out (higher notes pushed higher).
+            </doc>
+        </arg>
+        <arg name="sustain" default="0">
+            <doc>
+                if positive, act as if the piano's sustain pedal is pressed.
+            </doc>
+        </arg>
+        <doc>
+            <text>
+                A piano synthesiser (originally a VST plugin by Paul Kellett, ported to SC by Dan Stowell).
+                This UGen is not polyphonic (but can be retriggered to play notes in sequence).
+            </text>
+            <!-- TODO: example -->
+        </doc>
+    </ugen>
+</ugens>
+
