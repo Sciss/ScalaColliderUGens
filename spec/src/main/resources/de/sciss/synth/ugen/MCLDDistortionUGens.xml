@@ -1,0 +1,102 @@
+<ugens revision="2" third-party="MCLDUGens"> <!-- extension from sc3-plugins -->
+    <!-- all documented -->
+    <ugen name="InsideOut">
+        <rate name="control"/>
+        <rate name="audio"/>
+        <arg name="in" rate="ugen">
+            <doc>
+                input signal to be distorted
+            </doc>
+        </arg>
+        <doc>
+            <text>
+                A UGen that produces distortion by subtracting the input signal's magnitude from 1.
+
+                If the input is positive, it outputs (+1 - input).
+                If the input is negative, it outputs (-1 - input).
+            </text>
+            <example name="sine plus noise">
+                InsideOut.ar(SinOsc.ar(220) + PinkNoise.ar(0.9)) * 0.1
+            </example>
+        </doc>
+    </ugen>
+    <ugen name="WaveLoss" reads-buf="true">
+        <rate name="control"/>
+        <rate name="audio"/>
+        <arg name="in" rate="ugen">
+            <doc>
+                input signal to be distorted
+            </doc>
+        </arg>
+        <arg name="drop" type="ge-int" default="20">
+            <doc>
+                the number of wave segments to drop in each group of size `chunk`.
+            </doc>
+        </arg>
+        <arg name="chunk" type="ge-int" default="40">
+            <doc>
+                the number of wave segments that are grouped, so that `drop` elements from it are removed.
+            </doc>
+        </arg>
+        <arg name="mode" type="ge-int" default="1">
+            <doc>
+                `1` for deterministic mode, in which always the first `drop` segments within a `chunk` are dropped,
+                `2` for randomized mode, where `drop` segments at random indices within a `chunk` are dropped.
+            </doc>
+        </arg>
+        <doc>
+            <text>
+                A UGen which uses zero-crossings to divide an input signal into tiny segments.
+                It simply discards a fraction of the segments (replacing them with silence).
+
+                The technique was described in a lecture by Trevor Wishart.
+            </text>
+            <example name="sine plus noise">
+                val sig  = (SinOsc.ar + PinkNoise.ar) * 0.5
+                val mode = MouseY.kr(1, 2).roundTo(1)
+                WaveLoss.ar(sig, drop = MouseX.kr(0, 40), chunk = 40, mode = mode) * 0.1
+            </example>
+        </doc>
+    </ugen>
+    <ugen name="Squiz">
+        <rate name="control"/>
+        <rate name="audio"/>
+        <arg name="in"> <!-- works with rate mismatch, but glitchy -->
+            <doc>
+                input signal to be distorted
+            </doc>
+        </arg>
+        <arg name="pitchRatio" default="2">
+            <doc>
+                the ratio by which pitch will be raised, e.g. the default value of 2 will raise by one octave.
+                Only upwards pitch-shifts are possible so a value below 1 has no effect.
+            </doc>
+        </arg>
+        <arg name="zeroCrossings" type="ge-int" default="1">
+            <doc>
+                how many positive-going zero-crossings are used to delimit a chunk.
+            </doc>
+        </arg>
+        <arg name="maxDur" default="0.1" init="true">
+            <doc>
+                the maximum duration to remember each fragment, corresponding with an internally
+                allocated memory. Raising it higher will use more real-time memory and probably will not
+                sound very different (especially if `zeroCrossings` is low).
+            </doc>
+        </arg>
+        <doc>
+            <text>
+                A UGen implementing a simplistic pitch-raising algorithm. It is not meant to sound natural,
+                and its sound is reminiscent of some weird mixture of filter, ring-modulator and pitch-shifter,
+                depending on the input.
+
+                The algorithm works by cutting the signal into fragments (delimited by upwards-going zero-crossings)
+                and squeezing those fragments in the time domain (i.e. simply playing them back faster than they
+                came in), leaving silences in between.
+            </text>
+            <example name="trigger grains">
+                Squiz.ar(SinOsc.ar(440), MouseX.kr(1, 10, 1), zeroCrossings = MouseY.kr(1, 10)) * 0.1
+            </example>
+        </doc>
+    </ugen>
+</ugens>

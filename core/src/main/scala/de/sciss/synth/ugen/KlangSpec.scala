@@ -24,18 +24,18 @@ object KlangSpec {
     Seq(Vec.tabulate[(GE, GE, GE)](n)(func).map(tup => KlangSpec(tup._1, tup._2, tup._3)))
 
   final case class Seq(elems: Vec[KlangSpec]) extends GE {
-    override def productPrefix  = s"KlangSpec$$Seq"
-    def numOutputs              = elems.size * 3
-    def rate                    = MaybeRate.reduce(elems.map(_.rate): _*)
-    override def toString       = elems.mkString(s"$productPrefix(", ",", ")")
+    override def productPrefix: String      = s"KlangSpec$$Seq"
+    def numOutputs            : Int         = elems.size * 3
+    def rate                  : MaybeRate   = MaybeRate.reduce(elems.map(_.rate): _*)
+    override def toString     : String      = elems.mkString(s"$productPrefix(", ",", ")")
 
-    def expand: UGenInLike      = UGenInGroup(elems.flatMap(_.expand.outputs))
+    def expand                : UGenInLike  = UGenInGroup(elems.flatMap(_.expand.outputs))
   }
 }
 
 final case class KlangSpec(freq: GE, amp: GE = 1, decay: GE = 0) extends GE {
-  def numOutputs          = 3
-  def rate                = MaybeRate.reduce(freq.rate, amp.rate, decay.rate)
+  def numOutputs: Int         = 3
+  def rate      : MaybeRate   = MaybeRate.reduce(freq.rate, amp.rate, decay.rate)
 
-  def expand: UGenInLike  = UGenInGroup(Vec(freq.expand, amp.expand, decay.expand))
+  def expand    : UGenInLike  = UGenInGroup(Vec(freq.expand, amp.expand, decay.expand))
 }

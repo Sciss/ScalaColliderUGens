@@ -106,8 +106,8 @@ object VBAPSetup {
 
     override def toString: String = s"VBAPSetup(dim = $dim, directions = $directions)"
 
-    val speakers    = directions.map(_.toCartesian)
-    val numSpeakers = speakers.size
+    val speakers    : Vec[Cartesian] = directions.map(_.toCartesian)
+    val numSpeakers : Int           = speakers.size
 
     /* calculate and print out chosen loudspeaker sets and corresponding matrices */
     lazy val bufferData: Vec[Float] = {
@@ -227,11 +227,8 @@ object VBAPSetup {
       sets
     }
 
-    @inline
-    def vec_angle(v1: Cartesian, v2: Cartesian) = v1 angle v2
-
-    @inline
-    def vec_prod(v1: Cartesian, v2: Cartesian) = v1 dotProduct v2
+    @inline def vec_angle(v1: Cartesian, v2: Cartesian): Double = v1 angle      v2
+    @inline def vec_prod (v1: Cartesian, v2: Cartesian): Double = v1 dotProduct v2
 
     /* checks if two lines intersect on 3D sphere */
     def lines_intersect(i: Int, j: Int, k: Int, l: Int): Boolean = {
