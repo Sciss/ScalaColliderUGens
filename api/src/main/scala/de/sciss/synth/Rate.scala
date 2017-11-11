@@ -94,6 +94,8 @@ object Rate {
     case audio    .id => audio
     case demand   .id => demand
   }
+
+  sealed abstract class Bus extends Rate
 }
 /** The server calculation rate of a UGen or a UGen output.
   *
@@ -138,7 +140,7 @@ case object scalar extends Rate {
 /** Control rated calculation (id `1`) means that one value is calculated per block. With a default block size
   * of `64`, for every 64 audio samples one control value is calculated. Thus, if the sampling rate is 44.1 kHz,
   * the control rate would be 44100/64 = approx. 689 per second. */
-case object control extends Rate {
+case object control extends Rate.Bus {
   final val id = 1
   final val methodName = "kr"
 }
@@ -146,7 +148,7 @@ case object control extends Rate {
 /** Audio rated calculation (id `1`) means that values are calculated at the audio sampling rate. For example,
   * if the server and sound hardware run at 44.1 kHz, then 44100 samples are calculated per second. On the server,
   * audio rate calculation is performed in chunks, depending on the block size setting. */
-case object audio extends Rate {
+case object audio extends Rate.Bus {
   final val id = 2
   final val methodName = "ar"
 }

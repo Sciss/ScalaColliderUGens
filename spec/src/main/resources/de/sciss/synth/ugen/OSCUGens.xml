@@ -1,4 +1,4 @@
-<ugens revision="8">
+<ugens revision="9">
     <!-- all documented, except: Shaper, SinOscFB, VOsc, VOsc3, Osc, OscN, COsc, Klang, Klank -->
     <ugen name="DegreeToKey" reads-buf="true">
         <rate name="control"/>
@@ -641,5 +641,17 @@
         <arg name="decayScale" default="1.0" init="true" pos="4"/>
         <arg name="specs" variadic="true" init="true" pos="0"/>
         <!-- TODO: doc -->
+        <doc>
+            <text>
+                Klank is a UGen of a bank of fixed frequency resonators which can be used to simulate
+                the resonant modes of an object. Each mode is given a ring time, which is the time for
+                the mode to decay by 60 dB.
+
+                ''Note'': `Ringz` and derived UGens `Klank` and `Formlet` produce output RMS depending
+                on the server's sampling rate. This is to achieve the same amplitude for single-sample impulse inputs.
+            </text>
+            <see>ugen.Klang</see>
+            <see>ugen.Ringz</see>
+        </doc>
     </ugen>
 </ugens>

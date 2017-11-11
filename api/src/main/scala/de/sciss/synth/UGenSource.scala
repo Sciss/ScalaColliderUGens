@@ -21,11 +21,11 @@ import scala.collection.breakOut
 import scala.runtime.ScalaRunTime
 
 object UGenSource {
-  trait ZeroOut   extends UGenSource[Unit]
-  trait SingleOut extends SomeOut
-  trait MultiOut  extends SomeOut
+  abstract class ZeroOut   extends UGenSource[Unit]
+  abstract class SingleOut extends SomeOut
+  abstract class MultiOut  extends SomeOut
 
-  sealed trait SomeOut extends UGenSource[UGenInLike] with GE.Lazy
+  sealed abstract class SomeOut extends UGenSource[UGenInLike] with GE.Lazy
 
   // ---- utilities ----
 
@@ -151,8 +151,8 @@ object UGenSource {
   }
 }
 
-sealed trait UGenSource[U] extends Lazy.Expander[U] {
-  private[synth] def makeUGen(args: Vec[UGenIn]): U
+sealed abstract class UGenSource[U] extends Lazy.Expander[U] {
+  protected def makeUGen(args: Vec[UGenIn]): U
 
   final def name: String = productPrefix
 

@@ -31,6 +31,7 @@ object UnaryOpUGen {
     def apply(id: Int): Op = (id: @switch) match {
       case Neg        .id => Neg
       case Not        .id => Not
+      case BitNot     .id => BitNot
       case Abs        .id => Abs
       case Ceil       .id => Ceil
       case Floor      .id => Floor
@@ -116,7 +117,10 @@ object UnaryOpUGen {
 
   // case object IsNil       extends Op(  2 )
   // case object NotNil      extends Op(  3 )
-  // case object BitNot      extends Op(  4 )
+  case object BitNot extends Op {
+    final val id = 4
+    def make1(a: Float): Float = ~a.toInt
+  }
   case object Abs extends Op {
     final val id = 5
     def make1(a: Float): Float = rf.abs(a)
@@ -315,7 +319,7 @@ final case class UnaryOpUGen(selector: UnaryOpUGen.Op, a: GE)
 
   protected def makeUGens: UGenInLike = unwrap(this, Vector(a))
 
-  private[synth] def makeUGen(args: Vec[UGenIn]): UGenInLike = {
+  protected def makeUGen(args: Vec[UGenIn]): UGenInLike = {
     val a = args.head
     selector.make1(a)
   }
@@ -768,7 +772,7 @@ sealed trait BinaryOpUGen extends UGenSource.SingleOut {
 
   protected final def makeUGens: UGenInLike = unwrap(this, Vector(a.expand, b.expand))
 
-  private[synth] final def makeUGen(args: Vec[UGenIn]): UGenInLike = {
+  protected final def makeUGen(args: Vec[UGenIn]): UGenInLike = {
     val a0 = args(0)
     val a1 = args(1)
     selector.make1(a0, a1)

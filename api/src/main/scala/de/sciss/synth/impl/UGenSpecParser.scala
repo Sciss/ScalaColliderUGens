@@ -35,7 +35,7 @@ private[synth] object UGenSpecParser {
     "reads-bus",  "reads-buf",  "reads-fft", "random", "indiv",
     "writes-bus", "writes-buf", "writes-fft", "side-effect",
     "done-flag" /* , "provided" */,
-    "helper", "sourcecode"
+    "helper", "sourcecode", "elem"
   )
 
   private val nodeChildKeys = Set(
@@ -383,7 +383,8 @@ private[synth] object UGenSpecParser {
     import UGenSpec.{SignalShape => Sig, _}
 
     val attrs = node.attributes.asAttrMap
-    val uName = attrs.string ("name")
+    val uName = attrs.string("name")
+    val eName = attrs.get   ("elem")
 
     if (verify) {
       val unknown = attrs.keySet -- nodeAttrKeys
@@ -694,6 +695,7 @@ private[synth] object UGenSpecParser {
 
     val uDoc = if (docs) mkDoc(node, argDocs = argDocs, outputDocs = outputDocs) else None
 
-    UGenSpec(name = uName, attr = uAttr, rates = rates, args = args, inputs = inputs, outputs = outputs, doc = uDoc)
+    UGenSpec(name = uName, attr = uAttr, rates = rates, args = args, inputs = inputs, outputs = outputs,
+      doc = uDoc, elemOption = eName)
   }
 }

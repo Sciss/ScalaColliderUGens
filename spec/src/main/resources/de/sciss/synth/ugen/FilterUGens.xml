@@ -1,4 +1,4 @@
-<ugens revision="7">
+<ugens revision="8">
     <!-- all documented, except: APF -->
     <ugen name="Ramp">
         <rate name="control"/>
@@ -1104,6 +1104,9 @@
                 A resonant or "ringing" filter UGen. This is the same as `Resonz`, except that instead of a
                 Q parameter, the bandwidth is specified as a 60 dB ring decay time.
                 One `Ringz` is equivalent to one component of the `Klank` UGen.
+
+                ''Note'': `Ringz` and derived UGens `Klank` and `Formlet` produce output RMS depending
+                on the server's sampling rate. This is to achieve the same amplitude for single-sample impulse inputs.
             </text>
             <example name="module ring time">
                 Ringz.ar(Impulse.ar(6) * 0.3, 2000, XLine.kr(4, 0.04, 8))
@@ -1163,6 +1166,9 @@
 
                 The great advantage to this filter over FOF (Fonction d'onde formantique) is that there is no limit
                 to the number of overlapping grains since the grain is just the impulse response of the filter.
+
+                ''Note'': `Ringz` and derived UGens `Klank` and `Formlet` produce output RMS depending
+                on the server's sampling rate. This is to achieve the same amplitude for single-sample impulse inputs.
             </text>
             <example name="modulated formant frequency">
                 val in = Blip.ar(SinOsc.kr(5,0).madd(20, 300), 1000) * 0.1

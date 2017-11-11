@@ -1,0 +1,365 @@
+<ugens revision="11" third-party="DEINDUGens"> <!-- extension from sc3-plugins -->
+    <!-- all documented -->
+    <ugen name="JPverbRaw" elem="JPverb">
+        <rate name="control"/>
+        <rate name="audio">
+            <arg name="inL" rate="ugen"/>
+            <arg name="inR" rate="ugen"/>
+        </rate>
+        <output name="left">
+            <doc>
+                left channel of reverberation
+            </doc>
+        </output>
+        <output name="right">
+            <doc>
+                right channel of reverberation
+            </doc>
+        </output>
+        <arg name="inL" pos="0">
+            <doc>
+                left input signal to be reverberated
+            </doc>
+        </arg>
+        <arg name="inR" pos="1">
+            <doc>
+                right input signal to be reverberated
+            </doc>
+        </arg>
+        <arg name="damp" default="0.0" pos="3">
+            <doc>
+                damping of high-frequencies as the reverberation decays.
+                0 is no damping, 1 is very strong damping (0..1)
+            </doc>
+        </arg>
+        <arg name="earlyDiff" default="0.707" pos="5">
+            <doc>
+                shape of early reflections. Values of > 0.707 produce smooth exponential decay.
+                Lower values produce a slower build-up of echoes. (0..1)
+            </doc>
+        </arg>
+        <arg name="highCut" default="2000.0" pos="12">
+            <doc>
+                frequency in Hz at which the crossover between the mid and high bands of the reverberation
+                occurs. (1000..10000)
+            </doc>
+        </arg>
+        <arg name="high" default="1.0" pos="10">
+            <doc>
+                multiplier for the reverberation time within the high band. (0..1)
+            </doc>
+        </arg>
+        <arg name="lowCut" default="500.0" pos="11">
+            <doc>
+                frequency in Hz at which the crossover between the low and mid bands of the reverberation
+                occurs. (100..6000)
+            </doc>
+        </arg>
+        <arg name="low" default="1.0" pos="8">
+            <doc>
+                multiplier for the reverberation time within the low band. (0..1)
+            </doc>
+        </arg>
+        <arg name="modDepth" default="0.1" pos="6">
+            <doc>
+                depth of delay-line modulation in sample frames. Use in combination with `modFreq` to set amount
+                of chorusing within the structure. (0..50)
+            </doc>
+        </arg>
+        <arg name="modFreq" default="2.0" pos="7">
+            <doc>
+                frequency of delay-line modulation. Use in combination with `modDepth` to set amount of chorusing
+                within the structure. (0..10)
+            </doc>
+        </arg>
+        <arg name="mid" default="1.0" pos="9">
+            <doc>
+                multiplier for the reverberation time within the mid band. (0..1)
+            </doc>
+        </arg>
+        <arg name="size" default="1.0" pos="4">
+            <doc>
+                scales the size of delay-lines, producing the impression of a larger or
+                smaller space. Values below 1 can sound quite metallic. (0.5..5)
+            </doc>
+        </arg>
+        <arg name="revTime" default="1.0" pos="2">
+            <doc>
+                approximate reverberation time in seconds (T60 - the time for the reverberation to decay 60 dB).
+                Does not effect early reflections. (0.1..60)
+            </doc>
+        </arg>
+        <doc>
+            <text>
+                An algorithmic reverb UGen, inspired by the lush chorused sound of certain vintage Lexicon
+                and Alesis reverberation units. Designed to sound great with synthetic sound sources, rather
+                than sound like a realistic space.
+
+                ''Note'': You may need to increase the server's real-time memory
+            </text>
+            <example name="defaults">
+                val src = SplayAz.ar(2, Impulse.ar(Seq(1, 3, 5, 7, 9)))
+                JPverb.ar(inL = src\0, inR = src\1)
+            </example>
+            <example name="dream-verb">
+                val src = SplayAz.ar(2, Impulse.ar(Seq(1, 3, 5, 7, 9)))
+                0.4 * src + 0.8 * JPverb.ar(
+                  inL = src\0, inR = src\1, revTime = 60, size = 2.8, damp = 0.3, earlyDiff = 0.42,
+                  low = 0.84, mid = 0.71, high = 0.0,
+                  lowCut = 2450, highCut = 1024, modFreq = 0.1, modDepth = 4.6)
+            </example>
+            <example name="tail modulation">
+                val src = SplayAz.ar(2, Impulse.ar(Seq(1, 3, 5, 7, 9)))
+                val time = LFSaw.ar(0.02).linexp(-1, 1, 0.02, 60)
+                JPverb.ar(
+                  inL = src\0, inR = src\1, revTime = time, size = 1.0, damp = 0.3, earlyDiff = 0.0,
+                  low = 1, mid = 0, high = 1,
+                  lowCut = 2450, highCut = 1024, modDepth = 0)
+            </example>
+            <see>ugen.FreeVerb2</see>
+            <see>ugen.GVerb</see>
+            <see>ugen.Greyhole</see>
+        </doc>
+    </ugen>
+    <ugen name="GreyholeRaw" elem="Greyhole">
+        <rate name="audio">
+            <arg name="inL" rate="ugen"/>
+            <arg name="inR" rate="ugen"/>
+        </rate>
+        <output name="left">
+            <doc>
+                left channel of delay
+            </doc>
+        </output>
+        <output name="right">
+            <doc>
+                right channel of delay
+            </doc>
+        </output>
+        <arg name="inL" pos="0">
+            <doc>
+                left input signal
+            </doc>
+        </arg>
+        <arg name="inR" pos="1">
+            <doc>
+                right input signal
+            </doc>
+        </arg>
+        <arg name="damp" default="0.0" pos="3">
+            <doc>
+                damping of high-frequencies as the delay decays.
+                0 is no damping, 1 is very strong damping (0..1)
+            </doc>
+        </arg>
+        <arg name="delayTime" default="2.0" pos="2">
+            <doc>
+                approximate delay time in seconds. (0.1..60)
+            </doc>
+        </arg>
+        <arg name="diff" default="0.707" pos="5">
+            <doc>
+                shape of echo patterns produced by the diffuser. At very low values, the diffuser
+                acts like a delay-line whose length is controlled by the `size` parameter. Medium
+                values produce a slow build-up of echoes, giving the sound a reversed-like quality.
+                Values of 0.707 or greater than produce smooth exponentially decaying echoes. (0..1)
+            </doc>
+        </arg>
+        <arg name="feedback" default="0.9" pos="6">
+            <doc>
+                amount of feedback through the system. Sets the number of repeating echoes.
+                A setting of 1.0 produces infinite sustain. (0..1)
+            </doc>
+        </arg>
+        <arg name="modDepth" default="0.1" pos="7">
+            <doc>
+                depth of delay-line modulation. Use in combination with `modFreq`
+                to produce chorus and pitch-variations in the echoes. (0..1)
+            </doc>
+        </arg>
+        <arg name="modFreq" default="2.0" pos="8">
+            <doc>
+                frequency of delay-line modulation. Use in combination with `modDepth`
+                to produce chorus and pitch-variations in the echoes. (0..10)
+            </doc>
+        </arg>
+        <arg name="size" default="1.0" pos="4">
+            <doc>
+                scales the size of delay-lines, producing the impression of a larger or
+                smaller space. Values below 1 can sound quite metallic. (0.5..5)
+            </doc>
+        </arg>
+        <doc>
+            <text>
+                A complex echo-like effect UGen, inspired by the classic Eventide effect of a similar name.
+                The effect consists of a diffuser (like a mini-reverb) connected in a feedback system with a
+                long modulated delay-line. Excels at producing spacey washes of sound.
+
+                ''Note'': You may need to increase the server's real-time memory
+            </text>
+            <example name="discrete">
+                val src = LeakDC.ar(SplayAz.ar(2, Impulse.ar(Seq(1, 3, 5, 7, 9))))
+                Greyhole.ar(
+                  inL = src\0, inR = src\1, delayTime = 0.1, damp = 0.1,
+                  feedback = 0.1, modDepth = 0.01, modFreq = 2)
+            </example>
+            <example name="time modulation">
+                val src = LeakDC.ar(SplayAz.ar(2, Impulse.ar(Seq(1, 3, 5, 7, 9))))
+                val time = LFTri.kr(0.01).linexp(-1, 1, 0.05, 0.2)
+                Greyhole.ar(
+                  inL = src\0, inR = src\1, delayTime = time, damp = 0.4,
+                  feedback = 0.99, modDepth = 0.01, modFreq = 2)
+            </example>
+            <see>ugen.JPverb</see>
+        </doc>
+    </ugen>
+    <ugen name="ComplexRes">
+        <rate name="audio">
+            <arg name="in" rate="ugen"/>
+        </rate>
+        <arg name="in">
+            <doc>
+                input signal to be filtered
+            </doc>
+        </arg>
+        <arg name="freq" default="440.0">
+            <doc>
+                resonating frequency in Hz, can be modulated at audio rate
+            </doc>
+        </arg>
+        <arg name="decay" default="0.2">
+            <doc>
+                decay time in seconds
+            </doc>
+        </arg>
+        <doc>
+            <text>
+                A resonating filter UGen which can be modulated in its resonating frequency at audio rate.
+
+                Implements the filter structure found in Julian Parker and Till Bovermann (2013):
+                ''Dynamic FM synthesis using a network of complex resonator filters''
+            </text>
+            <example name="pulse excitation">
+                ComplexRes.ar(Pulse.ar(1, 0.01), 5000 * SinOsc.ar(Seq(50, 51)), 0.5)
+            </example>
+            <see>ugen.Resonz</see>
+            <see>ugen.Formlet</see>
+            <see>ugen.RHPF</see>
+            <see>ugen.RLPF</see>
+            <see>ugen.Ringz</see>
+        </doc>
+    </ugen>
+    <ugen name="DiodeRingMod">
+        <rate name="audio">
+            <arg name="car" rate="ugen"/>
+            <arg name="mod" rate="ugen"/>
+        </rate>
+        <arg name="car">
+            <doc>
+                carrier signal
+            </doc>
+        </arg>
+        <arg name="mod">
+            <doc>
+                modulator signal
+            </doc>
+        </arg>
+        <doc>
+            <text>
+                Ring modulation UGen based on a physical model of a diode.
+            </text>
+            <example name="sprinkle">
+                val ring = DiodeRingMod.ar(
+                  SinOsc.ar((3700: GE) * Seq(1.0, 1.1, 1.2) * (SinOsc.ar(200) + 2)),
+                  SinOsc.ar(( 100: GE) * Seq(0.75, 1, 0.5)))
+                SplayAz.ar(2, ring) * 0.2 * LFPulse.ar(10.3 * 0.5, 0, 0.04) * 0.5
+            </example>
+            <example name="wobble">
+                val ring = DiodeRingMod.ar(
+                  SinOsc.ar((400: GE) * Seq(1.0, 1.1, 1.2) * (SinOsc.ar(200) + 2)),
+                  SinOsc.ar((100: GE) * Seq(0.75, 1, 0.5)))
+                SplayAz.ar(2, ring) * 0.2 * LFPulse.ar(10.3 * 1/32, 0, 0.2) * 0.25
+            </example>
+            <see>ugen.BinaryOpUGen</see>
+        </doc>
+    </ugen>
+    <ugen name="DNoiseRing" indiv="true" random="true">
+        <rate name="demand" implied="true" method="apply"/>
+        <arg name="change" default="0.5">
+            <doc>
+                probability of changing to a new value
+            </doc>
+        </arg>
+        <arg name="chance" default="0.5">
+            <doc>
+                probability of the new value becoming HIGH
+            </doc>
+        </arg>
+        <arg name="shift" default="1">
+        </arg>
+        <arg name="numBits" default="8">
+        </arg>
+        <arg name="init" default="0">
+            <doc>
+                initial internal state
+            </doc>
+        </arg>
+        <doc>
+            <text>
+                Demand rate UGen implementing a Wiard noise ring.
+
+                "In latter model synthesizers, digital noise sources began to appear in place of analog ones.
+                Traditionally, a pseudo-random shift register set up for optimal length. By optimal length,
+                it is meant that every state of all available bits will appear at some time, but the order is
+                unknown. Essentially a counter that counts in an unknown order. This represents the maximum
+                state of information "entropy" available for that number of bits. But music has close
+                self-similarity over short periods of time. That is, it repeats itself with changes appearing
+                slowly. This shift register generator is designed to give control of the rate of appearance of
+                new information. It has a tight set of controls over how random it actually is and how fast
+                change occurs." (source: http://mamonu.weebly.com/wiard-noisering.html)
+            </text>
+            <example name="plain 32bit value scaled to 0..1">
+                val noise = DNoiseRing(change = MouseX.kr(0, 1), chance = 0.51, numBits = 32)
+                Demand.ar(Impulse.ar(10000), noise) / 2.0.pow(33)
+            </example>
+            <example name="sequencer">
+                val noise = DNoiseRing(change = MouseX.kr(0, 1), chance = MouseY.kr(0, 1), numBits = 32)
+                val tr    = Impulse.ar(10)
+                val freq  = (Demand.ar(tr, noise)).linlin(0, 2.0.pow(32), 40, 40+48).midicps
+                freq.poll(tr, "freq")
+                Pan2.ar(SinOsc.ar(freq) * 0.25)
+            </example>
+            <see>ugen.Duty</see>
+            <see>ugen.Demand</see>
+        </doc>
+    </ugen>
+    <ugen name="RMS">
+        <rate name="control"/>
+        <rate name="audio">
+            <arg name="in" rate="ugen"/>
+        </rate>
+        <arg name="in">
+            <doc>
+                input signal to be analyzed
+            </doc>
+        </arg>
+        <arg name="lpf" default="2.0">
+            <doc>
+                low-pass filter frequency in Hz
+            </doc>
+        </arg>
+        <doc>
+            <text>
+                A UGen that calculates the root-mean-square of a first order low-pass filtered input signal.
+                The formula is 'rms = sqrt(lpf1(x^2))'.
+            </text>
+            <example name="measure mouse-controlled sine">
+                // with MouseX at maximum, you'll see that the sine has -3 dB RMS
+                val sig = SinOsc.ar(300) * MouseX.kr(0, 1) * LFPulse.ar(0.5)
+                val rms = RMS.ar(sig, 10).ampdb.roundTo(0.1).poll(8, "RMS (dB)")
+                sig
+            </example>
+            <see>ugen.Amplitude</see>
+        </doc>
+    </ugen>
+</ugens>

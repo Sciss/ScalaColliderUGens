@@ -26,13 +26,13 @@ All artifacts are published to Maven Central, and are available as follows:
     "de.sciss" %% "scalacolliderugens-core" % v
     "de.sciss" %% "scalacolliderugens-plugins" % v
 
-The current stable version `v` is `"1.16.7"`.
+The current stable version `v` is `"1.17.1"`.
 
 The `spec` contains the XML meta data, `api` contains basic types without specific UGens, `core` contains the standard UGens included with SuperCollider, and `plugins` will include the third-party plugins managed by the [sc3-plugins](https://github.com/supercollider/sc3-plugins) project (still incomplete).
 
 ## building
 
-The project builds with sbt 0.13 against Scala 2.12, 2.11. To compile, run `sbt compile`.
+The project builds with sbt against Scala 2.12, 2.11. To compile, run `sbt compile`.
 
 ## contributing
 
@@ -124,6 +124,7 @@ UGen Attributes (`ugenAttr`) are boolean flags (all false by default) which can 
 |`indiv`       |Each UGen is otherwise individual, even with identical inputs|Demand UGens advance their inputs|
 |`helper`      |A helper element that is not a genuine UGen itself|`Nyquist`|
 |`sourcecode`  |Manually written source code is provided|`Nyquist`|
+|`elem`        |Client facing class name differing from UGen|`JPverbRaw`|
 
 Part of this information is used by ScalaCollider when building the UGen graph. For example, subtrees which do not have any side effects are automatically removed. UGens which have side effects are those for which either of the following flags is set: `writes-bus` | `writes-buf` | `writes-fft` | `side-effect`. Furthermore, multiple occurrences of UGens which are functionally equivalent are collapsed. UGens are _functionally not equivalent_ if either of the following flags is set: _any of the side effects_ | _any of the resource readers_ | `random` | `indiv`. That is to say, if there are two `WhiteNoise` UGens, they are functionally distinct by definition and will thus not be collapsed. The same is true for two `Out` UGens, even if their inputs are the same, as they have accumulative side effects on the bus to which they write. On the other hand, two `SinOsc` UGens with the same frequency and rate inputs are functionally equivalent and thus one can be replaced for the other.
 

@@ -21,7 +21,7 @@ import impl.{UGenSpecParser => ParserImpl}
 
 object UGenSpec {
   /** List of standard UGen plugin names, including ScalaCollider helper elements. */
-  final val standardPlugins = List(
+  final val standardPlugins: List[String] = List(
     "ChaosUGens", "DelayUGens", "DemandUGens", "DiskIOUGens", "DynNoiseUGens", "FFT2_UGens", "FFT_UGens",
     "FilterUGens", "GendynUGens", "GrainUGens", "IOUGens", "KeyboardUGens", "LFUGens", "MachineListening",
     "MouseUGens", /* "MulAddUGens", */ "NoiseUGens", "OSCUGens", "PanUGens", "PhysicalModellingUGens", "ReverbUGens",
@@ -31,9 +31,8 @@ object UGenSpec {
   /** List of third-party UGens as per https://github.com/supercollider/sc3-plugins,
     * This is currently incomplete.
     */
-  final val thirdPartyPlugins = List(
-    "MCLDBufferUGens", "MCLDDistortionUGens",
-    "TJUGens", "VBAPUGens", "MdaUGens"
+  final val thirdPartyPlugins: List[String] = List(
+    "DEINDUGens", "MCLDBufferUGens", "MCLDDistortionUGens", "MdaUGens", "TJUGens", "VBAPUGens"
   )
 
   /** Lazily computes the specs of the UGens bundled with the standard SuperCollider distribution.
@@ -391,7 +390,7 @@ object UGenSpec {
     final case class Set(set: immutable.Set[Rate]) extends Rates {
       override def toString: String = set.mkString("[", ", ", "]")
       /** Explicitly specified rates always use the `Default` type of method naming. */
-      def method /*  TODO annotate : RateMethod */ = RateMethod.Default
+      def method: RateMethod = RateMethod.Default
 
       def methodName(r: Rate): String = {
         require(set.contains(r))
@@ -466,35 +465,41 @@ object UGenSpec {
 
 /** Specification of a Unit Generator.
   *
-  * @param name     the name of the unit generator, as seen by the server
-  * @param attr     a set of attributes which characterize the UGen, such as resource usage or uniqueness
-  * @param rates    at which calculation rates the UGen runs, and whether the rate is implied
-  * @param args     the constructor arguments of the UGen representation. This is the interface for the client-side
-  *                 instantiation and may include types other than `GE`, for example integers for fixed
-  *                 number of channels, etc., as well as definitions for default values.
-  * @param inputs   the inputs as passed to the underlying UGen (server-side object). Inputs are things which
-  *                 expand to `UGenInLike` elements. Typically they correspond to client-side `args` arguments.
-  *                 The order of this sequence must be correctly reflecting the UGen plugin interface, whereas
-  *                 the order of the `args` sequence may diverge for an improved user interface.
-  * @param outputs  a list of output specifications
-  * @param doc      optional text documentation
+  * @param name       the name of the unit generator, as seen by the server
+  * @param attr       a set of attributes which characterize the UGen, such as resource usage or uniqueness
+  * @param rates      at which calculation rates the UGen runs, and whether the rate is implied
+  * @param args       the constructor arguments of the UGen representation. This is the interface for the client-side
+  *                   instantiation and may include types other than `GE`, for example integers for fixed
+  *                   number of channels, etc., as well as definitions for default values.
+  * @param inputs     the inputs as passed to the underlying UGen (server-side object). Inputs are things which
+  *                   expand to `UGenInLike` elements. Typically they correspond to client-side `args` arguments.
+  *                   The order of this sequence must be correctly reflecting the UGen plugin interface, whereas
+  *                   the order of the `args` sequence may diverge for an improved user interface.
+  * @param outputs    a list of output specifications
+  * @param doc        optional text documentation
+  * @param elemOption diverging name of the graph element, as seen by the client
   */
-final case class UGenSpec(name: String,
-                          attr:    Set[UGenSpec.Attribute],
-                          rates:       UGenSpec.Rates,
-                          args:    Vec[UGenSpec.Argument],
-                          inputs:  Vec[UGenSpec.Input   ],
-                          outputs: Vec[UGenSpec.Output  ],
-                          doc:  Option[UGenSpec.Doc     ]) {
+final case class UGenSpec(name      : String,
+                          attr      : Set[UGenSpec.Attribute],
+                          rates     : UGenSpec.Rates,
+                          args      : Vec[UGenSpec.Argument],
+                          inputs    : Vec[UGenSpec.Input  ],
+                          outputs   : Vec[UGenSpec.Output ],
+                          doc       : Option[UGenSpec.Doc],
+                          elemOption: Option[String]
+                         ) {
   /** A convenience field which maps from argument names to arguments. */
-  lazy val argMap:   Map[String, UGenSpec.Argument] = args.map  (a => a.name -> a)(breakOut)
+  lazy val argMap:   Map[String, UGenSpec.Argument] = args  .map(a => a.name -> a)(breakOut)
   /** A convenience field which maps from input argument names to inputs. */
   lazy val inputMap: Map[String, UGenSpec.Input   ] = inputs.map(i => i.arg  -> i)(breakOut)
 
+  def className: String = elemOption.getOrElse(name)
+
   override def toString: String = {
-    val s1 = s"$productPrefix($name, attr = ${attr.mkString("[", ", ", "]")}, rates = $rates, "
-    val s2 = s"args = ${args.mkString("[", ", ", "]")}, inputs = ${inputs.mkString("[", ", ", "]")}, "
-    val s3 = s"outputs = ${outputs.mkString("[", ", ", "]")})"
-    s"$s1$s2$s3"
+    val s1 = s"$name, attr = ${attr.mkString("[", ", ", "]")}, rates = $rates, "
+    val s2 = s"args = ${       args.mkString("[", ", ", "]")}, inputs = ${inputs.mkString("[", ", ", "]")}, "
+    val s3 = s"outputs = ${ outputs.mkString("[", ", ", "]")}"
+    val s4 = if (elemOption.isEmpty) "" else s", elemOption = $elemOption"
+    s"$productPrefix($s1$s2$s3$s4)"
   }
 }

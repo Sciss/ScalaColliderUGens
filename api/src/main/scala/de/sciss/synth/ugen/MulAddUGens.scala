@@ -44,7 +44,7 @@ final case class MulAdd(in: GE, mul: GE, add: GE)
 
   def rate: MaybeRate = in.rate // XXX TODO - correct?
 
-  private[synth] def makeUGen(args: Vec[UGenIn]): UGenInLike = {
+  protected def makeUGen(args: Vec[UGenIn]): UGenInLike = {
     import BinaryOpUGen.{Minus, Plus, Times}
     import UnaryOpUGen.Neg
 
@@ -115,7 +115,7 @@ final case class Sum3(in0: GE, in1: GE, in2: GE) extends UGenSource.SingleOut {
 
   protected def makeUGens: UGenInLike = unwrap(this, Vector(in0, in1, in2))
 
-  private[synth] def makeUGen(args: Vec[UGenIn]): UGenInLike = Sum3.make1(args)
+  protected def makeUGen(args: Vec[UGenIn]): UGenInLike = Sum3.make1(args)
 }
 
 /** A UGen to efficiently add four signals together.
@@ -164,5 +164,5 @@ final case class Sum4(in0: GE, in1: GE, in2: GE, in3: GE) extends UGenSource.Sin
 
   protected def makeUGens: UGenInLike = unwrap(this, Vector(in0, in1, in2, in3))
 
-  private[synth] def makeUGen(args: Vec[UGenIn]): UGenInLike = Sum4.make1(args)
+  protected def makeUGen(args: Vec[UGenIn]): UGenInLike = Sum4.make1(args)
 }

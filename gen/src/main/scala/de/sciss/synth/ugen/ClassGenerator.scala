@@ -287,7 +287,7 @@ final class ClassGenerator {
 
   private case class MethodDef(name: String, tpe: List[String] = Nil, params: List[List[ParamDef]],
                                ret: String, body: Tree, isProtected: Boolean = false, isPrivate: Boolean = false,
-                               scope: Option[String] = None) extends Tree {
+                               scope: Option[String] = None, isOverride: Boolean = false) extends Tree {
     def mkString: String = {
       val tpeS    = if (tpe.isEmpty) "" else tpe.mkString("[", ", ", "]")
       val paramsS = params.map(sub => sub.map(_.mkString).mkString("(", ", ", ")")).mkString
@@ -303,7 +303,8 @@ final class ClassGenerator {
       }
       val scopeS  = scope.fold("")(s => s"[$s]")
       val pre0    = if (isProtected) s"protected$scopeS " else if (isPrivate) s"private$scopeS " else ""
-      s"$pre0$res0"
+      val pre1    = if (isOverride) s"override $pre0" else pre0
+      s"$pre1$res0"
     }
   }
 
@@ -582,7 +583,8 @@ final class ClassGenerator {
   private val strMaybeResolve     = "getOrElse" // "?|"
   private val strOutputs          = "outputs"
   private val strUGenIn           = "UGenIn"
-  private val identName           = Ident("name")
+  private val strName             = "name"
+  private val identName           = Ident(strName)
   private val strRateArg          = "rate"
   private val strRateMethod       = "rate"
   private val identRateArg        = Ident(strRateArg)
@@ -661,7 +663,7 @@ final class ClassGenerator {
         else
           argIdents
 
-        New(uName, applyArgs)
+        New(className, applyArgs)
       }
 
       val methodNames = rates.method match {
@@ -680,7 +682,7 @@ final class ClassGenerator {
           params  = objectMethodArgsList,
           // Note: to help faster compilation of use site code, always produce the return type annotation
           // if (mName != strApply) EmptyTree else
-          ret     = uName, // TypeDef(NoMods, typeName(name), Nil, EmptyTree),
+          ret     = className, // TypeDef(NoMods, typeName(name), Nil, EmptyTree),
           body    = methodBody             // rhs
         )
         mName -> wrapDoc(spec, df, /* indent = 1, */ body = false, args = true, examples = false,
@@ -699,10 +701,10 @@ final class ClassGenerator {
           val overloadedBody = Apply(Ident(mName), Nil)
           // e.g. `def kr: SinOsc = kr()
           val overloadedMethod  = MethodDef(
-            name = mName,
+            name    = mName,
             tpe     = Nil,    // tparams
             params  = Nil,    // vparams
-            ret     = uName,
+            ret     = className,
             body    = overloadedBody  // rhs
           )
           overloadedMethod :: fullMethod :: Nil
@@ -720,7 +722,7 @@ final class ClassGenerator {
     // because there might be no object (in that case objectDef is Nil).
     val objectDef = if (forceCompanion || objectMethodDefs.nonEmpty) {
       val mod = ObjectDef(
-        name    = uName,
+        name    = className,
         parents = Nil,
         body    = objectMethodDefs  // body
       )
@@ -730,7 +732,7 @@ final class ClassGenerator {
     // a `MaybeRate` is used when no rate is implied and an input generally uses a same-as-ugen constraint.
     // `maybeRateRef` contains the arguments which resolve the undefined rate at expansion time
     val maybeRateRef = if (impliedRate.isEmpty) {
-      argsIn.filter(_.rates.get(UndefinedRate) == Some(RateConstraint.SameAsUGen))
+      argsIn.filter(_.rates.get(UndefinedRate).contains(RateConstraint.SameAsUGen))
     } else Vector.empty
 
     val caseClassConstrArgs: List[ParamDef] = {
@@ -802,7 +804,7 @@ final class ClassGenerator {
     val namedOutputDefs: List[Tree] = if (!hasMultipleOuts) Nil else outputs.zipWithIndex.collect {
       case (UGenSpec.Output(Some(outName), _, _), idx) =>
         if (hasVariadicOut) {
-          sys.error(s"The combination of variadic and named outputs is not yet supported (${spec.name}, $outName)")
+          sys.error(s"The combination of variadic and namenamed outputs is not yet supported (${spec.name}, $outName)")
         }
 
         // ChannelProxy(this, idx)
@@ -1017,7 +1019,8 @@ final class ClassGenerator {
           // args3 = (outputRates, inputs, isIndividual, [hasSideEffect])
           val args3 = args2 ::: inArg :: args1
           // args = (name, rate, outputRates, inputs, isIndividual, [hasSideEffect]) = complete list
-          val args4 = identName :: identResolvedRate :: args3
+          val treeUGenName = if (uName == className) identName else StringLiteral(uName)
+          val args4 = treeUGenName :: identResolvedRate :: args3
 
           // when using a MaybeRate, the preBody is the code that resolves that rate
           val _preBody = if (maybeRateRef.isEmpty) rateConsTrees else {
@@ -1067,13 +1070,12 @@ final class ClassGenerator {
       )))
 
       MethodDef(
-        isPrivate = true,
-        scope     = Some("synth"),
-        name    = strMakeUGen,
-        tpe     = Nil,
-        params  = methodArgs,
-        ret     = expandResultStr,
-        body    = methodBody
+        isProtected = true,
+        name        = strMakeUGen,
+        tpe         = Nil,
+        params      = methodArgs,
+        ret         = expandResultStr,
+        body        = methodBody
       )
     }
 
@@ -1081,6 +1083,18 @@ final class ClassGenerator {
       val m1 = makeUGensDef :: makeUGenDef :: namedOutputDefs
       m1
     }
+
+//    val caseClassMethods = if (className == uName) caseClassMethods0 else {
+//      val mName = MethodDef(
+//        isOverride  = true,
+//        name        = strName,
+//        tpe         = Nil,
+//        params      = Nil,
+//        ret         = strString,
+//        body        = methodBody
+//      )
+//      mName :: caseClassMethods0
+//    }
 
     // e.g. `UGenSource.ZeroOut` or `UGenSource.SingleOut`, ...
     val outputsTypeString = s"UGenSource.${outputsPrefix}Out"
@@ -1090,7 +1104,7 @@ final class ClassGenerator {
     val caseClassDef =
       CaseClassDef(
         isFinal = true,
-        name    = uName,
+        name    = className,
         tpe     = Nil, // tparams
         params  = caseClassConstrArgs :: Nil,
         body    = caseClassMethods,

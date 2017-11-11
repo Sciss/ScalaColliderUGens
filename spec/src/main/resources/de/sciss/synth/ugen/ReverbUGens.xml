@@ -1,4 +1,4 @@
-<ugens revision="3">
+<ugens revision="4">
     <!-- all documented -->
     <ugen name="FreeVerb">
         <rate name="audio" implied="true"/>
@@ -105,12 +105,12 @@
         </rate>
         <output name="left">
             <doc>
-                left channel of input signal to reverberate
+                left channel of reverberation
             </doc>
         </output>
         <output name="right">
             <doc>
-                right channel of input signal to reverberate
+                right channel of reverberation
             </doc>
         </output>
         <arg name="in"/>

@@ -31,7 +31,7 @@ final case class Control(rate: Rate, values: Vec[Float], ctrlName: Option[String
 
   protected def makeUGens: UGenInLike = makeUGen(Vector.empty)
 
-  private[synth] def makeUGen(args: Vec[UGenIn]): UGenInLike = {
+  protected def makeUGen(args: Vec[UGenIn]): UGenInLike = {
     val specialIndex = UGenGraph.builder.addControl(values, ctrlName)
     impl.ControlImpl(name, rate, numChannels = values.size, specialIndex = specialIndex)
   }
@@ -67,7 +67,7 @@ final case class TrigControl(values: Vec[Float], ctrlName: Option[String])
 
   protected def makeUGens: UGenInLike = makeUGen(Vector.empty)
 
-  private[synth] def makeUGen(args: Vec[UGenIn]): UGenInLike = {
+  protected def makeUGen(args: Vec[UGenIn]): UGenInLike = {
     val specialIndex = UGenGraph.builder.addControl(values, ctrlName)
     impl.ControlImpl(name, control, numChannels = values.size, specialIndex = specialIndex)
   }
@@ -95,7 +95,7 @@ final case class AudioControl(values: Vec[Float], ctrlName: Option[String])
 
   protected def makeUGens: UGenInLike = makeUGen(Vector.empty)
 
-  private[synth] def makeUGen(args: Vec[UGenIn]): UGenInLike = {
+  protected def makeUGen(args: Vec[UGenIn]): UGenInLike = {
     val specialIndex = UGenGraph.builder.addControl(values, ctrlName)
     impl.ControlImpl(name, audio, values.size, specialIndex)
   }

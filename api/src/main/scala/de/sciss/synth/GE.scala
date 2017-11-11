@@ -81,6 +81,9 @@ trait GE extends Product {
 }
 
 package ugen {
+  object GESeq {
+    def apply(elems: GE*): GESeq = GESeq(elems)
+  }
   final case class GESeq(elems: Vec[GE]) extends GE {
     def numOutputs: Int           = elems.size
     def expand    : UGenInLike    = UGenInGroup(elems.map(_.expand))
