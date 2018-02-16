@@ -11,25 +11,26 @@ lazy val commonSettings = Seq(
   organization       := "de.sciss",
   description        := "UGens for ScalaCollider",
   homepage           := Some(url(s"https://github.com/Sciss/$baseName")),
-  scalaVersion       := "2.12.4",
-  crossScalaVersions := Seq("2.12.4", "2.11.11"),
+  scalaVersion       := "2.13.0-M3",
+  crossScalaVersions := Seq("2.12.4", "2.11.12"),
   scalacOptions      ++= Seq("-deprecation", "-unchecked", "-feature", "-encoding", "utf8", "-Xfuture", "-Xlint"),
   initialCommands in console := """import de.sciss.synth._"""
 ) ++ publishSettings
 
-// --- main dependencies ---
-
-lazy val numbersVersion      = "0.1.3"
-lazy val scalaXMLVersion     = "1.0.6"
-
-// --- test-only dependencies ---
-
-lazy val scalaTestVersion    = "3.0.4"
-
-// --- gen project (not published, thus not subject to major version concerns) ---
-
-lazy val fileUtilVersion     = "1.1.3"
-lazy val scoptVersion        = "3.7.0"
+lazy val deps = new {
+  val main = new {
+    val numbers      = "0.1.4"
+    val xml          = "1.0.6"
+  }
+  val test = new {
+    val scalatest    = "3.0.5-M1"
+  }
+  val gen = new {
+    // --- gen project (not published, thus not subject to major version concerns) ---
+    val fileutil     = "1.1.3"
+    val scopt        = "3.7.0"
+  }
+}
 
 // ---
 
@@ -66,13 +67,10 @@ lazy val api = Project(id = s"$baseNameL-api", base = file("api")).
   settings(
     description := "Basic UGens API for ScalaCollider",
     licenses := lgpl,
-    libraryDependencies += "de.sciss" %% "numbers" % numbersVersion,
-    libraryDependencies ++= {
-      val sv = scalaVersion.value
-      if (!(sv startsWith "2.10")) {
-        ("org.scala-lang.modules" %% "scala-xml" % scalaXMLVersion) :: Nil
-      } else Nil
-    },
+    libraryDependencies ++= Seq(
+      "de.sciss"               %% "numbers"   % deps.main.numbers,
+      "org.scala-lang.modules" %% "scala-xml" % deps.main.xml
+    ),
     buildInfoKeys := Seq(name, organization, version, scalaVersion, description,
       BuildInfoKey.map(homepage) {
         case (k, opt) => k -> opt.get
@@ -92,10 +90,10 @@ lazy val gen = Project(id = s"$baseNameL-gen", base = file("gen")).
     description := "Source code generator for ScalaCollider UGens",
     licenses := lgpl,
     libraryDependencies ++= Seq(
-      "com.github.scopt" %% "scopt"     % scoptVersion,
-      "de.sciss"         %% "fileutil"  % fileUtilVersion,
+      "com.github.scopt" %% "scopt"     % deps.gen.scopt,
+      "de.sciss"         %% "fileutil"  % deps.gen.fileutil,
       "org.scala-lang"   %  "scala-compiler" % scalaVersion.value,
-      "org.scalatest"    %% "scalatest" % scalaTestVersion % "test"
+      "org.scalatest"    %% "scalatest" % deps.test.scalatest % "test"
     ),
     mimaPreviousArtifacts := Set.empty,
     publishLocal    := {},
