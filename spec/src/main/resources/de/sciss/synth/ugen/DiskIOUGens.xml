@@ -1,4 +1,4 @@
-<ugens revision="4">
+<ugens revision="5">
     <!-- all documented -->
     <!-- // side-effect: advancing sf offset -->
     <ugen name="DiskIn" reads-buf="true" side-effect="true" done-flag="true">
@@ -103,10 +103,10 @@
                 whether the file should loop when its end is reached
             </doc>
         </arg>
-        <arg name="sendID" default="0">
+        <arg name="sendId" default="0">
             <doc>
                 If a value other than zero is used, the UGen sends an OSC message with this id and the
-                file position each time it reloads the buffer: `OSCMessage("/diskin", nodeID, sendID, frame)`
+                file position each time it reloads the buffer: `OSCMessage("/diskin", nodeId, sendId, frame)`
             </doc>
         </arg>
         <doc>

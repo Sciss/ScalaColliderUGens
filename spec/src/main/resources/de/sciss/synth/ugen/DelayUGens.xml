@@ -1,4 +1,4 @@
-<ugens revision="11">
+<ugens revision="12">
     <!-- all documented -->
     <ugen name="ControlRate">
         <rate name="scalar" implied="true"/>    <!-- method="" -->
@@ -381,7 +381,7 @@
                 So 2 means doubling speed (and pitch), and 0.5 means half speed (and half pitch).
                 Negative numbers can be used for backwards playback. If the underlying buffer
                 represents a sound at a different sample rate, the rate should be
-                multiplied by `BufRateScale.kr(bufID)` to obtain the correct speed.
+                multiplied by `BufRateScale.kr(buf)` to obtain the correct speed.
             </doc>
         </arg>
         <arg name="trig" default="high">
@@ -545,7 +545,7 @@
             <text>
                 A UGen which reads the content of a buffer, using an index pointer.
 
-                Warning: if the supplied `bufID` refers to a buffer whose number of channels
+                Warning: if the supplied `buf` refers to a buffer whose number of channels
                 differs from `numChannels`, the UGen will fail silently.
 
                 An alternative to `BufRd` is `PlayBuf`. While `PlayBuf` plays
@@ -612,7 +612,7 @@
             <text>
                 A UGen that writes a signal to a buffer, using an index pointer.
 
-                Warning: if the supplied `bufID` refers to a buffer whose number of channels
+                Warning: if the supplied `buf` refers to a buffer whose number of channels
                 differs from those of the input signal, the UGen will fail silently.
 
                 An alternative to `BufWr` is `RecordBuf`. While `RecordBuf` advances

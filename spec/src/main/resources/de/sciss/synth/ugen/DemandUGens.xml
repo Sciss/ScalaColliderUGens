@@ -1,4 +1,4 @@
-<ugens revision="8">
+<ugens revision="9">
     <ugen name="Demand" done-flag="true"> <!-- set done flag, but doesn't have done action -->
         <rate name="control"/>
         <rate name="audio"/>
@@ -782,7 +782,7 @@
                 the signal you want to poll
             </doc>
         </arg>
-        <arg name="trigID" default="-1" pos="3">
+        <arg name="trigId" default="-1" pos="3">
             <doc>
                 if greater then 0, a `"/tr"` OSC message is sent back to the client
                 (similar to `SendTrig`)

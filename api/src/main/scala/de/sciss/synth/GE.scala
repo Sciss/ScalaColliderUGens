@@ -2,7 +2,7 @@
  *  GE.scala
  *  (ScalaColliderUGens)
  *
- *  Copyright (c) 2008-2016 Hanns Holger Rutz. All rights reserved.
+ *  Copyright (c) 2008-2018 Hanns Holger Rutz. All rights reserved.
  *
  *  This software is published under the GNU Lesser General Public License v2.1+
  *
@@ -82,7 +82,7 @@ trait GE extends Product {
 
 package ugen {
   object GESeq {
-    def apply(elems: GE*): GESeq = GESeq(elems)
+    def apply(elems: GE*): GESeq = new GESeq(elems.toIndexedSeq)
   }
   final case class GESeq(elems: Vec[GE]) extends GE {
     def numOutputs: Int           = elems.size

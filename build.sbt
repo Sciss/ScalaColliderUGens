@@ -1,8 +1,8 @@
 lazy val baseName       = "ScalaColliderUGens"
 lazy val baseNameL      = baseName.toLowerCase
 
-lazy val projectVersion = "1.17.1"
-lazy val mimaVersion    = "1.17.1"
+lazy val projectVersion = "1.18.0"
+lazy val mimaVersion    = "1.18.0"
 
 name := baseName
 
@@ -11,32 +11,33 @@ lazy val commonSettings = Seq(
   organization       := "de.sciss",
   description        := "UGens for ScalaCollider",
   homepage           := Some(url(s"https://github.com/Sciss/$baseName")),
-  scalaVersion       := "2.12.4",
-  crossScalaVersions := Seq("2.12.4", "2.11.11"),
+  scalaVersion       := "2.12.5",
+  crossScalaVersions := Seq("2.12.5", "2.11.12"),
   scalacOptions      ++= Seq("-deprecation", "-unchecked", "-feature", "-encoding", "utf8", "-Xfuture", "-Xlint"),
   initialCommands in console := """import de.sciss.synth._"""
 ) ++ publishSettings
 
-// --- main dependencies ---
-
-lazy val numbersVersion      = "0.1.3"
-lazy val scalaXMLVersion     = "1.0.6"
-
-// --- test-only dependencies ---
-
-lazy val scalaTestVersion    = "3.0.4"
-
-// --- gen project (not published, thus not subject to major version concerns) ---
-
-lazy val fileUtilVersion     = "1.1.3"
-lazy val scoptVersion        = "3.7.0"
+lazy val deps = new {
+  val main = new {
+    val numbers      = "0.1.5"
+    val scalaXML     = "1.0.6"  // scala-compiler uses 1.0.x
+  }
+  val test = new {
+    val scalaTest    = "3.0.5"
+  }
+  // --- gen project (not published, thus not subject to major version concerns) ---
+  val gen = new {
+    val fileUtil     = "1.1.3"
+    val scopt        = "3.7.0"
+  }
+}
 
 // ---
 
-lazy val root = Project(id = baseNameL, base = file(".")).
-  aggregate(spec, api, gen, core, plugins).
-  settings(commonSettings).
-  settings(
+lazy val root = project.withId(baseNameL).in(file("."))
+  .aggregate(spec, api, gen, core, plugins)
+  .settings(commonSettings)
+  .settings(
     packagedArtifacts := Map.empty    // don't send this to Sonatype
   )
 
@@ -48,9 +49,9 @@ def licenseURL(licName: String, sub: String) =
 
 lazy val lgpl = Seq("LGPL v2.1+" -> url("http://www.gnu.org/licenses/lgpl-2.1.txt"))
 
-lazy val spec = Project(id = s"$baseNameL-spec", base = file("spec")).
-  settings(commonSettings).
-  settings(
+lazy val spec = project.withId(s"$baseNameL-spec").in(file("spec"))
+  .settings(commonSettings)
+  .settings(
     description := "UGens XML specification files for ScalaCollider",
     autoScalaLibrary := false, // this is a pure xml containing jar
     crossPaths := false,
@@ -60,19 +61,16 @@ lazy val spec = Project(id = s"$baseNameL-spec", base = file("spec")).
     mimaPreviousArtifacts := Set("de.sciss" % s"$baseNameL-spec" % mimaVersion)
   )
 
-lazy val api = Project(id = s"$baseNameL-api", base = file("api")).
-  enablePlugins(BuildInfoPlugin).
-  settings(commonSettings).
-  settings(
+lazy val api = project.withId(s"$baseNameL-api").in(file("api"))
+  .enablePlugins(BuildInfoPlugin)
+  .settings(commonSettings)
+  .settings(
     description := "Basic UGens API for ScalaCollider",
     licenses := lgpl,
-    libraryDependencies += "de.sciss" %% "numbers" % numbersVersion,
-    libraryDependencies ++= {
-      val sv = scalaVersion.value
-      if (!(sv startsWith "2.10")) {
-        ("org.scala-lang.modules" %% "scala-xml" % scalaXMLVersion) :: Nil
-      } else Nil
-    },
+    libraryDependencies ++= Seq(
+      "de.sciss"                %% "numbers"    % deps.main.numbers,
+      "org.scala-lang.modules"  %% "scala-xml"  % deps.main.scalaXML
+    ),
     buildInfoKeys := Seq(name, organization, version, scalaVersion, description,
       BuildInfoKey.map(homepage) {
         case (k, opt) => k -> opt.get
@@ -85,17 +83,17 @@ lazy val api = Project(id = s"$baseNameL-api", base = file("api")).
     mimaPreviousArtifacts := Set("de.sciss" %% s"$baseNameL-api" % mimaVersion)
   )
 
-lazy val gen = Project(id = s"$baseNameL-gen", base = file("gen")).
-  dependsOn(spec, api).
-  settings(commonSettings).
-  settings(
+lazy val gen = project.withId(s"$baseNameL-gen").in(file("gen"))
+  .dependsOn(spec, api)
+  .settings(commonSettings)
+  .settings(
     description := "Source code generator for ScalaCollider UGens",
     licenses := lgpl,
     libraryDependencies ++= Seq(
-      "com.github.scopt" %% "scopt"     % scoptVersion,
-      "de.sciss"         %% "fileutil"  % fileUtilVersion,
-      "org.scala-lang"   %  "scala-compiler" % scalaVersion.value,
-      "org.scalatest"    %% "scalatest" % scalaTestVersion % "test"
+      "com.github.scopt" %% "scopt"           % deps.gen.scopt,
+      "de.sciss"         %% "fileutil"        % deps.gen.fileUtil,
+      "org.scala-lang"   %  "scala-compiler"  % scalaVersion.value,
+      "org.scalatest"    %% "scalatest"       % deps.test.scalaTest % "test"
     ),
     mimaPreviousArtifacts := Set.empty,
     publishLocal    := {},
@@ -104,13 +102,13 @@ lazy val gen = Project(id = s"$baseNameL-gen", base = file("gen")).
     publishTo       := Some(Resolver.file("Unused transient repository", file("target/unusedrepo")))
   )
 
-lazy val core = Project(id = s"$baseNameL-core", base = file("core")).
-  dependsOn(api).
-  settings(commonSettings).
-  settings(
+lazy val core = project.withId(s"$baseNameL-core").in(file("core"))
+  .dependsOn(api)
+  .settings(commonSettings)
+  .settings(
     description := "Standard UGens",
     licenses := lgpl,
-    sourceGenerators in Compile <+= ugenGenerator in Compile,
+    Compile / sourceGenerators += ugenGenerator in Compile,
     ugenGenerator in Compile := {
       val src   = (sourceManaged       in Compile        ).value
       val cp    = (dependencyClasspath in Runtime in gen ).value
@@ -125,13 +123,13 @@ lazy val core = Project(id = s"$baseNameL-core", base = file("core")).
     mimaPreviousArtifacts := Set("de.sciss" %% s"$baseNameL-core" % mimaVersion)
   )
 
-lazy val plugins = Project(id = s"$baseNameL-plugins", base = file("plugins")).
-  dependsOn(core).
-  settings(commonSettings).
-  settings(
+lazy val plugins = project.withId(s"$baseNameL-plugins").in(file("plugins"))
+  .dependsOn(core)
+  .settings(commonSettings)
+  .settings(
     description := "Additional third-party UGens",
     licenses := lgpl,
-    sourceGenerators in Compile <+= ugenGenerator in Compile,
+    Compile / sourceGenerators += ugenGenerator in Compile,
     ugenGenerator in Compile := {
       val src   = (sourceManaged       in Compile        ).value
       val cp    = (dependencyClasspath in Runtime in gen ).value
@@ -161,8 +159,8 @@ def runUGenGenerator(name: String, outputDir: File, cp: Seq[File], log: Logger,
 
   try {
     val outs  = CustomOutput(os)
-    val fOpt  = ForkOptions(javaHome = None, outputStrategy = Some(outs), /* runJVMOptions = Nil, */ bootJars = cp,
-        workingDirectory = None, connectInput = false)
+    val fOpt  = ForkOptions(javaHome = Option.empty[File], outputStrategy = Some(outs), bootJars = cp.toVector,
+      workingDirectory = Option.empty[File], runJVMOptions = Vector.empty[String], connectInput = false, envVars = Map.empty[String, String])
     val res: Int = Fork.scala(config = fOpt,
       arguments = mainClass :: "-d" :: outputDir.getAbsolutePath :: args.toList)
 

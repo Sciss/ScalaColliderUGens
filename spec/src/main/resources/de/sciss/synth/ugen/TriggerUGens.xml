@@ -1,4 +1,4 @@
-<ugens revision="9">
+<ugens revision="10">
     <!-- all documented -->
     <ugen name="Trig1">
         <rate name="audio"/>
@@ -89,7 +89,7 @@
         <doc warn-pos="true">
             <text>
                 A UGen that sends a value from the server to all notified clients upon receiving triggers.
-                The message sent is `osc.Message("/tr", &lt;(Int) nodeID&gt;, &lt;(Int) trigID&gt;, &lt;(Float) value&gt;)`.
+                The message sent is `osc.Message("/tr", &lt;(Int) nodeId&gt;, &lt;(Int) trigId&gt;, &lt;(Float) value&gt;)`.
 
                 For sending an array of values, or using an arbitrary reply command, see `SendReply`.
             </text>
@@ -129,7 +129,7 @@
         <doc warn-pos="true">
             <text>
                 A UGen which sends an sequence of values from the server to all notified clients upon receiving triggers.
-                The message sent is `osc.Message(&lt;(String) msgName&gt;, &lt;(Int) nodeID&gt;, &lt;(Int) replyID&gt;, &lt;(Float) values&gt;*)`.
+                The message sent is `osc.Message(&lt;(String) msgName&gt;, &lt;(Int) nodeId&gt;, &lt;(Int) replyId&gt;, &lt;(Float) values&gt;*)`.
 
                 For sending a single value, `SendTrig` provides an alternative.
             </text>
@@ -151,7 +151,7 @@
                 the signal you want to poll
             </doc>
         </arg>
-        <arg name="trigID" default="-1" pos="3">
+        <arg name="trigId" default="-1" pos="3">
             <doc>
                 if greater then 0, a `"/tr"` OSC message is sent back to the client
                 (similar to `SendTrig`)

@@ -1,4 +1,4 @@
-<ugens revision="2">
+<ugens revision="3">
     <!-- all documented -->
     <ugen name="BeatTrack" reads-fft="true">
         <rate name="control" implied="true"/>
@@ -277,7 +277,7 @@
             <doc>
                 (scalar) Use (-2.5) for flat weighting of tempi, (-1.5) for compensation weighting based
                 on the number of events tested (because different periods allow different numbers of events within the
-                temporal window). If an integer from 0 upwards is given, this is specifying the ID of a buffer containing
+                temporal window). If an integer from 0 upwards is given, this is specifying the id of a buffer containing
                 120 frames which represent individual tempo weights; tempi go from 60 to 179 bpm in steps of one bpm, so
                 you make sure the buffer has 120 frames.
             </doc>
