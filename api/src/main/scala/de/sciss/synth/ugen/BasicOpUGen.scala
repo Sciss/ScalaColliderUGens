@@ -27,6 +27,12 @@ import UGenSource._
   * @see  BinaryOpUGen
   */
 object UnaryOpUGen {
+  // note: this is not optimizing, as would be `op.make(a)`, because it guarantees that the return
+  // type is UnaryOpUGen. this is used in deserialization, you should prefer `op.make` instead.
+  def apply(op: Op, a: GE): UnaryOpUGen = op.makeNoOptimization(a)
+
+  def unapply(b: UnaryOpUGen): Option[(Op, GE)] = Some((b.selector, b.a))
+
   object Op {
     def apply(id: Int): Op = (id: @switch) match {
       case Neg        .id => Neg
@@ -62,38 +68,45 @@ object UnaryOpUGen {
       case Sinh       .id => Sinh
       case Cosh       .id => Cosh
       case Tanh       .id => Tanh
+      case Rand       .id => Rand
+      case Rand2      .id => Rand2
+      case Linrand    .id => Linrand
+      case Bilinrand  .id => Bilinrand
+      case Sum3rand   .id => Sum3rand
       case Distort    .id => Distort
       case Softclip   .id => Softclip
+      case Coin       .id => Coin
+      // case DigitValue ?
+      // case Silence ?
+      // case Thru ?
+      case RectWindow .id => RectWindow
+      case HannWindow .id => HannWindow
+      case WelchWindow.id => WelchWindow
+      case TriWindow  .id => TriWindow
       case Ramp       .id => Ramp
       case Scurve     .id => Scurve
     }
   }
 
-  sealed trait Op extends Product {
+  sealed abstract class Op extends Product {
     op =>
 
     def id: Int
 
-    final def make(a: GE): GE = a match {
-      case c(f) => c(make1(f))
-      case _    => new UnaryOpUGen(/* a.rate, */ op, a)
-    }
+    def make(a: GE): GE
 
-    final def make1(a: UGenIn): UGenIn = a match {
-      case c(f) => c(make1(f))
-      case _    => UGenImpl(op, a)
-    }
+    def make1(a: UGenIn): UGenIn
 
-    def make1(a: Float): Float
+    def makeNoOptimization(a: GE): UnaryOpUGen
 
-    override def productPrefix  = s"UnaryOpUGen$$Op"
-    override def productArity   = 1
-    override def productElement(n: Int): Any = if (n == 0) id else throw new IndexOutOfBoundsException(n.toString)
+    override final def productPrefix  = s"UnaryOpUGen$$Op"
+    override final def productArity   = 1
+    override final def productElement(n: Int): Any = if (n == 0) id else throw new IndexOutOfBoundsException(n.toString)
 
     def name: String = plainName.capitalize
     def prefix: Boolean = false
     
-    private def plainName: String = {
+    private final def plainName: String = {
       val cn = getClass.getName
       val sz = cn.length
       val i  = cn.indexOf('$') + 1
@@ -101,14 +114,42 @@ object UnaryOpUGen {
     }
   }
 
-  case object Neg extends Op {
+  sealed abstract class PureOp extends Op {
+    op =>
+
+    final def make(a: GE): GE = a match {
+      case c(f) => c(make1(f))
+      case _    => Pure(op, a)
+    }
+
+    final def make1(a: UGenIn): UGenIn = a match {
+      case c(f) => c(make1(f))
+      case _    => UGenImpl(op, a, isIndividual = false, hasSideEffect = false)
+    }
+
+    final def makeNoOptimization(a: GE): UnaryOpUGen = Pure(this, a)
+
+    def make1(a: Float): Float
+  }
+
+  sealed abstract class RandomOp extends Op {
+    op =>
+
+    final def make(a: GE): GE = makeNoOptimization(a)
+
+    final def make1(a: UGenIn): UGenIn = UGenImpl(op, a, isIndividual = true, hasSideEffect = false)
+
+    final def makeNoOptimization(a: GE): UnaryOpUGen = Random(this, a)
+  }
+
+  case object Neg extends PureOp {
     final val id = 0
     override val name = "-"
     override def prefix = true
     def make1(a: Float): Float = -a
   }
 
-  case object Not extends Op {
+  case object Not extends PureOp {
     final val id = 1
     override val name = "!"
     override def prefix = true
@@ -117,209 +158,254 @@ object UnaryOpUGen {
 
   // case object IsNil       extends Op(  2 )
   // case object NotNil      extends Op(  3 )
-  case object BitNot extends Op {
+  case object BitNot extends PureOp {
     final val id = 4
     def make1(a: Float): Float = ~a.toInt
   }
-  case object Abs extends Op {
+  case object Abs extends PureOp {
     final val id = 5
     def make1(a: Float): Float = rf.abs(a)
   }
 
   // case object ToFloat     extends Op(  6 )
   // case object ToInt       extends Op(  7 )
-  case object Ceil extends Op {
+  case object Ceil extends PureOp {
     final val id = 8
     def make1(a: Float): Float = rf.ceil(a)
   }
 
-  case object Floor extends Op {
+  case object Floor extends PureOp {
     final val id = 9
     def make1(a: Float): Float = rf.floor(a)
   }
 
-  case object Frac extends Op {
+  case object Frac extends PureOp {
     final val id = 10
     def make1(a: Float): Float = rf.frac(a)
   }
 
-  case object Signum extends Op {
+  case object Signum extends PureOp {
     final val id = 11
     def make1(a: Float): Float = math.signum(a)
   }
 
-  case object Squared extends Op {
+  case object Squared extends PureOp {
     final val id = 12
     def make1(a: Float): Float = rf.squared(a)
   }
 
-  case object Cubed extends Op {
+  case object Cubed extends PureOp {
     final val id = 13
     def make1(a: Float): Float = rf2.cubed(a)
   }
 
-  case object Sqrt extends Op {
+  case object Sqrt extends PureOp {
     final val id = 14
     def make1(a: Float): Float = rf.sqrt(a)
   }
 
-  case object Exp extends Op {
+  case object Exp extends PureOp {
     final val id = 15
     def make1(a: Float): Float = rf.exp(a)
   }
 
-  case object Reciprocal extends Op {
+  case object Reciprocal extends PureOp {
     final val id = 16
     def make1(a: Float): Float = rf2.reciprocal(a)
   }
 
-  case object Midicps extends Op {
+  /*
+   * Note: we do not use camel-case for the object name
+   * because it would break serialization for older versions.
+   */
+  case object Midicps extends PureOp {
     final val id = 17
-    def make1(a: Float): Float = rf.midicps(a)
+    def make1(a: Float): Float = rf.midiCps(a)
   }
 
-  case object Cpsmidi extends Op {
+  case object Cpsmidi extends PureOp {
     final val id = 18
-    def make1(a: Float): Float = rf.cpsmidi(a)
+    def make1(a: Float): Float = rf.cpsMidi(a)
   }
 
-  case object Midiratio extends Op {
+  case object Midiratio extends PureOp {
     final val id = 19
-    def make1(a: Float): Float = rf.midiratio(a)
+    def make1(a: Float): Float = rf.midiRatio(a)
   }
 
-  case object Ratiomidi extends Op {
+  case object Ratiomidi extends PureOp {
     final val id = 20
-    def make1(a: Float): Float = rf.ratiomidi(a)
+    def make1(a: Float): Float = rf.ratioMidi(a)
   }
 
-  case object Dbamp extends Op {
+  case object Dbamp extends PureOp {
     final val id = 21
-    def make1(a: Float): Float = rf.dbamp(a)
+    def make1(a: Float): Float = rf.dbAmp(a)
   }
 
-  case object Ampdb extends Op {
+  case object Ampdb extends PureOp {
     final val id = 22
-    def make1(a: Float): Float = rf.ampdb(a)
+    def make1(a: Float): Float = rf.ampDb(a)
   }
 
-  case object Octcps extends Op {
+  case object Octcps extends PureOp {
     final val id = 23
-    def make1(a: Float): Float = rf.octcps(a)
+    def make1(a: Float): Float = rf.octCps(a)
   }
 
-  case object Cpsoct extends Op {
+  case object Cpsoct extends PureOp {
     final val id = 24
-    def make1(a: Float): Float = rf.cpsoct(a)
+    def make1(a: Float): Float = rf.cpsOct(a)
   }
 
-  case object Log extends Op {
+  case object Log extends PureOp {
     final val id = 25
     def make1(a: Float): Float = rf.log(a)
   }
 
-  case object Log2 extends Op {
+  case object Log2 extends PureOp {
     final val id = 26
     def make1(a: Float): Float = rf.log2(a)
   }
 
-  case object Log10 extends Op {
+  case object Log10 extends PureOp {
     final val id = 27
     def make1(a: Float): Float = rf.log10(a)
   }
 
-  case object Sin extends Op {
+  case object Sin extends PureOp {
     final val id = 28
     def make1(a: Float): Float = rf.sin(a)
   }
 
-  case object Cos extends Op {
+  case object Cos extends PureOp {
     final val id = 29
     def make1(a: Float): Float = rf.cos(a)
   }
 
-  case object Tan extends Op {
+  case object Tan extends PureOp {
     final val id = 30
     def make1(a: Float): Float = rf.tan(a)
   }
 
-  case object Asin extends Op {
+  case object Asin extends PureOp {
     final val id = 31
     def make1(a: Float): Float = rf.asin(a)
   }
 
-  case object Acos extends Op {
+  case object Acos extends PureOp {
     final val id = 32
     def make1(a: Float): Float = rf.acos(a)
   }
 
-  case object Atan extends Op {
+  case object Atan extends PureOp {
     final val id = 33
     def make1(a: Float): Float = rf.atan(a)
   }
 
-  case object Sinh extends Op {
+  case object Sinh extends PureOp {
     final val id = 34
     def make1(a: Float): Float = rf.sinh(a)
   }
 
-  case object Cosh extends Op {
+  case object Cosh extends PureOp {
     final val id = 35
     def make1(a: Float): Float = rf.cosh(a)
   }
 
-  case object Tanh extends Op {
+  case object Tanh extends PureOp {
     final val id = 36
     def make1(a: Float): Float = rf.tanh(a)
   }
 
-  // class Rand              extends Op( 37 )
-  // class Rand2             extends Op( 38 )
-  // class Linrand           extends Op( 39 )
-  // class Bilinrand         extends Op( 40 )
-  // class Sum3rand          extends Op( 41 )
-  case object Distort extends Op {
+  case object Rand extends RandomOp {
+    final val id = 37
+  }
+
+  case object Rand2 extends RandomOp {
+    final val id = 38
+  }
+
+  case object Linrand extends RandomOp {
+    final val id = 39
+  }
+
+  case object Bilinrand extends RandomOp {
+    final val id = 40
+  }
+
+  case object Sum3rand extends RandomOp {
+    final val id = 41
+  }
+
+  case object Distort extends PureOp {
     final val id = 42
     def make1(a: Float): Float = rf2.distort(a)
   }
 
-  case object Softclip extends Op {
+  case object Softclip extends PureOp {
     final val id = 43
-    def make1(a: Float): Float = rf2.softclip(a)
+    def make1(a: Float): Float = rf2.softClip(a)
   }
 
-  // class Coin              extends Op( 44 )
+  case object Coin extends RandomOp {
+    final val id = 44
+  }
+
   // case object DigitValue  extends Op( 45 )
   // case object Silence     extends Op( 46 )
   // case object Thru        extends Op( 47 )
-  // case object RectWindow  extends Op( 48 )
-  // case object HanWindow   extends Op( 49 )
-  // case object WelWindow   extends Op( 50 )
-  // case object TriWindow   extends Op( 51 )
-  case object Ramp extends Op {
+   case object RectWindow extends PureOp {
+    final val id = 48
+    def make1(a: Float): Float = rf2.rectWindow(a)
+  }
+  case object HannWindow extends PureOp {
+    final val id = 49
+    def make1(a: Float): Float = rf2.hannWindow(a)
+  }
+  case object WelchWindow extends PureOp {
+    final val id = 50
+    def make1(a: Float): Float = rf2.welchWindow(a)
+  }
+  case object TriWindow extends PureOp {
+    final val id = 51
+    def make1(a: Float): Float = rf2.triWindow(a)
+  }
+  case object Ramp extends PureOp {
     final val id = 52
     def make1(a: Float): Float = rf2.ramp(a)
   }
 
-  case object Scurve extends Op {
+  case object Scurve extends PureOp {
     final val id = 53
-    def make1(a: Float): Float = rf2.scurve(a)
+    def make1(a: Float): Float = rf2.sCurve(a)
   }
 
-  // Note: only deterministic selectors are implemented!!
-  private def UGenImpl(selector: Op, a: UGenIn): UGen.SingleOut =
+  private final case class Pure(selector: Op, a: GE)
+    extends UnaryOpUGen
+
+//  private final case class Impure(selector: Op, a: GE)
+//    extends UnaryOpUGen with HasSideEffect {
+//  }
+
+  private final case class Random(selector: Op, a: GE)
+    extends UnaryOpUGen with UsesRandSeed
+
+  private def UGenImpl(selector: Op, a: UGenIn, isIndividual: Boolean, hasSideEffect: Boolean): UGen.SingleOut =
       UGen.SingleOut("UnaryOpUGen", a.rate, Vector(a),
-        specialIndex = selector.id)
+        isIndividual = isIndividual, hasSideEffect = hasSideEffect, specialIndex = selector.id)
 }
 
-final case class UnaryOpUGen(selector: UnaryOpUGen.Op, a: GE)
-  extends UGenSource.SingleOut {
+abstract class UnaryOpUGen extends UGenSource.SingleOut {
 
-  def rate: MaybeRate = a.rate
+  def selector: UnaryOpUGen.Op
+  def a: GE
 
-  protected def makeUGens: UGenInLike = unwrap(this, Vector(a))
+  final def rate: MaybeRate = a.rate
 
-  protected def makeUGen(args: Vec[UGenIn]): UGenInLike = {
+  protected final def makeUGens: UGenInLike = unwrap(this, Vector(a.expand))
+
+  protected final def makeUGen(args: Vec[UGenIn]): UGenInLike = {
     val a = args.head
     selector.make1(a)
   }
@@ -338,10 +424,7 @@ final case class UnaryOpUGen(selector: UnaryOpUGen.Op, a: GE)
 object BinaryOpUGen {
   // note: this is not optimizing, as would be `op.make(a, b)`, because it guarantees that the return
   // type is BinaryOpUGen. this is used in deserialization, you should prefer `op.make` instead.
-  def apply(op: Op, a: GE, b: GE): BinaryOpUGen = op match {
-    case Firstarg => Impure(op, a, b)
-    case _        => Pure  (op, a, b)
-  }
+  def apply(op: Op, a: GE, b: GE): BinaryOpUGen = op.makeNoOptimization(a, b)
 
   def unapply(b: BinaryOpUGen): Option[(Op, GE, GE)] = Some((b.selector, b.a, b.b))
 
@@ -391,30 +474,25 @@ object BinaryOpUGen {
       case Fold2    .id => Fold2
       case Wrap2    .id => Wrap2
       case Firstarg .id => Firstarg
+      case Rrand    .id => Rrand
+      case Exprand  .id => Exprand
     }
   }
 
   import UnaryOpUGen.{Neg, Reciprocal}
 
-  sealed trait Op extends Product {
+  sealed abstract class Op extends Product {
     op =>
 
     def id: Int
-    
+
+    def make(a: GE, b: GE): GE
+
+    protected[synth] def make1(a: UGenIn, b: UGenIn): UGenIn
+
     def infix: Boolean = false
 
-    //      def make( rate: R, a: GE[ UGenIn[ R ]]) = UnaryOp[ R ]( rate, this, a )
-    def make(a: GE, b: GE): GE = (a, b) match {
-      case (c(af), c(bf)) => c(make1(af, bf))
-      case _ => Pure(op, a, b)
-    }
-
-    protected[synth] def make1(a: UGenIn, b: UGenIn): UGenIn = (a, b) match {
-      case (c(af), c(bf)) => c(make1(af, bf))
-      case _              => UGenImpl(op, a, b, hasSideEffect = false)
-    }
-
-    def make1(a: Float, b: Float): Float
+    def makeNoOptimization(a: GE, b: GE): BinaryOpUGen
 
     override def productPrefix  = s"BinaryOpUGen$$Op"
     override def productArity   = 1
@@ -430,7 +508,36 @@ object BinaryOpUGen {
     }
   }
 
-  case object Plus extends Op {
+  sealed abstract class PureOp extends Op {
+    def make(a: GE, b: GE): GE = (a, b) match {
+      case (c(af), c(bf)) => c(make1(af, bf))
+      case _              => Pure(this, a, b)
+    }
+
+    protected[synth] def make1(a: UGenIn, b: UGenIn): UGenIn = (a, b) match {
+      case (c(af), c(bf)) => c(make1(af, bf))
+      case _              => UGenImpl(this, a, b, isIndividual = false, hasSideEffect = false)
+    }
+
+    def make1(a: Float, b: Float): Float
+
+    final def makeNoOptimization(a: GE, b: GE): BinaryOpUGen = Pure(this, a, b)
+  }
+
+  sealed abstract class ImpureOp extends Op {
+    final def makeNoOptimization(a: GE, b: GE): BinaryOpUGen = Impure(this, a, b)
+  }
+
+  sealed abstract class RandomOp extends Op {
+    final def make(a: GE, b: GE): GE = makeNoOptimization(a, b)
+
+    final protected[synth] def make1(a: UGenIn, b: UGenIn): UGenIn =
+      UGenImpl(this, a, b, isIndividual = true, hasSideEffect = false)
+
+    final def makeNoOptimization(a: GE, b: GE): BinaryOpUGen = Random(this, a, b)
+  }
+
+  case object Plus extends PureOp {
     final val id = 0
     override val name = "+"
     override def infix = true
@@ -444,7 +551,7 @@ object BinaryOpUGen {
     }
   }
 
-  case object Minus extends Op {
+  case object Minus extends PureOp {
     final val id = 1
     override val name = "-"
     override def infix = true
@@ -458,7 +565,7 @@ object BinaryOpUGen {
     }
   }
 
-  case object Times extends Op {
+  case object Times extends PureOp {
     final val id = 2
     override val name = "*"
     override def infix = true
@@ -477,7 +584,7 @@ object BinaryOpUGen {
   }
 
   // case object IDiv           extends Op(  3 )
-  case object Div extends Op {
+  case object Div extends PureOp {
     final val id = 4
     override val name = "/"
     override def infix = true
@@ -496,124 +603,124 @@ object BinaryOpUGen {
     }
   }
 
-  case object Mod extends Op {
+  case object Mod extends PureOp {
     final val id = 5
     override val name = "%"
     override def infix = true
     def make1(a: Float, b: Float): Float = rf.%(a, b)
   }
 
-  case object Eq extends Op {
+  case object Eq extends PureOp {
     final val id = 6
     override val name = "sig_=="
     override def infix = true
     def make1(a: Float, b: Float): Float = if( a == b ) 1 else 0
   }
 
-  case object Neq extends Op {
+  case object Neq extends PureOp {
     final val id = 7
     override val name = "sig_!="
     override def infix = true
     def make1(a: Float, b: Float): Float = if( a != b ) 1 else 0
   }
 
-  case object Lt extends Op {
+  case object Lt extends PureOp {
     final val id = 8
     override val name = "<"
     override def infix = true
     def make1(a: Float, b: Float): Float = if (a < b) 1f else 0f // NOT rf.< !
   }
 
-  case object Gt extends Op {
+  case object Gt extends PureOp {
     final val id = 9
     override val name = ">"
     override def infix = true
     def make1(a: Float, b: Float): Float = if (a > b) 1f else 0f // NOT rf.> !
   }
 
-  case object Leq extends Op {
+  case object Leq extends PureOp {
     final val id = 10
     override val name = "<="
     override def infix = true
     def make1(a: Float, b: Float): Float = if (a <= b) 1f else 0f // NOT rf.<= !
   }
 
-  case object Geq extends Op {
+  case object Geq extends PureOp {
     final val id = 11
     override val name = ">="
     override def infix = true
     def make1(a: Float, b: Float): Float = if (a >= b) 1f else 0f // NOT rf.>= !
   }
 
-  case object Min extends Op {
+  case object Min extends PureOp {
     final val id = 12
     def make1(a: Float, b: Float): Float = rf.min(a, b)
   }
 
-  case object Max extends Op {
+  case object Max extends PureOp {
     final val id = 13
     def make1(a: Float, b: Float): Float = rf.max(a, b)
   }
 
-  case object BitAnd extends Op {
+  case object BitAnd extends PureOp {
     final val id = 14
     override def infix = true
     override val name = "&"
     def make1(a: Float, b: Float): Float = rf.&(a, b)
   }
 
-  case object BitOr extends Op {
+  case object BitOr extends PureOp {
     final val id = 15
     override def infix = true
     override val name = "|"
     def make1(a: Float, b: Float): Float = rf.|(a, b)
   }
 
-  case object BitXor extends Op {
+  case object BitXor extends PureOp {
     final val id = 16
     override def infix = true
     override val name = "^"
     def make1(a: Float, b: Float): Float = rf.^(a, b)
   }
 
-  case object Lcm extends Op {
+  case object Lcm extends PureOp {
     final val id = 17
     def make1(a: Float, b: Float): Float = lf.lcm(a.toLong, b.toLong).toFloat
   }
 
-  case object Gcd extends Op {
+  case object Gcd extends PureOp {
     final val id = 18
     def make1(a: Float, b: Float): Float = lf.gcd(a.toLong, b.toLong).toFloat
   }
 
-  case object RoundTo extends Op {
+  case object RoundTo extends PureOp {
     final val id = 19
     def make1(a: Float, b: Float): Float = rf.roundTo(a, b)
   }
 
-  case object RoundUpTo extends Op {
+  case object RoundUpTo extends PureOp {
     final val id = 20
     def make1(a: Float, b: Float): Float = rf.roundUpTo(a, b)
   }
 
-  case object Trunc extends Op {
+  case object Trunc extends PureOp {
     final val id = 21
     def make1(a: Float, b: Float): Float = rf.trunc(a, b)
   }
 
-  case object Atan2 extends Op {
+  case object Atan2 extends PureOp {
     final val id = 22
     def make1(a: Float, b: Float): Float = rf.atan2(a, b)
   }
 
-  case object Hypot extends Op {
+  case object Hypot extends PureOp {
     final val id = 23
     def make1(a: Float, b: Float): Float = rf.hypot(a, b)
   }
 
-  case object Hypotx extends Op {
+  case object Hypotx extends PureOp {
     final val id = 24
-    def make1(a: Float, b: Float): Float = rf.hypotx(a, b)
+    def make1(a: Float, b: Float): Float = rf.hypotApx(a, b)
   }
 
   /** '''Warning:''' Unlike a normal power operation, the signum of the
@@ -622,19 +729,19 @@ object BinaryOpUGen {
     * floating point noise and negative input numbers, so
     * `DC.kr(-0.5).pow(2.001)` does not result in a `NaN`, for example.
     */
-  case object Pow extends Op {
+  case object Pow extends PureOp {
     final val id = 25
     def make1(a: Float, b: Float): Float = rf.pow(a, b)
   }
 
-  case object LeftShift extends Op {
+  case object LeftShift extends PureOp {
     final val id = 26
     override def infix = true
     override val name = "<<"
     def make1(a: Float, b: Float): Float = (a.toLong << b.toInt).toFloat
   }
 
-  case object RightShift extends Op {
+  case object RightShift extends PureOp {
     final val id = 27
     override def infix = true
     override val name = ">>"
@@ -642,131 +749,135 @@ object BinaryOpUGen {
   }
   // case object UnsgnRghtShft  extends Op( 28 )
   // case object Fill           extends Op( 29 )
-  case object Ring1 extends Op {
+  case object Ring1 extends PureOp {
     final val id = 30
     def make1(a: Float, b: Float): Float = rf2.ring1(a, b)
   }
 
-  case object Ring2 extends Op {
+  case object Ring2 extends PureOp {
     final val id = 31
     def make1(a: Float, b: Float): Float = rf2.ring2(a, b)
   }
 
-  case object Ring3 extends Op {
+  case object Ring3 extends PureOp {
     final val id = 32
     def make1(a: Float, b: Float): Float = rf2.ring3(a, b)
   }
 
-  case object Ring4 extends Op {
+  case object Ring4 extends PureOp {
     final val id = 33
     def make1(a: Float, b: Float): Float = rf2.ring4(a, b)
   }
 
-  case object Difsqr extends Op {
+  /*
+   * Note: we do not use camel-case for the object name
+   * because it would break serialization for older versions.
+   */
+  case object Difsqr extends PureOp {
     final val id = 34
-    def make1(a: Float, b: Float): Float = rf.difsqr(a, b)
+    def make1(a: Float, b: Float): Float = rf.difSqr(a, b)
   }
 
-  case object Sumsqr extends Op {
+  case object Sumsqr extends PureOp {
     final val id = 35
-    def make1(a: Float, b: Float): Float = rf.sumsqr(a, b)
+    def make1(a: Float, b: Float): Float = rf.sumSqr(a, b)
   }
 
-  case object Sqrsum extends Op {
+  case object Sqrsum extends PureOp {
     final val id = 36
-    def make1(a: Float, b: Float): Float = rf.sqrsum(a, b)
+    def make1(a: Float, b: Float): Float = rf.sqrSum(a, b)
   }
 
-  case object Sqrdif extends Op {
+  case object Sqrdif extends PureOp {
     final val id = 37
-    def make1(a: Float, b: Float): Float = rf.sqrdif(a, b)
+    def make1(a: Float, b: Float): Float = rf.sqrDif(a, b)
   }
 
-  case object Absdif extends Op {
+  case object Absdif extends PureOp {
     final val id = 38
-    def make1(a: Float, b: Float): Float = rf.absdif(a, b)
+    def make1(a: Float, b: Float): Float = rf.absDif(a, b)
   }
 
-  case object Thresh extends Op {
+  case object Thresh extends PureOp {
     final val id = 39
     def make1(a: Float, b: Float): Float = rf2.thresh(a, b)
   }
 
-  case object Amclip extends Op {
+  case object Amclip extends PureOp {
     final val id = 40
-    def make1(a: Float, b: Float): Float = rf2.amclip(a, b)
+    def make1(a: Float, b: Float): Float = rf2.amClip(a, b)
   }
 
-  case object Scaleneg extends Op {
+  case object Scaleneg extends PureOp {
     final val id = 41
-    def make1(a: Float, b: Float): Float = rf2.scaleneg(a, b)
+    def make1(a: Float, b: Float): Float = rf2.scaleNeg(a, b)
   }
 
-  case object Clip2 extends Op {
+  case object Clip2 extends PureOp {
     final val id = 42
     def make1(a: Float, b: Float): Float = rf.clip2(a, b)
   }
 
-  case object Excess extends Op {
+  case object Excess extends PureOp {
     final val id = 43
     def make1(a: Float, b: Float): Float = rf.excess(a, b)
   }
 
-  case object Fold2 extends Op {
+  case object Fold2 extends PureOp {
     final val id = 44
     def make1(a: Float, b: Float): Float = rf.fold2(a, b)
   }
 
-  case object Wrap2 extends Op {
+  case object Wrap2 extends PureOp {
     final val id = 45
     def make1(a: Float, b: Float): Float = rf.wrap2(a, b)
   }
 
-  case object Firstarg extends Op {
+  case object Firstarg extends ImpureOp {
     final val id = 46
 
     override def make(a: GE, b: GE): GE = (a, b) match {
       case (c(af), c(bf)) => c(make1(af, bf))
-      case _ => Impure(this, a, b)
+      case _              => Impure(this, a, b)
     }
 
     override protected[synth] def make1(a: UGenIn, b: UGenIn): UGenIn = (a, b) match {
       case (c(af), c(bf)) => c(make1(af, bf))
-      case _              => UGenImpl(this, a, b, hasSideEffect = true)
+      case _              => UGenImpl(this, a, b, isIndividual = false, hasSideEffect = true)
     }
 
     def make1(a: Float, b: Float): Float = a
   }
 
-  // case object Rrand          extends Op( 47 )
-  // case object ExpRRand       extends Op( 48 )
-
-  private final case class Pure(/* rate: MaybeRate, */ selector: Op, a: GE, b: GE)
-    extends BinaryOpUGen
-
-  private final case class Impure(/* rate: MaybeRate, */ selector: Op, a: GE, b: GE)
-    extends BinaryOpUGen with HasSideEffect {
+  case object Rrand extends RandomOp {
+    final val id = 47
   }
 
-  // Note: only deterministic selectors are implemented!!
-  private[this] def UGenImpl(selector: Op, a: UGenIn, b: UGenIn, hasSideEffect: Boolean): UGen.SingleOut =
+  case object Exprand extends RandomOp {
+    final val id = 48
+  }
+
+  private final case class Pure(selector: Op, a: GE, b: GE)
+    extends BinaryOpUGen
+
+  private final case class Impure(selector: Op, a: GE, b: GE)
+    extends BinaryOpUGen with HasSideEffect
+
+  private final case class Random(selector: Op, a: GE, b: GE)
+    extends BinaryOpUGen with UsesRandSeed
+
+  private[this] def UGenImpl(selector: Op, a: UGenIn, b: UGenIn,
+                             isIndividual: Boolean, hasSideEffect: Boolean): UGen.SingleOut =
       UGen.SingleOut("BinaryOpUGen", a.rate max b.rate, Vector(a, b),
-        hasSideEffect = hasSideEffect, specialIndex = selector.id)
+        isIndividual = isIndividual, hasSideEffect = hasSideEffect, specialIndex = selector.id)
 }
 
-// XXX TODO - this could become private once the op's make method return type is changed to GE
-sealed trait BinaryOpUGen extends UGenSource.SingleOut {
+abstract class BinaryOpUGen extends UGenSource.SingleOut {
   def selector: BinaryOpUGen.Op
   def a: GE
   def b: GE
 
   override final def productPrefix = "BinaryOpUGen"
-
-  //  final def productElement(n: Int): Any = (n: @switch) match {
-  //    case 0 => selector
-  //    case 1 => a
-  //    case 2 => b
-  //  }
 
   final def rate: MaybeRate = MaybeRate.max_?( a.rate, b.rate )
 

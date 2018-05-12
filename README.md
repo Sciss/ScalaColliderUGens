@@ -26,7 +26,7 @@ All artifacts are published to Maven Central, and are available as follows:
     "de.sciss" %% "scalacolliderugens-core" % v
     "de.sciss" %% "scalacolliderugens-plugins" % v
 
-The current stable version `v` is `"1.18.0"`.
+The current stable version `v` is `"1.19.0"`.
 
 The `spec` contains the XML meta data, `api` contains basic types without specific UGens, `core` contains the standard UGens included with SuperCollider, and `plugins` will include the third-party plugins managed by the [sc3-plugins](https://github.com/supercollider/sc3-plugins) project (still incomplete).
 
