@@ -401,6 +401,8 @@ abstract class UnaryOpUGen extends UGenSource.SingleOut {
   def selector: UnaryOpUGen.Op
   def a: GE
 
+  override final def productPrefix = "UnaryOpUGen"
+
   final def rate: MaybeRate = a.rate
 
   protected final def makeUGens: UGenInLike = unwrap(this, Vector(a.expand))
