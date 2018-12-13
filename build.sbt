@@ -1,7 +1,7 @@
 lazy val baseName       = "ScalaColliderUGens"
 lazy val baseNameL      = baseName.toLowerCase
 
-lazy val projectVersion = "1.19.1"
+lazy val projectVersion = "1.19.2-SNAPSHOT"
 lazy val mimaVersion    = "1.19.0"
 
 name := baseName
@@ -11,8 +11,8 @@ lazy val commonSettings = Seq(
   organization       := "de.sciss",
   description        := "UGens for ScalaCollider",
   homepage           := Some(url(s"https://github.com/Sciss/$baseName")),
-  scalaVersion       := "2.12.6",
-  crossScalaVersions := Seq("2.12.6", "2.11.12"),
+  scalaVersion       := "2.13.0-M5",
+  crossScalaVersions := Seq("2.12.8", "2.11.12", "2.13.0-M5"),
   scalacOptions      ++= Seq("-deprecation", "-unchecked", "-feature", "-encoding", "utf8", "-Xfuture", "-Xlint"),
   initialCommands in console := """import de.sciss.synth._"""
 ) ++ publishSettings
@@ -20,7 +20,7 @@ lazy val commonSettings = Seq(
 lazy val deps = new {
   val main = new {
     val numbers      = "0.2.0"
-    val scalaXML     = "1.0.6"  // scala-compiler uses 1.0.x
+    val scalaXML     = "1.0.6"  // scala-compiler 2.11 and 2.12 use 1.0.x
   }
   val test = new {
     val scalaTest    = "3.0.5"
@@ -68,9 +68,12 @@ lazy val api = project.withId(s"$baseNameL-api").in(file("api"))
     description := "Basic UGens API for ScalaCollider",
     licenses := lgpl,
     libraryDependencies ++= Seq(
-      "de.sciss"                %% "numbers"    % deps.main.numbers,
-      "org.scala-lang.modules"  %% "scala-xml"  % deps.main.scalaXML
+      "de.sciss" %% "numbers" % deps.main.numbers,
     ),
+    libraryDependencies += {
+      val v = if (scalaVersion.value == "2.13.0-M5") "1.1.1" else deps.main.scalaXML
+      "org.scala-lang.modules"  %% "scala-xml" % v
+    },
     buildInfoKeys := Seq(name, organization, version, scalaVersion, description,
       BuildInfoKey.map(homepage) {
         case (k, opt) => k -> opt.get
@@ -93,8 +96,11 @@ lazy val gen = project.withId(s"$baseNameL-gen").in(file("gen"))
       "com.github.scopt" %% "scopt"           % deps.gen.scopt,
       "de.sciss"         %% "fileutil"        % deps.gen.fileUtil,
       "org.scala-lang"   %  "scala-compiler"  % scalaVersion.value,
-      "org.scalatest"    %% "scalatest"       % deps.test.scalaTest % "test"
     ),
+    libraryDependencies += {
+      val v = if (scalaVersion.value == "2.13.0-M5") "3.0.6-SNAP5" else deps.test.scalaTest
+      "org.scalatest" %% "scalatest" % v % Test
+    },
     mimaPreviousArtifacts := Set.empty,
     publishLocal    := {},
     publish         := {},
