@@ -28,7 +28,7 @@ lazy val deps = new {
   // --- gen project (not published, thus not subject to major version concerns) ---
   val gen = new {
     val fileUtil     = "1.1.3"
-    val scopt        = "3.7.0"
+    val scopt        = "3.7.1"
   }
 }
 

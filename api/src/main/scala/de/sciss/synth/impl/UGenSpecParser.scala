@@ -14,20 +14,22 @@
 package de.sciss.synth
 package impl
 
-import collection.immutable.{IndexedSeq => Vec}
-import scala.collection.{SeqLike, breakOut}
-import de.sciss.synth.UGenSpec.{ArgumentValue, ArgumentType}
+import de.sciss.synth.UGenSpec.{ArgumentType, ArgumentValue}
+
+import scala.collection.SeqLike
+import scala.collection.immutable.{IndexedSeq => Vec}
+import scala.xml.NodeSeq
 
 private[synth] object UGenSpecParser {
   // private def DEFAULT_VERIFY = true
 
   def parseAll(source: xml.InputSource, docs: Boolean, verify: Boolean): Map[String, UGenSpec] = {
-    val root      = xml.XML.load(source)
-    val ugenNodes = root \\ "ugen"
-    ugenNodes.map( n => {
+    val root = xml.XML.load(source)
+    val ugenNodes: NodeSeq = root \\ "ugen"
+    ugenNodes.iterator.map { n =>
       val spec = parse(n, docs = docs, verify = verify)
       spec.name -> spec
-    })(breakOut)
+    } .toMap
   }
 
   private val nodeAttrKeys = Set(
@@ -302,14 +304,14 @@ private[synth] object UGenSpecParser {
 
     val trimH   = trim.head
     val indent  = trimH.indexOf(trimH.trim())
-    trim.map { ln =>
+    trim.iterator.map { ln =>
       val t = ln.trim()
       val i = ln.indexOf(t) - indent
       if (i <= 0) t else {
         val pad = " " * i
         s"$pad$t"
       }
-    } (breakOut)
+    } .toList
   }
 
   private def trimDoc(docText: String): List[String] = {
@@ -349,9 +351,9 @@ private[synth] object UGenSpecParser {
                     outputDocs: Map[String, List[String]]): Option[UGenSpec.Doc] = {
     val docOpt = (node \ "doc").headOption
     docOpt.flatMap { dNode =>
-      val dSees: List[String] = (dNode \ "see").map(_.text)(breakOut)
+      val dSees: List[String] = (dNode \ "see").iterator.map(_.text).toList
       import UGenSpec.Example
-      val dEx: List[Example] = (dNode \ "example").map { n =>
+      val dEx: List[Example] = (dNode \ "example").iterator.map { n =>
         val a     = n.attributes.asAttrMap
         val name  = a.string("name")
         val code  = trimCode(n.text)
@@ -361,7 +363,7 @@ private[synth] object UGenSpecParser {
           case other    => sys.error(s"Unsupported example type '$other'")
         }
         Example(name = name, code = code, tpe = tpe)
-      } (breakOut)
+      } .toList
       val dAttr     = dNode.attributes.asAttrMap
       val dWarnPos  = dAttr.boolean("warn-pos")
       val dText     = (dNode \ "text").text
@@ -390,7 +392,7 @@ private[synth] object UGenSpecParser {
       val unknown = attrs.keySet -- nodeAttrKeys
       require(unknown.isEmpty, s"Unsupported ugen attributes in $uName: ${unknown.mkString(",")}")
 
-      val unknownN = (node.child.collect({ case e: xml.Elem => e.label })(breakOut): Set[String]) -- nodeChildKeys
+      val unknownN = node.child.iterator.collect { case e: xml.Elem => e.label } .toSet[String] -- nodeChildKeys
       require(unknownN.isEmpty, s"Unsupported ugen child nodes in $uName: ${unknownN.mkString(",")}")
     }
 
@@ -436,7 +438,7 @@ private[synth] object UGenSpecParser {
 
     // ---- rates ----
 
-    var argRatesMap = Map.empty[String, Map[Rate, (Option[String], Option[RateConstraint])]] withDefaultValue Map.empty
+    var argRatesMap: Map[String, Map[Rate, (Option[String], Option[RateConstraint])]] = Map.empty withDefaultValue Map.empty
 
     def getRateConstraint(map: Map[String, String]): Option[RateConstraint] = map.get("rate").map {
       case "ugen"     => RateConstraint.SameAsUGen
@@ -506,7 +508,7 @@ private[synth] object UGenSpecParser {
       Rates.Implied(r, rMethod)
 
     } else {
-      val set: Set[Rate] = rNodes.map(rNode => {
+      val set: Set[Rate] = rNodes.iterator.map { rNode =>
         val rAttr   = rNode.attributes.asAttrMap
         val r       = getRate(rAttr)
 
@@ -517,7 +519,7 @@ private[synth] object UGenSpecParser {
         }
         addArgRate(r, rNode)
         r
-      })(breakOut)
+      } .toSet
 
       Rates.Set(set)
     }

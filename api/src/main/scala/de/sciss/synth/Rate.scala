@@ -13,35 +13,37 @@
 
 package de.sciss.synth
 
-import collection.immutable.{IndexedSeq => Vec}
 import scala.annotation.switch
+import scala.collection.immutable.{IndexedSeq => Vec}
 
 object MaybeRate {
   /** Calculates the maximum rate among a list of optional rates. If the list is empty or contains
     * at least one `UndefinedRate`, the return value is also `UndefinedRate`.
     */
-  def max_?(rates: MaybeRate*): MaybeRate = {
-    if (rates.isEmpty) return UndefinedRate
-    var res: Rate = scalar
-    rates.foreach {
-      case UndefinedRate => return UndefinedRate
-      case r: Rate => if (r.id > res.id) res = r
+  def max_?(rates: MaybeRate*): MaybeRate =
+    if (rates.isEmpty) UndefinedRate else {
+      var res: Rate = scalar
+      val it = rates.iterator
+      while (it.hasNext) it.next() match {
+        case UndefinedRate => return UndefinedRate
+        case r: Rate => if (r.id > res.id) res = r
+      }
+      res
     }
-    res
-  }
 
   /** Calculates the minimum rate among a list of optional rates. If the list is empty or contains
     * at least one `UndefinedRate`, the return value is also `UndefinedRate`.
     */
-  def min_?(rates: MaybeRate*): MaybeRate = {
-    if (rates.isEmpty) return UndefinedRate
-    var res: Rate = demand
-    rates.foreach {
-      case UndefinedRate => return UndefinedRate
-      case r: Rate => if (r.id < res.id) res = r
+  def min_?(rates: MaybeRate*): MaybeRate =
+    if (rates.isEmpty) UndefinedRate else {
+      var res: Rate = demand
+      val it = rates.iterator
+      while (it.hasNext) it.next() match {
+        case UndefinedRate => return UndefinedRate
+        case r: Rate => if (r.id < res.id) res = r
+      }
+      res
     }
-    res
-  }
 
   /** Reduces a list of optional rates to one value. If the list is empty or contains different rates,
     * the return value is `UndefinedRate`. Otherwise, if all elements are equal, returns that one rate.
@@ -110,8 +112,8 @@ sealed abstract class Rate extends MaybeRate with Ordered[Rate] {
   def methodName: String
 
   /** Returns `Some(this`). */
-  final val toOption: Option[Rate] = Some(this)
-  final val toIndexedSeq: Vec[Rate] = Vec(this)
+  final val toOption    : Option[Rate] = Some (this)
+  final val toIndexedSeq: Vec   [Rate] = Vec  (this)
 
   /** Returns `this` object without resolving the argument. */
   final def getOrElse(r: => Rate): Rate = this

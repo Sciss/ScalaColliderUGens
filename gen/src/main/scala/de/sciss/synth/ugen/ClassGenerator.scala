@@ -22,7 +22,7 @@ import de.sciss.synth.UGenSpec.Attribute.HasSourceCode
 import de.sciss.synth.UGenSpec.{SignalShape => Sig, _}
 
 import scala.annotation.tailrec
-import scala.collection.breakOut
+import scala.collection.{Seq => SSeq}
 import scala.collection.immutable.{IndexedSeq => Vec}
 import scala.io.Source
 import scala.util.control.NonFatal
@@ -79,11 +79,11 @@ final class ClassGenerator {
       throw e
   }
 
-  def performSpecs(specs: Seq[UGenSpec], file: File, revision: Int, thirdParty: Option[String]): Unit = {
+  def performSpecs(specs: SSeq[UGenSpec], file: File, revision: Int, thirdParty: Option[String]): Unit = {
     val out = new FileOutputStream(file)
     try {
       // create class trees
-      val classes: List[Tree] = specs.flatMap(spec => performSpec(spec, thirdParty = thirdParty))(breakOut)
+      val classes: List[Tree] = specs.iterator.flatMap(spec => performSpec(spec, thirdParty = thirdParty)).toList
 
       val header =
         """package de.sciss.synth
@@ -461,7 +461,7 @@ final class ClassGenerator {
    */
   private def collectMethodDocs(spec: UGenSpec): List[(String, String)] = spec.doc match {
     case Some(doc) =>
-      spec.args.flatMap { a =>
+      spec.args.iterator.flatMap { a =>
         val aDoc = doc.args.get(a.name)
         val init = a.tpe match {
           case ArgumentType.GE(_, true) => true
@@ -472,7 +472,7 @@ final class ClassGenerator {
         x.map { d =>
           a.name -> d.mkString("", " ", end)
         }
-      } (breakOut)
+      } .toList
 
     case _ => Nil
   }
@@ -801,7 +801,7 @@ final class ClassGenerator {
 
     // for each named output, we create a corresponding method in
     // the case class that produces a `ChannelProxy` instance.
-    val namedOutputDefs: List[Tree] = if (!hasMultipleOuts) Nil else outputs.zipWithIndex.collect {
+    val namedOutputDefs: List[Tree] = if (!hasMultipleOuts) Nil else outputs.iterator.zipWithIndex.collect {
       case (UGenSpec.Output(Some(outName), _, _), idx) =>
         if (hasVariadicOut) {
           sys.error(s"The combination of variadic and namenamed outputs is not yet supported (${spec.name}, $outName)")
@@ -817,7 +817,7 @@ final class ClassGenerator {
           ret     = "GE",
           body    = methodBody
         )
-    } (breakOut)
+    } .toList
 
     // `protected def makeUGens: UGenInLike = ...`
     val makeUGensDef: MethodDef = {

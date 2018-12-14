@@ -14,7 +14,7 @@
 package de.sciss.synth
 package ugen
 
-import collection.immutable.{IndexedSeq => Vec}
+import scala.collection.immutable.{IndexedSeq => Vec}
 
 // ---------- Control ----------
 

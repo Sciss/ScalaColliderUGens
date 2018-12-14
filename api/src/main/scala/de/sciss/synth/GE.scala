@@ -13,9 +13,8 @@
 
 package de.sciss.synth
 
-import scala.collection.breakOut
 import scala.collection.immutable.{IndexedSeq => Vec}
-import scala.{Seq => SSeq}
+import scala.collection.{Seq => SSeq}
 
 /** The UGen graph is constructed from interconnecting graph elements (GE).
   * Graph elements can be decomposed into a sequence of UGenIn objects.
@@ -39,18 +38,33 @@ object GE {
   }
 
   implicit def fromIntSeq(xs: SSeq[Int]): GE = xs match {
-    case SSeq(single) => Constant(single)
-    case _            => ugen.GESeq(xs.map(i => Constant(i.toFloat))(breakOut))
+    case SSeq(x) => Constant(x)
+    case _ =>
+      val vec: Vec[GE] = xs match {
+        case xsv: Vec[Int]  => xsv        .map(i => Constant(i.toFloat))
+        case _              => xs.iterator.map(i => Constant(i.toFloat)).toIndexedSeq
+      }
+      ugen.GESeq(vec)
   }
 
   implicit def fromFloatSeq(xs: SSeq[Float]): GE = xs match {
-    case SSeq(x)  => Constant(x)
-    case _        => ugen.GESeq(xs.map(f => Constant(f))(breakOut))
+    case SSeq(x) => Constant(x)
+    case _ =>
+      val vec: Vec[GE] = xs match {
+        case xsv: Vec[Float]  => xsv        .map(i => Constant(i))
+        case _                => xs.iterator.map(i => Constant(i)).toIndexedSeq
+      }
+      ugen.GESeq(vec)
   }
 
   implicit def fromDoubleSeq(xs: SSeq[Double]): GE = xs match {
-    case SSeq(x)  => Constant(x.toFloat)
-    case _        => ugen.GESeq(xs.map(d => Constant(d.toFloat))(breakOut))
+    case SSeq(x) => Constant(x.toFloat)
+    case _ =>
+      val vec: Vec[GE] = xs match {
+        case xsv: Vec[Double] => xsv        .map(i => Constant(i.toFloat))
+        case _                => xs.iterator.map(i => Constant(i.toFloat)).toIndexedSeq
+      }
+      ugen.GESeq(vec)
   }
 
   def fromUGenIns(xs: SSeq[UGenIn]): GE = ugen.UGenInSeq(xs.toIndexedSeq)

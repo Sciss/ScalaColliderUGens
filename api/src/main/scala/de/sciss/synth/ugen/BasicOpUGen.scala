@@ -616,14 +616,14 @@ object BinaryOpUGen {
     final val id = 6
     override val name = "sig_=="
     override def infix = true
-    def make1(a: Float, b: Float): Float = if( a == b ) 1 else 0
+    def make1(a: Float, b: Float): Float = if (a == b) 1 else 0
   }
 
   case object Neq extends PureOp {
     final val id = 7
     override val name = "sig_!="
     override def infix = true
-    def make1(a: Float, b: Float): Float = if( a != b ) 1 else 0
+    def make1(a: Float, b: Float): Float = if (a != b) 1 else 0
   }
 
   case object Lt extends PureOp {

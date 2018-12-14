@@ -18,7 +18,6 @@ import java.nio.charset.Charset
 
 import de.sciss.synth.ugen.impl.RawUGenImpl
 
-import scala.collection.breakOut
 import scala.collection.immutable.{IndexedSeq => Vec, Seq => ISeq}
 
 object UGenGraph {
@@ -40,14 +39,26 @@ object UGenGraph {
     * @return the number of wire buffers required to load the graph in the server
     */
   def calcWireBuffers(in: UGenGraph): Int = {
-    val outputMap: Array[Array[WireInfo]] = in.ugens.map { indexed =>
-      indexed.ugen.outputRates.map {
-        case `audio`  => new WireInfo()
-        case _        => null
-      } (breakOut) : Array[WireInfo]
-    } (breakOut)
+    val u = in.ugens
+    val outputMap =  new Array[Array[WireInfo]](u.size)
+    var ui = 0
+    u.foreach { indexed =>
+      val r = indexed.ugen.outputRates
+      val arr = new Array[WireInfo](r.size)
+      var ri = 0
+      r.foreach {
+        case `audio` =>
+          val inf = new WireInfo()
+          arr(ri) = inf
+          ri += 1
+        case _ =>
+          ri += 1
+      }
+      outputMap(ui) = arr
+      ui += 1
+    }
 
-    in.ugens.foreach { indexed =>
+    u.foreach { indexed =>
       indexed.inputSpecs.foreach {
         case (ugenIdx, outIdx) if ugenIdx >= 0 =>
           val wireInfo = outputMap(ugenIdx)(outIdx)
@@ -58,7 +69,7 @@ object UGenGraph {
 
     val bufColor = new impl.WireBufAllocator()
 
-    (in.ugens.iterator zip outputMap.iterator).foreach { case (indexed, outputs) =>
+    (u.iterator zip outputMap.iterator).foreach { case (indexed, outputs) =>
       // we never release any input buffers of demand-rate ugens
       if (indexed.ugen.rate != demand) {
         // release inputs

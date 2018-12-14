@@ -17,7 +17,6 @@ import de.sciss.synth.UGenSource.Vec
 import de.sciss.synth.ugen.Constant
 
 import scala.annotation.tailrec
-import scala.collection.breakOut
 import scala.runtime.ScalaRunTime
 
 object UGenSource {
@@ -35,8 +34,14 @@ object UGenSource {
   val  Vec     = scala.collection.immutable.IndexedSeq
 
   def stringArg(s: String): Vec[UGenIn] = {
-    val bs = s.getBytes
-    Constant(bs.length) +: (bs.map(Constant(_))(breakOut): Vec[UGenIn])
+    val bs: Array[Byte] = s.getBytes
+    val resB = Vec.newBuilder[UGenIn]
+    resB.sizeHint(bs.length + 1)
+    resB += Constant(bs.length)
+    bs.foreach { b =>
+      resB += Constant(b)
+    }
+    resB.result()
   }
 
   def unwrap(source: UGenSource.SomeOut, args: Vec[UGenInLike]): UGenInLike = {

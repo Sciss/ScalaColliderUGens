@@ -14,17 +14,29 @@
 package de.sciss.synth
 package ugen
 
-import collection.breakOut
-import collection.immutable.{IndexedSeq => Vec}
-import language.implicitConversions
+import scala.collection.{Seq => SSeq}
+import scala.collection.immutable.{IndexedSeq => Vec}
+import scala.language.implicitConversions
 
 object ControlValues {
   // implicit def fromInt      (x :     Int    ): ControlValues = ControlValues(Vector(x.toFloat))
-  implicit def fromFloat    (x :     Float  ): ControlValues = ControlValues(Vector(x))
-  implicit def fromDouble   (x :     Double ): ControlValues = ControlValues(Vector(x.toFloat))
-  implicit def fromIntSeq   (xs: Seq[Int   ]): ControlValues = ControlValues(xs.map(_.toFloat)(breakOut))
-  implicit def fromFloatSeq (xs: Seq[Float ]): ControlValues = ControlValues(xs.toIndexedSeq)
-  implicit def fromDoubleSeq(xs: Seq[Double]): ControlValues = ControlValues(xs.map(_.toFloat)(breakOut))
+  implicit def fromFloat    (x :      Float  ): ControlValues = ControlValues(Vector(x))
+  implicit def fromDouble   (x :      Double ): ControlValues = ControlValues(Vector(x.toFloat))
+  implicit def fromIntSeq   (xs: SSeq[Int   ]): ControlValues = {
+    val vec: Vec[Float] = xs match {
+      case xsv: Vec[Int]  => xsv        .map(_.toFloat)
+      case _              => xs.iterator.map(_.toFloat).toIndexedSeq
+    }
+    ControlValues(vec)
+  }
+  implicit def fromFloatSeq (xs: SSeq[Float ]): ControlValues = ControlValues(xs.toIndexedSeq)
+  implicit def fromDoubleSeq(xs: SSeq[Double]): ControlValues = {
+    val vec: Vec[Float] = xs match {
+      case xsv: Vec[Double] => xsv        .map(_.toFloat)
+      case _                => xs.iterator.map(_.toFloat).toIndexedSeq
+    }
+    ControlValues(vec)
+  }
   private[ugen] val singleZero = ControlValues(Vector(0f))
 }
 final case class ControlValues(seq: Vec[Float])
@@ -47,18 +59,28 @@ final class ControlProxyFactory(val `this`: String) extends AnyVal { me =>
 
 trait ControlFactoryLike {
   def build(b: UGenGraph.Builder, proxies: Vec[ControlProxyLike]): Map[ControlProxyLike, (UGen, Int)] = {
-    var numChannels = 0
-    val specialIndex = proxies.map { p =>
+    val sz = proxies.size
+    if (sz == 0) return Map.empty
+
+    var numChannels   = 0
+    var specialIndex  = -1
+    proxies.foreach { p =>
       numChannels += p.values.size
-      b.addControl(p.values, p.name)
-    } .head
+      val i = b.addControl(p.values, p.name)
+      if (specialIndex < 0) specialIndex = i
+    }
+
     val ugen = makeUGen(numChannels, specialIndex)
-    var offset = 0
-    proxies.map { p =>
+
+    var offset  = 0
+    val resB    = Map.newBuilder[ControlProxyLike, (UGen, Int)]
+    resB.sizeHint(sz)
+    proxies.foreach { p =>
       val res = p -> ((ugen, offset))
       offset += p.values.size
-      res
-    } (breakOut)
+      resB += res
+    }
+    resB.result()
   }
 
   protected def makeUGen(numChannels: Int, specialIndex: Int): UGen

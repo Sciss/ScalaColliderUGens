@@ -20,7 +20,7 @@ object KlangSpec {
   def fill(n: Int)(thunk: => (GE, GE, GE)): Seq =
     Seq(Vec.fill[(GE, GE, GE)](n)(thunk).map(tup => KlangSpec(tup._1, tup._2, tup._3)))
 
-  def tabulate(n: Int)(func: (Int) => (GE, GE, GE)): Seq =
+  def tabulate(n: Int)(func: Int => (GE, GE, GE)): Seq =
     Seq(Vec.tabulate[(GE, GE, GE)](n)(func).map(tup => KlangSpec(tup._1, tup._2, tup._3)))
 
   final case class Seq(elems: Vec[KlangSpec]) extends GE {

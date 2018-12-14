@@ -14,10 +14,10 @@
 package de.sciss
 package synth
 
-import collection.immutable
-import immutable.{IndexedSeq => Vec}
-import collection.breakOut
-import impl.{UGenSpecParser => ParserImpl}
+import de.sciss.synth.impl.{UGenSpecParser => ParserImpl}
+
+import scala.collection.immutable
+import scala.collection.immutable.{IndexedSeq => Vec, Set => ISet}
 
 object UGenSpec {
   /** List of standard UGen plugin names, including ScalaCollider helper elements. */
@@ -45,7 +45,7 @@ object UGenSpec {
     */
   lazy val thirdPartyUGens: Map[String, UGenSpec] = mkUGens(thirdPartyPlugins)
 
-  private def mkUGens(names: List[String]): Map[String, UGenSpec] = names.flatMap { name =>
+  private def mkUGens(names: List[String]): Map[String, UGenSpec] = names.iterator.flatMap { name =>
     val is = ugen.Control.getClass.getResourceAsStream(s"$name.xml")
     if (is == null) throw new Exception(s"UGenSpec.mkUGens - resource '$name.xml' not found.")
     try {
@@ -54,7 +54,7 @@ object UGenSpec {
     } finally {
       is.close()
     }
-  } (breakOut)
+  } .toMap
 
   /** Parses a complete XML file containing a number of UGen specifications.
     *
@@ -367,7 +367,7 @@ object UGenSpec {
       * @param method   the type of constructor method to generate
       */
     final case class Implied(rate: Rate, method: RateMethod) extends Rates {
-      def set = immutable.Set(rate)
+      def set: ISet[Rate] = ISet(rate)
 
       override def toString: String = {
         val base = s"implied: $rate"
@@ -489,9 +489,9 @@ final case class UGenSpec(name      : String,
                           elemOption: Option[String]
                          ) {
   /** A convenience field which maps from argument names to arguments. */
-  lazy val argMap:   Map[String, UGenSpec.Argument] = args  .map(a => a.name -> a)(breakOut)
+  lazy val argMap:   Map[String, UGenSpec.Argument] = args  .iterator.map(a => a.name -> a).toMap
   /** A convenience field which maps from input argument names to inputs. */
-  lazy val inputMap: Map[String, UGenSpec.Input   ] = inputs.map(i => i.arg  -> i)(breakOut)
+  lazy val inputMap: Map[String, UGenSpec.Input   ] = inputs.iterator.map(i => i.arg  -> i).toMap
 
   def className: String = elemOption.getOrElse(name)
 

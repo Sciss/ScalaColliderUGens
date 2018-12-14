@@ -13,7 +13,7 @@
 
 package de.sciss.synth
 
-import ugen.Constant
+import de.sciss.synth.ugen.Constant
 
 import scala.annotation.switch
 

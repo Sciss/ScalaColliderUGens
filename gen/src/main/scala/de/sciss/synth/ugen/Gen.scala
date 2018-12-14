@@ -14,12 +14,14 @@
 package de.sciss.synth
 package ugen
 
-import xml.XML
-import scopt.OptionParser
 import java.io.IOException
-import org.xml.sax.InputSource
-import scala.collection.immutable.{IndexedSeq => Vec}
+
 import de.sciss.file._
+import org.xml.sax.InputSource
+import scopt.OptionParser
+
+import scala.collection.immutable.{IndexedSeq => Vec}
+import scala.xml.XML
 
 object Gen extends App {
   sealed trait Input {

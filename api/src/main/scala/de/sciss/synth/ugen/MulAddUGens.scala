@@ -2,7 +2,7 @@ package de.sciss.synth
 package ugen
 
 import de.sciss.synth.UGenSource._
-import Constant.{C0, C1, Cm1}
+import de.sciss.synth.ugen.Constant.{C0, C1, Cm1}
 
 /** A UGen that multiplies an input with another signal
   * and then adds a third signal. This can be used to translate

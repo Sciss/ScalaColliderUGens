@@ -45,6 +45,7 @@ package de.sciss.synth.ugen
 
 import de.sciss.numbers.Implicits._
 
+import scala.collection.{Seq => SSeq}
 import scala.collection.immutable.{IndexedSeq => Vec}
 import scala.language.implicitConversions
 import scala.math.{abs, acos, cos, sin, sqrt}
@@ -94,7 +95,7 @@ object VBAPSetup {
     * @param directions     the speaker directions (azimuth for 2D, azimuth and elevation for 3D)
     * @return A setup with calculated buffer data
     */
-  def apply(dim: Int, directions: Seq[Polar],
+  def apply(dim: Int, directions: SSeq[Polar],
             minSideLength: Double  = 0.01): VBAPSetup = {
     require(dim == 2 || dim == 3, s"Dimension must be 2 or 3")
     new Impl(dim = dim, directions = directions.toIndexedSeq,
