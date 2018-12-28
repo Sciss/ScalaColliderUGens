@@ -6,7 +6,7 @@
 
 ## statement
 
-Specification and base API of [ScalaCollider](https://github.com/Sciss/ScalaCollider) UGens, as well as a core library of generated UGen classes.
+Specification and base API of [ScalaCollider](https://git.iem.at/sciss/ScalaCollider) UGens, as well as a core library of generated UGen classes.
 
 This project is (C)opyright 2008&ndash;2018 by Hanns Holger Rutz. All rights reserved. All sub projects released under the GNU LGPL v2.1+, except for the specification which is released under a BSD-style license. All code comes with absolutely no warranties. To contact the author, send an email to `contact at sciss.de`.
 
@@ -26,7 +26,7 @@ All artifacts are published to Maven Central, and are available as follows:
     "de.sciss" %% "scalacolliderugens-core" % v
     "de.sciss" %% "scalacolliderugens-plugins" % v
 
-The current stable version `v` is `"1.19.1"`.
+The current stable version `v` is `"1.19.2"`.
 
 The `spec` contains the XML meta data, `api` contains basic types without specific UGens, `core` contains the standard UGens included with SuperCollider, and `plugins` will include the third-party plugins managed by the [sc3-plugins](https://github.com/supercollider/sc3-plugins) project (still incomplete).
 

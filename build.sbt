@@ -1,7 +1,7 @@
 lazy val baseName       = "ScalaColliderUGens"
 lazy val baseNameL      = baseName.toLowerCase
 
-lazy val projectVersion = "1.19.2-SNAPSHOT"
+lazy val projectVersion = "1.19.2"
 lazy val mimaVersion    = "1.19.0"
 
 name := baseName
@@ -57,7 +57,11 @@ lazy val spec = project.withId(s"$baseNameL-spec").in(file("spec"))
     crossPaths := false,
     licenseURL("BSD", "spec"),
     publishArtifact in (Compile, packageDoc) := false, // there are no javadocs
-    publishArtifact in (Compile, packageSrc) := false, // there are no sources (only re-sources)
+    publishArtifact in (Compile, packageSrc) := false, // there are no sources (only re-sources),
+    publishArtifact := {
+      val old = publishArtifact.value
+      old && scalaVersion.value.startsWith("2.12")  // only publish once when cross-building
+    },
     mimaPreviousArtifacts := Set("de.sciss" % s"$baseNameL-spec" % mimaVersion)
   )
 
