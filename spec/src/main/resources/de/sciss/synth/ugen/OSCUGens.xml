@@ -33,10 +33,10 @@
                 val base  = DegreeToKey.kr(buf, in = MouseX.kr(0, 15), octave = 12) + 72
                 val noise = LFNoise1.kr(Seq(3, 3)) * 0.04  // low freq stereo detuning
                 // lead tone
-                val lead  = SinOsc.ar((base + noise).midicps)
+                val lead  = SinOsc.ar((base + noise).midiCps)
                 // drone 5ths
-                val drone = RLPF.ar(LFPulse.ar(Seq(48.midicps, 55.midicps), 0.15),
-                                    SinOsc.kr(0.1).madd(10, 72).midicps, 0.1)
+                val drone = RLPF.ar(LFPulse.ar(Seq(48.midiCps, 55.midiCps), 0.15),
+                                    SinOsc.kr(0.1).mulAdd(10, 72).midiCps, 0.1)
                 val mix = (lead + drone) * 0.1
                 // add some 70's euro-space-rock echo
                 CombN.ar(mix, 0.31, 0.31, 2) + mix
@@ -394,7 +394,7 @@
                 SinOsc.ar(441) * 0.2
             </example>
             <example name="modulate frequency">
-                SinOsc.ar(SinOsc.ar(XLine.kr(1, 1000, 9)).madd(200, 800)) * 0.25
+                SinOsc.ar(SinOsc.ar(XLine.kr(1, 1000, 9)).mulAdd(200, 800)) * 0.25
             </example>
             <example name="modulate phase">
                 SinOsc.ar(800, SinOsc.ar(XLine.kr(1, 1000, 9)) * 2*math.Pi) * 0.25

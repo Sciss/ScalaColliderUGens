@@ -268,7 +268,7 @@
             </text>
             <example name="scramble mouse motion">
                 SinOsc.ar(
-                  Hasher.kr(MouseX.kr(0,10)).madd(300, 500)
+                  Hasher.kr(MouseX.kr(0,10)).mulAdd(300, 500)
                 ) * 0.2
             </example>
             <example name="distort pulse wave">
@@ -298,7 +298,7 @@
             </text>
             <example name="mouse-x controls resolution">
                 val bits = MouseX.kr(0, 12)
-                MantissaMask.ar(SinOsc.ar(SinOsc.kr(0.2).madd(400, 500)) * 0.4, bits)
+                MantissaMask.ar(SinOsc.ar(SinOsc.kr(0.2).mulAdd(400, 500)) * 0.4, bits)
             </example>
         </doc>
     </ugen>
@@ -461,7 +461,7 @@
                 `lo` to `hi`.
             </text>
             <example name="random sine frequencies">
-                val m = Mix.fill(10)(FSinOsc.ar(IRand(40, 100).midicps))
+                val m = Mix.fill(10)(FSinOsc.ar(IRand(40, 100).midiCps))
                 m * Line.kr(0.025, 0, 4, doneAction = freeSelf)
             </example>
             <see>ugen.Rand</see>
@@ -581,7 +581,7 @@
             </text>
             <example name="random sine frequencies, triggered by mouse button">
                 val tr = MouseButton.kr(lag = 0)
-                val m  = Mix.fill(10)(SinOsc.ar(TIRand.kr(40, 100, tr).midicps))
+                val m  = Mix.fill(10)(SinOsc.ar(TIRand.kr(40, 100, tr).midiCps))
                 m * Linen.kr(tr, sustain = 0.025, release = 2)
             </example>
             <see>ugen.IRand</see>
@@ -740,7 +740,7 @@
                 The generator can be set using the `RandID` UGen.
             </text>
             <example name="reset seed via mouse button">
-                val freq = TIRand.kr(40, 100, Impulse.kr(4)).midicps
+                val freq = TIRand.kr(40, 100, Impulse.kr(4)).midiCps
                 RandSeed.kr(MouseButton.kr(lag = 0) + Impulse.kr(0), 234)
                 SinOsc.ar(freq) * 0.2
             </example>
@@ -776,7 +776,7 @@
                     val tr    = PulseDivider.kr(b, 2, i)
                     pch.poll(x, if (i == 0) "left " else "right")
                     RandSeed.kr(tr + Impulse.kr(0), 234)
-                    Out.ar(i, SinOsc.ar(pch.midicps) * 0.2)
+                    Out.ar(i, SinOsc.ar(pch.midiCps) * 0.2)
                   }
                 }
             </example>

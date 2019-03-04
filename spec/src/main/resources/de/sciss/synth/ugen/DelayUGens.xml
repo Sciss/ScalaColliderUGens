@@ -559,7 +559,7 @@
 
                 // write into the buffer with a BufWr
                 val y = play {
-                  val in = SinOsc.ar(LFNoise1.kr(2).madd(300, 400)) * 0.1
+                  val in = SinOsc.ar(LFNoise1.kr(2).mulAdd(300, 400)) * 0.1
                   val rate = "rate" kr 1
                   BufWr.ar(in, b.id, Phasor.ar(0, BufRateScale.kr(b.id) * rate, 0, BufFrames.kr(b.id)))
                   0.0 // quiet
@@ -625,7 +625,7 @@
                 val b = Buffer.alloc(s, numFrames = s.sampleRate.toInt * 2)
 
                 val y = play {
-                  val sig  = SinOsc.ar(LFNoise1.kr(2).madd(300, 400)) * 0.1
+                  val sig  = SinOsc.ar(LFNoise1.kr(2).mulAdd(300, 400)) * 0.1
                   val rate = "rate" kr 1
                   BufWr.ar(in = sig, buf = b.id, index =
                     Phasor.ar(speed = BufRateScale.kr(b.id) * rate, lo = 0, hi = BufFrames.kr(b.id)))

@@ -104,15 +104,15 @@
                 FBSineN.ar(SampleRate.ir, 1, 0, XLine.kr(1, 2, 10), 0.1) * 0.2
             </example>
             <example name="modulate frequency and index multiplier">
-                FBSineN.ar(LFNoise2.kr(1).madd(1e4, 1e4), LFNoise2.kr(1).madd(16, 17), 1, 1.005, 0.7) * 0.2
+                FBSineN.ar(LFNoise2.kr(1).mulAdd(1e4, 1e4), LFNoise2.kr(1).mulAdd(16, 17), 1, 1.005, 0.7) * 0.2
             </example>
             <example name="randomly modulate parameters">
                 FBSineN.ar(
-                  LFNoise2.kr(1).madd(1e4, 1e4),
-                  LFNoise2.kr(1).madd(32, 33),
+                  LFNoise2.kr(1).mulAdd(1e4, 1e4),
+                  LFNoise2.kr(1).mulAdd(32, 33),
                   LFNoise2.kr(1) * 0.5,
-                  LFNoise2.kr(1).madd(0.05, 1.05),
-                  LFNoise2.kr(1).madd(0.3, 0.3)
+                  LFNoise2.kr(1).mulAdd(0.05, 1.05),
+                  LFNoise2.kr(1).mulAdd(0.3, 0.3)
                 ) * 0.2
             </example>
             <see>ugen.FBSineL</see>
@@ -176,15 +176,15 @@
                 FBSineL.ar(SampleRate.ir, 1, 0, XLine.kr(1, 2, 10), 0.1) * 0.2
             </example>
             <example name="modulate frequency and index multiplier">
-                FBSineL.ar(LFNoise2.kr(1).madd(1e4, 1e4), LFNoise2.kr(1).madd(16, 17), 1, 1.005, 0.7) * 0.2
+                FBSineL.ar(LFNoise2.kr(1).mulAdd(1e4, 1e4), LFNoise2.kr(1).mulAdd(16, 17), 1, 1.005, 0.7) * 0.2
             </example>
             <example name="randomly modulate parameters">
                 FBSineL.ar(
-                  LFNoise2.kr(1).madd(1e4, 1e4),
-                  LFNoise2.kr(1).madd(32, 33),
+                  LFNoise2.kr(1).mulAdd(1e4, 1e4),
+                  LFNoise2.kr(1).mulAdd(32, 33),
                   LFNoise2.kr(1) * 0.5,
-                  LFNoise2.kr(1).madd(0.05, 1.05),
-                  LFNoise2.kr(1).madd(0.3, 0.3)
+                  LFNoise2.kr(1).mulAdd(0.05, 1.05),
+                  LFNoise2.kr(1).mulAdd(0.3, 0.3)
                 ) * 0.2
             </example>
             <see>ugen.FBSineN</see>
@@ -248,15 +248,15 @@
                 FBSineC.ar(SampleRate.ir, 1, 0, XLine.kr(1, 2, 10), 0.1) * 0.2
             </example>
             <example name="modulate frequency and index multiplier">
-                FBSineC.ar(LFNoise2.kr(1).madd(1e4, 1e4), LFNoise2.kr(1).madd(16, 17), 1, 1.005, 0.7) * 0.2
+                FBSineC.ar(LFNoise2.kr(1).mulAdd(1e4, 1e4), LFNoise2.kr(1).mulAdd(16, 17), 1, 1.005, 0.7) * 0.2
             </example>
             <example name="randomly modulate parameters">
                 FBSineC.ar(
-                  LFNoise2.kr(1).madd(1e4, 1e4),
-                  LFNoise2.kr(1).madd(32, 33),
+                  LFNoise2.kr(1).mulAdd(1e4, 1e4),
+                  LFNoise2.kr(1).mulAdd(32, 33),
                   LFNoise2.kr(1) * 0.5,
-                  LFNoise2.kr(1).madd(0.05, 1.05),
-                  LFNoise2.kr(1).madd(0.3, 0.3)
+                  LFNoise2.kr(1).mulAdd(0.05, 1.05),
+                  LFNoise2.kr(1).mulAdd(0.3, 0.3)
                 ) * 0.2
             </example>
             <see>ugen.FBSineN</see>
@@ -427,8 +427,8 @@
             <example name="randomly modulate parameters">
                 HenonN.ar(
                   SampleRate.ir/8,
-                  LFNoise2.kr(1).madd(0.2, 1.2),
-                  LFNoise2.kr(1).madd(0.15, 0.15)
+                  LFNoise2.kr(1).mulAdd(0.2, 1.2),
+                  LFNoise2.kr(1).mulAdd(0.15, 0.15)
                 ) * 0.2
             </example>
             <example name="as a frequency control">
@@ -483,8 +483,8 @@
             <example name="randomly modulate parameters">
                 HenonL.ar(
                   SampleRate.ir/8,
-                  LFNoise2.kr(1).madd(0.2, 1.2),
-                  LFNoise2.kr(1).madd(0.15, 0.15)
+                  LFNoise2.kr(1).mulAdd(0.2, 1.2),
+                  LFNoise2.kr(1).mulAdd(0.15, 0.15)
                 ) * 0.2
             </example>
             <example name="as a frequency control">
@@ -539,8 +539,8 @@
             <example name="randomly modulate parameters">
                 HenonC.ar(
                   SampleRate.ir/8,
-                  LFNoise2.kr(1).madd(0.2, 1.2),
-                  LFNoise2.kr(1).madd(0.15, 0.15)
+                  LFNoise2.kr(1).mulAdd(0.2, 1.2),
+                  LFNoise2.kr(1).mulAdd(0.15, 0.15)
                 ) * 0.2
             </example>
             <example name="as a frequency control">
@@ -606,10 +606,10 @@
             <example name="randomly modulate all parameters">
                 LatoocarfianN.ar(
                   SampleRate.ir/4,
-                  LFNoise2.kr(2).madd(1.5, 1.5),
-                  LFNoise2.kr(2).madd(1.5, 1.5),
-                  LFNoise2.kr(2).madd(0.5, 1.5),
-                  LFNoise2.kr(2).madd(0.5, 1.5)
+                  LFNoise2.kr(2).mulAdd(1.5, 1.5),
+                  LFNoise2.kr(2).mulAdd(1.5, 1.5),
+                  LFNoise2.kr(2).mulAdd(0.5, 1.5),
+                  LFNoise2.kr(2).mulAdd(0.5, 1.5)
                 ) * 0.2
             </example>
             <see>ugen.LatoocarfianL</see>
@@ -672,10 +672,10 @@
             <example name="randomly modulate all parameters">
                 LatoocarfianL.ar(
                   SampleRate.ir/4,
-                  LFNoise2.kr(2).madd(1.5, 1.5),
-                  LFNoise2.kr(2).madd(1.5, 1.5),
-                  LFNoise2.kr(2).madd(0.5, 1.5),
-                  LFNoise2.kr(2).madd(0.5, 1.5)
+                  LFNoise2.kr(2).mulAdd(1.5, 1.5),
+                  LFNoise2.kr(2).mulAdd(1.5, 1.5),
+                  LFNoise2.kr(2).mulAdd(0.5, 1.5),
+                  LFNoise2.kr(2).mulAdd(0.5, 1.5)
                 ) * 0.2
             </example>
             <see>ugen.LatoocarfianN</see>
@@ -738,10 +738,10 @@
             <example name="randomly modulate all parameters">
                 LatoocarfianC.ar(
                   SampleRate.ir/4,
-                  LFNoise2.kr(2).madd(1.5, 1.5),
-                  LFNoise2.kr(2).madd(1.5, 1.5),
-                  LFNoise2.kr(2).madd(0.5, 1.5),
-                  LFNoise2.kr(2).madd(0.5, 1.5)
+                  LFNoise2.kr(2).mulAdd(1.5, 1.5),
+                  LFNoise2.kr(2).mulAdd(1.5, 1.5),
+                  LFNoise2.kr(2).mulAdd(0.5, 1.5),
+                  LFNoise2.kr(2).mulAdd(0.5, 1.5)
                 ) * 0.2
             </example>
             <see>ugen.LatoocarfianN</see>
@@ -763,9 +763,9 @@
             </example>
             <example name="randomly modulate parameters">
                 LinCongN.ar(
-                  LFNoise2.kr(1.0).madd(1e4, 1e4),
-                  LFNoise2.kr(0.1).madd(0.5, 1.4),
-                  LFNoise2.kr(0.1).madd(0.1, 0.1),
+                  LFNoise2.kr(1.0).mulAdd(1e4, 1e4),
+                  LFNoise2.kr(0.1).mulAdd(0.5, 1.4),
+                  LFNoise2.kr(0.1).mulAdd(0.1, 0.1),
                   LFNoise2.kr(0.1)
                 ) * 0.2
             </example>
@@ -773,10 +773,10 @@
                 SinOsc.ar(
                   LinCongN.ar(
                     40,
-                    LFNoise2.kr(0.1).madd(0.1, 1),
-                    LFNoise2.kr(0.1).madd(0.1, 0.1),
+                    LFNoise2.kr(0.1).mulAdd(0.1, 1),
+                    LFNoise2.kr(0.1).mulAdd(0.1, 0.1),
                     LFNoise2.kr(0.1)
-                  ).madd(500, 600)
+                  ).mulAdd(500, 600)
                 ) * 0.4
             </example>
             <see>ugen.LinCongL</see>
@@ -823,9 +823,9 @@
             </example>
             <example name="randomly modulate parameters">
                 LinCongL.ar(
-                  LFNoise2.kr(1.0).madd(1e4, 1e4),
-                  LFNoise2.kr(0.1).madd(0.5, 1.4),
-                  LFNoise2.kr(0.1).madd(0.1, 0.1),
+                  LFNoise2.kr(1.0).mulAdd(1e4, 1e4),
+                  LFNoise2.kr(0.1).mulAdd(0.5, 1.4),
+                  LFNoise2.kr(0.1).mulAdd(0.1, 0.1),
                   LFNoise2.kr(0.1)
                 ) * 0.2
             </example>
@@ -833,10 +833,10 @@
                 SinOsc.ar(
                   LinCongL.ar(
                     40,
-                    LFNoise2.kr(0.1).madd(0.1, 1),
-                    LFNoise2.kr(0.1).madd(0.1, 0.1),
+                    LFNoise2.kr(0.1).mulAdd(0.1, 1),
+                    LFNoise2.kr(0.1).mulAdd(0.1, 0.1),
                     LFNoise2.kr(0.1)
-                  ).madd(500, 600)
+                  ).mulAdd(500, 600)
                 ) * 0.4
             </example>
             <see>ugen.LinCongN</see>
@@ -883,9 +883,9 @@
             </example>
             <example name="randomly modulate parameters">
                 LinCongC.ar(
-                  LFNoise2.kr(1.0).madd(1e4, 1e4),
-                  LFNoise2.kr(0.1).madd(0.5, 1.4),
-                  LFNoise2.kr(0.1).madd(0.1, 0.1),
+                  LFNoise2.kr(1.0).mulAdd(1e4, 1e4),
+                  LFNoise2.kr(0.1).mulAdd(0.5, 1.4),
+                  LFNoise2.kr(0.1).mulAdd(0.1, 0.1),
                   LFNoise2.kr(0.1)
                 ) * 0.2
             </example>
@@ -893,10 +893,10 @@
                 SinOsc.ar(
                   LinCongC.ar(
                     40,
-                    LFNoise2.kr(0.1).madd(0.1, 1),
-                    LFNoise2.kr(0.1).madd(0.1, 0.1),
+                    LFNoise2.kr(0.1).mulAdd(0.1, 1),
+                    LFNoise2.kr(0.1).mulAdd(0.1, 0.1),
                     LFNoise2.kr(0.1)
-                  ).madd(500, 600)
+                  ).mulAdd(500, 600)
                 ) * 0.4
             </example>
             <see>ugen.LinCongN</see>
@@ -948,9 +948,9 @@
             <example name="randomly modulate parameters">
                 LorenzL.ar(
                   SampleRate.ir,
-                  LFNoise0.kr(1).madd(2, 10),
-                  LFNoise0.kr(1).madd(20, 38),
-                  LFNoise0.kr(1).madd(1.5, 2)
+                  LFNoise0.kr(1).mulAdd(2, 10),
+                  LFNoise0.kr(1).mulAdd(20, 38),
+                  LFNoise0.kr(1).mulAdd(1.5, 2)
                 ) * 0.2
             </example>
             <example name="as a frequency control">
@@ -1017,7 +1017,7 @@
             </example>
             <example name="logistic map as frequency control">
                 val r = MouseX.kr(3.5441, 4)    // stable range
-                SinOsc.ar(QuadN.ar(40, -r, r, 0, 0.1).madd(800, 900)) * 0.4
+                SinOsc.ar(QuadN.ar(40, -r, r, 0, 0.1).mulAdd(800, 900)) * 0.4
             </example>
             <see>ugen.QuadL</see>
             <see>ugen.QuadC</see>
@@ -1067,7 +1067,7 @@
             </example>
             <example name="logistic map as frequency control">
                 val r = MouseX.kr(3.5441, 4)    // stable range
-                SinOsc.ar(QuadL.ar(40, -r, r, 0, 0.1).madd(800, 900)) * 0.4
+                SinOsc.ar(QuadL.ar(40, -r, r, 0, 0.1).mulAdd(800, 900)) * 0.4
             </example>
             <see>ugen.QuadN</see>
             <see>ugen.QuadC</see>
@@ -1117,7 +1117,7 @@
             </example>
             <example name="logistic map as frequency control">
                 val r = MouseX.kr(3.5441, 4)    // stable range
-                SinOsc.ar(QuadC.ar(40, -r, r, 0, 0.1).madd(800, 900)) * 0.4
+                SinOsc.ar(QuadC.ar(40, -r, r, 0, 0.1).mulAdd(800, 900)) * 0.4
             </example>
             <see>ugen.QuadN</see>
             <see>ugen.QuadL</see>

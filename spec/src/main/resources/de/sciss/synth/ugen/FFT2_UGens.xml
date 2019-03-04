@@ -74,7 +74,7 @@
                 // creates a buffer with `n` set values
                 def mkBuf(n: Int, amp: => Double): Buffer = {
                   val v = Vector.tabulate[FillValue](n) { i =>
-                    (i.linlin(0, n, 0, 2048).toInt, amp)
+                    (i.linLin(0, n, 0, 2048).toInt, amp)
                   }
                   val b = Buffer(s)
                   b.alloc(2048, completion = b.zeroMsg(b.setMsg(v: _*)))
@@ -116,7 +116,7 @@
         <arg name="kernel">
             <doc>
                 buffer identifier for the fixed kernel, which may be modulated in combination with the trigger.
-                Even a trigger input of zero is used, upon UGen initialization the kernel must point to
+                Even if the trigger input is initially zero, upon UGen initialization the kernel must point to
                 a valid buffer, otherwise the UGen aborts.
             </doc>
         </arg>
@@ -155,7 +155,7 @@
             <example name="three example kernels" type="full">
                 def mkBuf(n: Int, amp: => Double): Buffer = {
                   val v = Vector.tabulate[FillValue](n) { i =>
-                    (i.linlin(0, n, 0, 2048).toInt, amp)
+                    (i.linLin(0, n, 0, 2048).toInt, amp)
                   }
                   val b = Buffer(s)
                   b.alloc(2048, completion = b.zeroMsg(b.setMsg(v: _*)))
@@ -312,7 +312,7 @@
             <example name="mouse control">
                 val sf   = Seq.fill(3)(Rand(0.1, 0.5))
                 val sadd = Seq(1, 1.1, 1.5, 1.78, 2.45, 6.7).map(_ * 220)
-                val in   = Mix(LFSaw.ar(SinOsc.kr(sf).madd(10, sadd)) * 0.3)
+                val in   = Mix(LFSaw.ar(SinOsc.kr(sf).mulAdd(10, sadd)) * 0.3)
                 val fft  = FFT(LocalBuf(2048), in)
                 val re   = MouseX.kr(0.01,  2.0, 1)
                 val im   = MouseY.kr(0.01, 10.0, 1)
@@ -451,7 +451,11 @@
         </arg>
         <doc>
             <text>
-                A UGen calculating the running sum of an input signal over a given number of samples.
+                A UGen calculating the sum of an input signal over a sliding window of given number of samples.
+
+                ''Note'': Unlike `RunningMin` and `RunningMax`, this is not a trigger based operation, but at
+                any one time, the sum of the past `length` values is reported, continuously sliding the analysis
+                window.
             </text>
             <example name="poll waveform's DC offset">
                 val freq = 441

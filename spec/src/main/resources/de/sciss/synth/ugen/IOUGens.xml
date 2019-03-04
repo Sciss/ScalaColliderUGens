@@ -90,14 +90,14 @@
                 val att = dly * 0.8                       // apply decay factor
 
                 // reverse channels to give ping pong effect
-                LocalOut.ar(Seq(att \ 1, dly \ 0))
+                LocalOut.ar(Seq(att.out(1), dly.out(0)))
                 dly
             </example>
             <example name="tank">
                 val tones = Mix.fill(12) {
                   Pan2.ar(
                     Decay2.ar(Dust.ar(0.05), 0.1, 0.5) * 0.1 *
-                      FSinOsc.ar(IRand(36,84).midicps).cubed.max(0),
+                      FSinOsc.ar(IRand(36,84).midiCps).cubed.max(0),
                     Rand(-1,1))
                 }
                 val gen = tones + Pan2.ar(Decay2.ar(Dust.ar(0.03), 0.04, 0.3) * BrownNoise.ar, 0)
@@ -109,7 +109,7 @@
                 val in  = LocalIn.ar(Seq(0, 0)) * 0.98
                 val flt = OnePole.ar(in, 0.5)
 
-                val pan = Rotate2.ar(flt \ 0, flt \ 1, 0.23)
+                val pan = Rotate2.ar(flt.out(0), flt.out(1), 0.23)
                 val v1  = AllpassN.ar(pan, 0.05, Seq.fill(2)(Rand(0.01,0.05)), 2)
                 val v2  = DelayN.ar(v1, 0.3, Seq(0.19,0.26))
                 val v3  = AllpassN.ar(v2 , 0.05, Seq.fill(2)(Rand(0.03,0.15)), 2)
@@ -335,7 +335,7 @@
                 val att = dly * 0.8                       // apply decay factor
 
                 // reverse channels to give ping pong effect
-                LocalOut.ar(Seq(att \ 1, dly \ 0))
+                LocalOut.ar(Seq(att.out(1), dly.out(0)))
                 dly
             </example>
             <see>ugen.LocalIn</see>
@@ -434,7 +434,7 @@
                 c.set(30)   // initial midi-pitch
 
                 play {
-                  val freq = LagIn.kr(c.index, time = 1).midicps
+                  val freq = LagIn.kr(c.index, time = 1).midiCps
                   SinOsc.ar(freq) * AmpComp.kr(freq) * 0.1
                 }
 

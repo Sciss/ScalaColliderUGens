@@ -45,7 +45,7 @@
                 // create simple undulating magnitudes
                 val m0 = FSinOsc.kr(Seq.fill(100)(ExpRand(0.1, 1))) * 0.5 + 0.5
                 // give them a "rolloff" to make the sound less unpleasant
-                val m1 = m0 * Seq.tabulate(100)(_.linlin(0, 99, 1.0, 0.01).squared)
+                val m1 = m0 * Seq.tabulate(100)(_.linLin(0, 99, 1.0, 0.01).squared)
                 // turn the bins on and off at different rates
                 val mags = m1 * LFPulse.kr(Seq.fill(100)(2 pow IRand(-3, 5)))
                 // ignore phase

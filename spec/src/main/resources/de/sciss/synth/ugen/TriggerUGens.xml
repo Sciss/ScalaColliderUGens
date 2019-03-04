@@ -191,7 +191,7 @@
                 // never falls back exactly to zero!
                 val tr = MouseButton.kr(lag = 0)
                 val ff = ToggleFF.kr(tr)
-                SinOsc.ar(ff.madd(400, 800)) * 0.1
+                SinOsc.ar(ff.mulAdd(400, 800)) * 0.1
             </example>
             <see>ugen.SetResetFF</see>
         </doc>
@@ -223,7 +223,7 @@
                 val set   = MouseButton.kr(lag = 0)
                 val reset = Impulse.kr(1)
                 val ff    = SetResetFF.kr(set, reset)
-                SinOsc.ar(ff.madd(400, 800)) * 0.1
+                SinOsc.ar(ff.mulAdd(400, 800)) * 0.1
             </example>
             <example name="limit trigger rate">
                 // with a combination of TDelay and SetResetFF
@@ -496,7 +496,7 @@
                 This is a very crude pitch follower, but can be useful in some situations.
             </text>
             <example name="reconstruct sine frequency">
-                val f1 = SinOsc.kr(0.2).madd(600, 700).roundTo(100)
+                val f1 = SinOsc.kr(0.2).mulAdd(600, 700).roundTo(100)
                 val a  = SinOsc.ar(f1) * 0.1
                 val f2 = ZeroCrossing.ar(a)
                 f2.poll(10, "estimation")
@@ -600,7 +600,7 @@
                 // mouse button can be used to jump back
                 val reset = MouseButton.kr(lag = 0)
                 val p     = Phasor.ar(reset, freq / SampleRate.ir)
-                SinOsc.ar(p.linlin(0, 1, 600, 1000)) * 0.1
+                SinOsc.ar(p.linLin(0, 1, 600, 1000)) * 0.1
             </example>
             <see>ugen.Ramp</see>
             <see>ugen.Stepper</see>
@@ -635,21 +635,21 @@
                 See the 'illustrate timing' example to understand this timing.
             </text>
             <example name="illustrate timing">
-                val i  = Impulse.ar(0)
-                // first impulse after 100ms
-                val t1 = DelayN.ar(i * 1.0 , 0.100, 0.100)
-                // one sample later
-                val t2 = Delay1.ar(t1) * 0.5
-                // another sample later
-                val t3 = Delay1.ar(t2)
-                val p  = Peak.ar(t1 + t2, t2)
-                // at t1, peak has already seen t1
-                p.poll(t1, "t1")
-                // at t2, peak still reports 1.0, while internally resetting
-                p.poll(t2, "t2")
-                // at t3, we observe 0.5, therefore peak did reset at t2
-                p.poll(t3, "t3")
-                ()
+                    val i  = Impulse.ar(0)
+                    // first impulse after 100ms
+                    val t1 = DelayN.ar(i * 1.0 , 0.100, 0.100)
+                    // one sample later
+                    val t2 = Delay1.ar(t1) * 0.5
+                    // another sample later
+                    val t3 = Delay1.ar(t2)
+                    val p  = Peak.ar(t1 + t2, t2)
+                    // at t1, peak has already seen t1
+                    p.poll(t1, "t1")
+                    // at t2, peak still reports 1.0, while internally resetting
+                    p.poll(t2, "t2")
+                    // at t3, we observe 0.5, therefore peak did reset at t2
+                    p.poll(t3, "t3")
+                    ()
             </example>
             <see>ugen.RunningMin</see>
             <see>ugen.RunningMax</see>
@@ -809,7 +809,7 @@
                 // if X change stronger, modulate pan position
                 val p   = LFTri.ar(c * 10 * isX)
                 // if Y change stronger, modulate sine frequency
-                val f   = LFTri.ar(c * 10 * isY).linexp(-1, 1, 100, 4000)
+                val f   = LFTri.ar(c * 10 * isY).linExp(-1, 1, 100, 4000)
                 // report current state
                 c.poll(5, "c")
                 x.poll(isX, "now X")
@@ -846,7 +846,7 @@
                 // if X change weaker, modulate pan position
                 val p   = LFTri.ar(c * 10 * isX)
                 // if Y change weaker, modulate sine frequency
-                val f   = LFTri.ar(c * 10 * isY).linexp(-1, 1, 100, 4000)
+                val f   = LFTri.ar(c * 10 * isY).linExp(-1, 1, 100, 4000)
                 // report current state
                 c.poll(5, "c")
                 x.poll(isX, "now X")

@@ -488,7 +488,7 @@
             </text>
             <example name="show DC with mouse-controlled coefficient">
                 val freq = 800
-                val in   = LFPulse.ar(freq).madd(0.5, 0.5)
+                val in   = LFPulse.ar(freq).mulAdd(0.5, 0.5)
                 val coef = MouseX.kr(0.9, 0.999)
                 val flt  = LeakDC.ar(in, coef)
                 val dc   = RunningSum.ar(flt, SampleRate.ir/freq)
@@ -699,7 +699,7 @@
             </text>
             <example name="modulated frequency">
                 val in   = Saw.ar(200) * 0.5
-                val freq = SinOsc.ar(XLine.ar(0.3, 100, 20)).madd(3600, 4000)
+                val freq = SinOsc.ar(XLine.ar(0.3, 100, 20)).mulAdd(3600, 4000)
                 LPF.ar(in, freq)
             </example>
             <example name="mouse controlled frequency">
@@ -733,7 +733,7 @@
             </text>
             <example name="modulated frequency">
                 val in   = Saw.ar(200) * 0.5
-                val freq = SinOsc.ar(XLine.ar(0.3, 100, 20)).madd(3600, 4000)
+                val freq = SinOsc.ar(XLine.ar(0.3, 100, 20)).mulAdd(3600, 4000)
                 HPF.ar(in, freq)
             </example>
             <example name="mouse controlled frequency">
@@ -773,7 +773,7 @@
             </text>
             <example name="modulated frequency">
                 val in   = Saw.ar(200) * 0.5
-                val freq = SinOsc.ar(XLine.ar(0.3, 100, 20)).madd(3600, 4000)
+                val freq = SinOsc.ar(XLine.ar(0.3, 100, 20)).mulAdd(3600, 4000)
                 BPF.ar(in, freq)
             </example>
             <example name="mouse controlled frequency and Q">
@@ -816,7 +816,7 @@
             </text>
             <example name="modulated frequency">
                 val in   = Saw.ar(200) * 0.5
-                val freq = SinOsc.ar(XLine.ar(0.3, 100, 20)).madd(3600, 4000)
+                val freq = SinOsc.ar(XLine.ar(0.3, 100, 20)).mulAdd(3600, 4000)
                 BRF.ar(in, freq)
             </example>
             <example name="mouse controlled frequency and Q">
@@ -1064,7 +1064,7 @@
             </text>
             <example name="modulated frequency">
                 val in   = Saw.ar(200) * 0.5
-                val freq = SinOsc.ar(XLine.ar(0.3, 100, 20)).madd(3600, 4000)
+                val freq = SinOsc.ar(XLine.ar(0.3, 100, 20)).mulAdd(3600, 4000)
                 Resonz.ar(in, freq)
             </example>
             <example name="mouse controlled frequency and Q">
@@ -1113,7 +1113,7 @@
             </example>
             <example name="modulated frequency">
                 val in   = Saw.ar(200) * 0.02
-                val freq = SinOsc.ar(XLine.ar(0.3, 100, 20)).madd(2800, 4800)
+                val freq = SinOsc.ar(XLine.ar(0.3, 100, 20)).mulAdd(2800, 4800)
                 Ringz.ar(in, freq)
             </example>
             <example name="multiple glissandi excited by noise">
@@ -1171,11 +1171,11 @@
                 on the server's sampling rate. This is to achieve the same amplitude for single-sample impulse inputs.
             </text>
             <example name="modulated formant frequency">
-                val in = Blip.ar(SinOsc.kr(5,0).madd(20, 300), 1000) * 0.1
+                val in = Blip.ar(SinOsc.kr(5,0).mulAdd(20, 300), 1000) * 0.1
                 Formlet.ar(in, XLine.kr(1500, 700, 8), 0.005, 0.04)
             </example>
             <example name="mouse control of frequency and decay time">
-                val in    = Blip.ar(SinOsc.kr(5,0).madd(20, 300), 1000) * 0.1
+                val in    = Blip.ar(SinOsc.kr(5,0).mulAdd(20, 300), 1000) * 0.1
                 val freq  = MouseY.kr(700, 2000, 1)
                 val decay = MouseX.kr(0.01, 0.2, 1)
                 Formlet.ar(in, freq, attack = 0.005, decay = decay)

@@ -346,7 +346,7 @@
                 val tr = Impulse.kr(5)
                 val v  = Demand.kr(tr, in)
                 v.poll(tr)
-                val f  = (v + 62).midicps
+                val f  = (v + 62).midiCps
                 SinOsc.ar(f) * 0.1
             </example>
         </doc>
@@ -434,7 +434,7 @@
                 val tr = Impulse.kr(5)
                 val v  = Demand.kr(tr, in)
                 v.poll(tr)
-                val f  = (v + 62).midicps
+                val f  = (v + 62).midiCps
                 SinOsc.ar(f) * 0.1
             </example>
         </doc>
@@ -466,7 +466,7 @@
                 val tr = Impulse.kr(5)
                 val v  = Demand.kr(tr, in)
                 v.poll(tr)
-                val f  = (v + 62).midicps
+                val f  = (v + 62).midiCps
                 SinOsc.ar(f) * 0.1
             </example>
             <example name="constants alternating with white noise samples">
@@ -474,7 +474,7 @@
                 val tr = Impulse.kr(5)
                 val v  = Demand.kr(tr, in)
                 v.poll(tr)
-                val f  = (v + 62).midicps
+                val f  = (v + 62).midiCps
                 SinOsc.ar(f) * 0.1
             </example>
             <example name="constants alternating with two brownian values">
@@ -484,7 +484,7 @@
                 val tr = Impulse.kr(5)
                 val v  = Demand.kr(tr, in)
                 v.poll(tr)
-                val f  = (v + 62).midicps
+                val f  = (v + 62).midiCps
                 SinOsc.ar(f) * 0.1
             </example>
             <see>ugen.Demand</see>
@@ -522,7 +522,7 @@
                 val tr = Impulse.kr(5)
                 val v  = Demand.kr(tr, in)
                 v.poll(tr)
-                val f  = (v + 62).midicps
+                val f  = (v + 62).midiCps
                 SinOsc.ar(f) * 0.1
             </example>
             <see>ugen.Demand</see>
@@ -589,7 +589,7 @@
                 val tr = Impulse.kr(5)
                 val v  = Demand.kr(tr, in)
                 v.poll(tr)
-                val f  = (v + 62).midicps
+                val f  = (v + 62).midiCps
                 SinOsc.ar(f) * 0.1
             </example>
             <see>ugen.Demand</see>
@@ -622,7 +622,7 @@
                 val tr = Impulse.kr(5)
                 val v  = Demand.kr(tr, in)
                 v.poll(tr)
-                val f  = (v + 62).midicps
+                val f  = (v + 62).midiCps
                 SinOsc.ar(f) * 0.1
             </example>
             <see>ugen.Demand</see>
@@ -658,7 +658,7 @@
                 val tr = Impulse.kr(5)
                 val v  = Demand.kr(tr, in)
                 v.poll(tr)
-                val f  = (v + 62).midicps
+                val f  = (v + 62).midiCps
                 SinOsc.ar(f) * 0.1
             </example>
             <example name="reshuffle">
@@ -666,7 +666,7 @@
                 val tr = Impulse.kr(5)
                 val v  = Demand.kr(tr, in)
                 v.poll(tr)
-                val f  = (v + 62).midicps
+                val f  = (v + 62).midiCps
                 SinOsc.ar(f) * 0.1
             </example>
             <example name="audio rate">

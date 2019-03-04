@@ -242,7 +242,7 @@
                 val q = Mix(LFSaw.ar(Seq(200, 200.37))) * 0.03  // second source
                 // B-format encode 2 signals at opposite sides of the circle
                 val enc = PanB2.ar(p, -0.5) + PanB2.ar(q, +0.5)
-                val Seq(w, x, y) = (0 to 2).map(enc \ _)
+                val Seq(w, x, y) = (0 to 2).map(enc out _)
                 val rot = Rotate2.ar(x, y, MouseX.kr(-1, +1))
                 // B-format decode to quad (front-left, front-right, rear-left, rear-right)
                 DecodeB2.ar(4, w, rot.xr, rot.yr)
@@ -438,7 +438,7 @@
                 val q = Mix(LFSaw.ar(Seq(200, 200.37))) * 0.03  // second source
                 // B-format encode 2 signals at opposite sides of the circle
                 val enc = PanB2.ar(p, -0.5) + PanB2.ar(q, +0.5)
-                val Seq(w, x, y) = (0 to 2).map(enc \ _)
+                val Seq(w, x, y) = (0 to 2).map(enc out _)
                 val rot = Rotate2.ar(x, y, MouseX.kr(-1, +1))
                 // B-format decode to quad (front-left, front-right, rear-left, rear-right)
                 DecodeB2.ar(4, w, rot.xr, rot.yr)
@@ -622,7 +622,7 @@
                 val q = Mix(LFSaw.ar(Seq(200, 200.37))) * 0.03  // second source
                 // B-format encode 2 signals at opposite sides of the circle
                 val enc = PanB2.ar(p, -0.5) + PanB2.ar(q, +0.5)
-                val Seq(w, x, y) = (0 to 2).map(enc \ _)
+                val Seq(w, x, y) = (0 to 2).map(enc out _)
                 val rot = Rotate2.ar(x, y, MouseX.kr(-1, +1))
                 // B-format decode to quad (front-left, front-right, rear-left, rear-right)
                 DecodeB2.ar(4, w, rot.xr, rot.yr)

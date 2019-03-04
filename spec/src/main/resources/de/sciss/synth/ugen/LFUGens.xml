@@ -116,7 +116,7 @@
                 LFPulse.kr(XLine.kr(1, 200, 10), 0, 0.2) * SinOsc.ar(440) * 0.1
             </example>
             <example name="used as both oscillator and LFO">
-                LFPulse.ar(LFPulse.kr(3, 0, 0.3).madd(200, 200), 0, 0.2) * 0.1
+                LFPulse.ar(LFPulse.kr(3, 0, 0.3).mulAdd(200, 200), 0, 0.2) * 0.1
             </example>
             <see>ugen.Pulse</see>
         </doc>
@@ -150,7 +150,7 @@
                 LFSaw.kr(XLine.kr(1, 200, 10)) * SinOsc.ar(440) * 0.1
             </example>
             <example name="neuer deutscher Sägezahn">
-                LFSaw.ar(LFSaw.kr(3).madd(200, 200)) * 0.1
+                LFSaw.ar(LFSaw.kr(3).mulAdd(200, 200)) * 0.1
             </example>
             <see>ugen.Saw</see>
         </doc>
@@ -180,7 +180,7 @@
                 LFPar.kr(XLine.kr(1, 200, 10)) * SinOsc.ar(440) * 0.1
             </example>
             <example name="used as both oscillator and LFO">
-                LFPar.ar(LFPar.kr(LFPar.kr(0.2).madd(8,10)).madd(400,800)) * 0.1
+                LFPar.ar(LFPar.kr(LFPar.kr(0.2).mulAdd(8,10)).mulAdd(400,800)) * 0.1
             </example>
             <see>ugen.LFCub</see>
         </doc>
@@ -209,7 +209,7 @@
                 LFPar.kr(XLine.kr(1, 200, 10)) * SinOsc.ar(440) * 0.1
             </example>
             <example name="used as both oscillator and LFO">
-                LFPar.ar(LFPar.kr(LFPar.kr(0.2).madd(8,10)).madd(400,800)) * 0.1
+                LFPar.ar(LFPar.kr(LFPar.kr(0.2).mulAdd(8,10)).mulAdd(400,800)) * 0.1
             </example>
             <see>ugen.LFPar</see>
         </doc>
@@ -245,7 +245,7 @@
                 LFTri.kr(XLine.kr(1, 200, 10)) * SinOsc.ar(440) * 0.1
             </example>
             <example name="used as both oscillator and LFO">
-                LFTri.ar(LFTri.kr(LFTri.kr(0.2).madd(8,10)).madd(400,800)) * 0.1
+                LFTri.ar(LFTri.kr(LFTri.kr(0.2).mulAdd(8,10)).mulAdd(400,800)) * 0.1
             </example>
         </doc>
     </ugen>
@@ -288,8 +288,8 @@
                 at -1. E.g. for default parameters, it is `exp(-50)` or roughly zero.
             </text>
             <example name="dur and width can be modulated at audio rate">
-                val dur = SinOsc.ar(MouseX.kr(2, 1000, 1) * Seq(1.0, 1.1)).linlin(-1, 1, 0.0006, 0.01)
-                val width = SinOsc.ar(Seq(0.5, 0.55)).linlin(-1, 1, 0.01, 0.3)
+                val dur = SinOsc.ar(MouseX.kr(2, 1000, 1) * Seq(1.0, 1.1)).linLin(-1, 1, 0.0006, 0.01)
+                val width = SinOsc.ar(Seq(0.5, 0.55)).linLin(-1, 1, 0.01, 0.3)
                 LFGauss.ar(dur, width) * 0.2
             </example>
             <example name="several frequencies and widths combined">
@@ -370,8 +370,8 @@
                 In other words, the waveform has a delay of one sample.
             </text>
             <example name="width modulation">
-                val freq  = LFPulse.kr(3, 0, 0.3).madd(200, 200)
-                val width = LFTri.kr(1.0).madd(0.5, 0.5)
+                val freq  = LFPulse.kr(3, 0, 0.3).mulAdd(200, 200)
+                val width = LFTri.kr(1.0).mulAdd(0.5, 0.5)
                 VarSaw.ar(freq, 0, width) * 0.2
             </example>
             <see>ugen.Saw</see>
@@ -644,7 +644,7 @@
                 `lo` will be wrapped back to `hi - (lo - in) % (hi - lo)`.
             </text>
             <example name="wrap pulse wave to modulate timbre">
-                val hi = SinOsc.ar(0.1).linexp(-1, 1, 0.01, 1.0)
+                val hi = SinOsc.ar(0.1).linExp(-1, 1, 0.01, 1.0)
                 Wrap.ar(Pulse.ar(300), 0, hi) * 0.2 / hi
             </example>
             <see>ugen.Fold</see>
@@ -687,7 +687,7 @@
                 margin is reached again where another reflection occurs.
             </text>
             <example name="fold sawtooth wave to modulate timbre">
-                val hi = SinOsc.ar(0.1).linexp(-1, 1, 0.01, 1.0)
+                val hi = SinOsc.ar(0.1).linExp(-1, 1, 0.01, 1.0)
                 Fold.ar(Saw.ar(300), 0, hi) * 0.2 / hi
             </example>
             <see>ugen.Wrap</see>
@@ -736,7 +736,7 @@
                 }}
             </text>
             <example name="clip sine wave to modulate timbre">
-                val hi = SinOsc.ar(0.1).linexp(-1, 1, 0.01, 1.0)
+                val hi = SinOsc.ar(0.1).linExp(-1, 1, 0.01, 1.0)
                 Clip.ar(SinOsc.ar(300), 0, hi) * 0.2 / hi
             </example>
             <see>ugen.Wrap</see>
@@ -787,7 +787,7 @@
             </text>
             <example name="activate with mouse button">
                 val freq = MouseX.kr(300, 15000, 1)
-                val mod  = freq * SinOsc.ar(MouseY.kr(3, 200, 1)).madd(0.5, 1)
+                val mod  = freq * SinOsc.ar(MouseY.kr(3, 200, 1)).mulAdd(0.5, 1)
                 val corr = AmpComp.ar(mod, 300) * 2
                 val amp  = Select.ar(MouseButton.kr(lag = 0), Seq(DC.ar(1), corr))
                 SinOsc.ar(mod) * 0.1 * amp
@@ -835,7 +835,7 @@
             </text>
             <example name="activate with mouse button">
                 val freq = MouseX.kr(300, 15000, 1)
-                val mod  = freq * SinOsc.ar(MouseY.kr(3, 200, 1)).madd(0.5, 1)
+                val mod  = freq * SinOsc.ar(MouseY.kr(3, 200, 1)).mulAdd(0.5, 1)
                 val corr = AmpCompA.ar(mod, 300) * 2
                 val amp  = Select.ar(MouseButton.kr(lag = 0), Seq(DC.ar(1), corr))
                 SinOsc.ar(mod) * 0.1 * amp

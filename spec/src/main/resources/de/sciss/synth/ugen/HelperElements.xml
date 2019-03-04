@@ -19,7 +19,7 @@
                 val index   = MouseX.kr(lo = 0, hi = NumChannels(sines) - 1)
                 val indices = ChannelIndices(sines)
                 indices.poll(0, "indices")
-                val select  = 1 - (indices absdif index).min(1)
+                val select  = 1 - (indices absDif index).min(1)
                 val sig     = Mix(sines * select)
                 sig * 0.2
             </example>
@@ -46,13 +46,13 @@
                 determined at graph expansion time. If this is desired, the
                 `Select` UGen can be used.
 
-                Usually the graph element operator `\` (backlash) can be used
+                Usually the graph element operator `out` can be used
                 instead of explicitly writing `ChannelProxy`. Thus
-                `elem \ index` is equivalent to `ChannelProxy(elem, index)`.
+                `elem.out(index)` is equivalent to `ChannelProxy(elem, index)`.
                 UGens with a fixed number of outputs often have auxiliary methods
                 to access the channels in meaningful way, e.g. `Pitch` has
                 method `freq` and `hasFreq`, which are equivalent to
-                `pitch \ 0` and `pitch \ 1`.
+                `pitch.out(0)` and `pitch.out(1)`.
 
                 Because ScalaCollider allows late-expanding
                 graph elements, we have no direct way to get some
@@ -61,7 +61,7 @@
             <example name="frequency of a pitch estimator">
                 val sin = SinOsc.ar(MouseX.kr(10, 10000, warp = 1))
                 val pch = Pitch.kr(sin)
-                val freq = pch \ 0  // same as pch.freq
+                val freq = pch.out(0)  // same as pch.freq
                 freq.poll(label = "freq")
                 ()
             </example>
@@ -102,10 +102,10 @@
                 integers and thus cannot be determined at graph expansion time.
                 If this is desired, the `Select` UGen can be used.
 
-                Usually the graph element operator `\` (backlash) along with
+                Usually the graph element operator `out` along with
                 a standard Scala `Range` argument can be used
                 instead of explicitly writing `ChannelRangeProxy`. Thus
-                `elem \ (0 until 4)` selects the first four channels and is
+                `elem.out(0 until 4)` selects the first four channels and is
                 equivalent to `ChannelRangeProxy(elem, from = 0, until = 4, step = 1)`.
 
                 Behind the scene, `ChannelProxy` instances are created, thus
@@ -251,7 +251,7 @@
                 val z = DelayN.ar(s, 0.048)
 
                 // 'c' length modulated comb delays in parallel :
-                val y = Mix(CombL.ar(z, 0.1, LFNoise1.kr(Seq.fill(c)(Rand(0, 0.1))).madd(0.04, 0.05), 15))
+                val y = Mix(CombL.ar(z, 0.1, LFNoise1.kr(Seq.fill(c)(Rand(0, 0.1))).mulAdd(0.04, 0.05), 15))
 
                 // chain of 'a' allpass delays on each of two channels (2 times 'a' total) :
                 val x = Mix.fold(y, a) { in =>
@@ -269,7 +269,7 @@
                 Mix.tabulate(p) { i =>
                   FSinOsc.ar(f * (i+1)) * // freq of partial
                     LFNoise1.kr(Seq(Rand(2, 10), Rand(2, 10)))  // amplitude rate
-                    .madd(
+                    .mulAdd(
                       0.02,     // amplitude scale
                       offset    // amplitude offset
                     ).max(0)    // clip negative amplitudes to zero
@@ -399,7 +399,11 @@
 
                 {{{
                 Seq[GE](
-                  x\0 * y\0, x\1 * y\1, x\2 * y\2, x\0 * y\3, x\1 * y\4
+                  x.out(0) * y.out(0),
+                  x.out(1) * y.out(1),
+                  x.out(2) * y.out(2),
+                  x.out(0) * y.out(3),
+                  x.out(1) * y.out(4)
                 )
                 }}}
 
@@ -412,9 +416,9 @@
 
                 {{{
                 Seq[GE](
-                  x \ 0, x \ 0, x \ 0, x \ 0, x \ 0,
-                  x \ 1, x \ 1, x \ 1, x \ 1, x \ 1,
-                  x \ 2, x \ 2, x \ 2, x \ 2, x \ 2
+                  x.out(0), x.out(0), x.out(0), x.out(0), x.out(0),
+                  x.out(1), x.out(1), x.out(1), x.out(1), x.out(1),
+                  x.out(2), x.out(2), x.out(2), x.out(2), x.out(2)
                 )
                 }}}
 
@@ -423,9 +427,9 @@
 
                 {{{
                 Seq[GE](
-                  (x\0) * (y\0), (x\0) * (y\1), (x\0) * (y\2), (x\0) * (y\3), (x\0) * (y\4),
-                  (x\1) * (y\0), (x\1) * (y\1), (x\1) * (y\2), (x\1) * (y\3), (x\1) * (y\4),
-                  (x\2) * (y\0), (x\2) * (y\1), (x\2) * (y\2), (x\2) * (y\3), (x\2) * (y\4)
+                  x.out(0) * y.out(0), x.out(0) * y.out(1), x.out(0) * y.out(2), x.out(0) * y.out(3), x.out(0) * y.out(4),
+                  x.out(1) * y.out(0), x.out(1) * y.out(1), x.out(1) * y.out(2), x.out(1) * y.out(3), x.out(1) * y.out(4),
+                  x.out(2) * y.out(0), x.out(2) * y.out(1), x.out(2) * y.out(2), x.out(2) * y.out(3), x.out(2) * y.out(4)
                 )
                 }}}
             </text>
@@ -513,7 +517,7 @@
             <text>
                 A graph element that interleaves a number of (multi-channel) input signals.
                 For example, if two stereo-signals `a` and `b` are zipped, the output will be a four-channel
-                signal corresponding to `[ a \ 0, b \ 0, a \ 1, b \ 1 ]`. If the input signals
+                signal corresponding to `[ a out 0, b out 0, a out 1, b out 1 ]`. If the input signals
                 have different numbers of channels, the minimum number of channels is used.
             </text>
             <example name="peak and RMS metering" type="full">

@@ -93,7 +93,7 @@
                 val in2  = Pan2.ar(in, TRand.ar(-1, 1, tr))
                 val mix  = MouseX.kr
                 val room = MouseY.kr
-                FreeVerb2.ar(in2 \ 0, in2 \ 1, mix, room, "damp".kr(0.5))
+                FreeVerb2.ar(in2 out 0, in2 out 1, mix, room, "damp".kr(0.5))
             </example>
             <see>ugen.FreeVerb</see>
             <see>ugen.GVerb</see>

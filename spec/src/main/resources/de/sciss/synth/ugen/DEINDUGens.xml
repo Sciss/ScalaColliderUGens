@@ -99,20 +99,20 @@
             </text>
             <example name="defaults">
                 val src = SplayAz.ar(2, Impulse.ar(Seq(1, 3, 5, 7, 9)))
-                JPverb.ar(inL = src\0, inR = src\1)
+                JPverb.ar(inL = src.out(0), inR = src.out(1))
             </example>
             <example name="dream-verb">
                 val src = SplayAz.ar(2, Impulse.ar(Seq(1, 3, 5, 7, 9)))
                 0.4 * src + 0.8 * JPverb.ar(
-                  inL = src\0, inR = src\1, revTime = 60, size = 2.8, damp = 0.3, earlyDiff = 0.42,
+                  inL = src.out(0), inR = src.out(1), revTime = 60, size = 2.8, damp = 0.3, earlyDiff = 0.42,
                   low = 0.84, mid = 0.71, high = 0.0,
                   lowCut = 2450, highCut = 1024, modFreq = 0.1, modDepth = 4.6)
             </example>
             <example name="tail modulation">
                 val src = SplayAz.ar(2, Impulse.ar(Seq(1, 3, 5, 7, 9)))
-                val time = LFSaw.ar(0.02).linexp(-1, 1, 0.02, 60)
+                val time = LFSaw.ar(0.02).linExp(-1, 1, 0.02, 60)
                 JPverb.ar(
-                  inL = src\0, inR = src\1, revTime = time, size = 1.0, damp = 0.3, earlyDiff = 0.0,
+                  inL = src.out(0), inR = src.out(1), revTime = time, size = 1.0, damp = 0.3, earlyDiff = 0.0,
                   low = 1, mid = 0, high = 1,
                   lowCut = 2450, highCut = 1024, modDepth = 0)
             </example>
@@ -200,14 +200,14 @@
             <example name="discrete">
                 val src = LeakDC.ar(SplayAz.ar(2, Impulse.ar(Seq(1, 3, 5, 7, 9))))
                 Greyhole.ar(
-                  inL = src\0, inR = src\1, delayTime = 0.1, damp = 0.1,
+                  inL = src.out(0), inR = src.out(1), delayTime = 0.1, damp = 0.1,
                   feedback = 0.1, modDepth = 0.01, modFreq = 2)
             </example>
             <example name="time modulation">
                 val src = LeakDC.ar(SplayAz.ar(2, Impulse.ar(Seq(1, 3, 5, 7, 9))))
-                val time = LFTri.kr(0.01).linexp(-1, 1, 0.05, 0.2)
+                val time = LFTri.kr(0.01).linExp(-1, 1, 0.05, 0.2)
                 Greyhole.ar(
-                  inL = src\0, inR = src\1, delayTime = time, damp = 0.4,
+                  inL = src.out(0), inR = src.out(1), delayTime = time, damp = 0.4,
                   feedback = 0.99, modDepth = 0.01, modFreq = 2)
             </example>
             <see>ugen.JPverb</see>
@@ -325,7 +325,7 @@
             <example name="sequencer">
                 val noise = DNoiseRing(change = MouseX.kr(0, 1), chance = MouseY.kr(0, 1), numBits = 32)
                 val tr    = Impulse.ar(10)
-                val freq  = (Demand.ar(tr, noise)).linlin(0, 2.0.pow(32), 40, 40+48).midicps
+                val freq  = (Demand.ar(tr, noise)).linLin(0, 2.0.pow(32), 40, 40+48).midiCps
                 freq.poll(tr, "freq")
                 Pan2.ar(SinOsc.ar(freq) * 0.25)
             </example>
@@ -356,7 +356,7 @@
             <example name="measure mouse-controlled sine">
                 // with MouseX at maximum, you'll see that the sine has -3 dB RMS
                 val sig = SinOsc.ar(300) * MouseX.kr(0, 1) * LFPulse.ar(0.5)
-                val rms = RMS.ar(sig, 10).ampdb.roundTo(0.1).poll(8, "RMS (dB)")
+                val rms = RMS.ar(sig, 10).ampDb.roundTo(0.1).poll(8, "RMS (dB)")
                 sig
             </example>
             <see>ugen.Amplitude</see>

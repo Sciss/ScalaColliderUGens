@@ -79,7 +79,7 @@
                 val a    = LFNoise2 .ar(r)
                 val b    = LFDNoise3.ar(r)
                 val freq = Select.ar(MouseButton.kr(lag = 0), Seq(a, b))
-                SinOsc.ar(freq.madd(200, 500)) * 0.2
+                SinOsc.ar(freq.mulAdd(200, 500)) * 0.2
             </example>
             <see>ugen.LFNoise2</see>
             <see>ugen.LFDNoise0</see>

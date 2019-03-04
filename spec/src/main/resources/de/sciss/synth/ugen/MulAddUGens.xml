@@ -29,14 +29,14 @@
                 instead of explicitly writing `MulAdd`.
 
                 {{{
-                MulAdd(in, mul, add) == in.madd(mul, add) == in * mul + add
+                MulAdd(in, mul, add) == in.mulAdd(mul, add) == in * mul + add
                 }}}
             </text>
             <example name="scale value range">
                 // input range -1 to +1,
                 // output range ((-1 * 100) + 300) = 200
                 // to           ((+1 * 100) + 300) = 400
-                val freq = SinOsc.kr(1).madd(100, 300) // or MulAdd(..., 100, 300)
+                val freq = SinOsc.kr(1).mulAdd(100, 300) // or MulAdd(..., 100, 300)
                 freq.poll(label = "freq")
                 SinOsc.ar(freq) * 0.1
             </example>
