@@ -12,7 +12,7 @@ lazy val commonSettings = Seq(
   description        := "UGens for ScalaCollider",
   homepage           := Some(url(s"https://github.com/Sciss/$baseName")),
   scalaVersion       := "2.12.8",
-  crossScalaVersions := Seq("2.12.8", "2.11.12", "2.13.0-M5"),
+  crossScalaVersions := Seq("2.12.8", "2.11.12", "2.13.0-RC1"),
   scalacOptions      ++= Seq("-deprecation", "-unchecked", "-feature", "-encoding", "utf8", "-Xfuture", "-Xlint"),
   initialCommands in console := """import de.sciss.synth._"""
 ) ++ publishSettings
@@ -20,10 +20,10 @@ lazy val commonSettings = Seq(
 lazy val deps = new {
   val main = new {
     val numbers      = "0.2.0"
-    val scalaXML     = "1.1.1" // "1.0.6" // scala-compiler 2.11 and 2.12 use 1.0.x, but other libraries now go for this version, catch-22
+    val scalaXML     = "1.2.0" // "1.0.6" // scala-compiler 2.11 and 2.12 use 1.0.x, but other libraries now go for this version, catch-22
   }
   val test = new {
-    val scalaTest    = "3.0.6"
+    val scalaTest    = "3.0.8-RC2"
   }
   // --- gen project (not published, thus not subject to major version concerns) ---
   val gen = new {

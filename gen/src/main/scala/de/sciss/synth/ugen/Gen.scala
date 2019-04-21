@@ -53,7 +53,7 @@ object Gen extends App {
 
     // help("help") text "prints this usage text"
 
-    arg[File]("<input>...") unbounded() optional() text "List of UGen description files (XML) to process" action {
+    arg[File]("<input>...").unbounded().optional().text("List of UGen description files (XML) to process").action {
       (f, c) => c.copy(inFiles = c.inFiles :+ f)
     }
   }
