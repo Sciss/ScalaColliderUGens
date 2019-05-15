@@ -32,7 +32,7 @@ object UGenSpec {
     * This is currently incomplete.
     */
   final val thirdPartyPlugins: List[String] = List(
-    "DEINDUGens", "MCLDBufferUGens", "MCLDDistortionUGens", "MdaUGens", "TJUGens", "VBAPUGens"
+    "DEINDUGens", "MCLDBufferUGens", "MCLDDistortionUGens", "MdaUGens", "TJUGens", "VBAPUGens", "AlmatLDUGens"
   )
 
   /** Lazily computes the specs of the UGens bundled with the standard SuperCollider distribution.

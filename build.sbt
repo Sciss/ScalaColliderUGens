@@ -1,7 +1,7 @@
 lazy val baseName       = "ScalaColliderUGens"
 lazy val baseNameL      = baseName.toLowerCase
 
-lazy val projectVersion = "1.19.3"
+lazy val projectVersion = "1.19.4"
 lazy val mimaVersion    = "1.19.0"
 
 name := baseName
@@ -178,7 +178,14 @@ def runUGenGenerator(name: String, outputDir: File, cp: Seq[File], log: Logger,
   } finally {
     os.close()
   }
-  val sources = scala.io.Source.fromFile(tmp).getLines().map(file).toList
+  val sources = {
+    val src = scala.io.Source.fromFile(tmp)
+    try {
+      src.getLines().map(file).toList
+    } finally {
+      src.close()
+    }
+  }
   tmp.delete()
   sources
 }

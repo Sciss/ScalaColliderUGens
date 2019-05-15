@@ -2,7 +2,7 @@
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Sciss/ScalaCollider?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://travis-ci.org/Sciss/ScalaColliderUGens.svg?branch=master)](https://travis-ci.org/Sciss/ScalaColliderUGens)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.sciss/scalacolliderugens-core_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.sciss/scalacolliderugens-core_2.11)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.sciss/scalacolliderugens-core_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.sciss/scalacolliderugens-core_2.12)
 
 ## statement
 
@@ -30,7 +30,7 @@ All artifacts are published to Maven Central, and are available as follows:
     "de.sciss" %% "scalacolliderugens-core" % v
     "de.sciss" %% "scalacolliderugens-plugins" % v
 
-The current stable version `v` is `"1.19.3"`.
+The current stable version `v` is `"1.19.4"`.
 
 The `spec` contains the XML meta data, `api` contains basic types without specific UGens, `core` contains the standard 
 UGens included with SuperCollider, and `plugins` will include the third-party plugins managed by the 

@@ -37,7 +37,7 @@
   Written by Ville Pulkki 1999
   Helsinki University of Technology
   and
-  Unversity of California at Berkeley
+  University of California at Berkeley
 
 */
 

@@ -1,0 +1,58 @@
+<ugens revision="4" third-party="kuramoto">
+    <ugen name="Hopf">
+        <rate name="audio"/>
+        <arg name="in" rate="ugen">
+            <doc>
+                Input signal (force) to track.
+            </doc>
+        </arg>
+        <arg name="coupling" rate="ugen">
+            <doc>
+                Strength of coupling.
+            </doc>
+        </arg>
+        <arg name="radius" rate="ugen" default="1.0">
+            <doc>
+                Limit cycle radius (amplitude attractor).
+            </doc>
+        </arg>
+        <output name="x">
+            <doc>
+                Horizontal component oscillator.
+            </doc>
+        </output>
+        <output name="y">
+            <doc>
+                Vertical component oscillator.
+            </doc>
+        </output>
+        <output name="omega">
+            <doc>
+                Normalized frequency (zero to 2 Pi). Convert this into a frequency in Hertz
+                by multiplying with `SampleRate.ir / (2*math.Pi)`.
+            </doc>
+        </output>
+        <output name="phase">
+            <doc>
+                Instantaneous phase at the estimated frequency. Can be used directly as an
+                audible oscillator (moving from -Pi to +Pi).
+            </doc>
+        </output>
+        <doc>
+            <text>
+                A UGen based on Hopf bifurcations that tries to synchronize to an input signal.
+            </text>
+            <example name="sync to sine input">
+                val freqIn  = MouseX.kr(100.0, 1000.0)
+                freqIn.poll(label = "mouse")
+                val sigIn   = SinOsc.ar(freqIn)
+                val hopf    = Hopf.ar(sigIn, 0.001)
+                val freqOut = hopf.omega * SampleRate.ir / (2*math.Pi)
+                freqOut.poll(label = "hopf ")
+                val sigOut  = hopf.phase
+                Pan2.ar(sigOut * 0.01)
+            </example>
+            <see>ugen.Kuramoto</see>
+        </doc>
+    </ugen>
+</ugens>
