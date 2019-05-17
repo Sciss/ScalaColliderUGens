@@ -98,14 +98,13 @@ lazy val gen = project.withId(s"$baseNameL-gen").in(file("gen"))
     libraryDependencies ++= Seq(
       "de.sciss"               %% "fileutil"        % deps.gen.fileUtil,
       "org.scala-lang"         %  "scala-compiler"  % scalaVersion.value,
-//      "org.scala-lang.modules" %% "scala-xml"       % deps.main.scalaXML
     ),
     libraryDependencies ++= {
       if (scalaVersion.value == "2.13.0-RC2") {
         // sbt rejects scala-test because of scala-xml; not sure why `exclude` has no effect?
         Seq(
           "com.github.scopt" %  "scopt_2.13.0-RC1"     % deps.gen.scopt,
-//          "org.scalatest"    %  "scalatest_2.13.0-RC1" % deps.test.scalaTest % Test exclude("org.scala-lang.modules", "scala-xml")
+          "org.scalatest"    %  "scalatest_2.13.0-RC1" % deps.test.scalaTest % Test exclude("org.scala-lang.modules", "scala-xml_2.13.0-RC1")
         )
       } else {
         Seq(
