@@ -12,7 +12,7 @@ lazy val commonSettings = Seq(
   description        := "UGens for ScalaCollider",
   homepage           := Some(url(s"https://github.com/Sciss/$baseName")),
   scalaVersion       := "2.12.8",
-  crossScalaVersions := Seq("2.12.8", "2.11.12", "2.13.0-RC1"),
+  crossScalaVersions := Seq("2.12.8", "2.11.12", "2.13.0-RC2"),
   scalacOptions      ++= Seq("-deprecation", "-unchecked", "-feature", "-encoding", "utf8", "-Xfuture", "-Xlint"),
   initialCommands in console := """import de.sciss.synth._"""
 ) ++ publishSettings
@@ -96,12 +96,23 @@ lazy val gen = project.withId(s"$baseNameL-gen").in(file("gen"))
     description := "Source code generator for ScalaCollider UGens",
     licenses := lgpl,
     libraryDependencies ++= Seq(
-      "com.github.scopt" %% "scopt"           % deps.gen.scopt,
-      "de.sciss"         %% "fileutil"        % deps.gen.fileUtil,
-      "org.scala-lang"   %  "scala-compiler"  % scalaVersion.value,
+      "de.sciss"               %% "fileutil"        % deps.gen.fileUtil,
+      "org.scala-lang"         %  "scala-compiler"  % scalaVersion.value,
+//      "org.scala-lang.modules" %% "scala-xml"       % deps.main.scalaXML
     ),
-    libraryDependencies += {
-      "org.scalatest" %% "scalatest" % deps.test.scalaTest % Test
+    libraryDependencies ++= {
+      if (scalaVersion.value == "2.13.0-RC2") {
+        // sbt rejects scala-test because of scala-xml; not sure why `exclude` has no effect?
+        Seq(
+          "com.github.scopt" %  "scopt_2.13.0-RC1"     % deps.gen.scopt,
+//          "org.scalatest"    %  "scalatest_2.13.0-RC1" % deps.test.scalaTest % Test exclude("org.scala-lang.modules", "scala-xml")
+        )
+      } else {
+        Seq(
+          "com.github.scopt" %% "scopt"                % deps.gen.scopt,
+          "org.scalatest"    %% "scalatest"            % deps.test.scalaTest % Test
+        )
+      }
     },
     mimaPreviousArtifacts := Set.empty,
     publishLocal    := {},
