@@ -23,12 +23,13 @@ lazy val deps = new {
     val scalaXML     = "1.2.0" // "1.0.6" // scala-compiler 2.11 and 2.12 use 1.0.x, but other libraries now go for this version, catch-22
   }
   val test = new {
-    val scalaTest    = "3.0.8-RC2"
+    val scalaTest    = "3.0.8-RC5"
   }
   // --- gen project (not published, thus not subject to major version concerns) ---
   val gen = new {
     val fileUtil     = "1.1.3"
-    val scopt        = "3.7.1"
+    // val scopt        = "3.7.1"
+    val scallop      = "3.3.0"
   }
 }
 
@@ -96,23 +97,11 @@ lazy val gen = project.withId(s"$baseNameL-gen").in(file("gen"))
     description := "Source code generator for ScalaCollider UGens",
     licenses := lgpl,
     libraryDependencies ++= Seq(
-      "de.sciss"               %% "fileutil"        % deps.gen.fileUtil,
-      "org.scala-lang"         %  "scala-compiler"  % scalaVersion.value,
+      "de.sciss"         %% "fileutil"        % deps.gen.fileUtil,
+      "org.scala-lang"   %  "scala-compiler"  % scalaVersion.value,
+      "org.rogach"       %% "scallop"         % deps.gen.scallop,
+      "org.scalatest"    %% "scalatest"       % deps.test.scalaTest % Test
     ),
-    libraryDependencies ++= {
-      if (scalaVersion.value == "2.13.0-RC2") {
-        // sbt rejects scala-test because of scala-xml; not sure why `exclude` has no effect?
-        Seq(
-          "com.github.scopt" %  "scopt_2.13.0-RC1"     % deps.gen.scopt,
-          "org.scalatest"    %  "scalatest_2.13.0-RC1" % deps.test.scalaTest % Test exclude("org.scala-lang.modules", "scala-xml_2.13.0-RC1")
-        )
-      } else {
-        Seq(
-          "com.github.scopt" %% "scopt"                % deps.gen.scopt,
-          "org.scalatest"    %% "scalatest"            % deps.test.scalaTest % Test
-        )
-      }
-    },
     mimaPreviousArtifacts := Set.empty,
     publishLocal    := {},
     publish         := {},

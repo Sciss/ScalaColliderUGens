@@ -17,8 +17,8 @@ package ugen
 import java.io.IOException
 
 import de.sciss.file._
+import org.rogach.scallop.{ScallopConf, ScallopOption => Opt}
 import org.xml.sax.InputSource
-import scopt.OptionParser
 
 import scala.collection.immutable.{IndexedSeq => Vec}
 import scala.xml.XML
@@ -44,21 +44,27 @@ object Gen extends App {
   case class Config(input: Input = CustomUGens, forceOverwrite: Boolean = false, outDir: File = new File("out"),
                     inFiles: Vec[File] = Vec.empty, docs: Boolean = true)
 
-  val parser  = new OptionParser[Config]("ScalaCollider-UGens") {
-    opt[Unit]("standard"      ) text "Use standard resources as input"  action { (_, c) => c.copy(input          = StandardUGens  ) }
-    opt[Unit]("plugins"       ) text "Use third-party resources as input" action{(_, c) => c.copy(input          = ThirdPartyUGens) }
-    opt[Unit]('f', "force"    ) text "Force overwrite of output files"  action { (_, c) => c.copy(forceOverwrite = true ) }
-    opt[File]('d', "dir"      ) text "Source output root directory"     action { (f, c) => c.copy(outDir         = f    ) }
-    opt[Unit]("no-docs"       ) text "Do not include scaladoc comments" action { (_, c) => c.copy(docs           = false) }
+  object parse extends ScallopConf(args) {
+    printedName = "ScalaCollider-UGens"
+    version(printedName)
 
-    // help("help") text "prints this usage text"
+    val standard: Opt[Boolean]  = opt(descr = "Use standard resources as input")
+    val plugins : Opt[Boolean]  = opt(descr = "Use third-party resources as input")
+    val force   : Opt[Boolean]  = opt(descr = "Force overwrite of output files")
+    val dir     : Opt[File]     = opt(descr = "Source output root directory", required = true)
+    val noDocs  : Opt[Boolean]  = opt(name = "no-docs", descr = "Do not include scaladoc comments")
 
-    arg[File]("<input>...").unbounded().optional().text("List of UGen description files (XML) to process").action {
-      (f, c) => c.copy(inFiles = c.inFiles :+ f)
-    }
+    val input: Opt[List[File]] = trailArg[List[File]](required = false, default = Some(Nil),
+      descr = "List of UGen description files (XML) to process"
+    )
+
+    verify()
+    val config = Config(input = if (standard()) StandardUGens else if (plugins()) ThirdPartyUGens else CustomUGens,
+      forceOverwrite = force(), outDir = dir(), inFiles = input().toIndexedSeq, docs = !noDocs()
+    )
   }
 
-  val config  = parser.parse(args, Config()) getOrElse sys.exit(1)
+  import parse.config
 
   import config._
   val outDir1 = config.outDir / "de" / "sciss" / "synth" / "ugen"
