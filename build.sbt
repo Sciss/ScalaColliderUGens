@@ -12,8 +12,8 @@ lazy val commonSettings = Seq(
   description        := "UGens for ScalaCollider",
   homepage           := Some(url(s"https://github.com/Sciss/$baseName")),
   scalaVersion       := "2.12.8",
-  crossScalaVersions := Seq("2.12.8", "2.11.12", "2.13.0-RC2"),
-  scalacOptions      ++= Seq("-deprecation", "-unchecked", "-feature", "-encoding", "utf8", "-Xfuture", "-Xlint"),
+  crossScalaVersions := Seq("2.12.8", "2.11.12", "2.13.0"),
+  scalacOptions      ++= Seq("-deprecation", "-unchecked", "-feature", "-encoding", "utf8", "-Xlint", "-Xsource:2.13"),
   initialCommands in console := """import de.sciss.synth._"""
 ) ++ publishSettings
 
@@ -98,10 +98,18 @@ lazy val gen = project.withId(s"$baseNameL-gen").in(file("gen"))
     licenses := lgpl,
     libraryDependencies ++= Seq(
       "de.sciss"         %% "fileutil"        % deps.gen.fileUtil,
-      "org.scala-lang"   %  "scala-compiler"  % scalaVersion.value,
-      "org.rogach"       %% "scallop"         % deps.gen.scallop,
-      "org.scalatest"    %% "scalatest"       % deps.test.scalaTest % Test
+      "org.scala-lang"   %  "scala-compiler"  % scalaVersion.value
     ),
+    libraryDependencies ++= {
+      val v = deps.test.scalaTest
+      if (scalaVersion.value == "2.13.0") List(
+        "org.scalatest" % "scalatest_2.13.0-RC3" % v % Test exclude("org.scala-lang.modules", "scala-xml_2.13.0-RC3"),
+        "org.rogach"    % "scallop_2.13.0-RC3"   % deps.gen.scallop
+      ) else List(
+        "org.scalatest" %% "scalatest" % v % Test,
+        "org.rogach"    %% "scallop"   % deps.gen.scallop
+      )
+    },
     mimaPreviousArtifacts := Set.empty,
     publishLocal    := {},
     publish         := {},
