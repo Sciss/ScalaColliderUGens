@@ -24,21 +24,22 @@ object DoneAction {
 
   /** Constructs a done-action from a given identifier. */
   def apply(id: Int): DoneAction = (id: @switch) match {
-    case doNothing        .id => doNothing          //  0
-    case pauseSelf        .id => pauseSelf          //  1
-    case freeSelf         .id => freeSelf           //  2
-    case freeSelfPred     .id => freeSelfPred       //  3
-    case freeSelfSucc     .id => freeSelfSucc       //  4
-    case freeSelfPredAll  .id => freeSelfPredAll    //  5
-    case freeSelfSuccAll  .id => freeSelfSuccAll    //  6
-    case freeSelfToHead   .id => freeSelfToHead     //  7
-    case freeSelfToTail   .id => freeSelfToTail     //  8
-    case freeSelfPausePred.id => freeSelfPausePred  //  9
-    case freeSelfPauseSucc.id => freeSelfPauseSucc  // 10
-    case freeSelfPredDeep .id => freeSelfPredDeep   // 11
-    case freeSelfSuccDeep .id => freeSelfSuccDeep   // 12
-    case freeAllInGroup   .id => freeAllInGroup     // 13
-    case freeGroup        .id => freeGroup          // 14
+    case doNothing          .id => doNothing          //  0
+    case pauseSelf          .id => pauseSelf          //  1
+    case freeSelf           .id => freeSelf           //  2
+    case freeSelfPred       .id => freeSelfPred       //  3
+    case freeSelfSucc       .id => freeSelfSucc       //  4
+    case freeSelfPredAll    .id => freeSelfPredAll    //  5
+    case freeSelfSuccAll    .id => freeSelfSuccAll    //  6
+    case freeSelfToHead     .id => freeSelfToHead     //  7
+    case freeSelfToTail     .id => freeSelfToTail     //  8
+    case freeSelfPausePred  .id => freeSelfPausePred  //  9
+    case freeSelfPauseSucc  .id => freeSelfPauseSucc  // 10
+    case freeSelfPredDeep   .id => freeSelfPredDeep   // 11
+    case freeSelfSuccDeep   .id => freeSelfSuccDeep   // 12
+    case freeAllInGroup     .id => freeAllInGroup     // 13
+    case freeGroup          .id => freeGroup          // 14
+    case freeSelfResumeSucc .id => freeSelfResumeSucc // 15
   }
 }
 
@@ -63,6 +64,7 @@ object DoneAction {
   *  - `12` - [[de.sciss.synth.freeSelfSuccDeep freeSelfSuccDeep]]
   *  - `13` - [[de.sciss.synth.freeAllInGroup freeAllInGroup]]
   *  - `14` - [[de.sciss.synth.freeGroup freeGroup]]
+  *  - `15` - [[de.sciss.synth.freeSelfResumeSucc freeSelfResumeSucc]]
   */
 sealed trait DoneAction extends Product {
   /** The identifier which is recognized by UGens such as `Done`. */
@@ -84,7 +86,7 @@ case object freeSelfPred extends DoneAction { final val id = 3 }
 case object freeSelfSucc extends DoneAction { final val id = 4 }
 /** A `DoneAction` with id `5`, freeing the enclosing synth when the UGen is finished.
   * If the predecessor node is a group, calls freeAll on
-  * that group. If the predecssor node is a synth,
+  * that group. If the predecessor node is a synth,
   * frees that synth.
   */
 case object freeSelfPredAll extends DoneAction { final val id = 5 }
@@ -132,3 +134,7 @@ case object freeAllInGroup extends DoneAction { final val id = 13 }
   * nodes in the group.
   */
 case object freeGroup extends DoneAction { final val id = 14 }
+/** A `DoneAction` with id `15`, freeing the enclosing synth and resuming the successor node
+  * when the UGen is finished.
+  */
+case object freeSelfResumeSucc extends DoneAction { final val id = 15 }

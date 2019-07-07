@@ -88,6 +88,11 @@ object UnaryOpUGen {
     }
   }
 
+  private def uncapitalize(in: String): String = if (in.isEmpty) in else {
+    val c0 = in.charAt(0)
+    if (Character.isUpperCase(c0)) s"${Character.toLowerCase(c0)}${in.substring(1)}" else in
+  }
+
   sealed abstract class Op extends Product {
     op =>
 
@@ -103,8 +108,24 @@ object UnaryOpUGen {
     override final def productArity   = 1
     override final def productElement(n: Int): Any = if (n == 0) id else throw new IndexOutOfBoundsException(n.toString)
 
-    def name: String = plainName.capitalize
+    /** The name one would use to display the operator in
+      * a user friendly way.
+      * For example, for `Neg` this would be `-`.
+      */
+    def name: String = uncapitalize(plainName)
+
+    /** Whether the operator should be written in prefix position.
+      * For example, `Ampdb` is '''not''' in prefix position, you would write
+      * `signal.ampDb`, whereas `Neg` is prefix position, as you would write
+      * `-signal`.
+      */
     def prefix: Boolean = false
+
+    /** The name one would call on `GEOps` to obtain this operator.
+      * For example, for `Neg` this would be `unary_-`.
+      */
+    def methodName: String =
+      if (prefix) s"unary_$name" else name
     
     private final def plainName: String = {
       val cn = getClass.getName
@@ -214,47 +235,52 @@ object UnaryOpUGen {
     def make1(a: Float): Float = rf2.reciprocal(a)
   }
 
-  /*
-   * Note: we do not use camel-case for the object name
-   * because it would break serialization for older versions.
-   */
+  // XXX TODO: Use proper camel-case naming in next major version
   case object Midicps extends PureOp {
     final val id = 17
+    override val name = "midiCps"
     def make1(a: Float): Float = rf.midiCps(a)
   }
 
   case object Cpsmidi extends PureOp {
     final val id = 18
+    override val name = "cpsMidi"
     def make1(a: Float): Float = rf.cpsMidi(a)
   }
 
   case object Midiratio extends PureOp {
     final val id = 19
+    override val name = "midiRatio"
     def make1(a: Float): Float = rf.midiRatio(a)
   }
 
   case object Ratiomidi extends PureOp {
     final val id = 20
+    override val name = "ratioMidi"
     def make1(a: Float): Float = rf.ratioMidi(a)
   }
 
   case object Dbamp extends PureOp {
     final val id = 21
+    override val name = "dbAmp"
     def make1(a: Float): Float = rf.dbAmp(a)
   }
 
   case object Ampdb extends PureOp {
     final val id = 22
+    override val name = "ampDb"
     def make1(a: Float): Float = rf.ampDb(a)
   }
 
   case object Octcps extends PureOp {
     final val id = 23
+    override val name = "octCps"
     def make1(a: Float): Float = rf.octCps(a)
   }
 
   case object Cpsoct extends PureOp {
     final val id = 24
+    override val name = "cpsOct"
     def make1(a: Float): Float = rf.cpsOct(a)
   }
 
@@ -328,14 +354,17 @@ object UnaryOpUGen {
 
   case object Linrand extends RandomOp {
     final val id = 39
+    override val name = "linRand"
   }
 
   case object Bilinrand extends RandomOp {
     final val id = 40
+    override val name = "bilinRand"
   }
 
   case object Sum3rand extends RandomOp {
     final val id = 41
+    override val name = "sum3Rand"
   }
 
   case object Distort extends PureOp {
@@ -345,6 +374,7 @@ object UnaryOpUGen {
 
   case object Softclip extends PureOp {
     final val id = 43
+    override val name = "softClip"
     def make1(a: Float): Float = rf2.softClip(a)
   }
 
@@ -378,6 +408,7 @@ object UnaryOpUGen {
 
   case object Scurve extends PureOp {
     final val id = 53
+    override val name = "sCurve"
     def make1(a: Float): Float = rf2.sCurve(a)
   }
 
@@ -483,6 +514,11 @@ object BinaryOpUGen {
 
   import UnaryOpUGen.{Neg, Reciprocal}
 
+  private def uncapitalize(in: String): String = if (in.isEmpty) in else {
+    val c0 = in.charAt(0)
+    if (Character.isUpperCase(c0)) s"${Character.toLowerCase(c0)}${in.substring(1)}" else in
+  }
+
   sealed abstract class Op extends Product {
     op =>
 
@@ -492,7 +528,17 @@ object BinaryOpUGen {
 
     protected[synth] def make1(a: UGenIn, b: UGenIn): UGenIn
 
+    /** Whether the operator should be written in infix position.
+      * For example, `Lcm` is '''not''' in prefix position, you would write
+      * `a.lcm(b)`, whereas `Plus` is prefix position, as you would write
+      * `a + b`.
+      */
     def infix: Boolean = false
+
+    /** The name one would call on `GEOps` to obtain this operator.
+      * For example, for `Times` this would be `*`.
+      */
+    def methodName: String = name
 
     def makeNoOptimization(a: GE, b: GE): BinaryOpUGen
 
@@ -500,7 +546,7 @@ object BinaryOpUGen {
     override def productArity   = 1
     override def productElement(n: Int): Any = if (n == 0) id else throw new IndexOutOfBoundsException(n.toString)
 
-    def name: String = plainName.capitalize
+    def name: String = uncapitalize(plainName)
 
     private def plainName: String = {
       val cn = getClass.getName
@@ -609,7 +655,7 @@ object BinaryOpUGen {
     final val id = 5
     override val name = "%"
     override def infix = true
-    def make1(a: Float, b: Float): Float = rf.%(a, b)
+    def make1(a: Float, b: Float): Float = rf.mod(a, b)
   }
 
   case object Eq extends PureOp {
@@ -722,6 +768,7 @@ object BinaryOpUGen {
 
   case object Hypotx extends PureOp {
     final val id = 24
+    override val name = "hypotApx"
     def make1(a: Float, b: Float): Float = rf.hypotApx(a, b)
   }
 
@@ -777,26 +824,31 @@ object BinaryOpUGen {
    */
   case object Difsqr extends PureOp {
     final val id = 34
+    override val name = "difSqr"
     def make1(a: Float, b: Float): Float = rf.difSqr(a, b)
   }
 
   case object Sumsqr extends PureOp {
     final val id = 35
+    override val name = "sumSqr"
     def make1(a: Float, b: Float): Float = rf.sumSqr(a, b)
   }
 
   case object Sqrsum extends PureOp {
     final val id = 36
+    override val name = "sqrSum"
     def make1(a: Float, b: Float): Float = rf.sqrSum(a, b)
   }
 
   case object Sqrdif extends PureOp {
     final val id = 37
+    override val name = "sqrDif"
     def make1(a: Float, b: Float): Float = rf.sqrDif(a, b)
   }
 
   case object Absdif extends PureOp {
     final val id = 38
+    override val name = "absDif"
     def make1(a: Float, b: Float): Float = rf.absDif(a, b)
   }
 
@@ -807,11 +859,13 @@ object BinaryOpUGen {
 
   case object Amclip extends PureOp {
     final val id = 40
+    override val name = "amClip"
     def make1(a: Float, b: Float): Float = rf2.amClip(a, b)
   }
 
   case object Scaleneg extends PureOp {
     final val id = 41
+    override val name = "scaleNeg"
     def make1(a: Float, b: Float): Float = rf2.scaleNeg(a, b)
   }
 
@@ -838,6 +892,8 @@ object BinaryOpUGen {
   case object Firstarg extends ImpureOp {
     final val id = 46
 
+    override val name = "firstArg"
+
     override def make(a: GE, b: GE): GE = (a, b) match {
       case (c(af), c(bf)) => c(make1(af, bf))
       case _              => Impure(this, a, b)
@@ -853,10 +909,12 @@ object BinaryOpUGen {
 
   case object Rrand extends RandomOp {
     final val id = 47
+    override val name = "rangeRand"
   }
 
   case object Exprand extends RandomOp {
     final val id = 48
+    override val name = "expRand"
   }
 
   private final case class Pure(selector: Op, a: GE, b: GE)

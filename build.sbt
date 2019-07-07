@@ -1,7 +1,7 @@
 lazy val baseName       = "ScalaColliderUGens"
 lazy val baseNameL      = baseName.toLowerCase
 
-lazy val projectVersion = "1.19.4"
+lazy val projectVersion = "1.19.5"
 lazy val mimaVersion    = "1.19.0"
 
 name := baseName
@@ -23,13 +23,12 @@ lazy val deps = new {
     val scalaXML     = "1.2.0" // "1.0.6" // scala-compiler 2.11 and 2.12 use 1.0.x, but other libraries now go for this version, catch-22
   }
   val test = new {
-    val scalaTest    = "3.0.8-RC5"
+    val scalaTest    = "3.0.8"
   }
   // --- gen project (not published, thus not subject to major version concerns) ---
   val gen = new {
     val fileUtil     = "1.1.3"
-    // val scopt        = "3.7.1"
-    val scallop      = "3.3.0"
+    val scallop      = "3.3.1"
   }
 }
 
@@ -97,19 +96,11 @@ lazy val gen = project.withId(s"$baseNameL-gen").in(file("gen"))
     description := "Source code generator for ScalaCollider UGens",
     licenses := lgpl,
     libraryDependencies ++= Seq(
-      "de.sciss"         %% "fileutil"        % deps.gen.fileUtil,
-      "org.scala-lang"   %  "scala-compiler"  % scalaVersion.value
+      "de.sciss"        %% "fileutil"       % deps.gen.fileUtil,
+      "org.scala-lang"  %  "scala-compiler" % scalaVersion.value,
+      "org.rogach"      %% "scallop"        % deps.gen.scallop,
+      "org.scalatest"   %% "scalatest"      % deps.test.scalaTest % Test
     ),
-    libraryDependencies ++= {
-      val v = deps.test.scalaTest
-      if (scalaVersion.value == "2.13.0") List(
-        "org.scalatest" % "scalatest_2.13.0-RC3" % v % Test exclude("org.scala-lang.modules", "scala-xml_2.13.0-RC3"),
-        "org.rogach"    % "scallop_2.13.0-RC3"   % deps.gen.scallop
-      ) else List(
-        "org.scalatest" %% "scalatest" % v % Test,
-        "org.rogach"    %% "scallop"   % deps.gen.scallop
-      )
-    },
     mimaPreviousArtifacts := Set.empty,
     publishLocal    := {},
     publish         := {},
