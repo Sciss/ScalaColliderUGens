@@ -612,6 +612,10 @@
         <doc>
             <text>
                 A band-limited pulse wave generator UGen, capable of pulse width modulation.
+
+                '''Note''': The fine behavior depends on the server's block-size which interacts with
+                the pulse width. The behavior is more regular if the duty period `sr / freq * width`
+                is an integer multiple of the block-size. A width of `1.0` can produce strange results.
             </text>
             <example name="modulate frequency">
                 Pulse.ar(XLine.kr(40, 4000, 6)) * 0.2

@@ -1,7 +1,7 @@
 lazy val baseName       = "ScalaColliderUGens"
 lazy val baseNameL      = baseName.toLowerCase
 
-lazy val projectVersion = "1.19.5"
+lazy val projectVersion = "1.19.6-SNAPSHOT"
 lazy val mimaVersion    = "1.19.0"
 
 name := baseName
