@@ -485,6 +485,12 @@
         <doc>
             <text>
                 A filter UGen to remove very low frequency content DC offset.
+
+                This is a one-pole highpass filter implementing the formula
+                {{{
+                y[n] = x[n] - x[n-1] + coeff * y[n-1]
+                }}}
+
             </text>
             <example name="show DC with mouse-controlled coefficient">
                 val freq = 800

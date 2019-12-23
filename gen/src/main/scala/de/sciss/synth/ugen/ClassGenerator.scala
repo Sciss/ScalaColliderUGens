@@ -960,7 +960,7 @@ final class ClassGenerator {
           // XXX TODO: if multiple arguments have the same constraints,
           // we could optimize and have one common `if ... else` expression.
           // (e.g. see `DecodeB2`)
-          val (rateConsTrees, rateConsArgs0, _) = ((List.empty[Tree], identUArgs, 0) /: argsOut.zipWithIndex) {
+          val (rateConsTrees, rateConsArgs0, _) = argsOut.zipWithIndex.foldLeft((List.empty[Tree], identUArgs, 0)) {
             case (res @ (_consTrees, _consArgs, _consCount), (arg, argIdx)) =>
               // the rate to which the ugen input is forced
               def implCons(cons: RateConstraint, sameRate: Ident = identResolvedRate)
@@ -991,7 +991,7 @@ final class ClassGenerator {
               }
 
               arg.rates.get(UndefinedRate).fold {
-                (res /: List(audio, control)) { (res1, rateKey) =>
+                List(audio, control).foldLeft(res) { (res1, rateKey) =>
                   arg.rates.get(rateKey).fold(res1) { cons =>
                     // ---- constraint only if host runs at audio-rate ----
                     val identRateKey = Ident(rateKey.name)

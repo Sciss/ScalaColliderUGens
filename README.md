@@ -38,7 +38,7 @@ UGens included with SuperCollider, and `plugins` will include the third-party pl
 
 ## building
 
-The project builds with sbt against Scala 2.13, 2.12, 2.11. To compile, run `sbt compile`.
+The project builds with sbt against Scala 2.13, 2.12. The last version to support Scala 2.11 was 1.19.5. To compile, run `sbt compile`.
 
 ## contributing
 

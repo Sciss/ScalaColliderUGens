@@ -14,12 +14,12 @@
 package de.sciss.synth
 package ugen
 
-import de.sciss.numbers.{LongFunctions => lf, FloatFunctions => rf, FloatFunctions2 => rf2}
+import de.sciss.numbers.{FloatFunctions => rf, FloatFunctions2 => rf2, LongFunctions => lf}
+import de.sciss.synth.UGenSource._
 import de.sciss.synth.ugen.Constant.{C0, C1, Cm1}
 import de.sciss.synth.ugen.{Constant => c}
 
 import scala.annotation.switch
-import UGenSource._
 
 /** Unary operations are generally constructed by calling one of the methods of `GEOps`.
   *
@@ -167,7 +167,7 @@ object UnaryOpUGen {
     final val id = 0
     override val name = "-"
     override def prefix = true
-    def make1(a: Float): Float = -a
+    def make1(a: Float): Float = rf2.neg(a)
   }
 
   case object Not extends PureOp {
@@ -207,7 +207,7 @@ object UnaryOpUGen {
 
   case object Signum extends PureOp {
     final val id = 11
-    def make1(a: Float): Float = math.signum(a)
+    def make1(a: Float): Float = rf.signum(a)
   }
 
   case object Squared extends PureOp {

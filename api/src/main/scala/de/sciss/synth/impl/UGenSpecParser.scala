@@ -298,7 +298,7 @@ private[synth] object UGenSpecParser {
   }
 
   private def trimCode(codeText: String): List[String] = {
-    val trim0: Vec[String] = codeText.lines.toIndexedSeq
+    val trim0: Vec[String] = codeText.linesIterator.toIndexedSeq
     val trim  = trimWhile(trim0)(_.trim().isEmpty)
     if (trim .isEmpty) return Nil
 
@@ -315,7 +315,7 @@ private[synth] object UGenSpecParser {
   }
 
   private def trimDoc(docText: String): List[String] = {
-    val trim0 = docText.lines.map(_.trim).toIndexedSeq
+    val trim0 = docText.linesIterator.map(_.trim).toIndexedSeq
     val trim  = trimWhile(trim0)(_.isEmpty)
     val b     = List.newBuilder[String]
     val sb    = new StringBuilder

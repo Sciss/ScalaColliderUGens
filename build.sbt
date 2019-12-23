@@ -1,7 +1,7 @@
 lazy val baseName       = "ScalaColliderUGens"
 lazy val baseNameL      = baseName.toLowerCase
 
-lazy val projectVersion = "1.19.6-SNAPSHOT"
+lazy val projectVersion = "1.19.6"
 lazy val mimaVersion    = "1.19.0"
 
 name := baseName
@@ -11,8 +11,8 @@ lazy val commonSettings = Seq(
   organization       := "de.sciss",
   description        := "UGens for ScalaCollider",
   homepage           := Some(url(s"https://github.com/Sciss/$baseName")),
-  scalaVersion       := "2.12.8",
-  crossScalaVersions := Seq("2.12.8", "2.11.12", "2.13.0"),
+  scalaVersion       := "2.12.10",
+  crossScalaVersions := Seq("2.12.10", "2.13.1"),
   scalacOptions      ++= Seq("-deprecation", "-unchecked", "-feature", "-encoding", "utf8", "-Xlint", "-Xsource:2.13"),
   initialCommands in console := """import de.sciss.synth._"""
 ) ++ publishSettings
@@ -23,12 +23,12 @@ lazy val deps = new {
     val scalaXML     = "1.2.0" // "1.0.6" // scala-compiler 2.11 and 2.12 use 1.0.x, but other libraries now go for this version, catch-22
   }
   val test = new {
-    val scalaTest    = "3.0.8"
+    val scalaTest    = "3.1.0"
   }
   // --- gen project (not published, thus not subject to major version concerns) ---
   val gen = new {
     val fileUtil     = "1.1.3"
-    val scallop      = "3.3.1"
+    val scallop      = "3.3.2"
   }
 }
 
