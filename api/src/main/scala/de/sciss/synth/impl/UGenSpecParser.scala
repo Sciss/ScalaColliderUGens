@@ -23,8 +23,8 @@ import scala.xml.NodeSeq
 private[synth] object UGenSpecParser {
   // private def DEFAULT_VERIFY = true
 
-  def parseAll(source: xml.InputSource, docs: Boolean, verify: Boolean): Map[String, UGenSpec] = {
-    val root = xml.XML.load(source)
+  def parseAll(source: scala.xml.InputSource, docs: Boolean, verify: Boolean): Map[String, UGenSpec] = {
+    val root = scala.xml.XML.load(source)
     val ugenNodes: NodeSeq = root \\ "ugen"
     ugenNodes.iterator.map { n =>
       val spec = parse(n, docs = docs, verify = verify)
@@ -347,7 +347,7 @@ private[synth] object UGenSpecParser {
     b.result()
   }
 
-  private def mkDoc(node: xml.Node, argDocs: Map[String, List[String]],
+  private def mkDoc(node: scala.xml.Node, argDocs: Map[String, List[String]],
                     outputDocs: Map[String, List[String]]): Option[UGenSpec.Doc] = {
     val docOpt = (node \ "doc").headOption
     docOpt.flatMap { dNode =>
@@ -379,7 +379,7 @@ private[synth] object UGenSpecParser {
     }
   }
 
-  def parse(node: xml.Node, docs: Boolean, verify: Boolean): UGenSpec = {
+  def parse(node: scala.xml.Node, docs: Boolean, verify: Boolean): UGenSpec = {
     if (node.label != "ugen") throw new IllegalArgumentException(s"Not a 'ugen' node: $node")
 
     import UGenSpec.{SignalShape => Sig, _}
@@ -392,7 +392,7 @@ private[synth] object UGenSpecParser {
       val unknown = attrs.keySet -- nodeAttrKeys
       require(unknown.isEmpty, s"Unsupported ugen attributes in $uName: ${unknown.mkString(",")}")
 
-      val unknownN = node.child.iterator.collect { case e: xml.Elem => e.label } .toSet[String] -- nodeChildKeys
+      val unknownN = node.child.iterator.collect { case e: scala.xml.Elem => e.label } .toSet[String] -- nodeChildKeys
       require(unknownN.isEmpty, s"Unsupported ugen child nodes in $uName: ${unknownN.mkString(",")}")
     }
 
@@ -456,7 +456,7 @@ private[synth] object UGenSpecParser {
       }
     }
 
-    def addArgRate(r: Rate, rNode: xml.Node): Unit =
+    def addArgRate(r: Rate, rNode: scala.xml.Node): Unit =
       (rNode \ "arg").foreach { raNode =>
         val raAttr  = raNode.attributes.asAttrMap
         val raName  = raAttr.string("name")
@@ -543,7 +543,7 @@ private[synth] object UGenSpecParser {
         require(unknown.isEmpty, s"Unsupported argument attributes, in ugen $uName, $aName: ${unknown.mkString(",")}")
 
         // verify that no accidental text is in node (a typical error is omitting the <doc> node)
-        require(aNode.child.collect { case t: xml.Text if t.text.trim.nonEmpty => t } .isEmpty,
+        require(aNode.child.collect { case t: scala.xml.Text if t.text.trim.nonEmpty => t } .isEmpty,
           s"UGen $uName argument $aName contains text")
       }
 

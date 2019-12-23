@@ -38,7 +38,7 @@ final class ClassGenerator {
 
   private[this] val forceCompanion = true
 
-  def performFile(node: xml.Node, dir: File, name: String, docs: Boolean = true,
+  def performFile(node: scala.xml.Node, dir: File, name: String, docs: Boolean = true,
                   forceOverwrite: Boolean = false): Unit = try {
     val revision    = (node \ "@revision").text.toInt
     val thirdParty  = {

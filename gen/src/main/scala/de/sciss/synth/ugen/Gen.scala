@@ -73,10 +73,10 @@ object Gen extends App {
   val synth = new ClassGenerator
 
   val inputs: Iterator[(String, InputSource)] = if (input == CustomUGens) {
-    inFiles.iterator.map(f => f.base -> xml.Source.fromFile(f))
+    inFiles.iterator.map(f => f.base -> scala.xml.Source.fromFile(f))
   } else {
     input.plugins.iterator.map { name =>
-      name -> xml.Source.fromInputStream(getClass.getResourceAsStream(s"$name.xml"))
+      name -> scala.xml.Source.fromInputStream(getClass.getResourceAsStream(s"$name.xml"))
     }
   }
 

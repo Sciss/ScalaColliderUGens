@@ -49,7 +49,7 @@ object UGenSpec {
     val is = ugen.Control.getClass.getResourceAsStream(s"$name.xml")
     if (is == null) throw new Exception(s"UGenSpec.mkUGens - resource '$name.xml' not found.")
     try {
-      val source = xml.Source.fromInputStream(is)
+      val source = scala.xml.Source.fromInputStream(is)
       parseAll(source, docs = true)
     } finally {
       is.close()
@@ -63,7 +63,7 @@ object UGenSpec {
     *                 `spec.doc` will be `None`.
     * @return         a map from UGen names to their specifications.
     */
-  def parseAll(source: xml.InputSource, docs: Boolean = false, verify: Boolean = false): Map[String, UGenSpec] =
+  def parseAll(source: scala.xml.InputSource, docs: Boolean = false, verify: Boolean = false): Map[String, UGenSpec] =
     ParserImpl.parseAll(source, docs = docs, verify = verify)
 
   /** Parses an individual XML node for one specific UGen specification.
@@ -72,7 +72,7 @@ object UGenSpec {
     * @param docs if `true`, parses documentation as well. if `false` skips documentation, thus
     *             `spec.doc` will be `None`.
     */
-  def parse(node: xml.Node, docs: Boolean = false, verify: Boolean = false): UGenSpec =
+  def parse(node: scala.xml.Node, docs: Boolean = false, verify: Boolean = false): UGenSpec =
     ParserImpl.parse(node, docs = docs, verify = verify)
 
   // ---- UGen attributes ----
