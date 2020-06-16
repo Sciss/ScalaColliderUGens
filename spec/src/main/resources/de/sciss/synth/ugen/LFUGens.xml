@@ -384,12 +384,12 @@
         <rate name="audio"/>
         <arg name="syncFreq" default="440.0">
             <doc>
-                synchronizing (master) frequency which is the perceived fundamental
+                synchronizing (principal) frequency which is the perceived fundamental
             </doc>
         </arg>
         <arg name="sawFreq" default="440.0">
             <doc>
-                sawtooth (slave) frequency. It should typically be greater than `syncFreq`.
+                subordinate sawtooth frequency. It should typically be greater than `syncFreq`.
             </doc>
         </arg>
         <doc>
