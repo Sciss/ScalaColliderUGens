@@ -1,7 +1,7 @@
 lazy val baseName       = "ScalaColliderUGens"
 lazy val baseNameL      = baseName.toLowerCase
 
-lazy val projectVersion = "1.19.7-SNAPSHOT"
+lazy val projectVersion = "1.19.7"
 lazy val mimaVersion    = "1.19.0"
 
 name := baseName
@@ -27,7 +27,7 @@ lazy val deps = new {
   }
   // --- gen project (not published, thus not subject to major version concerns) ---
   val gen = new {
-    val fileUtil     = "1.1.3"
+    val fileUtil     = "1.1.4"
     val scallop      = "3.4.0"
   }
 }
@@ -45,7 +45,7 @@ lazy val root = project.withId(baseNameL).in(file("."))
 lazy val ugenGenerator = TaskKey[Seq[File]]("ugen-generate", "Generate UGen class files")
 
 def licenseURL(licName: String, sub: String) =
-  licenses := Seq(licName -> url(s"https://raw.github.com/Sciss/$baseName/master/$sub/LICENSE"))
+  licenses := Seq(licName -> url(s"https://raw.github.com/Sciss/$baseName/main/$sub/LICENSE"))
 
 lazy val lgpl = Seq("LGPL v2.1+" -> url("http://www.gnu.org/licenses/lgpl-2.1.txt"))
 
