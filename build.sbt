@@ -1,7 +1,7 @@
 lazy val baseName       = "ScalaColliderUGens"
 lazy val baseNameL      = baseName.toLowerCase
 
-lazy val projectVersion = "1.19.7"
+lazy val projectVersion = "1.19.8-SNAPSHOT"
 lazy val mimaVersion    = "1.19.0"
 
 name := baseName
@@ -11,24 +11,24 @@ lazy val commonSettings = Seq(
   organization       := "de.sciss",
   description        := "UGens for ScalaCollider",
   homepage           := Some(url(s"https://github.com/Sciss/$baseName")),
-  scalaVersion       := "2.12.11",
-  crossScalaVersions := Seq("2.12.11", "2.13.1"),
+  scalaVersion       := "2.13.3",
+  crossScalaVersions := Seq("0.27.0-RC1", "2.13.3", "2.12.12"),
   scalacOptions      ++= Seq("-deprecation", "-unchecked", "-feature", "-encoding", "utf8", "-Xlint", "-Xsource:2.13"),
   initialCommands in console := """import de.sciss.synth._"""
 ) ++ publishSettings
 
 lazy val deps = new {
   val main = new {
-    val numbers      = "0.2.0"
+    val numbers      = "0.2.1"
     val scalaXML     = "1.2.0" // "1.0.6" // scala-compiler 2.11 and 2.12 use 1.0.x, but other libraries now go for this version, catch-22
   }
   val test = new {
-    val scalaTest    = "3.1.2"
+    val scalaTest    = "3.2.2"
   }
   // --- gen project (not published, thus not subject to major version concerns) ---
   val gen = new {
-    val fileUtil     = "1.1.4"
-    val scallop      = "3.4.0"
+    val fileUtil     = "1.1.5"
+    val scallop      = "3.5.1"
   }
 }
 
@@ -203,8 +203,8 @@ lazy val publishSettings = Seq(
   pomIncludeRepository := { _ => false },
   pomExtra := { val n = baseName
 <scm>
-  <url>git@github.com:Sciss/{n}.git</url>
-  <connection>scm:git:git@github.com:Sciss/{n}.git</connection>
+  <url>git@git.iem.at:sciss/{n}.git</url>
+  <connection>scm:git:git@git.iem.at:sciss/{n}.git</connection>
 </scm>
 <developers>
   <developer>
