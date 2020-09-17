@@ -23,9 +23,8 @@ lazy val commonSettings = Seq(
 
 lazy val deps = new {
   val main = new {
-    val numbers         = "0.2.1"
-    val scalaXML        = "1.2.0" // "1.0.6" // scala-compiler 2.11 and 2.12 use 1.0.x, but other libraries now go for this version, catch-22
-    val scalaXML_Dotty  = "2.0.0-M2"
+    val numbers      = "0.2.1"
+    val scalaXML     = "1.2.0" // "1.0.6" // scala-compiler 2.11 and 2.12 use 1.0.x, but other libraries now go for this version, catch-22
   }
   val test = new {
     val scalaTest    = "3.2.2"
@@ -81,8 +80,7 @@ lazy val api = projectMatrix.withId(s"$baseNameL-api").in(file("api"))
       "de.sciss" %% "numbers" % deps.main.numbers,
     ),
     libraryDependencies += {
-      val v = if (isDotty.value) deps.main.scalaXML_Dotty else deps.main.scalaXML
-      "org.scala-lang.modules" %% "scala-xml" % v
+      ("org.scala-lang.modules" %% "scala-xml" % deps.main.scalaXML).withDottyCompat(scalaVersion.value)
     },
     buildInfoKeys := Seq(name, organization, version, scalaVersion, description,
       BuildInfoKey.map(homepage) {
