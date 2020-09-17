@@ -567,6 +567,7 @@ final class ClassGenerator {
   private val strVec              = "Vec"
   private val strVector           = "Vector"
   private val identVector         = Ident(strVector)
+  private val identVectorUGenLike = Ident(s"$strVector[UGenInLike]")
   private val identConstant       = Ident("Constant")
   private val strChannelProxy     = "ChannelProxy"
   private val identChannelProxy   = Ident(strChannelProxy)
@@ -864,7 +865,8 @@ final class ClassGenerator {
               if (keep)
                 b ++= slice
               else
-                b :+= Apply(identVector, slice.toList)
+//                b :+= Apply(identVector, slice.toList)
+                b :+= Apply(identVectorUGenLike, slice.toList)  // XXX TODO ugly. Dotty work around https://github.com/lampepfl/dotty/issues/9819
               from += n
             }
             keep = !keep

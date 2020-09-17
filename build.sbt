@@ -6,15 +6,19 @@ lazy val mimaVersion    = "1.19.0"
 
 name := baseName
 
+lazy val mainScalaVersion = "2.13.3"
+lazy val allScalaVersions = Seq("0.27.0-RC1", "2.13.3", "2.12.12")
+
 lazy val commonSettings = Seq(
   version            := projectVersion,
   organization       := "de.sciss",
   description        := "UGens for ScalaCollider",
   homepage           := Some(url(s"https://github.com/Sciss/$baseName")),
-  scalaVersion       := "2.13.3",
-  crossScalaVersions := Seq("0.27.0-RC1", "2.13.3", "2.12.12"),
   scalacOptions      ++= Seq("-deprecation", "-unchecked", "-feature", "-encoding", "utf8", "-Xlint", "-Xsource:2.13"),
-  initialCommands in console := """import de.sciss.synth._"""
+  initialCommands in console := """import de.sciss.synth._""",
+  sources in (Compile, doc) := {
+    if (isDotty.value) Nil else (sources in (Compile, doc)).value // dottydoc is hopelessly broken
+  },
 ) ++ publishSettings
 
 lazy val deps = new {
@@ -35,7 +39,7 @@ lazy val deps = new {
 
 // ---
 
-lazy val root = project.withId(baseNameL).in(file("."))
+lazy val root = projectMatrix.withId(baseNameL).in(file("."))
   .aggregate(spec, api, gen, core, plugins)
   .settings(commonSettings)
   .settings(
@@ -50,7 +54,7 @@ def licenseURL(licName: String, sub: String) =
 
 lazy val lgpl = Seq("LGPL v2.1+" -> url("http://www.gnu.org/licenses/lgpl-2.1.txt"))
 
-lazy val spec = project.withId(s"$baseNameL-spec").in(file("spec"))
+lazy val spec = projectMatrix.withId(s"$baseNameL-spec").in(file("spec"))
   .settings(commonSettings)
   .settings(
     description := "UGens XML specification files for ScalaCollider",
@@ -65,8 +69,9 @@ lazy val spec = project.withId(s"$baseNameL-spec").in(file("spec"))
     },
     mimaPreviousArtifacts := Set("de.sciss" % s"$baseNameL-spec" % mimaVersion)
   )
+  .jvmPlatform(scalaVersions = mainScalaVersion :: Nil)
 
-lazy val api = project.withId(s"$baseNameL-api").in(file("api"))
+lazy val api = projectMatrix.withId(s"$baseNameL-api").in(file("api"))
   .enablePlugins(BuildInfoPlugin)
   .settings(commonSettings)
   .settings(
@@ -90,8 +95,9 @@ lazy val api = project.withId(s"$baseNameL-api").in(file("api"))
     buildInfoPackage := "de.sciss.synth.ugen",
     mimaPreviousArtifacts := Set("de.sciss" %% s"$baseNameL-api" % mimaVersion)
   )
+  .jvmPlatform(scalaVersions = allScalaVersions)
 
-lazy val gen = project.withId(s"$baseNameL-gen").in(file("gen"))
+lazy val gen = projectMatrix.withId(s"$baseNameL-gen").in(file("gen"))
   .dependsOn(spec, api)
   .settings(commonSettings)
   .settings(
@@ -105,20 +111,17 @@ lazy val gen = project.withId(s"$baseNameL-gen").in(file("gen"))
         "org.scalatest"   %% "scalatest"      % deps.test.scalaTest % Test
       )
     },
-    unmanagedSourceDirectories in Compile := {
-      if (isDotty.value) Nil else (unmanagedSourceDirectories in Compile).value
-    },
-    unmanagedSourceDirectories in Test := {
-      if (isDotty.value) Nil else (unmanagedSourceDirectories in Test).value
-    },
     mimaPreviousArtifacts := Set.empty,
     publishLocal    := {},
     publish         := {},
     publishArtifact := false,   // cf. http://stackoverflow.com/questions/8786708/
     publishTo       := Some(Resolver.file("Unused transient repository", file("target/unusedrepo")))
   )
+  .jvmPlatform(scalaVersions = mainScalaVersion :: Nil)
 
-lazy val core = project.withId(s"$baseNameL-core").in(file("core"))
+lazy val gen13 = gen.jvm(mainScalaVersion)
+
+lazy val core = projectMatrix.withId(s"$baseNameL-core").in(file("core"))
   .dependsOn(api)
   .settings(commonSettings)
   .settings(
@@ -126,8 +129,8 @@ lazy val core = project.withId(s"$baseNameL-core").in(file("core"))
     licenses := lgpl,
     Compile / sourceGenerators += ugenGenerator in Compile,
     ugenGenerator in Compile := {
-      val src   = (sourceManaged       in Compile        ).value
-      val cp    = (dependencyClasspath in Runtime in gen ).value
+      val src   = (sourceManaged       in Compile         ).value
+      val cp    = (dependencyClasspath in Runtime in gen13).value
       val st    = streams.value
       runUGenGenerator(description.value, outputDir = src, cp = cp.files, log = st.log, args = "--standard" :: Nil)
     },
@@ -138,8 +141,9 @@ lazy val core = project.withId(s"$baseNameL-core").in(file("core"))
     },
     mimaPreviousArtifacts := Set("de.sciss" %% s"$baseNameL-core" % mimaVersion)
   )
+  .jvmPlatform(scalaVersions = allScalaVersions)
 
-lazy val plugins = project.withId(s"$baseNameL-plugins").in(file("plugins"))
+lazy val plugins = projectMatrix.withId(s"$baseNameL-plugins").in(file("plugins"))
   .dependsOn(core)
   .settings(commonSettings)
   .settings(
@@ -147,13 +151,14 @@ lazy val plugins = project.withId(s"$baseNameL-plugins").in(file("plugins"))
     licenses := lgpl,
     Compile / sourceGenerators += ugenGenerator in Compile,
     ugenGenerator in Compile := {
-      val src   = (sourceManaged       in Compile        ).value
-      val cp    = (dependencyClasspath in Runtime in gen ).value
+      val src   = (sourceManaged       in Compile         ).value
+      val cp    = (dependencyClasspath in Runtime in gen13).value
       val st    = streams.value
       runUGenGenerator(description.value, outputDir = src, cp = cp.files, log = st.log, args = "--plugins" :: Nil)
     },
     mimaPreviousArtifacts := Set("de.sciss" %% s"$baseNameL-plugins" % mimaVersion)
   )
+  .jvmPlatform(scalaVersions = allScalaVersions)
 
 /** @param name       purely informational string emitted through the sbt log
   * @param outputDir  target directory, e.g. `sourceManaged`
