@@ -126,7 +126,7 @@ object Sum3 {
 final case class Sum3(in0: GE, in1: GE, in2: GE) extends UGenSource.SingleOut {
   def rate: MaybeRate = MaybeRate.max_?(in0.rate, in1.rate, in2.rate)
 
-  protected def makeUGens: UGenInLike = unwrap(this, Vector(in0, in1, in2))
+  protected def makeUGens: UGenInLike = unwrap(this, Vector(in0.expand, in1.expand, in2.expand))
 
   protected def makeUGen(args: Vec[UGenIn]): UGenInLike = Sum3.make1(args)
 }
@@ -175,7 +175,7 @@ object Sum4 {
 final case class Sum4(in0: GE, in1: GE, in2: GE, in3: GE) extends UGenSource.SingleOut {
   def rate: MaybeRate = MaybeRate.max_?(in0.rate, in1.rate, in2.rate, in3.rate)
 
-  protected def makeUGens: UGenInLike = unwrap(this, Vector(in0, in1, in2, in3))
+  protected def makeUGens: UGenInLike = unwrap(this, Vector(in0.expand, in1.expand, in2.expand, in3.expand))
 
   protected def makeUGen(args: Vec[UGenIn]): UGenInLike = Sum4.make1(args)
 }

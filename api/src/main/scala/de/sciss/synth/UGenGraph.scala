@@ -21,8 +21,8 @@ import de.sciss.synth.ugen.impl.RawUGenImpl
 import scala.collection.immutable.{IndexedSeq => Vec, Seq => ISeq}
 
 object UGenGraph {
-  private final val v1Rd  = { dis: DataInputStream => dis.readShort().toInt }
-  private final val v2Rd  = { dis: DataInputStream => dis.readInt  ()       }
+  private final val v1Rd  = { (dis: DataInputStream) => dis.readShort().toInt }
+  private final val v2Rd  = { (dis: DataInputStream) => dis.readInt  ()       }
   private final val v1Wr  = { (dos: DataOutputStream, value: Int) =>
     if (value < -32768 || value > 32767)
       throw new IndexOutOfBoundsException("SynthDef too large to be written in format 1")

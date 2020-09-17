@@ -19,8 +19,9 @@ lazy val commonSettings = Seq(
 
 lazy val deps = new {
   val main = new {
-    val numbers      = "0.2.1"
-    val scalaXML     = "1.2.0" // "1.0.6" // scala-compiler 2.11 and 2.12 use 1.0.x, but other libraries now go for this version, catch-22
+    val numbers         = "0.2.1"
+    val scalaXML        = "1.2.0" // "1.0.6" // scala-compiler 2.11 and 2.12 use 1.0.x, but other libraries now go for this version, catch-22
+    val scalaXML_Dotty  = "2.0.0-M2"
   }
   val test = new {
     val scalaTest    = "3.2.2"
@@ -75,7 +76,8 @@ lazy val api = project.withId(s"$baseNameL-api").in(file("api"))
       "de.sciss" %% "numbers" % deps.main.numbers,
     ),
     libraryDependencies += {
-      "org.scala-lang.modules"  %% "scala-xml" % deps.main.scalaXML
+      val v = if (isDotty.value) deps.main.scalaXML_Dotty else deps.main.scalaXML
+      "org.scala-lang.modules" %% "scala-xml" % v
     },
     buildInfoKeys := Seq(name, organization, version, scalaVersion, description,
       BuildInfoKey.map(homepage) {
@@ -95,12 +97,20 @@ lazy val gen = project.withId(s"$baseNameL-gen").in(file("gen"))
   .settings(
     description := "Source code generator for ScalaCollider UGens",
     licenses := lgpl,
-    libraryDependencies ++= Seq(
-      "de.sciss"        %% "fileutil"       % deps.gen.fileUtil,
-      "org.scala-lang"  %  "scala-compiler" % scalaVersion.value,
-      "org.rogach"      %% "scallop"        % deps.gen.scallop,
-      "org.scalatest"   %% "scalatest"      % deps.test.scalaTest % Test
-    ),
+    libraryDependencies ++= {
+      if (isDotty.value) Nil else Seq(
+        "de.sciss"        %% "fileutil"       % deps.gen.fileUtil,
+        "org.scala-lang"  %  "scala-compiler" % scalaVersion.value,
+        "org.rogach"      %% "scallop"        % deps.gen.scallop,
+        "org.scalatest"   %% "scalatest"      % deps.test.scalaTest % Test
+      )
+    },
+    unmanagedSourceDirectories in Compile := {
+      if (isDotty.value) Nil else (unmanagedSourceDirectories in Compile).value
+    },
+    unmanagedSourceDirectories in Test := {
+      if (isDotty.value) Nil else (unmanagedSourceDirectories in Test).value
+    },
     mimaPreviousArtifacts := Set.empty,
     publishLocal    := {},
     publish         := {},

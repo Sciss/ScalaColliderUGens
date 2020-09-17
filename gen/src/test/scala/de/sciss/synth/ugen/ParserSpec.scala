@@ -1,7 +1,7 @@
 package de.sciss.synth.ugen
 
-import org.scalatest.FlatSpec
 import de.sciss.synth.UGenSpec
+import org.scalatest.flatspec.AnyFlatSpec
 
 /*
  To run only this test:
@@ -9,7 +9,7 @@ import de.sciss.synth.UGenSpec
  test-only de.sciss.synth.ugen.ParserSpec
 
  */
-class ParserSpec extends FlatSpec {
+class ParserSpec extends AnyFlatSpec {
   "UGenSpec" should "be able to parse a specific entry" in {
     val is = getClass.getResourceAsStream("ChaosUGens.xml")
     try {
