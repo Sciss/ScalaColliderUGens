@@ -1,7 +1,7 @@
 lazy val baseName       = "ScalaColliderUGens"
 lazy val baseNameL      = baseName.toLowerCase
 
-lazy val projectVersion = "1.19.8-SNAPSHOT"
+lazy val projectVersion = "1.19.8"
 lazy val mimaVersion    = "1.19.0"
 
 name := baseName
@@ -68,7 +68,7 @@ lazy val spec = projectMatrix.withId(s"$baseNameL-spec").in(file("spec"))
     },
     mimaPreviousArtifacts := Set("de.sciss" % s"$baseNameL-spec" % mimaVersion)
   )
-  .jvmPlatform(scalaVersions = mainScalaVersion :: Nil)
+  .jvmPlatform(autoScalaLibrary = false) // scalaVersions = mainScalaVersion :: Nil)
 
 lazy val api = projectMatrix.withId(s"$baseNameL-api").in(file("api"))
   .enablePlugins(BuildInfoPlugin)
