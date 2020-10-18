@@ -94,6 +94,7 @@ lazy val api = projectMatrix.withId(s"$baseNameL-api").in(file("api"))
     mimaPreviousArtifacts := Set("de.sciss" %% s"$baseNameL-api" % mimaVersion)
   )
   .jvmPlatform(scalaVersions = allScalaVersions)
+  .jsPlatform (scalaVersions = mainScalaVersion :: Nil)
 
 lazy val gen = projectMatrix.withId(s"$baseNameL-gen").in(file("gen"))
   .dependsOn(spec, api)
@@ -140,6 +141,7 @@ lazy val core = projectMatrix.withId(s"$baseNameL-core").in(file("core"))
     mimaPreviousArtifacts := Set("de.sciss" %% s"$baseNameL-core" % mimaVersion)
   )
   .jvmPlatform(scalaVersions = allScalaVersions)
+  .jsPlatform (scalaVersions = mainScalaVersion :: Nil)
 
 lazy val plugins = projectMatrix.withId(s"$baseNameL-plugins").in(file("plugins"))
   .dependsOn(core)
@@ -157,6 +159,7 @@ lazy val plugins = projectMatrix.withId(s"$baseNameL-plugins").in(file("plugins"
     mimaPreviousArtifacts := Set("de.sciss" %% s"$baseNameL-plugins" % mimaVersion)
   )
   .jvmPlatform(scalaVersions = allScalaVersions)
+  .jsPlatform (scalaVersions = mainScalaVersion :: Nil)
 
 /** @param name       purely informational string emitted through the sbt log
   * @param outputDir  target directory, e.g. `sourceManaged`
