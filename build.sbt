@@ -1,8 +1,8 @@
 lazy val baseName       = "ScalaColliderUGens"
 lazy val baseNameL      = baseName.toLowerCase
 
-lazy val projectVersion = "1.19.8"
-lazy val mimaVersion    = "1.19.0"
+lazy val projectVersion = "1.20.0-SNAPSHOT"
+lazy val mimaVersion    = "1.20.0"
 
 name := baseName
 
@@ -24,7 +24,7 @@ lazy val commonSettings = Seq(
 lazy val deps = new {
   val main = new {
     val numbers      = "0.2.1"
-    val scalaXML     = "1.2.0" // "1.0.6" // scala-compiler 2.11 and 2.12 use 1.0.x, but other libraries now go for this version, catch-22
+    val scalaXML     = "1.3.0" // sjs needs this version // "1.0.6" // scala-compiler 2.11 and 2.12 use 1.0.x, but other libraries now go for this version, catch-22
   }
   val test = new {
     val scalaTest    = "3.2.2"
@@ -77,10 +77,10 @@ lazy val api = projectMatrix.withId(s"$baseNameL-api").in(file("api"))
     description := "Basic UGens API for ScalaCollider",
     licenses := lgpl,
     libraryDependencies ++= Seq(
-      "de.sciss" %% "numbers" % deps.main.numbers,
+      "de.sciss" %%% "numbers" % deps.main.numbers,
     ),
     libraryDependencies += {
-      ("org.scala-lang.modules" %% "scala-xml" % deps.main.scalaXML).withDottyCompat(scalaVersion.value)
+      ("org.scala-lang.modules" %%% "scala-xml" % deps.main.scalaXML).withDottyCompat(scalaVersion.value)
     },
     buildInfoKeys := Seq(name, organization, version, scalaVersion, description,
       BuildInfoKey.map(homepage) {
