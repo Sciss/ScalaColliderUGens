@@ -30,7 +30,7 @@ All artifacts are published to Maven Central, and are available as follows:
     "de.sciss" %% "scalacolliderugens-core" % v
     "de.sciss" %% "scalacolliderugens-plugins" % v
 
-The current stable version `v` is `"1.19.8"`.
+The current stable version `v` is `"1.20.0"`.
 
 The `spec` contains the XML meta data, `api` contains basic types without specific UGens, `core` contains the standard 
 UGens included with SuperCollider, and `plugins` will include the third-party plugins managed by the 
@@ -38,7 +38,10 @@ UGens included with SuperCollider, and `plugins` will include the third-party pl
 
 ## building
 
-The project builds with sbt against Scala 2.13, 2.12. The last version to support Scala 2.11 was 1.19.5. To compile, run `sbt compile`.
+The project builds with sbt against Scala 2.13, 2.12, Dotty (JVM) and Scala 2.13 (JS).
+The last version to support Scala 2.11 was 1.19.5.
+
+To compile, run `sbt compile`.
 
 ## contributing
 
