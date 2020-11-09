@@ -7,7 +7,7 @@ lazy val mimaVersion    = "1.20.0"
 name := baseName
 
 lazy val mainScalaVersion = "2.13.3"
-lazy val allScalaVersions = Seq("0.27.0-RC1", "2.13.3", "2.12.12")
+lazy val allScalaVersions = Seq("3.0.0-M1", "2.13.3", "2.12.12")
 
 lazy val commonSettings = Seq(
   version            := projectVersion,
