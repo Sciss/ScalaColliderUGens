@@ -11,10 +11,10 @@
  *  contact@sciss.de
  */
 
-package de.sciss
-package synth
+package de.sciss.synth
 
 import de.sciss.synth.impl.{UGenSpecParser => ParserImpl}
+import de.sciss.synth
 
 import scala.collection.immutable
 import scala.collection.immutable.{IndexedSeq => Vec, Set => ISet}

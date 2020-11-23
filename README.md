@@ -2,7 +2,7 @@
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Sciss/ScalaCollider?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://travis-ci.org/Sciss/ScalaColliderUGens.svg?branch=main)](https://travis-ci.org/Sciss/ScalaColliderUGens)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.sciss/scalacolliderugens-core_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.sciss/scalacolliderugens-core_2.12)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.sciss/scalacolliderugens-core_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.sciss/scalacolliderugens-core_2.13)
 
 ## statement
 
@@ -30,7 +30,7 @@ All artifacts are published to Maven Central, and are available as follows:
     "de.sciss" %% "scalacolliderugens-core" % v
     "de.sciss" %% "scalacolliderugens-plugins" % v
 
-The current stable version `v` is `"1.20.0"`.
+The current stable version `v` is `"1.20.1"`.
 
 The `spec` contains the XML meta data, `api` contains basic types without specific UGens, `core` contains the standard 
 UGens included with SuperCollider, and `plugins` will include the third-party plugins managed by the 
@@ -41,7 +41,11 @@ UGens included with SuperCollider, and `plugins` will include the third-party pl
 The project builds with sbt against Scala 2.13, 2.12, Dotty (JVM) and Scala 2.13 (JS).
 The last version to support Scala 2.11 was 1.19.5.
 
-To compile, run `sbt compile`.
+The synthetic UGen sources are inside directories `core/gen` and `plugins/gen`.
+Since v1.20.1, when the XML specifications are changes, these must be recreated, by running `sbt gen/ugen`!
+The synthetic sources are currently checked into git, thus you do not necessarily have to regenerate these files.
+
+To compile all sources, run `sbt compile`.
 
 ## contributing
 
@@ -57,10 +61,10 @@ To synthesize the source code for a given UGen description XML file, run as foll
 
     $ sbt
     ...
-    > project scalacolliderugens-gen
+    > project gen
     > run -d path/to/scala/source/output path/to/descriptions.xml
 
-The generated source files then need to be compiled against `scalacolliderugens-core`.
+The generated source files then need to be compiled against `core`.
 
 If you want to contribute UGen descriptions, there are two existing sbt sub-projects to consider:
 
@@ -304,7 +308,7 @@ that `in` in this case must run at the same rate as the UGen (thus audio rate, t
 
 #### Outputs
 
-By default the UGen is considered to have one monophonic output. All other UGens must explicitly contain either a 
+By default, the UGen is considered to have one monophonic output. All other UGens must explicitly contain either a 
 `<no-outputs/>` element, or one or more `<output ... />` elements. An output element may have a `name` and `type` 
 attribute, and one element may have a `variadic="<id>"` attribute, where `<id>` is the name of the input argument 
 determining the number of channels. A `<doc>` element may be nested inside a `<output>` node. Examples:
@@ -317,7 +321,7 @@ determining the number of channels. A `<doc>` element may be nested inside a `<o
 |`<output variadic="numChannels"/>`            | `DiskIn`      | `numChannels` is an `Int` input |
 |`<output name="chain" type="fft"/>`           | `PV_MagShift` |                                 |
 
-#### Descriptions
+#### Descriptions
 
 The description text for arguments is the text inside the argument's `<doc></doc>` element. The description text for 
 the UGen is inside the `<text></text>` element inside the `<doc></doc>` element. In each case, standard 

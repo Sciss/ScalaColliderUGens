@@ -1,19 +1,15 @@
 lazy val baseName       = "ScalaColliderUGens"
 lazy val baseNameL      = baseName.toLowerCase
 
-lazy val projectVersion = "1.20.0"
+lazy val projectVersion = "1.20.1-SNAPSHOT"
 lazy val mimaVersion    = "1.20.0"
-
-name := baseName
-
-lazy val mainScalaVersion = "2.13.3"
-lazy val allScalaVersions = Seq("3.0.0-M1", "2.13.3", "2.12.12")
 
 lazy val commonSettings = Seq(
   version            := projectVersion,
   organization       := "de.sciss",
   description        := "UGens for ScalaCollider",
   homepage           := Some(url(s"https://github.com/Sciss/$baseName")),
+  scalaVersion       := "2.13.4",
   scalacOptions      ++= Seq("-deprecation", "-unchecked", "-feature", "-encoding", "utf8", "-Xlint", "-Xsource:2.13"),
   initialCommands in console := """import de.sciss.synth._""",
   sources in (Compile, doc) := {
@@ -21,13 +17,17 @@ lazy val commonSettings = Seq(
   },
 ) ++ publishSettings
 
+lazy val commonJvmSettings = Seq(
+  crossScalaVersions := Seq("3.0.0-M1", "2.13.4", "2.12.12"),
+)
+
 lazy val deps = new {
   val main = new {
     val numbers      = "0.2.1"
-    val scalaXML     = "1.3.0" // sjs needs this version // "1.0.6" // scala-compiler 2.11 and 2.12 use 1.0.x, but other libraries now go for this version, catch-22
+    val scalaXML     = "1.3.0"
   }
   val test = new {
-    val scalaTest    = "3.2.2"
+    val scalaTest    = "3.2.3"
   }
   // --- gen project (not published, thus not subject to major version concerns) ---
   val gen = new {
@@ -38,44 +38,54 @@ lazy val deps = new {
 
 // ---
 
-lazy val root = projectMatrix.withId(baseNameL).in(file("."))
-  .aggregate(spec, api, gen, core, plugins)
+lazy val root = project.in(file("."))
+  .aggregate(
+    spec, // .jvm, spec.js,
+    api.jvm, api.js,
+    gen, // .jvm, // gen.js,
+    core.jvm, core.js,
+    plugins.jvm, plugins.js,
+  )
   .settings(commonSettings)
   .settings(
+    name := baseName,
     packagedArtifacts := Map.empty    // don't send this to Sonatype
   )
 
-// taking inspiration from http://stackoverflow.com/questions/11509843/sbt-generate-code-using-project-defined-generator
-lazy val ugenGenerator = TaskKey[Seq[File]]("ugen-generate", "Generate UGen class files")
+//// taking inspiration from http://stackoverflow.com/questions/11509843/sbt-generate-code-using-project-defined-generator
+//lazy val ugenGenerator = TaskKey[Seq[File]]("ugen-generate", "Generate UGen class files")
 
 def licenseURL(licName: String, sub: String) =
   licenses := Seq(licName -> url(s"https://raw.github.com/Sciss/$baseName/main/$sub/LICENSE"))
 
 lazy val lgpl = Seq("LGPL v2.1+" -> url("http://www.gnu.org/licenses/lgpl-2.1.txt"))
 
-lazy val spec = projectMatrix.withId(s"$baseNameL-spec").in(file("spec"))
+lazy val spec = /*crossProject(JVMPlatform, JSPlatform)*/ project.in(file("spec"))
   .settings(commonSettings)
+//  .jvmSettings(commonJvmSettings)
   .settings(
-    description := "UGens XML specification files for ScalaCollider",
-    autoScalaLibrary := false, // this is a pure xml containing jar
-    crossPaths := false,
+    name              := s"$baseName-spec",
+    description       := "UGens XML specification files for ScalaCollider",
+    autoScalaLibrary  := false, // this is a pure xml containing jar
+    crossPaths        := false,
     licenseURL("BSD", "spec"),
     publishArtifact in (Compile, packageDoc) := false, // there are no javadocs
     publishArtifact in (Compile, packageSrc) := false, // there are no sources (only re-sources),
     publishArtifact := {
       val old = publishArtifact.value
-      old && scalaVersion.value.startsWith("2.12")  // only publish once when cross-building
+      old && scalaVersion.value.startsWith("2.13")  // only publish once when cross-building
     },
-    mimaPreviousArtifacts := Set("de.sciss" % s"$baseNameL-spec" % mimaVersion)
+    mimaPreviousArtifacts := Set("de.sciss" % s"$baseNameL-spec" % mimaVersion),
   )
-  .jvmPlatform(autoScalaLibrary = false) // scalaVersions = mainScalaVersion :: Nil)
 
-lazy val api = projectMatrix.withId(s"$baseNameL-api").in(file("api"))
+lazy val api = crossProject(JVMPlatform, JSPlatform).in(file("api"))
   .enablePlugins(BuildInfoPlugin)
   .settings(commonSettings)
+  .jvmSettings(commonJvmSettings)
   .settings(
+    name        := s"$baseName-api",
     description := "Basic UGens API for ScalaCollider",
-    licenses := lgpl,
+    licenses    := lgpl,
     libraryDependencies ++= Seq(
       "de.sciss" %%% "numbers" % deps.main.numbers,
     ),
@@ -93,15 +103,19 @@ lazy val api = projectMatrix.withId(s"$baseNameL-api").in(file("api"))
     buildInfoPackage := "de.sciss.synth.ugen",
     mimaPreviousArtifacts := Set("de.sciss" %% s"$baseNameL-api" % mimaVersion)
   )
-  .jvmPlatform(scalaVersions = allScalaVersions)
-  .jsPlatform (scalaVersions = mainScalaVersion :: Nil)
 
-lazy val gen = projectMatrix.withId(s"$baseNameL-gen").in(file("gen"))
-  .dependsOn(spec, api)
+lazy val ugenGenerator = TaskKey[Unit]("ugen", "Generate UGen class files")
+
+def genSources(base: File): File = base.getParentFile / "gen"
+
+lazy val gen = /*crossProject(JVMPlatform)*/ project.in(file("gen"))
+  .dependsOn(spec, api.jvm)
   .settings(commonSettings)
+//  .jvmSettings(commonJvmSettings)
   .settings(
+    name        := s"$baseName-gen",
     description := "Source code generator for ScalaCollider UGens",
-    licenses := lgpl,
+    licenses    := lgpl,
     libraryDependencies ++= {
       if (isDotty.value) Nil else Seq(
         "de.sciss"        %% "fileutil"       % deps.gen.fileUtil,
@@ -110,56 +124,73 @@ lazy val gen = projectMatrix.withId(s"$baseNameL-gen").in(file("gen"))
         "org.scalatest"   %% "scalatest"      % deps.test.scalaTest % Test
       )
     },
+    ugenGenerator in Compile := {
+      val pairs = Seq[(File, String)](
+        ((baseDirectory in Compile in core    .jvm).value, "--standard"),
+        ((baseDirectory in Compile in plugins .jvm).value, "--plugins" ),
+      )
+      pairs.foreach { case (base, arg) =>
+        val src = genSources(base)
+        val cp = (fullClasspath in Compile).value
+        val st = streams.value
+        runUGenGenerator(description.value, outputDir = src, cp = cp.files, log = st.log, args = arg :: Nil)
+      }
+    },
+    //    ugenGenerator in Compile := {
+    //      val src   = (sourceManaged       in Compile       ).value
+    //      val cp    = (dependencyClasspath in Runtime in gen.jvm).value
+    //      val st    = streams.value
+    //      runUGenGenerator(description.value, outputDir = src, cp = cp.files, log = st.log, args = "--plugins" :: Nil)
+    //    },
     mimaPreviousArtifacts := Set.empty,
     publishLocal    := {},
     publish         := {},
     publishArtifact := false,   // cf. http://stackoverflow.com/questions/8786708/
     publishTo       := Some(Resolver.file("Unused transient repository", file("target/unusedrepo")))
   )
-  .jvmPlatform(scalaVersions = mainScalaVersion :: Nil)
 
-lazy val gen13 = gen.jvm(mainScalaVersion)
-
-lazy val core = projectMatrix.withId(s"$baseNameL-core").in(file("core"))
+lazy val core = crossProject(JVMPlatform, JSPlatform).in(file("core"))
   .dependsOn(api)
   .settings(commonSettings)
+  .jvmSettings(commonJvmSettings)
   .settings(
+    name        := s"$baseName-core",
     description := "Standard UGens",
-    licenses := lgpl,
-    Compile / sourceGenerators += ugenGenerator in Compile,
-    ugenGenerator in Compile := {
-      val src   = (sourceManaged       in Compile         ).value
-      val cp    = (dependencyClasspath in Runtime in gen13).value
-      val st    = streams.value
-      runUGenGenerator(description.value, outputDir = src, cp = cp.files, log = st.log, args = "--standard" :: Nil)
-    },
-    mappings in (Compile, packageSrc) ++= {
-      val base  = (sourceManaged  in Compile).value
-      val files = (managedSources in Compile).value
-      files.map { f => (f, f.relativeTo(base).get.getPath) }
-    },
+    licenses    := lgpl,
+//    Compile / sourceGenerators += ugenGenerator in Compile,
+//    ugenGenerator in Compile := {
+//      val src   = (sourceManaged       in Compile       ).value
+//      val cp    = (dependencyClasspath in Runtime in gen.jvm).value
+//      val st    = streams.value
+//      runUGenGenerator(description.value, outputDir = src, cp = cp.files, log = st.log, args = "--standard" :: Nil)
+//    },
+    Compile / unmanagedSourceDirectories += genSources(baseDirectory.value),
+//    mappings in (Compile, packageSrc) ++= {
+//      val base  = (sourceManaged  in Compile).value
+//      val files = (managedSources in Compile).value
+//      files.map { f => (f, f.relativeTo(base).get.getPath) }
+//    },
     mimaPreviousArtifacts := Set("de.sciss" %% s"$baseNameL-core" % mimaVersion)
   )
-  .jvmPlatform(scalaVersions = allScalaVersions)
-  .jsPlatform (scalaVersions = mainScalaVersion :: Nil)
 
-lazy val plugins = projectMatrix.withId(s"$baseNameL-plugins").in(file("plugins"))
+lazy val plugins = crossProject(JVMPlatform, JSPlatform).in(file("plugins"))
   .dependsOn(core)
   .settings(commonSettings)
+  .jvmSettings(commonJvmSettings)
   .settings(
+    name        := s"$baseName-plugins",
     description := "Additional third-party UGens",
-    licenses := lgpl,
-    Compile / sourceGenerators += ugenGenerator in Compile,
-    ugenGenerator in Compile := {
-      val src   = (sourceManaged       in Compile         ).value
-      val cp    = (dependencyClasspath in Runtime in gen13).value
-      val st    = streams.value
-      runUGenGenerator(description.value, outputDir = src, cp = cp.files, log = st.log, args = "--plugins" :: Nil)
-    },
+    licenses    := lgpl,
+//    Compile / sourceGenerators += ugenGenerator in Compile,
+//    ugenGenerator in Compile := {
+//      val src   = (sourceManaged       in Compile       ).value
+//      val cp    = (dependencyClasspath in Runtime in gen.jvm).value
+//      val st    = streams.value
+//      runUGenGenerator(description.value, outputDir = src, cp = cp.files, log = st.log, args = "--plugins" :: Nil)
+//    },
+    Compile / unmanagedSourceDirectories += genSources(baseDirectory.value),
     mimaPreviousArtifacts := Set("de.sciss" %% s"$baseNameL-plugins" % mimaVersion)
   )
-  .jvmPlatform(scalaVersions = allScalaVersions)
-  .jsPlatform (scalaVersions = mainScalaVersion :: Nil)
 
 /** @param name       purely informational string emitted through the sbt log
   * @param outputDir  target directory, e.g. `sourceManaged`
@@ -169,21 +200,31 @@ lazy val plugins = projectMatrix.withId(s"$baseNameL-plugins").in(file("plugins"
   *                   this can be a simple switch to select ugens, such
   *                   as `--standard` or `--plugins`, or a list of paths
   *                   to XML descriptions.
-  * @return           the list of generated source files
   */
 def runUGenGenerator(name: String, outputDir: File, cp: Seq[File], log: Logger,
-                     args: Seq[String]): Seq[File] = {
+                     args: Seq[String]): Unit = {
   val mainClass   = "de.sciss.synth.ugen.Gen"
   val tmp         = java.io.File.createTempFile("sources", ".txt")
   val os          = new java.io.FileOutputStream(tmp)
+  outputDir.mkdirs()
+  val oldFiles = (outputDir ** "*.scala").get()
+  oldFiles.foreach(_.delete())
 
   log.info(s"Generating UGen source code in $outputDir for $name")
 
   try {
     val outs  = CustomOutput(os)
-    val fOpt  = ForkOptions(javaHome = Option.empty[File], outputStrategy = Some(outs), bootJars = cp.toVector,
-      workingDirectory = Option.empty[File], runJVMOptions = Vector.empty[String], connectInput = false, envVars = Map.empty[String, String])
-    val res: Int = Fork.scala(config = fOpt,
+    val fOpt  = ForkOptions(
+      javaHome          = Option.empty[File],
+      workingDirectory  = Option.empty[File],
+      connectInput      = false,
+      outputStrategy    = Some(outs),
+      bootJars          = cp.toVector,
+      runJVMOptions     = Vector.empty[String],
+      envVars           = Map.empty[String, String],
+    )
+    val res: Int =
+      Fork.scala(config = fOpt,
       arguments = mainClass :: "-d" :: outputDir.getAbsolutePath :: args.toList)
 
     if (res != 0) {
@@ -192,16 +233,17 @@ def runUGenGenerator(name: String, outputDir: File, cp: Seq[File], log: Logger,
   } finally {
     os.close()
   }
-  val sources = {
-    val src = scala.io.Source.fromFile(tmp)
-    try {
-      src.getLines().map(file).toList
-    } finally {
-      src.close()
-    }
-  }
+//  val sources = {
+//    val src = scala.io.Source.fromFile(tmp)
+//    try {
+//      src.getLines().map(file).toList
+//    } finally {
+//      src.close()
+//    }
+//  }
+
   tmp.delete()
-  sources
+//  sources
 }
 
 // ---- publishing ----
