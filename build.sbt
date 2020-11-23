@@ -111,7 +111,7 @@ def genSources(base: File): File = base.getParentFile / "gen"
 lazy val gen = /*crossProject(JVMPlatform)*/ project.in(file("gen"))
   .dependsOn(spec, api.jvm)
   .settings(commonSettings)
-//  .jvmSettings(commonJvmSettings)
+  .settings(commonJvmSettings)  // bloody sbt breaks if we decide not to use all cross versions
   .settings(
     name        := s"$baseName-gen",
     description := "Source code generator for ScalaCollider UGens",
@@ -123,6 +123,14 @@ lazy val gen = /*crossProject(JVMPlatform)*/ project.in(file("gen"))
         "org.rogach"      %% "scallop"        % deps.gen.scallop,
         "org.scalatest"   %% "scalatest"      % deps.test.scalaTest % Test
       )
+    },
+    unmanagedSources / excludeFilter := {
+      val sv = scalaVersion.value
+      // yeah, well, sbt-crossproject bullshit.
+      // we cannot remove `crossScalaVersion` "because",
+      // and this seems to be the only way to prevent anything
+      // compiling under 2.12 or 3.0
+      if (sv.startsWith("2.13.")) "*.unused" else "*.scala"
     },
     ugenGenerator in Compile := {
       val pairs = Seq[(File, String)](
