@@ -14,6 +14,17 @@
 package de.sciss.synth
 package ugen
 
+import UGenSource._
+
+object ChannelProxy extends Reader[ChannelProxy] {
+  def read(in: DataInput): ChannelProxy = {
+    readArity(in, 2)
+    val _elem   = readGE(in)
+    val _index  = readInt(in)
+    new ChannelProxy(_elem, _index)
+  }
+}
+
 /** A helper graph element that selects a particular output channel of
   * another element. The index is an `Integer` and thus cannot be
   * determined at graph expansion time. If this is desired, the

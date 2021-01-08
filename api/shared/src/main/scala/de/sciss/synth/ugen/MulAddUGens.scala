@@ -17,15 +17,24 @@ package ugen
 import de.sciss.synth.UGenSource._
 import de.sciss.synth.ugen.Constant.{C0, C1, Cm1}
 
+object MulAdd extends Reader[MulAdd] {
+  def read(in: DataInput): MulAdd = {
+    readArity(in, 3)
+    val _in   = readGE(in)
+    val _mul  = readGE(in)
+    val _add  = readGE(in)
+    new MulAdd(_in, _mul, _add)
+  }
+}
 /** A UGen that multiplies an input with another signal
   * and then adds a third signal. This can be used to translate
   * an element into a different value range.
   *
-  * Usually the graph element operator `madd` is used
+  * Usually the graph element operator `mulAdd` is used
   * instead of explicitly writing `MulAdd`.
   *
   * {{{
-  * MulAdd(in, mul, add) == in.madd(mul, add) == in * mul + add
+  * MulAdd(in, mul, add) == in.mulAdd(mul, add) == in * mul + add
   * }}}
   *
   * ===Examples===
@@ -36,7 +45,7 @@ import de.sciss.synth.ugen.Constant.{C0, C1, Cm1}
   *   // input range -1 to +1,
   *   // output range ((-1 * 100) + 300) = 200
   *   // to           ((+1 * 100) + 300) = 400
-  *   val freq = SinOsc.kr(1).madd(100, 300) // or MulAdd(..., 100, 300)
+  *   val freq = SinOsc.kr(1).mulAdd(100, 300) // or MulAdd(..., 100, 300)
   *   freq.poll(label = "freq")
   *   SinOsc.ar(freq) * 0.1
   * }
@@ -92,7 +101,7 @@ final case class MulAdd(in: GE, mul: GE, add: GE)
   * @see [[de.sciss.synth.ugen.MulAdd MulAdd]]
   * @see [[de.sciss.synth.ugen.Sum4$ Sum4]]
   */
-object Sum3 {
+object Sum3 extends Reader[Sum3] {
   private[ugen] def make1(args: Vec[UGenIn]): UGenIn = {
     val in0i = args(0)
     val in1i = args(1)
@@ -109,6 +118,14 @@ object Sum3 {
       val argsM = if (rate == audio) matchRateFrom(args, 0, audio) else args
       UGen.SingleOut("Sum3", rate, argsM)
     }
+  }
+
+  def read(in: DataInput): Sum3 = {
+    readArity(in, 3)
+    val _in0 = readGE(in)
+    val _in1 = readGE(in)
+    val _in2 = readGE(in)
+    new Sum3(_in0, _in1, _in2)
   }
 }
 
@@ -138,7 +155,7 @@ final case class Sum3(in0: GE, in1: GE, in2: GE) extends UGenSource.SingleOut {
   * @see [[de.sciss.synth.ugen.MulAdd MulAdd]]
   * @see [[de.sciss.synth.ugen.Sum3$ Sum3]]
   */
-object Sum4 {
+object Sum4 extends Reader[Sum4] {
   private[ugen] def make1(args: Vec[UGenIn]): UGenIn = {
     val in0i = args(0)
     val in1i = args(1)
@@ -158,6 +175,15 @@ object Sum4 {
       val argsM = if (rate == audio) matchRateFrom(args, 0, audio) else args
       UGen.SingleOut("Sum4", rate, argsM)
     }
+  }
+
+  def read(in: DataInput): Sum4 = {
+    readArity(in, 4)
+    val _in0 = readGE(in)
+    val _in1 = readGE(in)
+    val _in2 = readGE(in)
+    val _in3 = readGE(in)
+    new Sum4(_in0, _in1, _in2, _in3)
   }
 }
 /** A UGen to efficiently add four signals together.

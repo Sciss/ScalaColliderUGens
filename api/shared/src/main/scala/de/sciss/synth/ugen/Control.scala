@@ -14,16 +14,26 @@
 package de.sciss.synth
 package ugen
 
+import de.sciss.synth.UGenSource._
+
 import scala.collection.immutable.{IndexedSeq => Vec}
 
 // ---------- Control ----------
 
-object Control {
+object Control extends Reader[Control] {
   /** Note: we are not providing further convenience methods,
     * as that is the task of ControlProxyFactory...
     */
-  def ir(values: ControlValues, name: Option[String] = None) = apply(scalar , values.seq, name)
-  def kr(values: ControlValues, name: Option[String] = None) = apply(control, values.seq, name)
+  def ir(values: ControlValues, name: Option[String] = None): Control = apply(scalar , values.seq, name)
+  def kr(values: ControlValues, name: Option[String] = None): Control = apply(control, values.seq, name)
+
+  def read(in: DataInput): Control = {
+    readArity(in, 3)
+    val _rate     = readRate(in)
+    val _values   = ??? : Vec[Float]
+    val _ctrlName = ??? : Option[String]
+    new Control(_rate, _values, _ctrlName)
+  }
 }
 
 final case class Control(rate: Rate, values: Vec[Float], ctrlName: Option[String])
@@ -37,9 +47,17 @@ final case class Control(rate: Rate, values: Vec[Float], ctrlName: Option[String
   }
 }
 
-object ControlProxy {
+object ControlProxy extends Reader[ControlProxy] {
   private val scalarFactory  = new ControlFactory(scalar )
   private val controlFactory = new ControlFactory(control)
+
+  def read(in: DataInput): ControlProxy = {
+    readArity(in, 3)
+    val _rate     = readRate(in)
+    val _values   = ??? : Vec[Float]
+    val _name     = ??? : Option[String]
+    new ControlProxy(_rate, _values, _name)
+  }
 }
 final case class ControlProxy(rate: Rate, values: Vec[Float], name: Option[String])
   extends ControlProxyLike {
@@ -58,8 +76,15 @@ final class ControlFactory(rate: Rate) extends ControlFactoryLike {
 
 // ---------- TrigControl ----------
 
-object TrigControl {
-  def kr(values: ControlValues, name: Option[String] = None) = TrigControl(values.seq, name)
+object TrigControl extends Reader[TrigControl] {
+  def kr(values: ControlValues, name: Option[String] = None): TrigControl = apply(values.seq, name)
+
+  def read(in: DataInput): TrigControl = {
+    readArity(in, 2)
+    val _values   = ??? : Vec[Float]
+    val _ctrlName = ??? : Option[String]
+    new TrigControl(_values, _ctrlName)
+  }
 }
 
 final case class TrigControl(values: Vec[Float], ctrlName: Option[String])
@@ -73,10 +98,17 @@ final case class TrigControl(values: Vec[Float], ctrlName: Option[String])
   }
 }
 
-object TrigControlProxy {
+object TrigControlProxy extends Reader[TrigControlProxy] {
   private object factory extends ControlFactoryLike {
     protected def makeUGen(numChannels: Int, specialIndex: Int): UGen =
       impl.ControlImpl("TrigControl", control, numChannels = numChannels, specialIndex = specialIndex)
+  }
+
+  def read(in: DataInput): TrigControlProxy = {
+    readArity(in, 2)
+    val _values   = ??? : Vec[Float]
+    val _name     = ??? : Option[String]
+    new TrigControlProxy(_values, _name)
   }
 }
 final case class TrigControlProxy(values: Vec[Float], name: Option[String])
@@ -86,8 +118,15 @@ final case class TrigControlProxy(values: Vec[Float], name: Option[String])
 
 // ---------- AudioControl ----------
 
-object AudioControl {
-  def ar(values: ControlValues, name: Option[String] = None) = AudioControl(values.seq, name)
+object AudioControl extends Reader[AudioControl] {
+  def ar(values: ControlValues, name: Option[String] = None): AudioControl = apply(values.seq, name)
+
+  def read(in: DataInput): AudioControl = {
+    readArity(in, 2)
+    val _values   = ??? : Vec[Float]
+    val _ctrlName = ??? : Option[String]
+    new AudioControl(_values, _ctrlName)
+  }
 }
 
 final case class AudioControl(values: Vec[Float], ctrlName: Option[String])
@@ -101,10 +140,17 @@ final case class AudioControl(values: Vec[Float], ctrlName: Option[String])
   }
 }
 
-object AudioControlProxy {
+object AudioControlProxy extends Reader[AudioControlProxy] {
   private object factory extends ControlFactoryLike {
     protected def makeUGen(numChannels: Int, specialIndex: Int): UGen =
       impl.ControlImpl("AudioControl", audio, numChannels = numChannels, specialIndex = specialIndex)
+  }
+
+  def read(in: DataInput): AudioControlProxy = {
+    readArity(in, 2)
+    val _values   = ??? : Vec[Float]
+    val _name     = ??? : Option[String]
+    new AudioControlProxy(_values, _name)
   }
 }
 final case class AudioControlProxy(values: Vec[Float], name: Option[String])

@@ -14,6 +14,8 @@
 package de.sciss.synth
 package ugen
 
+import de.sciss.synth.UGenSource._
+
 /** A helper graph element equivalent to `SampleRate.ir * 0.5`.
   *
   * ===Examples===
@@ -27,8 +29,13 @@ package ugen
   *
   * @see [[de.sciss.synth.ugen.SampleRate$ SampleRate]]
   */
-object Nyquist {
+object Nyquist extends Reader[Nyquist] {
   def ir: Nyquist = new Nyquist()
+
+  def read(in: DataInput): Nyquist = {
+    readArity(in, 0)
+    new Nyquist
+  }
 }
 
 /** A helper graph element equivalent to `SampleRate.ir * 0.5`.
