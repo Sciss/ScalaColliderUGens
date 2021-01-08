@@ -34,7 +34,7 @@ import UGenSource._
   * 
   * @see [[de.sciss.synth.ugen.WrapIndex$ WrapIndex]]
   */
-object DegreeToKey {
+object DegreeToKey extends Reader[DegreeToKey] {
   /** @param buf              buffer which contains the steps for each scale degree.
     * @param in               input index signal
     * @param octave           number of steps per octave in the scale.
@@ -46,6 +46,15 @@ object DegreeToKey {
     * @param octave           number of steps per octave in the scale.
     */
   def ar(buf: GE, in: GE, octave: GE = 12): DegreeToKey = new DegreeToKey(audio, buf, in, octave)
+  
+  def read(in: DataInput): DegreeToKey = {
+    readArity(in, 4)
+    val _rate   = readRate(in)
+    val _buf    = readGE(in)
+    val _in     = readGE(in)
+    val _octave = readGE(in)
+    new DegreeToKey(_rate, _buf, _in, _octave)
+  }
 }
 
 /** A UGen that uses an input signal as an index into an octave repeating table of
@@ -72,7 +81,7 @@ final case class DegreeToKey(rate: Rate, buf: GE, in: GE, octave: GE = 12)
   * 
   * @see [[de.sciss.synth.ugen.TWindex$ TWindex]]
   */
-object Select {
+object Select extends Reader[Select] {
   /** @param index            an index signal into the channels of the `in` argument.
     *                         The index is automatically clipped to lie between `0`
     *                         and `in.numOutputs - 1` . The index is truncated to its
@@ -102,6 +111,14 @@ object Select {
     *                         indexed.
     */
   def ar(index: GE, in: GE): Select = new Select(audio, index, in)
+  
+  def read(in: DataInput): Select = {
+    readArity(in, 3)
+    val _rate   = readRate(in)
+    val _index  = readGE(in)
+    val _in     = readGE(in)
+    new Select(_rate, _index, _in)
+  }
 }
 
 /** A UGen which selects among a sequence of inputs, according to an index signal.
@@ -140,7 +157,7 @@ final case class Select(rate: Rate, index: GE, in: GE) extends UGenSource.Single
   * 
   * @see [[de.sciss.synth.ugen.Select$ Select]]
   */
-object TWindex {
+object TWindex extends Reader[TWindex] {
   /** @param trig             the trigger used to calculate a new index. a trigger
     *                         occurs when passing from non-positive to positive
     * @param prob             a multi-channel graph element, where the output
@@ -164,6 +181,15 @@ object TWindex {
     *                         provide the normalization.
     */
   def ar(trig: GE, prob: GE, normalize: GE = 0): TWindex = new TWindex(audio, trig, prob, normalize)
+  
+  def read(in: DataInput): TWindex = {
+    readArity(in, 4)
+    val _rate       = readRate(in)
+    val _trig       = readGE(in)
+    val _prob       = readGE(in)
+    val _normalize  = readGE(in)
+    new TWindex(_rate, _trig, _prob, _normalize)
+  }
 }
 
 /** A UGen providing a probability-weighted index into a sequence upon receiving a
@@ -213,7 +239,7 @@ final case class TWindex(rate: Rate, trig: GE, prob: GE, normalize: GE = 0) exte
   * @see [[de.sciss.synth.ugen.IndexInBetween$ IndexInBetween]]
   * @see [[de.sciss.synth.ugen.DetectIndex$ DetectIndex]]
   */
-object Index {
+object Index extends Reader[Index] {
   /** @param buf              The buffer to read from.
     * @param in               The sample index into the buffer. This is truncated to
     *                         an integer automatically.
@@ -231,6 +257,14 @@ object Index {
     *                         an integer automatically.
     */
   def ar(buf: GE, in: GE = 0): Index = new Index(audio, buf, in)
+  
+  def read(in: DataInput): Index = {
+    readArity(in, 3)
+    val _rate = readRate(in)
+    val _buf  = readGE(in)
+    val _in   = readGE(in)
+    new Index(_rate, _buf, _in)
+  }
 }
 
 /** A UGen which reads a single sample value from a buffer at a given index.
@@ -274,7 +308,7 @@ final case class Index(rate: Rate, buf: GE, in: GE = 0) extends UGenSource.Singl
   * @see [[de.sciss.synth.ugen.Index$ Index]]
   * @see [[de.sciss.synth.ugen.IndexInBetween$ IndexInBetween]]
   */
-object IndexL {
+object IndexL extends Reader[IndexL] {
   /** @param buf              The buffer to read from.
     * @param in               The sample index into the buffer. This can have a
     *                         fractional part.
@@ -292,6 +326,14 @@ object IndexL {
     *                         fractional part.
     */
   def ar(buf: GE, in: GE = 0): IndexL = new IndexL(audio, buf, in)
+  
+  def read(in: DataInput): IndexL = {
+    readArity(in, 3)
+    val _rate = readRate(in)
+    val _buf  = readGE(in)
+    val _in   = readGE(in)
+    new IndexL(_rate, _buf, _in)
+  }
 }
 
 /** A UGen which reads from a buffer at a given index, linearly interpolating
@@ -336,7 +378,7 @@ final case class IndexL(rate: Rate, buf: GE, in: GE = 0) extends UGenSource.Sing
   * @see [[de.sciss.synth.ugen.WrapIndex$ WrapIndex]]
   * @see [[de.sciss.synth.ugen.IndexL$ IndexL]]
   */
-object FoldIndex {
+object FoldIndex extends Reader[FoldIndex] {
   /** @param buf              The buffer to read from.
     * @param in               The sample index into the buffer. This is truncated to
     *                         an integer automatically.
@@ -354,6 +396,14 @@ object FoldIndex {
     *                         an integer automatically.
     */
   def ar(buf: GE, in: GE = 0): FoldIndex = new FoldIndex(audio, buf, in)
+  
+  def read(in: DataInput): FoldIndex = {
+    readArity(in, 3)
+    val _rate = readRate(in)
+    val _buf  = readGE(in)
+    val _in   = readGE(in)
+    new FoldIndex(_rate, _buf, _in)
+  }
 }
 
 /** A UGen which reads a single sample value from a buffer at a given index.
@@ -399,7 +449,7 @@ final case class FoldIndex(rate: Rate, buf: GE, in: GE = 0) extends UGenSource.S
   * @see [[de.sciss.synth.ugen.FoldIndex$ FoldIndex]]
   * @see [[de.sciss.synth.ugen.IndexL$ IndexL]]
   */
-object WrapIndex {
+object WrapIndex extends Reader[WrapIndex] {
   /** @param buf              The buffer to read from.
     * @param in               The sample index into the buffer. This is truncated to
     *                         an integer automatically.
@@ -417,6 +467,14 @@ object WrapIndex {
     *                         an integer automatically.
     */
   def ar(buf: GE, in: GE = 0): WrapIndex = new WrapIndex(audio, buf, in)
+  
+  def read(in: DataInput): WrapIndex = {
+    readArity(in, 3)
+    val _rate = readRate(in)
+    val _buf  = readGE(in)
+    val _in   = readGE(in)
+    new WrapIndex(_rate, _buf, _in)
+  }
 }
 
 /** A UGen which reads a single sample value from a buffer at a given index.
@@ -469,7 +527,7 @@ final case class WrapIndex(rate: Rate, buf: GE, in: GE = 0) extends UGenSource.S
   * @see [[de.sciss.synth.ugen.DetectIndex$ DetectIndex]]
   * @see [[de.sciss.synth.ugen.IndexL$ IndexL]]
   */
-object IndexInBetween {
+object IndexInBetween extends Reader[IndexInBetween] {
   /** @param buf              The buffer to search in.
     * @param in               The input signal whose value is looked up in the buffer.
     */
@@ -484,6 +542,14 @@ object IndexInBetween {
     * @param in               The input signal whose value is looked up in the buffer.
     */
   def ar(buf: GE, in: GE): IndexInBetween = new IndexInBetween(audio, buf, in)
+  
+  def read(in: DataInput): IndexInBetween = {
+    readArity(in, 3)
+    val _rate = readRate(in)
+    val _buf  = readGE(in)
+    val _in   = readGE(in)
+    new IndexInBetween(_rate, _buf, _in)
+  }
 }
 
 /** A UGen which determines the (lowest) index in a buffer at which the two
@@ -531,7 +597,7 @@ final case class IndexInBetween(rate: Rate, buf: GE, in: GE) extends UGenSource.
   * @see [[de.sciss.synth.ugen.Index$ Index]]
   * @see [[de.sciss.synth.ugen.IndexInBetween$ IndexInBetween]]
   */
-object DetectIndex {
+object DetectIndex extends Reader[DetectIndex] {
   /** 
     */
   def ir(buf: GE, in: GE): DetectIndex = new DetectIndex(scalar, buf, in)
@@ -543,6 +609,14 @@ object DetectIndex {
   /** 
     */
   def ar(buf: GE, in: GE): DetectIndex = new DetectIndex(audio, buf, in)
+  
+  def read(in: DataInput): DetectIndex = {
+    readArity(in, 3)
+    val _rate = readRate(in)
+    val _buf  = readGE(in)
+    val _in   = readGE(in)
+    new DetectIndex(_rate, _buf, _in)
+  }
 }
 
 /** A UGen which determines the index in a buffer at which the value matches a
@@ -577,7 +651,7 @@ final case class DetectIndex(rate: Rate, buf: GE, in: GE) extends UGenSource.Sin
   * @see [[de.sciss.synth.ugen.Index$ Index]]
   * @see [[de.sciss.synth.ugen.WrapIndex$ WrapIndex]]
   */
-object Shaper {
+object Shaper extends Reader[Shaper] {
   /** @param buf              buffer filled in wavetable format containing the
     *                         transfer function.
     * @param in               signal to be fed into the wave shaper
@@ -589,6 +663,14 @@ object Shaper {
     * @param in               signal to be fed into the wave shaper
     */
   def ar(buf: GE, in: GE): Shaper = new Shaper(audio, buf, in)
+  
+  def read(in: DataInput): Shaper = {
+    readArity(in, 3)
+    val _rate = readRate(in)
+    val _buf  = readGE(in)
+    val _in   = readGE(in)
+    new Shaper(_rate, _buf, _in)
+  }
 }
 
 /** A waveshaping UGen. Waveshaping is a the process of translating an input signal
@@ -635,7 +717,7 @@ final case class Shaper(rate: Rate, buf: GE, in: GE) extends UGenSource.SingleOu
   * @see [[de.sciss.synth.ugen.SinOsc$ SinOsc]]
   * @see [[de.sciss.synth.ugen.SinOscFB$ SinOscFB]]
   */
-object FSinOsc {
+object FSinOsc extends Reader[FSinOsc] {
   def kr: FSinOsc = kr()
   
   /** @param freq             frequency in Hertz
@@ -655,6 +737,14 @@ object FSinOsc {
     *                         starts at -1, ''(init-time only)''
     */
   def ar(freq: GE = 440.0f, iphase: GE = 0.0f): FSinOsc = new FSinOsc(audio, freq, iphase)
+  
+  def read(in: DataInput): FSinOsc = {
+    readArity(in, 3)
+    val _rate   = readRate(in)
+    val _freq   = readGE(in)
+    val _iphase = readGE(in)
+    new FSinOsc(_rate, _freq, _iphase)
+  }
 }
 
 /** A sine oscillator UGen using a fast approximation. It uses a ringing filter and
@@ -707,7 +797,7 @@ final case class FSinOsc(rate: Rate, freq: GE = 440.0f, iphase: GE = 0.0f) exten
   * @see [[de.sciss.synth.ugen.FSinOsc$ FSinOsc]]
   * @see [[de.sciss.synth.ugen.SinOscFB$ SinOscFB]]
   */
-object SinOsc {
+object SinOsc extends Reader[SinOsc] {
   def kr: SinOsc = kr()
   
   /** @param freq             frequency in Hertz
@@ -721,6 +811,14 @@ object SinOsc {
     * @param phase            phase offset or modulator in radians
     */
   def ar(freq: GE = 440.0f, phase: GE = 0.0f): SinOsc = new SinOsc(audio, freq, phase)
+  
+  def read(in: DataInput): SinOsc = {
+    readArity(in, 3)
+    val _rate   = readRate(in)
+    val _freq   = readGE(in)
+    val _phase  = readGE(in)
+    new SinOsc(_rate, _freq, _phase)
+  }
 }
 
 /** A sinusoidal (sine tone) oscillator UGen. This is the same as `Osc` except that
@@ -758,7 +856,7 @@ final case class SinOsc(rate: Rate, freq: GE = 440.0f, phase: GE = 0.0f) extends
   * @see [[de.sciss.synth.ugen.SinOsc$ SinOsc]]
   * @see [[de.sciss.synth.ugen.FSinOsc$ FSinOsc]]
   */
-object SinOscFB {
+object SinOscFB extends Reader[SinOscFB] {
   def kr: SinOscFB = kr()
   
   /** @param freq             frequency in Hertz
@@ -774,6 +872,14 @@ object SinOscFB {
     *                         zero produces a clean sine wave.
     */
   def ar(freq: GE = 440.0f, feedback: GE = 0.0f): SinOscFB = new SinOscFB(audio, freq, feedback)
+  
+  def read(in: DataInput): SinOscFB = {
+    readArity(in, 3)
+    val _rate     = readRate(in)
+    val _freq     = readGE(in)
+    val _feedback = readGE(in)
+    new SinOscFB(_rate, _freq, _feedback)
+  }
 }
 
 /** A sine oscillator UGen that has phase modulation feedback. Its output plugs
@@ -793,10 +899,19 @@ final case class SinOscFB(rate: Rate, freq: GE = 440.0f, feedback: GE = 0.0f) ex
   
   protected def makeUGen(_args: Vec[UGenIn]): UGenInLike = UGen.SingleOut(name, rate, _args)
 }
-object VOsc {
+object VOsc extends Reader[VOsc] {
   def kr(bufPos: GE, freq: GE = 440.0f, phase: GE = 0.0f): VOsc = new VOsc(control, bufPos, freq, phase)
   
   def ar(bufPos: GE, freq: GE = 440.0f, phase: GE = 0.0f): VOsc = new VOsc(audio, bufPos, freq, phase)
+  
+  def read(in: DataInput): VOsc = {
+    readArity(in, 4)
+    val _rate   = readRate(in)
+    val _bufPos = readGE(in)
+    val _freq   = readGE(in)
+    val _phase  = readGE(in)
+    new VOsc(_rate, _bufPos, _freq, _phase)
+  }
 }
 final case class VOsc(rate: Rate, bufPos: GE, freq: GE = 440.0f, phase: GE = 0.0f)
   extends UGenSource.SingleOut with IsIndividual {
@@ -805,12 +920,22 @@ final case class VOsc(rate: Rate, bufPos: GE, freq: GE = 440.0f, phase: GE = 0.0
   
   protected def makeUGen(_args: Vec[UGenIn]): UGenInLike = UGen.SingleOut(name, rate, _args, isIndividual = true)
 }
-object VOsc3 {
+object VOsc3 extends Reader[VOsc3] {
   def kr(bufPos: GE, freq1: GE = 110.0f, freq2: GE = 220.0f, freq3: GE = 440.0f): VOsc3 = 
     new VOsc3(control, bufPos, freq1, freq2, freq3)
   
   def ar(bufPos: GE, freq1: GE = 110.0f, freq2: GE = 220.0f, freq3: GE = 440.0f): VOsc3 = 
     new VOsc3(audio, bufPos, freq1, freq2, freq3)
+  
+  def read(in: DataInput): VOsc3 = {
+    readArity(in, 5)
+    val _rate   = readRate(in)
+    val _bufPos = readGE(in)
+    val _freq1  = readGE(in)
+    val _freq2  = readGE(in)
+    val _freq3  = readGE(in)
+    new VOsc3(_rate, _bufPos, _freq1, _freq2, _freq3)
+  }
 }
 final case class VOsc3(rate: Rate, bufPos: GE, freq1: GE = 110.0f, freq2: GE = 220.0f, freq3: GE = 440.0f)
   extends UGenSource.SingleOut with IsIndividual {
@@ -846,7 +971,7 @@ final case class VOsc3(rate: Rate, bufPos: GE, freq1: GE = 110.0f, freq2: GE = 2
   * @see [[de.sciss.synth.ugen.VOsc$ VOsc]]
   * @see [[de.sciss.synth.ugen.SinOsc$ SinOsc]]
   */
-object Osc {
+object Osc extends Reader[Osc] {
   /** @param buf              the buffer with the wavetable in special wavetable
     *                         format. the size must be a power of two.
     * @param freq             frequency of table scans in Hz, corresponding to the
@@ -864,6 +989,15 @@ object Osc {
     *                         be within the range of -8*Pi to +8*Pi.
     */
   def ar(buf: GE, freq: GE = 440.0f, phase: GE = 0.0f): Osc = new Osc(audio, buf, freq, phase)
+  
+  def read(in: DataInput): Osc = {
+    readArity(in, 4)
+    val _rate   = readRate(in)
+    val _buf    = readGE(in)
+    val _freq   = readGE(in)
+    val _phase  = readGE(in)
+    new Osc(_rate, _buf, _freq, _phase)
+  }
 }
 
 /** An oscillator UGen that linearly interpolates a wavetable. It has frequency and
@@ -892,10 +1026,19 @@ final case class Osc(rate: Rate, buf: GE, freq: GE = 440.0f, phase: GE = 0.0f)
   
   protected def makeUGen(_args: Vec[UGenIn]): UGenInLike = UGen.SingleOut(name, rate, _args, isIndividual = true)
 }
-object OscN {
+object OscN extends Reader[OscN] {
   def kr(buf: GE, freq: GE = 440.0f, phase: GE = 0.0f): OscN = new OscN(control, buf, freq, phase)
   
   def ar(buf: GE, freq: GE = 440.0f, phase: GE = 0.0f): OscN = new OscN(audio, buf, freq, phase)
+  
+  def read(in: DataInput): OscN = {
+    readArity(in, 4)
+    val _rate   = readRate(in)
+    val _buf    = readGE(in)
+    val _freq   = readGE(in)
+    val _phase  = readGE(in)
+    new OscN(_rate, _buf, _freq, _phase)
+  }
 }
 final case class OscN(rate: Rate, buf: GE, freq: GE = 440.0f, phase: GE = 0.0f)
   extends UGenSource.SingleOut with IsIndividual {
@@ -904,8 +1047,17 @@ final case class OscN(rate: Rate, buf: GE, freq: GE = 440.0f, phase: GE = 0.0f)
   
   protected def makeUGen(_args: Vec[UGenIn]): UGenInLike = UGen.SingleOut(name, rate, _args, isIndividual = true)
 }
-object COsc {
+object COsc extends Reader[COsc] {
   def ar(buf: GE, freq: GE = 440.0f, beats: GE = 0.5f): COsc = new COsc(audio, buf, freq, beats)
+  
+  def read(in: DataInput): COsc = {
+    readArity(in, 4)
+    val _rate   = readRate(in)
+    val _buf    = readGE(in)
+    val _freq   = readGE(in)
+    val _beats  = readGE(in)
+    new COsc(_rate, _buf, _freq, _beats)
+  }
 }
 final case class COsc(rate: Rate, buf: GE, freq: GE = 440.0f, beats: GE = 0.5f)
   extends UGenSource.SingleOut with IsIndividual {
@@ -933,7 +1085,7 @@ final case class COsc(rate: Rate, buf: GE, freq: GE = 440.0f, beats: GE = 0.5f)
   * play { Formant.ar(400, 2000, XLine.kr(800, 8000, 8)) * 0.2 }
   * }}}
   */
-object Formant {
+object Formant extends Reader[Formant] {
   def ar: Formant = ar()
   
   /** @param fundFreq         Fundamental frequency in Hertz. Read at control-rate,
@@ -949,6 +1101,15 @@ object Formant {
     */
   def ar(fundFreq: GE = 440.0f, formFreq: GE = 1760.0f, bw: GE = 880.0f): Formant = 
     new Formant(audio, fundFreq, formFreq, bw)
+  
+  def read(in: DataInput): Formant = {
+    readArity(in, 4)
+    val _rate     = readRate(in)
+    val _fundFreq = readGE(in)
+    val _formFreq = readGE(in)
+    val _bw       = readGE(in)
+    new Formant(_rate, _fundFreq, _formFreq, _bw)
+  }
 }
 
 /** A UGen that generates a set of harmonics around a formant frequency at a given
@@ -992,7 +1153,7 @@ final case class Formant(rate: Rate, fundFreq: GE = 440.0f, formFreq: GE = 1760.
   * 
   * @see [[de.sciss.synth.ugen.Impulse$ Impulse]]
   */
-object Blip {
+object Blip extends Reader[Blip] {
   def kr: Blip = kr()
   
   /** @param freq             Fundamental frequency in Hertz
@@ -1008,6 +1169,14 @@ object Blip {
     *                         to avoid aliasing.
     */
   def ar(freq: GE = 440.0f, numHarm: GE = 200): Blip = new Blip(audio, freq, numHarm)
+  
+  def read(in: DataInput): Blip = {
+    readArity(in, 3)
+    val _rate     = readRate(in)
+    val _freq     = readGE(in)
+    val _numHarm  = readGE(in)
+    new Blip(_rate, _freq, _numHarm)
+  }
 }
 
 /** Band Limited ImPulse generator UGen. All harmonics have equal amplitude. This
@@ -1042,7 +1211,7 @@ final case class Blip(rate: Rate, freq: GE = 440.0f, numHarm: GE = 200) extends 
   * 
   * @see [[de.sciss.synth.ugen.LFSaw$ LFSaw]]
   */
-object Saw {
+object Saw extends Reader[Saw] {
   def kr: Saw = kr()
   
   /** @param freq             Fundamental frequency in Hertz
@@ -1054,6 +1223,13 @@ object Saw {
   /** @param freq             Fundamental frequency in Hertz
     */
   def ar(freq: GE = 440.0f): Saw = new Saw(audio, freq)
+  
+  def read(in: DataInput): Saw = {
+    readArity(in, 2)
+    val _rate = readRate(in)
+    val _freq = readGE(in)
+    new Saw(_rate, _freq)
+  }
 }
 
 /** A band-limited sawtooth wave generator UGen.
@@ -1092,7 +1268,7 @@ final case class Saw(rate: Rate, freq: GE = 440.0f) extends UGenSource.SingleOut
   * 
   * @see [[de.sciss.synth.ugen.LFPulse$ LFPulse]]
   */
-object Pulse {
+object Pulse extends Reader[Pulse] {
   def kr: Pulse = kr()
   
   /** @param freq             Fundamental frequency in Hertz
@@ -1108,6 +1284,14 @@ object Pulse {
     *                         square wave.
     */
   def ar(freq: GE = 440.0f, width: GE = 0.5f): Pulse = new Pulse(audio, freq, width)
+  
+  def read(in: DataInput): Pulse = {
+    readArity(in, 3)
+    val _rate   = readRate(in)
+    val _freq   = readGE(in)
+    val _width  = readGE(in)
+    new Pulse(_rate, _freq, _width)
+  }
 }
 
 /** A band-limited pulse wave generator UGen, capable of pulse width modulation.
@@ -1128,9 +1312,17 @@ final case class Pulse(rate: Rate, freq: GE = 440.0f, width: GE = 0.5f) extends 
   
   protected def makeUGen(_args: Vec[UGenIn]): UGenInLike = UGen.SingleOut(name, rate, _args)
 }
-object Klang {
+object Klang extends Reader[Klang] {
   def ar(specs: GE, freqScale: GE = 1.0f, freqOffset: GE = 0.0f): Klang = 
     new Klang(specs, freqScale, freqOffset)
+  
+  def read(in: DataInput): Klang = {
+    readArity(in, 3)
+    val _specs      = readGE(in)
+    val _freqScale  = readGE(in)
+    val _freqOffset = readGE(in)
+    new Klang(_specs, _freqScale, _freqOffset)
+  }
 }
 final case class Klang(specs: GE, freqScale: GE = 1.0f, freqOffset: GE = 0.0f)
   extends UGenSource.SingleOut with AudioRated {
@@ -1152,7 +1344,7 @@ final case class Klang(specs: GE, freqScale: GE = 1.0f, freqOffset: GE = 0.0f)
   * @see [[de.sciss.synth.ugen.Klang$ Klang]]
   * @see [[de.sciss.synth.ugen.Ringz$ Ringz]]
   */
-object Klank {
+object Klank extends Reader[Klank] {
   /** @param specs             ''(init-time only)''
     * @param freqScale         ''(init-time only)''
     * @param freqOffset        ''(init-time only)''
@@ -1160,6 +1352,16 @@ object Klank {
     */
   def ar(specs: GE, in: GE, freqScale: GE = 1.0f, freqOffset: GE = 0.0f, decayScale: GE = 1.0f): Klank = 
     new Klank(specs, in, freqScale, freqOffset, decayScale)
+  
+  def read(in: DataInput): Klank = {
+    readArity(in, 5)
+    val _specs      = readGE(in)
+    val _in         = readGE(in)
+    val _freqScale  = readGE(in)
+    val _freqOffset = readGE(in)
+    val _decayScale = readGE(in)
+    new Klank(_specs, _in, _freqScale, _freqOffset, _decayScale)
+  }
 }
 
 /** Klank is a UGen of a bank of fixed frequency resonators which can be used to

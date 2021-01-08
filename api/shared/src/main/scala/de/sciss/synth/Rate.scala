@@ -2,7 +2,7 @@
  *  Rate.scala
  *  (ScalaColliderUGens)
  *
- *  Copyright (c) 2008-2020 Hanns Holger Rutz. All rights reserved.
+ *  Copyright (c) 2008-2021 Hanns Holger Rutz. All rights reserved.
  *
  *  This software is published under the GNU Lesser General Public License v2.1+
  *
@@ -62,7 +62,7 @@ object MaybeRate {
 }
 
 /** This trait denotes an optional server calculation rate. Either the rate is explicit, [[de.sciss.synth.Rate Rate]],
-  * or it is undefined, [[de.sciss.synth.UndefinedRate UndefinedRate]]. In the latter case, a rate is implicitly
+  * or it is undefined, [[de.sciss.synth.UndefinedRate UndefinedRate]]. In the latter case, a rate is implicitly
   * derived from the input arguments of a UGen.
   */
 sealed abstract class MaybeRate extends Product {

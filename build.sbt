@@ -1,7 +1,7 @@
 lazy val baseName       = "ScalaColliderUGens"
 lazy val baseNameL      = baseName.toLowerCase
 
-lazy val projectVersion = "1.20.1"
+lazy val projectVersion = "1.20.2-SNAPSHOT"
 lazy val mimaVersion    = "1.20.0"
 
 lazy val commonSettings = Seq(
@@ -18,13 +18,14 @@ lazy val commonSettings = Seq(
 ) ++ publishSettings
 
 lazy val commonJvmSettings = Seq(
-  crossScalaVersions := Seq("3.0.0-M1", "2.13.4", "2.12.12"),
+  crossScalaVersions := Seq("3.0.0-M2", "2.13.4", "2.12.12"),
 )
 
 lazy val deps = new {
   val main = new {
     val numbers      = "0.2.1"
     val scalaXML     = "1.3.0"
+    val serial       = "2.0.0"
   }
   val test = new {
     val scalaTest    = "3.2.3"
@@ -88,6 +89,7 @@ lazy val api = crossProject(JVMPlatform, JSPlatform).in(file("api"))
     licenses    := lgpl,
     libraryDependencies ++= Seq(
       "de.sciss" %%% "numbers" % deps.main.numbers,
+      "de.sciss" %%% "serial"  % deps.main.serial,
     ),
     libraryDependencies += {
       ("org.scala-lang.modules" %%% "scala-xml" % deps.main.scalaXML).withDottyCompat(scalaVersion.value)

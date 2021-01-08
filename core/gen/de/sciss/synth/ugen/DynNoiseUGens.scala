@@ -21,7 +21,7 @@ import UGenSource._
   * @see [[de.sciss.synth.ugen.LFDNoise3$ LFDNoise3]]
   * @see [[de.sciss.synth.ugen.TRand$ TRand]]
   */
-object LFDNoise0 {
+object LFDNoise0 extends Reader[LFDNoise0] {
   def kr: LFDNoise0 = kr()
   
   /** @param freq             rate at which to generate random values.
@@ -33,6 +33,13 @@ object LFDNoise0 {
   /** @param freq             rate at which to generate random values.
     */
   def ar(freq: GE = 500.0f): LFDNoise0 = new LFDNoise0(audio, freq)
+  
+  def read(in: DataInput): LFDNoise0 = {
+    readArity(in, 2)
+    val _rate = readRate(in)
+    val _freq = readGE(in)
+    new LFDNoise0(_rate, _freq)
+  }
 }
 
 /** A dynamic step noise UGen. Like `LFNoise0` , it generates abruptly changing
@@ -77,7 +84,7 @@ final case class LFDNoise0(rate: Rate, freq: GE = 500.0f) extends UGenSource.Sin
   * @see [[de.sciss.synth.ugen.LFDNoise3$ LFDNoise3]]
   * @see [[de.sciss.synth.ugen.Ramp$ Ramp]]
   */
-object LFDNoise1 {
+object LFDNoise1 extends Reader[LFDNoise1] {
   def kr: LFDNoise1 = kr()
   
   /** @param freq             rate at which to generate random values.
@@ -89,6 +96,13 @@ object LFDNoise1 {
   /** @param freq             rate at which to generate random values.
     */
   def ar(freq: GE = 500.0f): LFDNoise1 = new LFDNoise1(audio, freq)
+  
+  def read(in: DataInput): LFDNoise1 = {
+    readArity(in, 2)
+    val _rate = readRate(in)
+    val _freq = readGE(in)
+    new LFDNoise1(_rate, _freq)
+  }
 }
 
 /** A dynamic ramp noise UGen. Like `LFNoise1` , it generates linearly interpolated
@@ -142,7 +156,7 @@ final case class LFDNoise1(rate: Rate, freq: GE = 500.0f) extends UGenSource.Sin
   * @see [[de.sciss.synth.ugen.LFDNoise0$ LFDNoise0]]
   * @see [[de.sciss.synth.ugen.LFDNoise1$ LFDNoise1]]
   */
-object LFDNoise3 {
+object LFDNoise3 extends Reader[LFDNoise3] {
   def kr: LFDNoise3 = kr()
   
   /** @param freq             rate at which to generate random values.
@@ -154,6 +168,13 @@ object LFDNoise3 {
   /** @param freq             rate at which to generate random values.
     */
   def ar(freq: GE = 500.0f): LFDNoise3 = new LFDNoise3(audio, freq)
+  
+  def read(in: DataInput): LFDNoise3 = {
+    readArity(in, 2)
+    val _rate = readRate(in)
+    val _freq = readGE(in)
+    new LFDNoise3(_rate, _freq)
+  }
 }
 
 /** A dynamic ramp noise UGen. It is similar to `LFNoise2` , with three
@@ -207,7 +228,7 @@ final case class LFDNoise3(rate: Rate, freq: GE = 500.0f) extends UGenSource.Sin
   * @see [[de.sciss.synth.ugen.Schmidt$ Schmidt]]
   * @see [[de.sciss.synth.ugen.GrayNoise$ GrayNoise]]
   */
-object LFDClipNoise {
+object LFDClipNoise extends Reader[LFDClipNoise] {
   def kr: LFDClipNoise = kr()
   
   /** @param freq             rate at which to generate random values.
@@ -219,6 +240,13 @@ object LFDClipNoise {
   /** @param freq             rate at which to generate random values.
     */
   def ar(freq: GE = 500.0f): LFDClipNoise = new LFDClipNoise(audio, freq)
+  
+  def read(in: DataInput): LFDClipNoise = {
+    readArity(in, 2)
+    val _rate = readRate(in)
+    val _freq = readGE(in)
+    new LFDClipNoise(_rate, _freq)
+  }
 }
 
 /** A UGen that randomly generates the values -1 or +1 at a rate given by the

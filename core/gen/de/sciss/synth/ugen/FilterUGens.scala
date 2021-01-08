@@ -13,7 +13,7 @@ import UGenSource._
   * @see [[de.sciss.synth.ugen.Lag$ Lag]]
   * @see [[de.sciss.synth.ugen.Sweep$ Sweep]]
   */
-object Ramp {
+object Ramp extends Reader[Ramp] {
   /** @param in               the signal to smooth out
     * @param dur              the ramp-time (seconds) which is also the interval of
     *                         the sampling
@@ -25,6 +25,14 @@ object Ramp {
     *                         the sampling
     */
   def ar(in: GE, dur: GE = 0.1f): Ramp = new Ramp(audio, in, dur)
+  
+  def read(in: DataInput): Ramp = {
+    readArity(in, 3)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    val _dur  = readGE(in)
+    new Ramp(_rate, _in, _dur)
+  }
 }
 
 /** A UGen which produces a linear lag (time smear) regarding and input signal.
@@ -60,7 +68,7 @@ final case class Ramp(rate: MaybeRate, in: GE, dur: GE = 0.1f) extends UGenSourc
   * @see [[de.sciss.synth.ugen.Lag2$ Lag2]]
   * @see [[de.sciss.synth.ugen.Ramp$ Ramp]]
   */
-object Lag {
+object Lag extends Reader[Lag] {
   /** @param in               input signal.
     * @param time             60 dB lag time in seconds.
     */
@@ -70,6 +78,14 @@ object Lag {
     * @param time             60 dB lag time in seconds.
     */
   def ar(in: GE, time: GE = 0.1f): Lag = new Lag(audio, in, time)
+  
+  def read(in: DataInput): Lag = {
+    readArity(in, 3)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    val _time = readGE(in)
+    new Lag(_rate, _in, _time)
+  }
 }
 
 /** An exponential lag UGen. This is essentially the same as `OnePole` except that
@@ -104,7 +120,7 @@ final case class Lag(rate: MaybeRate, in: GE, time: GE = 0.1f) extends UGenSourc
   * @see [[de.sciss.synth.ugen.Lag2UD$ Lag2UD]]
   * @see [[de.sciss.synth.ugen.Lag3$ Lag3]]
   */
-object Lag2 {
+object Lag2 extends Reader[Lag2] {
   /** @param in               input signal.
     * @param time             60 dB lag time in seconds.
     */
@@ -114,6 +130,14 @@ object Lag2 {
     * @param time             60 dB lag time in seconds.
     */
   def ar(in: GE, time: GE = 0.1f): Lag2 = new Lag2(audio, in, time)
+  
+  def read(in: DataInput): Lag2 = {
+    readArity(in, 3)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    val _time = readGE(in)
+    new Lag2(_rate, _in, _time)
+  }
 }
 
 /** A cascaded exponential lag UGen. `Lag2.kr(in, time)` is equivalent to
@@ -147,7 +171,7 @@ final case class Lag2(rate: MaybeRate, in: GE, time: GE = 0.1f) extends UGenSour
   * @see [[de.sciss.synth.ugen.Lag3UD$ Lag3UD]]
   * @see [[de.sciss.synth.ugen.Lag2$ Lag2]]
   */
-object Lag3 {
+object Lag3 extends Reader[Lag3] {
   /** @param in               input signal.
     * @param time             60 dB lag time in seconds.
     */
@@ -157,6 +181,14 @@ object Lag3 {
     * @param time             60 dB lag time in seconds.
     */
   def ar(in: GE, time: GE = 0.1f): Lag3 = new Lag3(audio, in, time)
+  
+  def read(in: DataInput): Lag3 = {
+    readArity(in, 3)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    val _time = readGE(in)
+    new Lag3(_rate, _in, _time)
+  }
 }
 
 /** A cascaded exponential lag UGen. `Lag3.kr(in, time)` is equivalent to
@@ -188,7 +220,7 @@ final case class Lag3(rate: MaybeRate, in: GE, time: GE = 0.1f) extends UGenSour
   * @see [[de.sciss.synth.ugen.Lag$ Lag]]
   * @see [[de.sciss.synth.ugen.Lag2UD$ Lag2UD]]
   */
-object LagUD {
+object LagUD extends Reader[LagUD] {
   /** @param in               input signal.
     * @param timeUp           60 dB lag time in seconds effective during a rising
     *                         slope in the input signal
@@ -205,6 +237,15 @@ object LagUD {
     *                         slope in the input signal
     */
   def ar(in: GE, timeUp: GE = 0.1f, timeDown: GE = 0.1f): LagUD = new LagUD(audio, in, timeUp, timeDown)
+  
+  def read(in: DataInput): LagUD = {
+    readArity(in, 4)
+    val _rate     = readMaybeRate(in)
+    val _in       = readGE(in)
+    val _timeUp   = readGE(in)
+    val _timeDown = readGE(in)
+    new LagUD(_rate, _in, _timeUp, _timeDown)
+  }
 }
 
 /** An exponential lag UGen with separate inputs for up and down slope. This is
@@ -242,7 +283,7 @@ final case class LagUD(rate: MaybeRate, in: GE, timeUp: GE = 0.1f, timeDown: GE 
   * @see [[de.sciss.synth.ugen.Lag2$ Lag2]]
   * @see [[de.sciss.synth.ugen.Lag3UD$ Lag3UD]]
   */
-object Lag2UD {
+object Lag2UD extends Reader[Lag2UD] {
   /** @param in               input signal.
     * @param timeUp           60 dB lag time in seconds effective during a rising
     *                         slope in the input signal
@@ -260,6 +301,15 @@ object Lag2UD {
     */
   def ar(in: GE, timeUp: GE = 0.1f, timeDown: GE = 0.1f): Lag2UD = 
     new Lag2UD(audio, in, timeUp, timeDown)
+  
+  def read(in: DataInput): Lag2UD = {
+    readArity(in, 4)
+    val _rate     = readMaybeRate(in)
+    val _in       = readGE(in)
+    val _timeUp   = readGE(in)
+    val _timeDown = readGE(in)
+    new Lag2UD(_rate, _in, _timeUp, _timeDown)
+  }
 }
 
 /** A cascaded exponential lag UGen with separate inputs for up and down slope.
@@ -300,7 +350,7 @@ final case class Lag2UD(rate: MaybeRate, in: GE, timeUp: GE = 0.1f, timeDown: GE
   * @see [[de.sciss.synth.ugen.Lag3$ Lag3]]
   * @see [[de.sciss.synth.ugen.Lag2UD$ Lag2UD]]
   */
-object Lag3UD {
+object Lag3UD extends Reader[Lag3UD] {
   /** @param in               input signal.
     * @param timeUp           60 dB lag time in seconds effective during a rising
     *                         slope in the input signal
@@ -318,6 +368,15 @@ object Lag3UD {
     */
   def ar(in: GE, timeUp: GE = 0.1f, timeDown: GE = 0.1f): Lag3UD = 
     new Lag3UD(audio, in, timeUp, timeDown)
+  
+  def read(in: DataInput): Lag3UD = {
+    readArity(in, 4)
+    val _rate     = readMaybeRate(in)
+    val _in       = readGE(in)
+    val _timeUp   = readGE(in)
+    val _timeDown = readGE(in)
+    new Lag3UD(_rate, _in, _timeUp, _timeDown)
+  }
 }
 
 /** A cascaded exponential lag UGen with separate inputs for up and down slope.
@@ -358,7 +417,7 @@ final case class Lag3UD(rate: MaybeRate, in: GE, timeUp: GE = 0.1f, timeDown: GE
   * @see [[de.sciss.synth.ugen.TwoPole$ TwoPole]]
   * @see [[de.sciss.synth.ugen.Lag$ Lag]]
   */
-object OnePole {
+object OnePole extends Reader[OnePole] {
   /** @param in               input signal to be processed
     * @param coeff            feedback coefficient. Should be between -1 and +1
     */
@@ -368,6 +427,14 @@ object OnePole {
     * @param coeff            feedback coefficient. Should be between -1 and +1
     */
   def ar(in: GE, coeff: GE = 0.5f): OnePole = new OnePole(audio, in, coeff)
+  
+  def read(in: DataInput): OnePole = {
+    readArity(in, 3)
+    val _rate   = readMaybeRate(in)
+    val _in     = readGE(in)
+    val _coeff  = readGE(in)
+    new OnePole(_rate, _in, _coeff)
+  }
 }
 
 /** A one pole (IIR) filter UGen. Implements the formula :
@@ -406,7 +473,7 @@ final case class OnePole(rate: MaybeRate, in: GE, coeff: GE = 0.5f) extends UGen
   * @see [[de.sciss.synth.ugen.Delay1$ Delay1]]
   * @see [[de.sciss.synth.ugen.Integrator$ Integrator]]
   */
-object OneZero {
+object OneZero extends Reader[OneZero] {
   /** @param in               input signal to be processed
     * @param coeff            feed forward coefficient. +0.5 makes a two point
     *                         averaging filter (see also `LPZ1` ), -0.5 makes a
@@ -424,6 +491,14 @@ object OneZero {
     *                         single sample delay.
     */
   def ar(in: GE, coeff: GE = 0.5f): OneZero = new OneZero(audio, in, coeff)
+  
+  def read(in: DataInput): OneZero = {
+    readArity(in, 3)
+    val _rate   = readMaybeRate(in)
+    val _in     = readGE(in)
+    val _coeff  = readGE(in)
+    new OneZero(_rate, _in, _coeff)
+  }
 }
 
 /** A one zero (FIR) filter UGen. Implements the formula :
@@ -478,7 +553,7 @@ final case class OneZero(rate: MaybeRate, in: GE, coeff: GE = 0.5f) extends UGen
   * @see [[de.sciss.synth.ugen.TwoZero$ TwoZero]]
   * @see [[de.sciss.synth.ugen.Resonz$ Resonz]]
   */
-object TwoPole {
+object TwoPole extends Reader[TwoPole] {
   /** @param in               input signal to be filtered
     * @param freq             frequency of pole angle, in Hertz
     * @param radius           radius of pole angle. Should be between 0 and 1
@@ -490,6 +565,15 @@ object TwoPole {
     * @param radius           radius of pole angle. Should be between 0 and 1
     */
   def ar(in: GE, freq: GE = 440.0f, radius: GE = 0.8f): TwoPole = new TwoPole(audio, in, freq, radius)
+  
+  def read(in: DataInput): TwoPole = {
+    readArity(in, 4)
+    val _rate   = readMaybeRate(in)
+    val _in     = readGE(in)
+    val _freq   = readGE(in)
+    val _radius = readGE(in)
+    new TwoPole(_rate, _in, _freq, _radius)
+  }
 }
 
 /** A two pole filter UGen. This provides lower level access to setting of pole
@@ -527,7 +611,7 @@ final case class TwoPole(rate: MaybeRate, in: GE, freq: GE = 440.0f, radius: GE 
   * @see [[de.sciss.synth.ugen.OneZero$ OneZero]]
   * @see [[de.sciss.synth.ugen.TwoPole$ TwoPole]]
   */
-object TwoZero {
+object TwoZero extends Reader[TwoZero] {
   /** @param in               input signal to be filtered
     * @param freq             frequency of zero angle, in Hertz
     * @param radius           radius of zero
@@ -539,6 +623,15 @@ object TwoZero {
     * @param radius           radius of zero
     */
   def ar(in: GE, freq: GE = 440.0f, radius: GE = 0.8f): TwoZero = new TwoZero(audio, in, freq, radius)
+  
+  def read(in: DataInput): TwoZero = {
+    readArity(in, 4)
+    val _rate   = readMaybeRate(in)
+    val _in     = readGE(in)
+    val _freq   = readGE(in)
+    val _radius = readGE(in)
+    new TwoZero(_rate, _in, _freq, _radius)
+  }
 }
 
 /** A two zero filter UGen.
@@ -574,7 +667,7 @@ final case class TwoZero(rate: MaybeRate, in: GE, freq: GE = 440.0f, radius: GE 
   * @see [[de.sciss.synth.ugen.Decay2$ Decay2]]
   * @see [[de.sciss.synth.ugen.Lag$ Lag]]
   */
-object Decay {
+object Decay extends Reader[Decay] {
   /** @param in               input signal to be processed
     */
   def kr(in: GE, time: GE = 1.0f): Decay = new Decay(control, in, time)
@@ -582,6 +675,14 @@ object Decay {
   /** @param in               input signal to be processed
     */
   def ar(in: GE, time: GE = 1.0f): Decay = new Decay(audio, in, time)
+  
+  def read(in: DataInput): Decay = {
+    readArity(in, 3)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    val _time = readGE(in)
+    new Decay(_rate, _in, _time)
+  }
 }
 
 /** An integrator UGen with exponential decay of past values. This is essentially
@@ -622,7 +723,7 @@ final case class Decay(rate: MaybeRate, in: GE, time: GE = 1.0f) extends UGenSou
   * @see [[de.sciss.synth.ugen.Integrator$ Integrator]]
   * @see [[de.sciss.synth.ugen.LagUD$ LagUD]]
   */
-object Decay2 {
+object Decay2 extends Reader[Decay2] {
   /** @param in               input signal to be processed
     */
   def kr(in: GE, attack: GE = 0.01f, release: GE = 1.0f): Decay2 = 
@@ -631,6 +732,15 @@ object Decay2 {
   /** @param in               input signal to be processed
     */
   def ar(in: GE, attack: GE = 0.01f, release: GE = 1.0f): Decay2 = new Decay2(audio, in, attack, release)
+  
+  def read(in: DataInput): Decay2 = {
+    readArity(in, 4)
+    val _rate     = readMaybeRate(in)
+    val _in       = readGE(in)
+    val _attack   = readGE(in)
+    val _release  = readGE(in)
+    new Decay2(_rate, _in, _attack, _release)
+  }
 }
 
 /** A integrator UGen with controllable attack and release times. While `Decay` has
@@ -684,7 +794,7 @@ final case class Decay2(rate: MaybeRate, in: GE, attack: GE = 0.01f, release: GE
   * @see [[de.sciss.synth.ugen.Delay2$ Delay2]]
   * @see [[de.sciss.synth.ugen.DelayN$ DelayN]]
   */
-object Delay1 {
+object Delay1 extends Reader[Delay1] {
   /** @param in               input to be delayed
     */
   def kr(in: GE): Delay1 = new Delay1(control, in)
@@ -692,6 +802,13 @@ object Delay1 {
   /** @param in               input to be delayed
     */
   def ar(in: GE): Delay1 = new Delay1(audio, in)
+  
+  def read(in: DataInput): Delay1 = {
+    readArity(in, 2)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    new Delay1(_rate, _in)
+  }
 }
 
 /** A UGen that delays the input by 1 audio frame or control period.
@@ -741,7 +858,7 @@ final case class Delay1(rate: MaybeRate, in: GE) extends UGenSource.SingleOut {
   * @see [[de.sciss.synth.ugen.Delay1$ Delay1]]
   * @see [[de.sciss.synth.ugen.DelayN$ DelayN]]
   */
-object Delay2 {
+object Delay2 extends Reader[Delay2] {
   /** @param in               input to be delayed
     */
   def kr(in: GE): Delay2 = new Delay2(control, in)
@@ -749,6 +866,13 @@ object Delay2 {
   /** @param in               input to be delayed
     */
   def ar(in: GE): Delay2 = new Delay2(audio, in)
+  
+  def read(in: DataInput): Delay2 = {
+    readArity(in, 2)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    new Delay2(_rate, _in)
+  }
 }
 
 /** A UGen that delays the input by 2 audio frames or control periods.
@@ -785,7 +909,7 @@ final case class Delay2(rate: MaybeRate, in: GE) extends UGenSource.SingleOut {
   * @see [[de.sciss.synth.ugen.HPZ1$ HPZ1]]
   * @see [[de.sciss.synth.ugen.LPZ1$ LPZ1]]
   */
-object Integrator {
+object Integrator extends Reader[Integrator] {
   /** @param in               input signal to be processed
     * @param coeff            the leak coefficient. Should be between -1 and +1
     */
@@ -795,6 +919,14 @@ object Integrator {
     * @param coeff            the leak coefficient. Should be between -1 and +1
     */
   def ar(in: GE, coeff: GE = 1.0f): Integrator = new Integrator(audio, in, coeff)
+  
+  def read(in: DataInput): Integrator = {
+    readArity(in, 3)
+    val _rate   = readMaybeRate(in)
+    val _in     = readGE(in)
+    val _coeff  = readGE(in)
+    new Integrator(_rate, _in, _coeff)
+  }
 }
 
 /** A filter UGen to integrate an input signal with a leak. Implements the formula :
@@ -846,7 +978,7 @@ final case class Integrator(rate: MaybeRate, in: GE, coeff: GE = 1.0f) extends U
   * 
   * @see [[de.sciss.synth.ugen.DC$ DC]]
   */
-object LeakDC {
+object LeakDC extends Reader[LeakDC] {
   /** @param in               input signal to be filtered
     * @param coeff            the leak coefficient determines the filter strength.
     *                         the value must be between zero and one (exclusive) for
@@ -862,6 +994,14 @@ object LeakDC {
     *                         produce less bass attenuation.
     */
   def ar(in: GE, coeff: GE = 0.995f): LeakDC = new LeakDC(audio, in, coeff)
+  
+  def read(in: DataInput): LeakDC = {
+    readArity(in, 3)
+    val _rate   = readMaybeRate(in)
+    val _in     = readGE(in)
+    val _coeff  = readGE(in)
+    new LeakDC(_rate, _in, _coeff)
+  }
 }
 
 /** A filter UGen to remove very low frequency content DC offset.
@@ -913,7 +1053,7 @@ final case class LeakDC(rate: MaybeRate, in: GE, coeff: GE) extends UGenSource.S
   * @see [[de.sciss.synth.ugen.Integrator$ Integrator]]
   * @see [[de.sciss.synth.ugen.Delay1$ Delay1]]
   */
-object LPZ1 {
+object LPZ1 extends Reader[LPZ1] {
   /** @param in               input signal to be filtered
     */
   def kr(in: GE): LPZ1 = new LPZ1(control, in)
@@ -921,6 +1061,13 @@ object LPZ1 {
   /** @param in               input signal to be filtered
     */
   def ar(in: GE): LPZ1 = new LPZ1(audio, in)
+  
+  def read(in: DataInput): LPZ1 = {
+    readArity(in, 2)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    new LPZ1(_rate, _in)
+  }
 }
 
 /** two point average filter UGen. Implements the formula :
@@ -980,7 +1127,7 @@ final case class LPZ1(rate: MaybeRate, in: GE) extends UGenSource.SingleOut {
   * @see [[de.sciss.synth.ugen.LPZ1$ LPZ1]]
   * @see [[de.sciss.synth.ugen.Delay1$ Delay1]]
   */
-object HPZ1 {
+object HPZ1 extends Reader[HPZ1] {
   /** @param in               input signal to be filtered
     */
   def kr(in: GE): HPZ1 = new HPZ1(control, in)
@@ -988,6 +1135,13 @@ object HPZ1 {
   /** @param in               input signal to be filtered
     */
   def ar(in: GE): HPZ1 = new HPZ1(audio, in)
+  
+  def read(in: DataInput): HPZ1 = {
+    readArity(in, 2)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    new HPZ1(_rate, _in)
+  }
 }
 
 /** A two point difference filter UGen. Implements the formula :
@@ -1036,7 +1190,7 @@ final case class HPZ1(rate: MaybeRate, in: GE) extends UGenSource.SingleOut {
   * @see [[de.sciss.synth.ugen.BPZ2$ BPZ2]]
   * @see [[de.sciss.synth.ugen.BRZ2$ BRZ2]]
   */
-object LPZ2 {
+object LPZ2 extends Reader[LPZ2] {
   /** @param in               input signal to be filtered
     */
   def kr(in: GE): LPZ2 = new LPZ2(control, in)
@@ -1044,6 +1198,13 @@ object LPZ2 {
   /** @param in               input signal to be filtered
     */
   def ar(in: GE): LPZ2 = new LPZ2(audio, in)
+  
+  def read(in: DataInput): LPZ2 = {
+    readArity(in, 2)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    new LPZ2(_rate, _in)
+  }
 }
 
 /** three point average filter UGen. Implements the formula :
@@ -1091,7 +1252,7 @@ final case class LPZ2(rate: MaybeRate, in: GE) extends UGenSource.SingleOut {
   * @see [[de.sciss.synth.ugen.BPZ2$ BPZ2]]
   * @see [[de.sciss.synth.ugen.BRZ2$ BRZ2]]
   */
-object HPZ2 {
+object HPZ2 extends Reader[HPZ2] {
   /** @param in               input signal to be filtered
     */
   def kr(in: GE): HPZ2 = new HPZ2(control, in)
@@ -1099,6 +1260,13 @@ object HPZ2 {
   /** @param in               input signal to be filtered
     */
   def ar(in: GE): HPZ2 = new HPZ2(audio, in)
+  
+  def read(in: DataInput): HPZ2 = {
+    readArity(in, 2)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    new HPZ2(_rate, _in)
+  }
 }
 
 /** three point difference filter UGen. Implements the formula :
@@ -1146,7 +1314,7 @@ final case class HPZ2(rate: MaybeRate, in: GE) extends UGenSource.SingleOut {
   * @see [[de.sciss.synth.ugen.BRZ2$ BRZ2]]
   * @see [[de.sciss.synth.ugen.BPF$ BPF]]
   */
-object BPZ2 {
+object BPZ2 extends Reader[BPZ2] {
   /** @param in               input signal to be filtered
     */
   def kr(in: GE): BPZ2 = new BPZ2(control, in)
@@ -1154,6 +1322,13 @@ object BPZ2 {
   /** @param in               input signal to be filtered
     */
   def ar(in: GE): BPZ2 = new BPZ2(audio, in)
+  
+  def read(in: DataInput): BPZ2 = {
+    readArity(in, 2)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    new BPZ2(_rate, _in)
+  }
 }
 
 /** a special fixed band-pass filter UGen. Implements the formula :
@@ -1200,7 +1375,7 @@ final case class BPZ2(rate: MaybeRate, in: GE) extends UGenSource.SingleOut {
   * @see [[de.sciss.synth.ugen.HPZ2$ HPZ2]]
   * @see [[de.sciss.synth.ugen.BRF$ BRF]]
   */
-object BRZ2 {
+object BRZ2 extends Reader[BRZ2] {
   /** @param in               input signal to be filtered
     */
   def kr(in: GE): BRZ2 = new BRZ2(control, in)
@@ -1208,6 +1383,13 @@ object BRZ2 {
   /** @param in               input signal to be filtered
     */
   def ar(in: GE): BRZ2 = new BRZ2(audio, in)
+  
+  def read(in: DataInput): BRZ2 = {
+    readArity(in, 2)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    new BRZ2(_rate, _in)
+  }
 }
 
 /** a special fixed band-reject filter UGen. Implements the formula :
@@ -1231,10 +1413,19 @@ final case class BRZ2(rate: MaybeRate, in: GE) extends UGenSource.SingleOut {
     UGen.SingleOut(name, _rate, _args1)
   }
 }
-object APF {
+object APF extends Reader[APF] {
   def kr(in: GE, freq: GE = 440.0f, radius: GE = 0.8f): APF = new APF(control, in, freq, radius)
   
   def ar(in: GE, freq: GE = 440.0f, radius: GE = 0.8f): APF = new APF(audio, in, freq, radius)
+  
+  def read(in: DataInput): APF = {
+    readArity(in, 4)
+    val _rate   = readMaybeRate(in)
+    val _in     = readGE(in)
+    val _freq   = readGE(in)
+    val _radius = readGE(in)
+    new APF(_rate, _in, _freq, _radius)
+  }
 }
 final case class APF(rate: MaybeRate, in: GE, freq: GE = 440.0f, radius: GE = 0.8f)
   extends UGenSource.SingleOut {
@@ -1275,7 +1466,7 @@ final case class APF(rate: MaybeRate, in: GE, freq: GE = 440.0f, radius: GE = 0.
   * @see [[de.sciss.synth.ugen.RLPF$ RLPF]]
   * @see [[de.sciss.synth.ugen.LPZ1$ LPZ1]]
   */
-object LPF {
+object LPF extends Reader[LPF] {
   /** @param in               input signal to be filtered
     * @param freq             cutoff frequency in Hertz
     */
@@ -1285,6 +1476,14 @@ object LPF {
     * @param freq             cutoff frequency in Hertz
     */
   def ar(in: GE, freq: GE = 440.0f): LPF = new LPF(audio, in, freq)
+  
+  def read(in: DataInput): LPF = {
+    readArity(in, 3)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    val _freq = readGE(in)
+    new LPF(_rate, _in, _freq)
+  }
 }
 
 /** A second order low pass filter UGen.
@@ -1335,7 +1534,7 @@ final case class LPF(rate: MaybeRate, in: GE, freq: GE = 440.0f) extends UGenSou
   * @see [[de.sciss.synth.ugen.RHPF$ RHPF]]
   * @see [[de.sciss.synth.ugen.HPZ1$ HPZ1]]
   */
-object HPF {
+object HPF extends Reader[HPF] {
   /** @param in               input signal to be filtered
     * @param freq             cutoff frequency in Hertz
     */
@@ -1345,6 +1544,14 @@ object HPF {
     * @param freq             cutoff frequency in Hertz
     */
   def ar(in: GE, freq: GE = 440.0f): HPF = new HPF(audio, in, freq)
+  
+  def read(in: DataInput): HPF = {
+    readArity(in, 3)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    val _freq = readGE(in)
+    new HPF(_rate, _in, _freq)
+  }
 }
 
 /** A second order high pass filter UGen.
@@ -1397,7 +1604,7 @@ final case class HPF(rate: MaybeRate, in: GE, freq: GE = 440.0f) extends UGenSou
   * @see [[de.sciss.synth.ugen.Resonz$ Resonz]]
   * @see [[de.sciss.synth.ugen.MidEQ$ MidEQ]]
   */
-object BPF {
+object BPF extends Reader[BPF] {
   /** @param in               input signal to be filtered
     * @param freq             center frequency in Hertz
     * @param rq               reciprocal of Q. The Q (or quality) is conventionally
@@ -1415,6 +1622,15 @@ object BPF {
     *                         lower rq produces a steeper filter.
     */
   def ar(in: GE, freq: GE = 440.0f, rq: GE = 1.0f): BPF = new BPF(audio, in, freq, rq)
+  
+  def read(in: DataInput): BPF = {
+    readArity(in, 4)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    val _freq = readGE(in)
+    val _rq   = readGE(in)
+    new BPF(_rate, _in, _freq, _rq)
+  }
 }
 
 /** A second order band pass filter UGen.
@@ -1471,7 +1687,7 @@ final case class BPF(rate: MaybeRate, in: GE, freq: GE = 440.0f, rq: GE = 1.0f)
   * @see [[de.sciss.synth.ugen.BPF$ BPF]]
   * @see [[de.sciss.synth.ugen.MidEQ$ MidEQ]]
   */
-object BRF {
+object BRF extends Reader[BRF] {
   /** @param in               input signal to be filtered
     * @param freq             center frequency in Hertz
     * @param rq               reciprocal of Q. The Q (or quality) is conventionally
@@ -1491,6 +1707,15 @@ object BRF {
     *                         `rq` may blow the filter up!
     */
   def ar(in: GE, freq: GE = 440.0f, rq: GE = 1.0f): BRF = new BRF(audio, in, freq, rq)
+  
+  def read(in: DataInput): BRF = {
+    readArity(in, 4)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    val _freq = readGE(in)
+    val _rq   = readGE(in)
+    new BRF(_rate, _in, _freq, _rq)
+  }
 }
 
 /** A second order band reject (notch) filter UGen.
@@ -1539,7 +1764,7 @@ final case class BRF(rate: MaybeRate, in: GE, freq: GE = 440.0f, rq: GE = 1.0f)
   * @see [[de.sciss.synth.ugen.RHPF$ RHPF]]
   * @see [[de.sciss.synth.ugen.Resonz$ Resonz]]
   */
-object RLPF {
+object RLPF extends Reader[RLPF] {
   /** @param in               input signal to be filtered
     * @param freq             cutoff frequency in Hertz
     * @param rq               reciprocal of Q. The Q (or quality) is conventionally
@@ -1557,6 +1782,15 @@ object RLPF {
     *                         lower rq produces a steeper filter.
     */
   def ar(in: GE, freq: GE = 440.0f, rq: GE = 1.0f): RLPF = new RLPF(audio, in, freq, rq)
+  
+  def read(in: DataInput): RLPF = {
+    readArity(in, 4)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    val _freq = readGE(in)
+    val _rq   = readGE(in)
+    new RLPF(_rate, _in, _freq, _rq)
+  }
 }
 
 /** A resonant low pass filter UGen.
@@ -1603,7 +1837,7 @@ final case class RLPF(rate: MaybeRate, in: GE, freq: GE = 440.0f, rq: GE = 1.0f)
   * @see [[de.sciss.synth.ugen.RLPF$ RLPF]]
   * @see [[de.sciss.synth.ugen.Resonz$ Resonz]]
   */
-object RHPF {
+object RHPF extends Reader[RHPF] {
   /** @param in               input signal to be filtered
     * @param freq             cutoff frequency in Hertz
     * @param rq               reciprocal of Q. The Q (or quality) is conventionally
@@ -1621,6 +1855,15 @@ object RHPF {
     *                         lower rq produces a steeper filter.
     */
   def ar(in: GE, freq: GE = 440.0f, rq: GE = 1.0f): RHPF = new RHPF(audio, in, freq, rq)
+  
+  def read(in: DataInput): RHPF = {
+    readArity(in, 4)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    val _freq = readGE(in)
+    val _rq   = readGE(in)
+    new RHPF(_rate, _in, _freq, _rq)
+  }
 }
 
 /** A resonant high pass filter UGen.
@@ -1659,7 +1902,7 @@ final case class RHPF(rate: MaybeRate, in: GE, freq: GE = 440.0f, rq: GE = 1.0f)
   * }}}
   * 
   */
-object Slew {
+object Slew extends Reader[Slew] {
   /** @param in               input signal
     * @param up               maximum upward slope.
     * @param down             maximum downward slope.
@@ -1671,6 +1914,15 @@ object Slew {
     * @param down             maximum downward slope.
     */
   def ar(in: GE, up: GE = 1.0f, down: GE = 1.0f): Slew = new Slew(audio, in, up, down)
+  
+  def read(in: DataInput): Slew = {
+    readArity(in, 4)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    val _up   = readGE(in)
+    val _down = readGE(in)
+    new Slew(_rate, _in, _up, _down)
+  }
 }
 
 /** A slew rate limiter UGen. Limits the slope of an input signal. The slope is
@@ -1705,7 +1957,7 @@ final case class Slew(rate: MaybeRate, in: GE, up: GE = 1.0f, down: GE = 1.0f) e
   * }}}
   *  It thus equal to `HPZ1.ar(_) * 2 * SampleRate.ir`
   */
-object Slope {
+object Slope extends Reader[Slope] {
   /** @param in               input signal to be measured
     */
   def kr(in: GE): Slope = new Slope(control, in)
@@ -1713,6 +1965,13 @@ object Slope {
   /** @param in               input signal to be measured
     */
   def ar(in: GE): Slope = new Slope(audio, in)
+  
+  def read(in: DataInput): Slope = {
+    readArity(in, 2)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    new Slope(_rate, _in)
+  }
 }
 
 /** A UGen measuring the slope of signal. It calculates the rate of change per
@@ -1755,7 +2014,7 @@ final case class Slope(rate: MaybeRate, in: GE) extends UGenSource.SingleOut {
   * @see [[de.sciss.synth.ugen.LPF$ LPF]]
   * @see [[de.sciss.synth.ugen.Resonz$ Resonz]]
   */
-object MidEQ {
+object MidEQ extends Reader[MidEQ] {
   /** @param in               input signal to be filtered
     * @param freq             center frequency in Hertz
     * @param rq               reciprocal of Q. The Q (or quality) is conventionally
@@ -1783,6 +2042,16 @@ object MidEQ {
     */
   def ar(in: GE, freq: GE = 440.0f, rq: GE = 1.0f, gain: GE = 0.0f): MidEQ = 
     new MidEQ(audio, in, freq, rq, gain)
+  
+  def read(in: DataInput): MidEQ = {
+    readArity(in, 5)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    val _freq = readGE(in)
+    val _rq   = readGE(in)
+    val _gain = readGE(in)
+    new MidEQ(_rate, _in, _freq, _rq, _gain)
+  }
 }
 
 /** A single band parametric equalizer UGen. It attenuates or boosts a frequency
@@ -1843,7 +2112,7 @@ final case class MidEQ(rate: MaybeRate, in: GE, freq: GE = 440.0f, rq: GE = 1.0f
   * @see [[de.sciss.synth.ugen.LeakDC$ LeakDC]]
   * @see [[de.sciss.synth.ugen.RunningSum$ RunningSum]]
   */
-object Median {
+object Median extends Reader[Median] {
   /** @param length           window size. I.e., the number of input samples in which
     *                         to find the median. Must be an odd number from 1 to 31.
     *                         A value of 1 has no effect. ''Warning'': This parameter
@@ -1861,6 +2130,14 @@ object Median {
     *                         only)''
     */
   def ar(in: GE, length: GE = 3): Median = new Median(audio, in, length)
+  
+  def read(in: DataInput): Median = {
+    readArity(in, 3)
+    val _rate   = readRate(in)
+    val _in     = readGE(in)
+    val _length = readGE(in)
+    new Median(_rate, _in, _length)
+  }
 }
 
 /** A filter UGen that calculates the median of a running window over its input
@@ -1921,7 +2198,7 @@ final case class Median(rate: Rate, in: GE, length: GE = 3) extends UGenSource.S
   * @see [[de.sciss.synth.ugen.LPF$ LPF]]
   * @see [[de.sciss.synth.ugen.MidEQ$ MidEQ]]
   */
-object Resonz {
+object Resonz extends Reader[Resonz] {
   /** @param in               input signal to be filtered
     * @param freq             resonant frequency in Hertz
     * @param rq               reciprocal of Q. The Q (or quality) is conventionally
@@ -1939,6 +2216,15 @@ object Resonz {
     *                         lower rq produces a steeper filter.
     */
   def ar(in: GE, freq: GE = 440.0f, rq: GE = 1.0f): Resonz = new Resonz(audio, in, freq, rq)
+  
+  def read(in: DataInput): Resonz = {
+    readArity(in, 4)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    val _freq = readGE(in)
+    val _rq   = readGE(in)
+    new Resonz(_rate, _in, _freq, _rq)
+  }
 }
 
 /** A two pole resonant filter UGen. It has zeroes at `z = +1` and `z = -1`.
@@ -2011,7 +2297,7 @@ final case class Resonz(rate: MaybeRate, in: GE, freq: GE = 440.0f, rq: GE = 1.0
   * @see [[de.sciss.synth.ugen.Klank$ Klank]]
   * @see [[de.sciss.synth.ugen.MidEQ$ MidEQ]]
   */
-object Ringz {
+object Ringz extends Reader[Ringz] {
   /** @param in               input signal to be filtered
     * @param freq             resonant frequency in Hertz
     * @param decay            the 60 dB decay time in seconds
@@ -2023,6 +2309,15 @@ object Ringz {
     * @param decay            the 60 dB decay time in seconds
     */
   def ar(in: GE, freq: GE = 440.0f, decay: GE = 1.0f): Ringz = new Ringz(audio, in, freq, decay)
+  
+  def read(in: DataInput): Ringz = {
+    readArity(in, 4)
+    val _rate   = readMaybeRate(in)
+    val _in     = readGE(in)
+    val _freq   = readGE(in)
+    val _decay  = readGE(in)
+    new Ringz(_rate, _in, _freq, _decay)
+  }
 }
 
 /** A resonant or "ringing" filter UGen. This is the same as `Resonz` , except that
@@ -2096,7 +2391,7 @@ final case class Ringz(rate: MaybeRate, in: GE, freq: GE = 440.0f, decay: GE = 1
   * @see [[de.sciss.synth.ugen.RLPF$ RLPF]]
   * @see [[de.sciss.synth.ugen.RHPF$ RHPF]]
   */
-object Formlet {
+object Formlet extends Reader[Formlet] {
   /** @param in               input signal to be filtered
     * @param freq             resonant frequency in Hertz
     * @param attack           the 60 dB attack time in seconds
@@ -2112,6 +2407,16 @@ object Formlet {
     */
   def ar(in: GE, freq: GE = 440.0f, attack: GE = 1.0f, decay: GE = 1.0f): Formlet = 
     new Formlet(audio, in, freq, attack, decay)
+  
+  def read(in: DataInput): Formlet = {
+    readArity(in, 5)
+    val _rate   = readMaybeRate(in)
+    val _in     = readGE(in)
+    val _freq   = readGE(in)
+    val _attack = readGE(in)
+    val _decay  = readGE(in)
+    new Formlet(_rate, _in, _freq, _attack, _decay)
+  }
 }
 
 /** A FOF-like resonant filter UGen. Its impulse response is like that of a sine
@@ -2182,7 +2487,7 @@ final case class Formlet(rate: MaybeRate, in: GE, freq: GE = 440.0f, attack: GE 
   * @see [[de.sciss.synth.ugen.OnePole$ OnePole]]
   * @see [[de.sciss.synth.ugen.OneZero$ OneZero]]
   */
-object FOS {
+object FOS extends Reader[FOS] {
   /** @param in               input signal to be filtered
     */
   def kr(in: GE, a0: GE = 0.0f, a1: GE = 0.0f, b1: GE = 0.0f): FOS = new FOS(control, in, a0, a1, b1)
@@ -2190,6 +2495,16 @@ object FOS {
   /** @param in               input signal to be filtered
     */
   def ar(in: GE, a0: GE = 0.0f, a1: GE = 0.0f, b1: GE = 0.0f): FOS = new FOS(audio, in, a0, a1, b1)
+  
+  def read(in: DataInput): FOS = {
+    readArity(in, 5)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    val _a0   = readGE(in)
+    val _a1   = readGE(in)
+    val _b1   = readGE(in)
+    new FOS(_rate, _in, _a0, _a1, _b1)
+  }
 }
 
 /** A first order filter section UGen. Filter coefficients are given directly
@@ -2251,7 +2566,7 @@ final case class FOS(rate: MaybeRate, in: GE, a0: GE = 0.0f, a1: GE = 0.0f, b1: 
   * 
   * @see [[de.sciss.synth.ugen.FOS$ FOS]]
   */
-object SOS {
+object SOS extends Reader[SOS] {
   /** @param in               input signal to be filtered
     */
   def kr(in: GE, a0: GE = 0.0f, a1: GE = 0.0f, a2: GE = 0.0f, b1: GE = 0.0f, b2: GE = 0.0f): SOS = 
@@ -2261,6 +2576,18 @@ object SOS {
     */
   def ar(in: GE, a0: GE = 0.0f, a1: GE = 0.0f, a2: GE = 0.0f, b1: GE = 0.0f, b2: GE = 0.0f): SOS = 
     new SOS(audio, in, a0, a1, a2, b1, b2)
+  
+  def read(in: DataInput): SOS = {
+    readArity(in, 7)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    val _a0   = readGE(in)
+    val _a1   = readGE(in)
+    val _a2   = readGE(in)
+    val _b1   = readGE(in)
+    val _b2   = readGE(in)
+    new SOS(_rate, _in, _a0, _a1, _a2, _b1, _b2)
+  }
 }
 
 /** A second order filter section (biquad) UGen. Filter coefficients are given
@@ -2294,7 +2621,7 @@ final case class SOS(rate: MaybeRate, in: GE, a0: GE = 0.0f, a1: GE = 0.0f, a2: 
   * @see [[de.sciss.synth.ugen.Limiter$ Limiter]]
   * @see [[de.sciss.synth.ugen.Normalizer$ Normalizer]]
   */
-object Compander {
+object Compander extends Reader[Compander] {
   /** @param in               The signal to be compressed / expanded / gated.
     * @param ctrl             The signal whose amplitude controls the processor.
     *                         Often the same as in, but one may wish to apply
@@ -2364,6 +2691,19 @@ object Compander {
     */
   def ar(in: GE, ctrl: GE, thresh: GE = 0.5f, ratioBelow: GE = 1.0f, ratioAbove: GE = 1.0f, attack: GE = 0.01f, release: GE = 0.1f): Compander = 
     new Compander(audio, in, ctrl, thresh, ratioBelow, ratioAbove, attack, release)
+  
+  def read(in: DataInput): Compander = {
+    readArity(in, 8)
+    val _rate       = readRate(in)
+    val _in         = readGE(in)
+    val _ctrl       = readGE(in)
+    val _thresh     = readGE(in)
+    val _ratioBelow = readGE(in)
+    val _ratioAbove = readGE(in)
+    val _attack     = readGE(in)
+    val _release    = readGE(in)
+    new Compander(_rate, _in, _ctrl, _thresh, _ratioBelow, _ratioAbove, _attack, _release)
+  }
 }
 
 /** A compressor, expander, limiter, gate and ducking UGen. This dynamic processor
@@ -2435,7 +2775,7 @@ final case class Compander(rate: Rate, in: GE, ctrl: GE, thresh: GE = 0.5f, rati
   * @see [[de.sciss.synth.ugen.Normalizer$ Normalizer]]
   * @see [[de.sciss.synth.ugen.Compander$ Compander]]
   */
-object Limiter {
+object Limiter extends Reader[Limiter] {
   /** @param in               input signal to be limited
     * @param level            maximum amplitude to which the signal is limited. The
     *                         limiter will kick in when the input signal exceeds
@@ -2451,6 +2791,15 @@ object Limiter {
     * @param dur              look-ahead time in seconds ''(init-time only)''
     */
   def ar(in: GE, level: GE = 1.0f, dur: GE = 0.01f): Limiter = new Limiter(audio, in, level, dur)
+  
+  def read(in: DataInput): Limiter = {
+    readArity(in, 4)
+    val _rate   = readRate(in)
+    val _in     = readGE(in)
+    val _level  = readGE(in)
+    val _dur    = readGE(in)
+    new Limiter(_rate, _in, _level, _dur)
+  }
 }
 
 /** Limits the input amplitude to the given level. Unlike `Compander` , this UGen
@@ -2497,7 +2846,7 @@ final case class Limiter(rate: Rate, in: GE, level: GE = 1.0f, dur: GE = 0.01f)
   * @see [[de.sciss.synth.ugen.Limiter$ Limiter]]
   * @see [[de.sciss.synth.ugen.Compander$ Compander]]
   */
-object Normalizer {
+object Normalizer extends Reader[Normalizer] {
   /** @param in               input signal to be normalized
     * @param level            peak output amplitude level to which to normalize the
     *                         input
@@ -2517,6 +2866,15 @@ object Normalizer {
     *                         ''(init-time only)''
     */
   def ar(in: GE, level: GE = 1, dur: GE = 0.01f): Normalizer = new Normalizer(audio, in, level, dur)
+  
+  def read(in: DataInput): Normalizer = {
+    readArity(in, 4)
+    val _rate   = readRate(in)
+    val _in     = readGE(in)
+    val _level  = readGE(in)
+    val _dur    = readGE(in)
+    new Normalizer(_rate, _in, _level, _dur)
+  }
 }
 
 /** A UGen that normalizes the input amplitude to the given level. Unlike
@@ -2568,7 +2926,7 @@ final case class Normalizer(rate: Rate, in: GE, level: GE = 1, dur: GE = 0.01f)
   * 
   * @see [[de.sciss.synth.ugen.DetectSilence$ DetectSilence]]
   */
-object Amplitude {
+object Amplitude extends Reader[Amplitude] {
   /** @param in               input signal to be analyzed
     * @param attack           60 dB convergence time in for following attacks, in
     *                         seconds
@@ -2586,6 +2944,15 @@ object Amplitude {
     */
   def ar(in: GE, attack: GE = 0.01f, release: GE = 0.01f): Amplitude = 
     new Amplitude(audio, in, attack, release)
+  
+  def read(in: DataInput): Amplitude = {
+    readArity(in, 4)
+    val _rate     = readMaybeRate(in)
+    val _in       = readGE(in)
+    val _attack   = readGE(in)
+    val _release  = readGE(in)
+    new Amplitude(_rate, _in, _attack, _release)
+  }
 }
 
 /** An amplitude follower UGen. Tracks and reports the peak amplitude of its input
@@ -2630,7 +2997,7 @@ final case class Amplitude(rate: MaybeRate, in: GE, attack: GE = 0.01f, release:
   * 
   * @see [[de.sciss.synth.ugen.Amplitude$ Amplitude]]
   */
-object DetectSilence {
+object DetectSilence extends Reader[DetectSilence] {
   /** @param in               input signal to be measured.
     * @param amp              minimum amplitude threshold which must be exceeded for
     *                         the input signal to be considered non-silent.
@@ -2656,6 +3023,16 @@ object DetectSilence {
     */
   def ar(in: GE, amp: GE = 1.0E-4f, dur: GE = 0.1f, doneAction: GE = doNothing): DetectSilence = 
     new DetectSilence(audio, in, amp, dur, doneAction)
+  
+  def read(in: DataInput): DetectSilence = {
+    readArity(in, 5)
+    val _rate       = readMaybeRate(in)
+    val _in         = readGE(in)
+    val _amp        = readGE(in)
+    val _dur        = readGE(in)
+    val _doneAction = readGE(in)
+    new DetectSilence(_rate, _in, _amp, _dur, _doneAction)
+  }
 }
 
 /** A UGen which detects whether its input signal falls below a given amplitude for
@@ -2726,10 +3103,17 @@ final case class DetectSilence(rate: MaybeRate, in: GE, amp: GE = 1.0E-4f, dur: 
   * 
   * @see [[de.sciss.synth.ugen.FreqShift$ FreqShift]]
   */
-object Hilbert {
+object Hilbert extends Reader[Hilbert] {
   /** @param in               input signal to be processed
     */
   def ar(in: GE): Hilbert = new Hilbert(audio, in)
+  
+  def read(in: DataInput): Hilbert = {
+    readArity(in, 2)
+    val _rate = readRate(in)
+    val _in   = readGE(in)
+    new Hilbert(_rate, _in)
+  }
 }
 
 /** A Hilbert transform UGen. This transformation produces two signals from a given
@@ -2782,12 +3166,21 @@ final case class Hilbert(rate: Rate, in: GE) extends UGenSource.MultiOut {
   * @see [[de.sciss.synth.ugen.Hilbert$ Hilbert]]
   * @see [[de.sciss.synth.ugen.PV_MagShift$ PV_MagShift]]
   */
-object FreqShift {
+object FreqShift extends Reader[FreqShift] {
   /** @param freq             the shift amount in Hertz. Positive values shift
     *                         upwards, negative values shift downwards.
     * @param phase            a phase parameter in radians (0 to 2 Pi).
     */
   def ar(in: GE, freq: GE = 0.0f, phase: GE = 0.0f): FreqShift = new FreqShift(audio, in, freq, phase)
+  
+  def read(in: DataInput): FreqShift = {
+    readArity(in, 4)
+    val _rate   = readRate(in)
+    val _in     = readGE(in)
+    val _freq   = readGE(in)
+    val _phase  = readGE(in)
+    new FreqShift(_rate, _in, _freq, _phase)
+  }
 }
 
 /** A frequency shifting UGen. It implements single sideband (SSB) amplitude
@@ -2828,7 +3221,7 @@ final case class FreqShift(rate: Rate, in: GE, freq: GE = 0.0f, phase: GE = 0.0f
   * }
   * }}}
   */
-object MoogFF {
+object MoogFF extends Reader[MoogFF] {
   /** @param freq             cutoff frequency in Hertz
     * @param gain             filter resonance gain, between 0 and 4
     * @param reset            when greater than zero, this will reset the state of
@@ -2846,6 +3239,16 @@ object MoogFF {
     */
   def ar(in: GE, freq: GE = 200.0f, gain: GE = 2.0f, reset: GE = 0): MoogFF = 
     new MoogFF(audio, in, freq, gain, reset)
+  
+  def read(in: DataInput): MoogFF = {
+    readArity(in, 5)
+    val _rate   = readMaybeRate(in)
+    val _in     = readGE(in)
+    val _freq   = readGE(in)
+    val _gain   = readGE(in)
+    val _reset  = readGE(in)
+    new MoogFF(_rate, _in, _freq, _gain, _reset)
+  }
 }
 
 /** A Moog VCF style UGen. This is a type of resonant low pass filter.
@@ -2882,12 +3285,20 @@ final case class MoogFF(rate: MaybeRate, in: GE, freq: GE = 200.0f, gain: GE = 2
   * cause spikes in CPU performance and should be considered when using several of
   * these units.
   */
-object BLowPass {
+object BLowPass extends Reader[BLowPass] {
   /** @param in               input signal to be processed.
     * @param freq             cutoff frequency.
     * @param rq               the reciprocal of Q, hence bandwidth / cutoffFreq.
     */
   def ar(in: GE, freq: GE = 500.0f, rq: GE = 1.0f): BLowPass = new BLowPass(in, freq, rq)
+  
+  def read(in: DataInput): BLowPass = {
+    readArity(in, 3)
+    val _in   = readGE(in)
+    val _freq = readGE(in)
+    val _rq   = readGE(in)
+    new BLowPass(_in, _freq, _rq)
+  }
 }
 
 /** A 2nd order (12db per oct roll-off) resonant low pass filter UGen. The B
@@ -2923,12 +3334,20 @@ final case class BLowPass(in: GE, freq: GE = 500.0f, rq: GE = 1.0f)
   * cause spikes in CPU performance and should be considered when using several of
   * these units.
   */
-object BHiPass {
+object BHiPass extends Reader[BHiPass] {
   /** @param in               input signal to be processed.
     * @param freq             cutoff frequency.
     * @param rq               the reciprocal of Q, hence bandwidth / cutoffFreq.
     */
   def ar(in: GE, freq: GE = 500.0f, rq: GE = 1.0f): BHiPass = new BHiPass(in, freq, rq)
+  
+  def read(in: DataInput): BHiPass = {
+    readArity(in, 3)
+    val _in   = readGE(in)
+    val _freq = readGE(in)
+    val _rq   = readGE(in)
+    new BHiPass(_in, _freq, _rq)
+  }
 }
 
 /** A 2nd order (12db per oct roll-off) resonant high pass filter UGen. The B
@@ -2964,12 +3383,20 @@ final case class BHiPass(in: GE, freq: GE = 500.0f, rq: GE = 1.0f)
   * cause spikes in CPU performance and should be considered when using several of
   * these units.
   */
-object BBandPass {
+object BBandPass extends Reader[BBandPass] {
   /** @param in               input signal to be processed.
     * @param freq             center frequency.
     * @param bw               the bandwidth '''in octaves''' between -3 dB frequencies
     */
   def ar(in: GE, freq: GE = 500.0f, bw: GE = 1.0f): BBandPass = new BBandPass(in, freq, bw)
+  
+  def read(in: DataInput): BBandPass = {
+    readArity(in, 3)
+    val _in   = readGE(in)
+    val _freq = readGE(in)
+    val _bw   = readGE(in)
+    new BBandPass(_in, _freq, _bw)
+  }
 }
 
 /** An band pass filter UGen. The B equalization suite is based on the Second Order
@@ -3005,12 +3432,20 @@ final case class BBandPass(in: GE, freq: GE = 500.0f, bw: GE = 1.0f)
   * cause spikes in CPU performance and should be considered when using several of
   * these units.
   */
-object BBandStop {
+object BBandStop extends Reader[BBandStop] {
   /** @param in               input signal to be processed.
     * @param freq             center frequency.
     * @param bw               the bandwidth '''in octaves''' between -3 dB frequencies
     */
   def ar(in: GE, freq: GE = 500.0f, bw: GE = 1.0f): BBandStop = new BBandStop(in, freq, bw)
+  
+  def read(in: DataInput): BBandStop = {
+    readArity(in, 3)
+    val _in   = readGE(in)
+    val _freq = readGE(in)
+    val _bw   = readGE(in)
+    new BBandStop(_in, _freq, _bw)
+  }
 }
 
 /** An band stop (reject) filter UGen. The B equalization suite is based on the
@@ -3046,7 +3481,7 @@ final case class BBandStop(in: GE, freq: GE = 500.0f, bw: GE = 1.0f)
   * cause spikes in CPU performance and should be considered when using several of
   * these units.
   */
-object BPeakEQ {
+object BPeakEQ extends Reader[BPeakEQ] {
   /** @param in               input signal to be processed.
     * @param freq             center frequency.
     * @param rq               the reciprocal of Q, hence bandwidth / cutoffFreq.
@@ -3054,6 +3489,15 @@ object BPeakEQ {
     */
   def ar(in: GE, freq: GE = 500.0f, rq: GE = 1.0f, gain: GE = 0.0f): BPeakEQ = 
     new BPeakEQ(in, freq, rq, gain)
+  
+  def read(in: DataInput): BPeakEQ = {
+    readArity(in, 4)
+    val _in   = readGE(in)
+    val _freq = readGE(in)
+    val _rq   = readGE(in)
+    val _gain = readGE(in)
+    new BPeakEQ(_in, _freq, _rq, _gain)
+  }
 }
 
 /** An parametric equalizer UGen. The B equalization suite is based on the Second
@@ -3091,12 +3535,20 @@ final case class BPeakEQ(in: GE, freq: GE = 500.0f, rq: GE = 1.0f, gain: GE = 0.
   * cause spikes in CPU performance and should be considered when using several of
   * these units.
   */
-object BAllPass {
+object BAllPass extends Reader[BAllPass] {
   /** @param in               input signal to be processed.
     * @param freq             cutoff frequency.
     * @param rq               the reciprocal of Q, hence bandwidth / cutoffFreq.
     */
   def ar(in: GE, freq: GE = 500.0f, rq: GE = 1.0f): BAllPass = new BAllPass(in, freq, rq)
+  
+  def read(in: DataInput): BAllPass = {
+    readArity(in, 3)
+    val _in   = readGE(in)
+    val _freq = readGE(in)
+    val _rq   = readGE(in)
+    new BAllPass(_in, _freq, _rq)
+  }
 }
 
 /** An all pass filter UGen. The B equalization suite is based on the Second Order
@@ -3132,7 +3584,7 @@ final case class BAllPass(in: GE, freq: GE = 500.0f, rq: GE = 1.0f)
   * cause spikes in CPU performance and should be considered when using several of
   * these units.
   */
-object BLowShelf {
+object BLowShelf extends Reader[BLowShelf] {
   /** @param in               input signal to be processed.
     * @param freq             cutoff frequency.
     * @param rs               the reciprocal of the slope S (Shell boost/cut slope).
@@ -3145,6 +3597,15 @@ object BLowShelf {
     */
   def ar(in: GE, freq: GE = 500.0f, rs: GE = 1.0f, gain: GE = 0.0f): BLowShelf = 
     new BLowShelf(in, freq, rs, gain)
+  
+  def read(in: DataInput): BLowShelf = {
+    readArity(in, 4)
+    val _in   = readGE(in)
+    val _freq = readGE(in)
+    val _rs   = readGE(in)
+    val _gain = readGE(in)
+    new BLowShelf(_in, _freq, _rs, _gain)
+  }
 }
 
 /** A low shelf equalizer UGen. The B equalization suite is based on the Second
@@ -3187,7 +3648,7 @@ final case class BLowShelf(in: GE, freq: GE = 500.0f, rs: GE = 1.0f, gain: GE = 
   * cause spikes in CPU performance and should be considered when using several of
   * these units.
   */
-object BHiShelf {
+object BHiShelf extends Reader[BHiShelf] {
   /** @param in               input signal to be processed.
     * @param freq             cutoff frequency.
     * @param rs               the reciprocal of the slope S (Shell boost/cut slope).
@@ -3200,6 +3661,15 @@ object BHiShelf {
     */
   def ar(in: GE, freq: GE = 500.0f, rs: GE = 1.0f, gain: GE = 0.0f): BHiShelf = 
     new BHiShelf(in, freq, rs, gain)
+  
+  def read(in: DataInput): BHiShelf = {
+    readArity(in, 4)
+    val _in   = readGE(in)
+    val _freq = readGE(in)
+    val _rs   = readGE(in)
+    val _gain = readGE(in)
+    new BHiShelf(_in, _freq, _rs, _gain)
+  }
 }
 
 /** A high shelf equalizer UGen. The B equalization suite is based on the Second

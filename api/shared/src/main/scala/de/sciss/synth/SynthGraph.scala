@@ -2,7 +2,7 @@
  *  SynthGraph.scala
  *  (ScalaColliderUGens)
  *
- *  Copyright (c) 2008-2020 Hanns Holger Rutz. All rights reserved.
+ *  Copyright (c) 2008-2021 Hanns Holger Rutz. All rights reserved.
  *
  *  This software is published under the GNU Lesser General Public License v2.1+
  *
@@ -76,8 +76,6 @@ object SynthGraph {
   var warnOutsideContext = false
 
   private object BuilderDummy extends Builder {
-    def build: SynthGraph = sys.error("Out of context")
-
     private def warn(obj: => String): Unit =
       if (warnOutsideContext) {
         Console.err.println("Warning - adding SynthGraph element outside context: " + obj)

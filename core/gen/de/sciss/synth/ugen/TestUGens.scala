@@ -9,7 +9,7 @@ import UGenSource._
   * denormal. According to the post settings it will print the information to the
   * console along with a given identifier.
   */
-object CheckBadValues {
+object CheckBadValues extends Reader[CheckBadValues] {
   /** @param in               the signal to be tested
     * @param id               an identifier showing up with the values in the console
     * @param post             One of three post modes: 0 = no posting; 1 = post a
@@ -36,6 +36,15 @@ object CheckBadValues {
     *                         NaN and vice versa)
     */
   def ar(in: GE, id: GE = 0, post: GE = 2): CheckBadValues = new CheckBadValues(audio, in, id, post)
+  
+  def read(in: DataInput): CheckBadValues = {
+    readArity(in, 4)
+    val _rate = readRate(in)
+    val _in   = readGE(in)
+    val _id   = readGE(in)
+    val _post = readGE(in)
+    new CheckBadValues(_rate, _in, _id, _post)
+  }
 }
 
 /** A UGen to test for infinity, not-a-number (NaN), and denormal numbers. Its

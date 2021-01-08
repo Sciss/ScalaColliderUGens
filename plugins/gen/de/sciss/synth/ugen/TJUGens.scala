@@ -10,7 +10,7 @@ import UGenSource._
   * 
   * This is a third-party UGen (TJUGens).
   */
-object DFM1 {
+object DFM1 extends Reader[DFM1] {
   /** @param in               Input signal to filter.
     * @param freq             Cutoff frequency in Hertz.
     * @param res              Resonance of the filter. Resonance is minimal at `0.0`
@@ -23,6 +23,18 @@ object DFM1 {
     */
   def ar(in: GE, freq: GE = 440, res: GE = 0.1f, gain: GE = 1.0f, mode: GE = 0, noise: GE = 3.0E-4f): DFM1 = 
     new DFM1(audio, in, freq, res, gain, mode, noise)
+  
+  def read(in: DataInput): DFM1 = {
+    readArity(in, 7)
+    val _rate   = readRate(in)
+    val _in     = readGE(in)
+    val _freq   = readGE(in)
+    val _res    = readGE(in)
+    val _gain   = readGE(in)
+    val _mode   = readGE(in)
+    val _noise  = readGE(in)
+    new DFM1(_rate, _in, _freq, _res, _gain, _mode, _noise)
+  }
 }
 
 /** A digital filter UGen which aims at accurately modeling an analog filter. It

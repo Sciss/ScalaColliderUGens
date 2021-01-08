@@ -25,7 +25,7 @@ import UGenSource._
   * 
   * '''Warning''': This UGen only works properly at 44.1 or 48.0 kHz.
   */
-object BeatTrack {
+object BeatTrack extends Reader[BeatTrack] {
   /** @param chain            the output (buffer) of an FFT UGen which transforms the
     *                         audio input to track. The expected size of FFT is 1024
     *                         for 44100 and 48000 sampling rate, and 2048 for double
@@ -37,6 +37,13 @@ object BeatTrack {
     *                         goes back below 0.5. Can be control-rate modulated.
     */
   def kr(chain: GE, lock: GE = 0.0f): BeatTrack = new BeatTrack(chain, lock)
+  
+  def read(in: DataInput): BeatTrack = {
+    readArity(in, 2)
+    val _chain  = readGE(in)
+    val _lock   = readGE(in)
+    new BeatTrack(_chain, _lock)
+  }
 }
 
 /** An autocorrelation based beat tracker UGen.
@@ -92,7 +99,7 @@ final case class BeatTrack(chain: GE, lock: GE = 0.0f)
   * generated every 512 audio frames, or (at control block size 64) every 8 control
   * blocks.
   */
-object Loudness {
+object Loudness extends Reader[Loudness] {
   /** @param chain            the output (buffer) of an FFT UGen which transforms the
     *                         audio input to track. The FFT size should be 1024 for
     *                         44.1 and 48 kHz sampling rate, and 2048 for 88.2 and 96
@@ -107,6 +114,14 @@ object Loudness {
     *                         control-rate modulated.
     */
   def kr(chain: GE, smask: GE = 0.25f, tmask: GE = 1.0f): Loudness = new Loudness(chain, smask, tmask)
+  
+  def read(in: DataInput): Loudness = {
+    readArity(in, 3)
+    val _chain  = readGE(in)
+    val _smask  = readGE(in)
+    val _tmask  = readGE(in)
+    new Loudness(_chain, _smask, _tmask)
+  }
 }
 
 /** A UGen for the extraction of instantaneous loudness. A perceptual loudness
@@ -149,7 +164,7 @@ final case class Loudness(chain: GE, smask: GE = 0.25f, tmask: GE = 1.0f)
   * in all transpositions. It assumes a 440 Hz concert A reference. Output is 0-11 C
   * major to B major, 12-23 C minor to B minor.
   */
-object KeyTrack {
+object KeyTrack extends Reader[KeyTrack] {
   /** @param chain            the output (buffer) of an FFT UGen which transforms the
     *                         audio input to track. For the FFT chain, with a standard
     *                         hop of half FFT size, the FFT size should be 4096 at
@@ -164,6 +179,14 @@ object KeyTrack {
     */
   def kr(chain: GE, keyDecay: GE = 2.0f, chromaLeak: GE = 0.5f): KeyTrack = 
     new KeyTrack(chain, keyDecay, chromaLeak)
+  
+  def read(in: DataInput): KeyTrack = {
+    readArity(in, 3)
+    val _chain      = readGE(in)
+    val _keyDecay   = readGE(in)
+    val _chromaLeak = readGE(in)
+    new KeyTrack(_chain, _keyDecay, _chromaLeak)
+  }
 }
 
 /** A (12TET major/minor) key tracker UGen. It is based on a pitch class profile of
@@ -213,7 +236,7 @@ final case class KeyTrack(chain: GE, keyDecay: GE = 2.0f, chromaLeak: GE = 0.5f)
   * generated every 512 audio frames, or (at control block size 64) every 8 control
   * blocks.
   */
-object MFCC {
+object MFCC extends Reader[MFCC] {
   /** @param chain            the output (buffer) of an FFT UGen which transforms the
     *                         audio input to track. For the FFT chain, with a standard
     *                         hop of half FFT size, the FFT size should be 1024 at
@@ -224,6 +247,13 @@ object MFCC {
     *                         UGen, it has to be an `Int` .
     */
   def kr(chain: GE, numCoeffs: Int = 13): MFCC = new MFCC(chain, numCoeffs)
+  
+  def read(in: DataInput): MFCC = {
+    readArity(in, 2)
+    val _chain      = readGE(in)
+    val _numCoeffs  = readInt(in)
+    new MFCC(_chain, _numCoeffs)
+  }
 }
 
 /** A UGen for extracting mel frequency cepstral coefficients. It generates a set
@@ -292,7 +322,7 @@ final case class MFCC(chain: GE, numCoeffs: Int = 13)
   * @see [[de.sciss.synth.ugen.PV_JensenAndersen$ PV_JensenAndersen]]
   * @see [[de.sciss.synth.ugen.PV_HainsworthFoote$ PV_HainsworthFoote]]
   */
-object Onsets {
+object Onsets extends Reader[Onsets] {
   /** @param chain            the output (buffer) of an FFT UGen which transforms the
     *                         audio input to track. For the FFT chain, you should
     *                         typically use a frame size of 512 or 1024 (at 44.1 kHz
@@ -328,6 +358,20 @@ object Onsets {
     */
   def kr(chain: GE, thresh: GE = 0.5f, fun: GE = 3, decay: GE = 1.0f, noiseFloor: GE = 0.1f, minGap: GE = 10, medianSpan: GE = 11, whType: GE = 1, raw: GE = 0): Onsets = 
     new Onsets(chain, thresh, fun, decay, noiseFloor, minGap, medianSpan, whType, raw)
+  
+  def read(in: DataInput): Onsets = {
+    readArity(in, 9)
+    val _chain      = readGE(in)
+    val _thresh     = readGE(in)
+    val _fun        = readGE(in)
+    val _decay      = readGE(in)
+    val _noiseFloor = readGE(in)
+    val _minGap     = readGE(in)
+    val _medianSpan = readGE(in)
+    val _whType     = readGE(in)
+    val _raw        = readGE(in)
+    new Onsets(_chain, _thresh, _fun, _decay, _noiseFloor, _minGap, _medianSpan, _whType, _raw)
+  }
 }
 
 /** An onset detecting UGen for musical audio signals. It detects the beginning of
@@ -424,7 +468,7 @@ final case class Onsets(chain: GE, thresh: GE = 0.5f, fun: GE = 3, decay: GE = 1
   * control bus instead of taking a regular control input signal as its first
   * argument!
   */
-object BeatTrack2 {
+object BeatTrack2 extends Reader[BeatTrack2] {
   /** @param bus              index of a control bus to read from. the number of
     *                         channels of that bus are expected to match the
     *                         `numChannels` argument. To track a particular audio
@@ -460,6 +504,17 @@ object BeatTrack2 {
     */
   def kr(bus: GE, numChannels: GE, winSize: GE = 2, phaseSpacing: GE = 0.02f, lock: GE = 0, weighting: GE = -2.1f): BeatTrack2 = 
     new BeatTrack2(bus, numChannels, winSize, phaseSpacing, lock, weighting)
+  
+  def read(in: DataInput): BeatTrack2 = {
+    readArity(in, 6)
+    val _bus          = readGE(in)
+    val _numChannels  = readGE(in)
+    val _winSize      = readGE(in)
+    val _phaseSpacing = readGE(in)
+    val _lock         = readGE(in)
+    val _weighting    = readGE(in)
+    new BeatTrack2(_bus, _numChannels, _winSize, _phaseSpacing, _lock, _weighting)
+  }
 }
 
 /** A template matching beat tracker UGen. This beat tracker is based on
@@ -557,10 +612,16 @@ final case class BeatTrack2(bus: GE, numChannels: GE, winSize: GE = 2, phaseSpac
   * 
   * @see [[de.sciss.synth.ugen.CheckBadValues$ CheckBadValues]]
   */
-object SpecFlatness {
+object SpecFlatness extends Reader[SpecFlatness] {
   /** @param chain            the fft signal (buffer) to analyze
     */
   def kr(chain: GE): SpecFlatness = new SpecFlatness(chain)
+  
+  def read(in: DataInput): SpecFlatness = {
+    readArity(in, 1)
+    val _chain = readGE(in)
+    new SpecFlatness(_chain)
+  }
 }
 
 /** A UGen to measure spectral flatness. Given an FFT chain this calculates the
@@ -602,7 +663,7 @@ final case class SpecFlatness(chain: GE) extends UGenSource.SingleOut with Contr
   * generated every 512 audio frames, or (at control block size 64) every 8 control
   * blocks.
   */
-object SpecPcile {
+object SpecPcile extends Reader[SpecPcile] {
   /** @param chain            the fft signal (buffer) to analyze
     * @param percent          the percentage between 0.0 (0%) and 1.0 (100%)
     * @param interp           specifies whether interpolation should be used to try
@@ -612,6 +673,14 @@ object SpecPcile {
     */
   def kr(chain: GE, percent: GE = 0.5f, interp: GE = 0): SpecPcile = 
     new SpecPcile(chain, percent, interp)
+  
+  def read(in: DataInput): SpecPcile = {
+    readArity(in, 3)
+    val _chain    = readGE(in)
+    val _percent  = readGE(in)
+    val _interp   = readGE(in)
+    new SpecPcile(_chain, _percent, _interp)
+  }
 }
 
 /** A UGen to find the percentile of a signal's magnitude spectrum. Given an FFT
@@ -661,10 +730,16 @@ final case class SpecPcile(chain: GE, percent: GE = 0.5f, interp: GE = 0)
   * 
   * @see [[de.sciss.synth.ugen.SpecPcile$ SpecPcile]]
   */
-object SpecCentroid {
+object SpecCentroid extends Reader[SpecCentroid] {
   /** @param chain            the fft signal (buffer) to analyze
     */
   def kr(chain: GE): SpecCentroid = new SpecCentroid(chain)
+  
+  def read(in: DataInput): SpecCentroid = {
+    readArity(in, 1)
+    val _chain = readGE(in)
+    new SpecCentroid(_chain)
+  }
 }
 
 /** A UGen to measure the spectral centroid. Given an FFT chain, this measures the

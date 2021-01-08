@@ -19,7 +19,7 @@ import UGenSource._
   * 
   * This is a third-party UGen (MCLDUGens).
   */
-object InsideOut {
+object InsideOut extends Reader[InsideOut] {
   /** @param in               input signal to be distorted
     */
   def kr(in: GE): InsideOut = new InsideOut(control, in)
@@ -27,6 +27,13 @@ object InsideOut {
   /** @param in               input signal to be distorted
     */
   def ar(in: GE): InsideOut = new InsideOut(audio, in)
+  
+  def read(in: DataInput): InsideOut = {
+    readArity(in, 2)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    new InsideOut(_rate, _in)
+  }
 }
 
 /** A UGen that produces distortion by subtracting the input signal's magnitude
@@ -67,7 +74,7 @@ final case class InsideOut(rate: MaybeRate, in: GE) extends UGenSource.SingleOut
   * 
   * This is a third-party UGen (MCLDUGens).
   */
-object WaveLoss {
+object WaveLoss extends Reader[WaveLoss] {
   /** @param in               input signal to be distorted
     * @param drop             the number of wave segments to drop in each group of
     *                         size `chunk` .
@@ -93,6 +100,16 @@ object WaveLoss {
     */
   def ar(in: GE, drop: GE = 20, chunk: GE = 40, mode: GE = 1): WaveLoss = 
     new WaveLoss(audio, in, drop, chunk, mode)
+  
+  def read(in: DataInput): WaveLoss = {
+    readArity(in, 5)
+    val _rate   = readMaybeRate(in)
+    val _in     = readGE(in)
+    val _drop   = readGE(in)
+    val _chunk  = readGE(in)
+    val _mode   = readGE(in)
+    new WaveLoss(_rate, _in, _drop, _chunk, _mode)
+  }
 }
 
 /** A UGen which uses zero-crossings to divide an input signal into tiny segments.
@@ -143,7 +160,7 @@ final case class WaveLoss(rate: MaybeRate, in: GE, drop: GE = 20, chunk: GE = 40
   * 
   * This is a third-party UGen (MCLDUGens).
   */
-object Squiz {
+object Squiz extends Reader[Squiz] {
   /** @param in               input signal to be distorted
     * @param pitchRatio       the ratio by which pitch will be raised, e.g. the
     *                         default value of 2 will raise by one octave. Only
@@ -175,6 +192,16 @@ object Squiz {
     */
   def ar(in: GE, pitchRatio: GE = 2, zeroCrossings: GE = 1, maxDur: GE = 0.1f): Squiz = 
     new Squiz(audio, in, pitchRatio, zeroCrossings, maxDur)
+  
+  def read(in: DataInput): Squiz = {
+    readArity(in, 5)
+    val _rate           = readRate(in)
+    val _in             = readGE(in)
+    val _pitchRatio     = readGE(in)
+    val _zeroCrossings  = readGE(in)
+    val _maxDur         = readGE(in)
+    new Squiz(_rate, _in, _pitchRatio, _zeroCrossings, _maxDur)
+  }
 }
 
 /** A UGen implementing a simplistic pitch-raising algorithm. It is not meant to

@@ -2,7 +2,7 @@
  *  Kuramoto.scala
  *  (ScalaColliderUGens)
  *
- *  Copyright (c) 2008-2020 Hanns Holger Rutz. All rights reserved.
+ *  Copyright (c) 2008-2021 Hanns Holger Rutz. All rights reserved.
  *
  *  This software is published under the GNU Lesser General Public License v2.1+
  *
@@ -11,10 +11,10 @@
  *  contact@sciss.de
  */
 
-package de.sciss.synth.ugen
+package de.sciss.synth
+package ugen
 
-import de.sciss.synth.UGenSource.Vec
-import de.sciss.synth.{GE, Rate, UGen, UGenIn, UGenInLike, UGenSource, audio}
+import de.sciss.synth.UGenSource._
 
 /** A UGen that implements the Kuramoto model of synchronization of
   * coupled oscillators.
@@ -37,7 +37,7 @@ import de.sciss.synth.{GE, Rate, UGen, UGenIn, UGenInLike, UGenSource, audio}
   *
   * @see [[de.sciss.synth.ugen.Hopf$ Hopf]]
   */
-object Kuramoto {
+object Kuramoto extends Reader[Kuramoto] {
   /**
     * @param mode `0`: all oscillators are coupled; `1`: neighboring oscillators are coupled
     *             (they can be imagined to form a ring); `2`:  neighboring oscillators are negatively coupled;
@@ -48,6 +48,18 @@ object Kuramoto {
          intCoupling: GE, extCoupling: GE = 0.0): Kuramoto =
     apply(audio, mode = mode, initPhase = initPhase, incr = incr, extPhase = extPhase,
       intCoupling = intCoupling, extCoupling = extCoupling)
+
+  def read(in: DataInput): Kuramoto = {
+    readArity(in, 7)
+    val _rate         = readRate(in)
+    val _mode         = readGE(in)
+    val _initPhase    = readGE(in)
+    val _incr         = readGE(in)
+    val _extPhase     = readGE(in)
+    val _intCoupling  = readGE(in)
+    val _extCoupling  = readGE(in)
+    new Kuramoto(_rate, _mode, _initPhase, _incr, _extPhase, _intCoupling, _extCoupling)
+  }
 }
 /** A UGen that implements the Kuramoto model of synchronization of
   * coupled oscillators.

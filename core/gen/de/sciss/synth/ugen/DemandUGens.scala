@@ -33,7 +33,7 @@ import UGenSource._
   * @see [[de.sciss.synth.ugen.Duty$ Duty]]
   * @see [[de.sciss.synth.ugen.TDuty$ TDuty]]
   */
-object Demand {
+object Demand extends Reader[Demand] {
   /** @param trig             trigger. Can be any signal. A trigger happens when the
     *                         signal changes from non-positive to positive.
     * @param in               a demand-rate signal (possibly multi-channel) which is
@@ -49,6 +49,15 @@ object Demand {
     * @param reset            trigger. Resets the list of ugens (`in`) when triggered.
     */
   def ar(trig: GE, in: GE, reset: GE = 0): Demand = new Demand(audio, trig, in, reset)
+  
+  def read(in: DataInput): Demand = {
+    readArity(in, 4)
+    val _rate   = readMaybeRate(in)
+    val _trig   = readGE(in)
+    val _in     = readGE(in)
+    val _reset  = readGE(in)
+    new Demand(_rate, _trig, _in, _reset)
+  }
 }
 
 /** A UGen which polls results from demand-rate ugens when receiving a trigger.
@@ -110,7 +119,7 @@ final case class Demand(rate: MaybeRate, trig: GE, in: GE, reset: GE = 0)
   * @see [[de.sciss.synth.ugen.Demand$ Demand]]
   * @see [[de.sciss.synth.DoneAction DoneAction]]
   */
-object Duty {
+object Duty extends Reader[Duty] {
   /** @param dur              the provider of time values. Can be a demand-rate ugen
     *                         or any signal. The next poll is acquired after the
     *                         previous duration.
@@ -138,6 +147,16 @@ object Duty {
     */
   def ar(dur: GE = 1.0f, level: GE, reset: GE = 0, doneAction: GE = doNothing): Duty = 
     new Duty(audio, dur, level, reset, doneAction)
+  
+  def read(in: DataInput): Duty = {
+    readArity(in, 5)
+    val _rate       = readRate(in)
+    val _dur        = readGE(in)
+    val _level      = readGE(in)
+    val _reset      = readGE(in)
+    val _doneAction = readGE(in)
+    new Duty(_rate, _dur, _level, _reset, _doneAction)
+  }
 }
 
 /** A UGen which polls results from demand-rate ugens in intervals specified by a
@@ -184,7 +203,7 @@ final case class Duty(rate: Rate, dur: GE = 1.0f, level: GE, reset: GE = 0, done
   * @see [[de.sciss.synth.ugen.Demand$ Demand]]
   * @see [[de.sciss.synth.DoneAction DoneAction]]
   */
-object TDuty {
+object TDuty extends Reader[TDuty] {
   def kr: TDuty = kr()
   
   /** @param dur              the provider of time values. Can be a demand-rate ugen
@@ -228,6 +247,17 @@ object TDuty {
     */
   def ar(dur: GE = 1.0f, level: GE = 1.0f, reset: GE = 0, doneAction: GE = doNothing, gapFirst: GE = 0): TDuty = 
     new TDuty(audio, dur, level, reset, doneAction, gapFirst)
+  
+  def read(in: DataInput): TDuty = {
+    readArity(in, 6)
+    val _rate       = readRate(in)
+    val _dur        = readGE(in)
+    val _level      = readGE(in)
+    val _reset      = readGE(in)
+    val _doneAction = readGE(in)
+    val _gapFirst   = readGE(in)
+    new TDuty(_rate, _dur, _level, _reset, _doneAction, _gapFirst)
+  }
 }
 
 /** A UGen which polls results from demand-rate ugens in intervals specified by a
@@ -277,7 +307,7 @@ final case class TDuty(rate: Rate, dur: GE = 1.0f, level: GE = 1.0f, reset: GE =
   * @see [[de.sciss.synth.ugen.Env$ Env]]
   * @see [[de.sciss.synth.DoneAction DoneAction]]
   */
-object DemandEnvGen {
+object DemandEnvGen extends Reader[DemandEnvGen] {
   /** @param levels           demand-rate ugen (or other ugen) returning level values
     * @param durs             demand-rate ugen (or other ugen) returning duration
     *                         values
@@ -303,6 +333,22 @@ object DemandEnvGen {
     */
   def ar(levels: GE, durs: GE, shapes: GE = 1, curvatures: GE = 0.0f, gate: GE = 1.0f, reset: GE = 1.0f, levelScale: GE = 1.0f, levelBias: GE = 0.0f, timeScale: GE = 1.0f, doneAction: GE = doNothing): DemandEnvGen = 
     new DemandEnvGen(audio, levels, durs, shapes, curvatures, gate, reset, levelScale, levelBias, timeScale, doneAction)
+  
+  def read(in: DataInput): DemandEnvGen = {
+    readArity(in, 11)
+    val _rate       = readRate(in)
+    val _levels     = readGE(in)
+    val _durs       = readGE(in)
+    val _shapes     = readGE(in)
+    val _curvatures = readGE(in)
+    val _gate       = readGE(in)
+    val _reset      = readGE(in)
+    val _levelScale = readGE(in)
+    val _levelBias  = readGE(in)
+    val _timeScale  = readGE(in)
+    val _doneAction = readGE(in)
+    new DemandEnvGen(_rate, _levels, _durs, _shapes, _curvatures, _gate, _reset, _levelScale, _levelBias, _timeScale, _doneAction)
+  }
 }
 
 /** An envelope generator UGen using demand-rate inputs for the envelope segments.
@@ -352,7 +398,15 @@ final case class DemandEnvGen(rate: Rate, levels: GE, durs: GE, shapes: GE = 1, 
   * @see [[de.sciss.synth.ugen.Dgeom$ Dgeom]]
   * @see [[de.sciss.synth.ugen.Dseq$ Dseq]]
   */
-object Dseries
+object Dseries extends Reader[Dseries] {
+  def read(in: DataInput): Dseries = {
+    readArity(in, 3)
+    val _start  = readGE(in)
+    val _step   = readGE(in)
+    val _length = readGE(in)
+    new Dseries(_start, _step, _length)
+  }
+}
 
 /** A demand-rate UGen which produces an arithmetic (linear) series.
   * 
@@ -398,7 +452,15 @@ final case class Dseries(start: GE = 0.0f, step: GE = 1.0f, length: GE = inf)
   * @see [[de.sciss.synth.ugen.Dseries$ Dseries]]
   * @see [[de.sciss.synth.ugen.Demand$ Demand]]
   */
-object Dgeom
+object Dgeom extends Reader[Dgeom] {
+  def read(in: DataInput): Dgeom = {
+    readArity(in, 3)
+    val _start  = readGE(in)
+    val _grow   = readGE(in)
+    val _length = readGE(in)
+    new Dgeom(_start, _grow, _length)
+  }
+}
 
 /** A demand-rate UGen that produces a geometric series. Each value is calculated as
   * {{{
@@ -444,7 +506,15 @@ final case class Dgeom(start: GE = 1.0f, grow: GE = 2.0f, length: GE = inf)
   * @see [[de.sciss.synth.ugen.WhiteNoise$ WhiteNoise]]
   * @see [[de.sciss.synth.ugen.Demand$ Demand]]
   */
-object Dwhite
+object Dwhite extends Reader[Dwhite] {
+  def read(in: DataInput): Dwhite = {
+    readArity(in, 3)
+    val _lo     = readGE(in)
+    val _hi     = readGE(in)
+    val _length = readGE(in)
+    new Dwhite(_lo, _hi, _length)
+  }
+}
 
 /** A demand-rate UGen that produces random decimal numbers with a constant
   * spectral density, equivalent to `WhiteNoise` for audio- or control-rate.
@@ -488,7 +558,15 @@ final case class Dwhite(lo: GE = 0.0f, hi: GE = 1.0f, length: GE = inf)
   * @see [[de.sciss.synth.ugen.TIRand$ TIRand]]
   * @see [[de.sciss.synth.ugen.Demand$ Demand]]
   */
-object Diwhite
+object Diwhite extends Reader[Diwhite] {
+  def read(in: DataInput): Diwhite = {
+    readArity(in, 3)
+    val _lo     = readGE(in)
+    val _hi     = readGE(in)
+    val _length = readGE(in)
+    new Diwhite(_lo, _hi, _length)
+  }
+}
 
 /** A demand-rate UGen that produces equally distributed random integer numbers.
   * 
@@ -532,7 +610,16 @@ final case class Diwhite(lo: GE = 0, hi: GE = 1, length: GE = inf)
   * @see [[de.sciss.synth.ugen.BrownNoise$ BrownNoise]]
   * @see [[de.sciss.synth.ugen.Demand$ Demand]]
   */
-object Dbrown
+object Dbrown extends Reader[Dbrown] {
+  def read(in: DataInput): Dbrown = {
+    readArity(in, 4)
+    val _lo     = readGE(in)
+    val _hi     = readGE(in)
+    val _step   = readGE(in)
+    val _length = readGE(in)
+    new Dbrown(_lo, _hi, _step, _length)
+  }
+}
 
 /** A demand-rate UGen that produces random decimal numbers, analogous to a
   * Brownian motion.
@@ -581,7 +668,16 @@ final case class Dbrown(lo: GE = 0.0f, hi: GE = 1.0f, step: GE = 0.01f, length: 
   * @see [[de.sciss.synth.ugen.BrownNoise$ BrownNoise]]
   * @see [[de.sciss.synth.ugen.Demand$ Demand]]
   */
-object Dibrown
+object Dibrown extends Reader[Dibrown] {
+  def read(in: DataInput): Dibrown = {
+    readArity(in, 4)
+    val _lo     = readGE(in)
+    val _hi     = readGE(in)
+    val _step   = readGE(in)
+    val _length = readGE(in)
+    new Dibrown(_lo, _hi, _step, _length)
+  }
+}
 
 /** A demand-rate UGen that produces random integer numbers, analogous to a
   * Brownian motion, or the `drunk` object in Max.
@@ -656,7 +752,14 @@ final case class Dibrown(lo: GE = 0, hi: GE = 1, step: GE = 1, length: GE = inf)
   * @see [[de.sciss.synth.ugen.Demand$ Demand]]
   * @see [[de.sciss.synth.ugen.Dser$ Dser]]
   */
-object Dseq
+object Dseq extends Reader[Dseq] {
+  def read(in: DataInput): Dseq = {
+    readArity(in, 2)
+    val _seq      = readGE(in)
+    val _repeats  = readGE(in)
+    new Dseq(_seq, _repeats)
+  }
+}
 
 /** A demand-rate UGen which reproduces and repeats a sequence of values.
   * 
@@ -705,7 +808,14 @@ final case class Dseq(seq: GE, repeats: GE = 1)
   * @see [[de.sciss.synth.ugen.Demand$ Demand]]
   * @see [[de.sciss.synth.ugen.Dseq$ Dseq]]
   */
-object Dser
+object Dser extends Reader[Dser] {
+  def read(in: DataInput): Dser = {
+    readArity(in, 2)
+    val _seq    = readGE(in)
+    val _length = readGE(in)
+    new Dser(_seq, _length)
+  }
+}
 
 /** A demand-rate UGen which reproduces and repeats values of a sequence. It is
   * very similar to `Dseq` , the difference being that the `length` parameter
@@ -738,7 +848,15 @@ final case class Dser(seq: GE, length: GE = 1)
   * @see [[de.sciss.synth.ugen.BufRd$ BufRd]]
   * @see [[de.sciss.synth.ugen.Dbufwr$ Dbufwr]]
   */
-object Dbufrd
+object Dbufrd extends Reader[Dbufrd] {
+  def read(in: DataInput): Dbufrd = {
+    readArity(in, 3)
+    val _buf    = readGE(in)
+    val _index  = readGE(in)
+    val _loop   = readGE(in)
+    new Dbufrd(_buf, _index, _loop)
+  }
+}
 
 /** A demand-rate UGen that reads out a buffer. All inputs can be either demand
   * UGens or any other UGens.
@@ -758,7 +876,16 @@ final case class Dbufrd(buf: GE, index: GE = 0, loop: GE = 1)
   
   protected def makeUGen(_args: Vec[UGenIn]): UGenInLike = UGen.SingleOut(name, demand, _args, isIndividual = true)
 }
-object Dbufwr
+object Dbufwr extends Reader[Dbufwr] {
+  def read(in: DataInput): Dbufwr = {
+    readArity(in, 4)
+    val _in     = readGE(in)
+    val _buf    = readGE(in)
+    val _index  = readGE(in)
+    val _loop   = readGE(in)
+    new Dbufwr(_in, _buf, _index, _loop)
+  }
+}
 final case class Dbufwr(in: GE, buf: GE, index: GE = 0, loop: GE = 1)
   extends UGenSource.SingleOut with DemandRated with HasSideEffect with IsIndividual with HasDoneFlag {
 
@@ -791,7 +918,14 @@ final case class Dbufwr(in: GE, buf: GE, index: GE = 0, loop: GE = 1)
   * @see [[de.sciss.synth.ugen.Dxrand$ Dxrand]]
   * @see [[de.sciss.synth.ugen.Diwhite$ Diwhite]]
   */
-object Drand
+object Drand extends Reader[Drand] {
+  def read(in: DataInput): Drand = {
+    readArity(in, 2)
+    val _seq    = readGE(in)
+    val _length = readGE(in)
+    new Drand(_seq, _length)
+  }
+}
 
 /** A demand-rate UGen which outputs random elements from a sequence. `Drand`
   * allows duplicate elements to appear, whereas `Dxrand` forbids repetitions.
@@ -836,7 +970,14 @@ final case class Drand(seq: GE, length: GE = 1)
   * @see [[de.sciss.synth.ugen.Drand$ Drand]]
   * @see [[de.sciss.synth.ugen.Dshuf$ Dshuf]]
   */
-object Dxrand
+object Dxrand extends Reader[Dxrand] {
+  def read(in: DataInput): Dxrand = {
+    readArity(in, 2)
+    val _seq    = readGE(in)
+    val _length = readGE(in)
+    new Dxrand(_seq, _length)
+  }
+}
 
 /** A demand-rate UGen which outputs random elements from a sequence. `Dxrand`
   * forbid repetitions, whereas `Drand` allows duplicate elements to appear.
@@ -918,7 +1059,14 @@ final case class Dxrand(seq: GE, length: GE = 1)
   * @see [[de.sciss.synth.ugen.Drand$ Drand]]
   * @see [[de.sciss.synth.ugen.Dshuf$ Dshuf]]
   */
-object Dshuf
+object Dshuf extends Reader[Dshuf] {
+  def read(in: DataInput): Dshuf = {
+    readArity(in, 2)
+    val _seq      = readGE(in)
+    val _repeats  = readGE(in)
+    new Dshuf(_seq, _repeats)
+  }
+}
 
 /** A demand-rate UGen which outputs a randomly shuffled version of an input
   * sequence. The sequence is only shuffled once, thus when `repeats` is greater
@@ -943,7 +1091,14 @@ final case class Dshuf(seq: GE, repeats: GE = 1)
   
   protected def makeUGen(_args: Vec[UGenIn]): UGenInLike = UGen.SingleOut(name, demand, _args, isIndividual = true)
 }
-object Dswitch1
+object Dswitch1 extends Reader[Dswitch1] {
+  def read(in: DataInput): Dswitch1 = {
+    readArity(in, 2)
+    val _seq    = readGE(in)
+    val _index  = readGE(in)
+    new Dswitch1(_seq, _index)
+  }
+}
 final case class Dswitch1(seq: GE, index: GE)
   extends UGenSource.SingleOut with DemandRated with IsIndividual {
 
@@ -951,7 +1106,14 @@ final case class Dswitch1(seq: GE, index: GE)
   
   protected def makeUGen(_args: Vec[UGenIn]): UGenInLike = UGen.SingleOut(name, demand, _args, isIndividual = true)
 }
-object Dswitch
+object Dswitch extends Reader[Dswitch] {
+  def read(in: DataInput): Dswitch = {
+    readArity(in, 2)
+    val _seq    = readGE(in)
+    val _index  = readGE(in)
+    new Dswitch(_seq, _index)
+  }
+}
 final case class Dswitch(seq: GE, index: GE)
   extends UGenSource.SingleOut with DemandRated with IsIndividual {
 
@@ -959,7 +1121,14 @@ final case class Dswitch(seq: GE, index: GE)
   
   protected def makeUGen(_args: Vec[UGenIn]): UGenInLike = UGen.SingleOut(name, demand, _args, isIndividual = true)
 }
-object Dstutter
+object Dstutter extends Reader[Dstutter] {
+  def read(in: DataInput): Dstutter = {
+    readArity(in, 2)
+    val _n  = readGE(in)
+    val _in = readGE(in)
+    new Dstutter(_n, _in)
+  }
+}
 final case class Dstutter(n: GE, in: GE) extends UGenSource.SingleOut with DemandRated with IsIndividual {
   protected def makeUGens: UGenInLike = unwrap(this, Vector[UGenInLike](n.expand, in.expand))
   
@@ -971,7 +1140,15 @@ final case class Dstutter(n: GE, in: GE) extends UGenSource.SingleOut with Deman
   * truncated so that the sum of `Dconst` 's output values will match the total
   * exactly.
   */
-object Dconst
+object Dconst extends Reader[Dconst] {
+  def read(in: DataInput): Dconst = {
+    readArity(in, 3)
+    val _sum        = readGE(in)
+    val _in         = readGE(in)
+    val _tolerance  = readGE(in)
+    new Dconst(_sum, _in, _tolerance)
+  }
+}
 
 /** A demand-rate UGen that outputs values from the child demand stream until the
   * sum of those values reaches or exceeds a given total. The last value will be
@@ -995,7 +1172,13 @@ final case class Dconst(sum: GE, in: GE, tolerance: GE = 0.001f)
   
   protected def makeUGen(_args: Vec[UGenIn]): UGenInLike = UGen.SingleOut(name, demand, _args, isIndividual = true)
 }
-object Donce
+object Donce extends Reader[Donce] {
+  def read(in: DataInput): Donce = {
+    readArity(in, 1)
+    val _in = readGE(in)
+    new Donce(_in)
+  }
+}
 final case class Donce(in: GE) extends UGenSource.SingleOut with DemandRated with IsIndividual {
   protected def makeUGens: UGenInLike = unwrap(this, Vector[UGenInLike](in.expand))
   
@@ -1021,7 +1204,14 @@ final case class Donce(in: GE) extends UGenSource.SingleOut with DemandRated wit
   * @see [[de.sciss.synth.ugen.Demand$ Demand]]
   * @see [[de.sciss.synth.ugen.Duty$ Duty]]
   */
-object Dreset
+object Dreset extends Reader[Dreset] {
+  def read(in: DataInput): Dreset = {
+    readArity(in, 2)
+    val _in     = readGE(in)
+    val _reset  = readGE(in)
+    new Dreset(_in, _reset)
+  }
+}
 
 /** A demand-rate UGen that, when triggered, resets the state of its `in` argument.
   * 
@@ -1046,7 +1236,16 @@ final case class Dreset(in: GE, reset: GE) extends UGenSource.SingleOut with Dem
   * @see [[de.sciss.synth.ugen.SendTrig$ SendTrig]]
   * @see [[de.sciss.synth.ugen.Poll$ Poll]]
   */
-object Dpoll
+object Dpoll extends Reader[Dpoll] {
+  def read(in: DataInput): Dpoll = {
+    readArity(in, 4)
+    val _in     = readGE(in)
+    val _label  = readString(in)
+    val _run    = readGE(in)
+    val _trigId = readGE(in)
+    new Dpoll(_in, _label, _run, _trigId)
+  }
+}
 
 /** A demand rate UGen printing the current output value of its input to the
   * console when polled.

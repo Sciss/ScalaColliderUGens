@@ -50,7 +50,7 @@ import UGenSource._
   * @see [[de.sciss.synth.ugen.XOut$ XOut]]
   * @see [[de.sciss.synth.ugen.SubsampleOffset$ SubsampleOffset]]
   */
-object OffsetOut {
+object OffsetOut extends Reader[OffsetOut] {
   /** @param bus              bus index to write to. For an audio-rate UGen, this is
     *                         an audio-bus, for a control-rate UGen, this is a
     *                         control-bus.
@@ -58,6 +58,13 @@ object OffsetOut {
     *                         the input must also be audio-rate.
     */
   def ar(bus: GE, in: GE): OffsetOut = new OffsetOut(bus, in)
+  
+  def read(in: DataInput): OffsetOut = {
+    readArity(in, 2)
+    val _bus  = readGE(in)
+    val _in   = readGE(in)
+    new OffsetOut(_bus, _in)
+  }
 }
 
 /** A UGen that writes a signal onto a bus, delaying the signal such that the input
@@ -188,7 +195,7 @@ final case class OffsetOut(bus: GE, in: GE)
   * @see [[de.sciss.synth.ugen.InFeedback$ InFeedback]]
   * @see [[de.sciss.synth.ugen.ControlDur$ ControlDur]]
   */
-object LocalIn {
+object LocalIn extends Reader[LocalIn] {
   def kr: LocalIn = kr()
   
   /** @param init             the initial state of the UGen. The number of channels
@@ -204,6 +211,13 @@ object LocalIn {
     *                         written via `LocalOut` .
     */
   def ar(init: GE = 0): LocalIn = new LocalIn(audio, init)
+  
+  def read(in: DataInput): LocalIn = {
+    readArity(in, 2)
+    val _rate = readRate(in)
+    val _init = readGE(in)
+    new LocalIn(_rate, _init)
+  }
 }
 
 /** A UGen that reads buses that are local to the enclosing synth. These buses
@@ -264,7 +278,7 @@ final case class LocalIn(rate: Rate, init: GE = 0) extends UGenSource.MultiOut {
   * @see [[de.sciss.synth.ugen.Out$ Out]]
   * @see [[de.sciss.synth.ugen.XOut$ XOut]]
   */
-object XOut {
+object XOut extends Reader[XOut] {
   /** @param bus              bus index to write to. For an audio-rate UGen, this is
     *                         an audio-bus, for a control-rate UGen, this is a
     *                         control-bus.
@@ -284,6 +298,15 @@ object XOut {
     *                         `old_bus_content * (1 - xfade) + in * xfade`
     */
   def ar(bus: GE, in: GE, xfade: GE): XOut = new XOut(audio, bus, in, xfade)
+  
+  def read(in: DataInput): XOut = {
+    readArity(in, 4)
+    val _rate   = readRate(in)
+    val _bus    = readGE(in)
+    val _in     = readGE(in)
+    val _xfade  = readGE(in)
+    new XOut(_rate, _bus, _in, _xfade)
+  }
 }
 
 /** A UGen that cross-fades the contents of a bus with an input signal. A linear
@@ -355,7 +378,7 @@ final case class XOut(rate: Rate, bus: GE, in: GE, xfade: GE)
   * @see [[de.sciss.synth.ugen.Out$ Out]]
   * @see [[de.sciss.synth.ugen.XOut$ XOut]]
   */
-object ReplaceOut {
+object ReplaceOut extends Reader[ReplaceOut] {
   /** @param bus              bus index to write to. For an audio-rate UGen, this is
     *                         an audio-bus, for a control-rate UGen, this is a
     *                         control-bus.
@@ -363,6 +386,13 @@ object ReplaceOut {
     *                         the input must also be audio-rate.
     */
   def ar(bus: GE, in: GE): ReplaceOut = new ReplaceOut(bus, in)
+  
+  def read(in: DataInput): ReplaceOut = {
+    readArity(in, 2)
+    val _bus  = readGE(in)
+    val _in   = readGE(in)
+    new ReplaceOut(_bus, _in)
+  }
 }
 
 /** A UGen that replace the contents of a bus with an input signal. Other than
@@ -449,7 +479,7 @@ final case class ReplaceOut(bus: GE, in: GE)
   * @see [[de.sciss.synth.ugen.LocalOut$ LocalOut]]
   * @see [[de.sciss.synth.Bus Bus]]
   */
-object Out {
+object Out extends Reader[Out] {
   /** @param bus              bus index to write to. For an audio-rate UGen, this is
     *                         an audio-bus, for a control-rate UGen, this is a
     *                         control-bus. '''Note''' that the bus index can only be
@@ -467,6 +497,14 @@ object Out {
     *                         the input must also be audio-rate.
     */
   def ar(bus: GE, in: GE): Out = new Out(audio, bus, in)
+  
+  def read(in: DataInput): Out = {
+    readArity(in, 3)
+    val _rate = readRate(in)
+    val _bus  = readGE(in)
+    val _in   = readGE(in)
+    new Out(_rate, _bus, _in)
+  }
 }
 
 /** A UGen that writes a signal onto a bus. It adds ("mixes") the input-signal to
@@ -542,7 +580,7 @@ final case class Out(rate: Rate, bus: GE, in: GE)
   * @see [[de.sciss.synth.ugen.Out$ Out]]
   * @see [[de.sciss.synth.ugen.ControlDur$ ControlDur]]
   */
-object LocalOut {
+object LocalOut extends Reader[LocalOut] {
   /** @param in               signal to be written to the synth-local bus. The
     *                         signal's number of channels must be the same number of
     *                         channels as were declared in the corresponding `LocalIn`
@@ -556,6 +594,13 @@ object LocalOut {
     *                         .
     */
   def ar(in: GE): LocalOut = new LocalOut(audio, in)
+  
+  def read(in: DataInput): LocalOut = {
+    readArity(in, 2)
+    val _rate = readRate(in)
+    val _in   = readGE(in)
+    new LocalOut(_rate, _in)
+  }
 }
 
 /** A UGen that writes to buses that are local to the enclosing synth. These buses
@@ -636,7 +681,7 @@ final case class LocalOut(rate: Rate, in: GE) extends UGenSource.ZeroOut {
   * @see [[de.sciss.synth.ugen.LocalIn$ LocalIn]]
   * @see [[de.sciss.synth.Bus Bus]]
   */
-object In {
+object In extends Reader[In] {
   /** @param bus              index of the bus to read from. When `numChannels` is
     *                         greater than one, the other channels or read from the
     *                         adjacent indices.
@@ -657,6 +702,14 @@ object In {
     * @param numChannels      number of channels to read
     */
   def ar(bus: GE, numChannels: Int = 1): In = new In(audio, bus, numChannels)
+  
+  def read(in: DataInput): In = {
+    readArity(in, 3)
+    val _rate         = readRate(in)
+    val _bus          = readGE(in)
+    val _numChannels  = readInt(in)
+    new In(_rate, _bus, _numChannels)
+  }
 }
 
 /** A UGen that reads a signal from a bus. Whether an audio- or control-bus is used
@@ -723,7 +776,7 @@ final case class In(rate: Rate, bus: GE, numChannels: Int = 1)
   * @see [[de.sciss.synth.ugen.Out$ Out]]
   * @see [[de.sciss.synth.ugen.Lag$ Lag]]
   */
-object LagIn {
+object LagIn extends Reader[LagIn] {
   /** @param bus              index of the bus to read from. When `numChannels` is
     *                         greater than one, the other channels or read from the
     *                         adjacent indices.
@@ -732,6 +785,15 @@ object LagIn {
     */
   def kr(bus: GE, numChannels: Int = 1, time: GE = 0.1f): LagIn = 
     new LagIn(control, bus, numChannels, time)
+  
+  def read(in: DataInput): LagIn = {
+    readArity(in, 4)
+    val _rate         = readRate(in)
+    val _bus          = readGE(in)
+    val _numChannels  = readInt(in)
+    val _time         = readGE(in)
+    new LagIn(_rate, _bus, _numChannels, _time)
+  }
 }
 
 /** A UGen that reads a signal from a control bus and applies a lag filter to it.
@@ -817,7 +879,7 @@ final case class LagIn(rate: Rate, bus: GE, numChannels: Int = 1, time: GE = 0.1
   * @see [[de.sciss.synth.ugen.LocalIn$ LocalIn]]
   * @see [[de.sciss.synth.ugen.ControlDur$ ControlDur]]
   */
-object InFeedback {
+object InFeedback extends Reader[InFeedback] {
   /** @param bus              the index of the audio bus to read in from.
     * @param numChannels      the number of channels (i.e. adjacent buses) to read
     *                         in. Since this is a constant, a change in number of
@@ -825,6 +887,13 @@ object InFeedback {
     *                         creating different SynthDefs.
     */
   def ar(bus: GE, numChannels: Int = 1): InFeedback = new InFeedback(bus, numChannels)
+  
+  def read(in: DataInput): InFeedback = {
+    readArity(in, 2)
+    val _bus          = readGE(in)
+    val _numChannels  = readInt(in)
+    new InFeedback(_bus, _numChannels)
+  }
 }
 
 /** A UGen which reads a signal from an audio bus with a current or one cycle old
@@ -901,7 +970,7 @@ final case class InFeedback(bus: GE, numChannels: Int = 1)
   * @see [[de.sciss.synth.ugen.In$ In]]
   * @see [[de.sciss.synth.ugen.TrigControl$ TrigControl]]
   */
-object InTrig {
+object InTrig extends Reader[InTrig] {
   /** @param bus              the index of the control bus to read in from.
     * @param numChannels      the number of channels (i.e. adjacent buses) to read
     *                         in. Since this is a constant, a change in number of
@@ -909,6 +978,13 @@ object InTrig {
     *                         creating different SynthDefs.
     */
   def kr(bus: GE, numChannels: Int = 1): InTrig = new InTrig(bus, numChannels)
+  
+  def read(in: DataInput): InTrig = {
+    readArity(in, 2)
+    val _bus          = readGE(in)
+    val _numChannels  = readInt(in)
+    new InTrig(_bus, _numChannels)
+  }
 }
 
 /** A UGen which generates a trigger anytime a control bus is set.

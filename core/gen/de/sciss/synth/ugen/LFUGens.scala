@@ -32,7 +32,7 @@ import UGenSource._
   * }
   * }}}
   */
-object Vibrato {
+object Vibrato extends Reader[Vibrato] {
   def kr: Vibrato = kr()
   
   /** @param freq             fundamental frequency in Hertz. If the Vibrato UGen is
@@ -94,6 +94,20 @@ object Vibrato {
     */
   def ar(freq: GE = 440.0f, beat: GE = 6.0f, depth: GE = 0.02f, delay: GE = 0.0f, onset: GE = 0.0f, beatVar: GE = 0.04f, depthVar: GE = 0.1f, iphase: GE = 0.0f): Vibrato = 
     new Vibrato(audio, freq, beat, depth, delay, onset, beatVar, depthVar, iphase)
+  
+  def read(in: DataInput): Vibrato = {
+    readArity(in, 9)
+    val _rate     = readRate(in)
+    val _freq     = readGE(in)
+    val _beat     = readGE(in)
+    val _depth    = readGE(in)
+    val _delay    = readGE(in)
+    val _onset    = readGE(in)
+    val _beatVar  = readGE(in)
+    val _depthVar = readGE(in)
+    val _iphase   = readGE(in)
+    new Vibrato(_rate, _freq, _beat, _depth, _delay, _onset, _beatVar, _depthVar, _iphase)
+  }
 }
 
 /** A low frequency oscillator UGen for modelling vibrato. It produces a modulating
@@ -166,7 +180,7 @@ final case class Vibrato(rate: Rate, freq: GE = 440.0f, beat: GE = 6.0f, depth: 
   * 
   * @see [[de.sciss.synth.ugen.Pulse$ Pulse]]
   */
-object LFPulse {
+object LFPulse extends Reader[LFPulse] {
   def kr: LFPulse = kr()
   
   /** @param freq             oscillator frequency in Hertz
@@ -210,6 +224,15 @@ object LFPulse {
     */
   def ar(freq: GE = 440.0f, iphase: GE = 0.0f, width: GE = 0.5f): LFPulse = 
     new LFPulse(audio, freq, iphase, width)
+  
+  def read(in: DataInput): LFPulse = {
+    readArity(in, 4)
+    val _rate   = readRate(in)
+    val _freq   = readGE(in)
+    val _iphase = readGE(in)
+    val _width  = readGE(in)
+    new LFPulse(_rate, _freq, _iphase, _width)
+  }
 }
 
 /** A non-band-limited pulse oscillator UGen. Outputs a high value of one and a low
@@ -263,7 +286,7 @@ final case class LFPulse(rate: Rate, freq: GE = 440.0f, iphase: GE = 0.0f, width
   * 
   * @see [[de.sciss.synth.ugen.Saw$ Saw]]
   */
-object LFSaw {
+object LFSaw extends Reader[LFSaw] {
   def kr: LFSaw = kr()
   
   /** @param freq             oscillator frequency in Hertz
@@ -287,6 +310,14 @@ object LFSaw {
     *                         ''(init-time only)''
     */
   def ar(freq: GE = 440.0f, iphase: GE = 0.0f): LFSaw = new LFSaw(audio, freq, iphase)
+  
+  def read(in: DataInput): LFSaw = {
+    readArity(in, 3)
+    val _rate   = readRate(in)
+    val _freq   = readGE(in)
+    val _iphase = readGE(in)
+    new LFSaw(_rate, _freq, _iphase)
+  }
 }
 
 /** A sawtooth oscillator UGen. The oscillator is creating an aliased sawtooth,
@@ -329,7 +360,7 @@ final case class LFSaw(rate: Rate, freq: GE = 440.0f, iphase: GE = 0.0f) extends
   * 
   * @see [[de.sciss.synth.ugen.LFCub$ LFCub]]
   */
-object LFPar {
+object LFPar extends Reader[LFPar] {
   def kr: LFPar = kr()
   
   /** @param freq             oscillator frequency in Hertz
@@ -343,6 +374,14 @@ object LFPar {
     * @param iphase           initial phase in cycle (0 to 1) ''(init-time only)''
     */
   def ar(freq: GE = 440.0f, iphase: GE = 0.0f): LFPar = new LFPar(audio, freq, iphase)
+  
+  def read(in: DataInput): LFPar = {
+    readArity(in, 3)
+    val _rate   = readRate(in)
+    val _freq   = readGE(in)
+    val _iphase = readGE(in)
+    new LFPar(_rate, _freq, _iphase)
+  }
 }
 
 /** A sine-like oscillator UGen with a shape made of two parabolas. It has audible
@@ -379,7 +418,7 @@ final case class LFPar(rate: Rate, freq: GE = 440.0f, iphase: GE = 0.0f) extends
   * 
   * @see [[de.sciss.synth.ugen.LFPar$ LFPar]]
   */
-object LFCub {
+object LFCub extends Reader[LFCub] {
   def kr: LFCub = kr()
   
   /** @param freq             oscillator frequency in Hertz
@@ -393,6 +432,14 @@ object LFCub {
     * @param iphase           initial phase in cycle (0 to 1) ''(init-time only)''
     */
   def ar(freq: GE = 440.0f, iphase: GE = 0.0f): LFCub = new LFCub(audio, freq, iphase)
+  
+  def read(in: DataInput): LFCub = {
+    readArity(in, 3)
+    val _rate   = readRate(in)
+    val _freq   = readGE(in)
+    val _iphase = readGE(in)
+    new LFCub(_rate, _freq, _iphase)
+  }
 }
 
 /** A sine-like oscillator UGen with a shape made of two cubic pieces. It is
@@ -433,7 +480,7 @@ final case class LFCub(rate: Rate, freq: GE = 440.0f, iphase: GE = 0.0f) extends
   * play { LFTri.ar(LFTri.kr(LFTri.kr(0.2).mulAdd(8,10)).mulAdd(400,800)) * 0.1 }
   * }}}
   */
-object LFTri {
+object LFTri extends Reader[LFTri] {
   def kr: LFTri = kr()
   
   /** @param freq             frequency in Hertz
@@ -453,6 +500,14 @@ object LFTri {
     *                         only)''
     */
   def ar(freq: GE = 440.0f, iphase: GE = 0.0f): LFTri = new LFTri(audio, freq, iphase)
+  
+  def read(in: DataInput): LFTri = {
+    readArity(in, 3)
+    val _rate   = readRate(in)
+    val _freq   = readGE(in)
+    val _iphase = readGE(in)
+    new LFTri(_rate, _freq, _iphase)
+  }
 }
 
 /** A triangle oscillator UGen designed for low frequency control signals (being
@@ -513,7 +568,7 @@ final case class LFTri(rate: Rate, freq: GE = 440.0f, iphase: GE = 0.0f) extends
   * }
   * }}}
   */
-object LFGauss {
+object LFGauss extends Reader[LFGauss] {
   def kr: LFGauss = kr()
   
   /** @param dur              duration in seconds of a full -1 <= x <= 1 cycle, or
@@ -541,6 +596,17 @@ object LFGauss {
     */
   def ar(dur: GE = 1.0f, width: GE = 0.1f, phase: GE = 0.0f, loop: GE = 1, doneAction: GE = doNothing): LFGauss = 
     new LFGauss(audio, dur, width, phase, loop, doneAction)
+  
+  def read(in: DataInput): LFGauss = {
+    readArity(in, 6)
+    val _rate       = readRate(in)
+    val _dur        = readGE(in)
+    val _width      = readGE(in)
+    val _phase      = readGE(in)
+    val _loop       = readGE(in)
+    val _doneAction = readGE(in)
+    new LFGauss(_rate, _dur, _width, _phase, _loop, _doneAction)
+  }
 }
 
 /** A non-band-limited gaussian function oscillator UGen. Output ranges from
@@ -591,7 +657,7 @@ final case class LFGauss(rate: Rate, dur: GE = 1.0f, width: GE = 0.1f, phase: GE
   * @see [[de.sciss.synth.ugen.Dust$ Dust]]
   * @see [[de.sciss.synth.ugen.Blip$ Blip]]
   */
-object Impulse {
+object Impulse extends Reader[Impulse] {
   def kr: Impulse = kr()
   
   /** @param freq             frequency in Hertz. A value of zero can be used to
@@ -607,6 +673,14 @@ object Impulse {
     * @param phase            phase offset in cycles (0 to 1)
     */
   def ar(freq: GE = 440.0f, phase: GE = 0.0f): Impulse = new Impulse(audio, freq, phase)
+  
+  def read(in: DataInput): Impulse = {
+    readArity(in, 3)
+    val _rate   = readRate(in)
+    val _freq   = readGE(in)
+    val _phase  = readGE(in)
+    new Impulse(_rate, _freq, _phase)
+  }
 }
 
 /** A non-band-limited generator UGen for single sample impulses.
@@ -655,7 +729,7 @@ final case class Impulse(rate: Rate, freq: GE = 440.0f, phase: GE = 0.0f) extend
   * @see [[de.sciss.synth.ugen.LFSaw$ LFSaw]]
   * @see [[de.sciss.synth.ugen.SyncSaw$ SyncSaw]]
   */
-object VarSaw {
+object VarSaw extends Reader[VarSaw] {
   def kr: VarSaw = kr()
   
   /** @param freq             frequency in Hertz
@@ -673,6 +747,15 @@ object VarSaw {
     */
   def ar(freq: GE = 440.0f, iphase: GE = 0.0f, width: GE = 0.5f): VarSaw = 
     new VarSaw(audio, freq, iphase, width)
+  
+  def read(in: DataInput): VarSaw = {
+    readArity(in, 4)
+    val _rate   = readRate(in)
+    val _freq   = readGE(in)
+    val _iphase = readGE(in)
+    val _width  = readGE(in)
+    new VarSaw(_rate, _freq, _iphase, _width)
+  }
 }
 
 /** A sawtooth-triangle oscillator UGen with variable duty. A `width` of zero
@@ -725,7 +808,7 @@ final case class VarSaw(rate: Rate, freq: GE = 440.0f, iphase: GE = 0.0f, width:
   * @see [[de.sciss.synth.ugen.VarSaw$ VarSaw]]
   * @see [[de.sciss.synth.ugen.LFSaw$ LFSaw]]
   */
-object SyncSaw {
+object SyncSaw extends Reader[SyncSaw] {
   def kr: SyncSaw = kr()
   
   /** @param syncFreq         synchronizing (principal) frequency which is the
@@ -743,6 +826,14 @@ object SyncSaw {
     *                         greater than `syncFreq` .
     */
   def ar(syncFreq: GE = 440.0f, sawFreq: GE = 440.0f): SyncSaw = new SyncSaw(audio, syncFreq, sawFreq)
+  
+  def read(in: DataInput): SyncSaw = {
+    readArity(in, 3)
+    val _rate     = readRate(in)
+    val _syncFreq = readGE(in)
+    val _sawFreq  = readGE(in)
+    new SyncSaw(_rate, _syncFreq, _sawFreq)
+  }
 }
 
 /** A sawtooth oscillator UGen that is hard sync'ed to a fundamental pitch. That
@@ -798,10 +889,16 @@ final case class SyncSaw(rate: Rate, syncFreq: GE = 440.0f, sawFreq: GE = 440.0f
   * @see [[de.sciss.synth.ugen.T2A$ T2A]]
   * @see [[de.sciss.synth.ugen.DC$ DC]]
   */
-object K2A {
+object K2A extends Reader[K2A] {
   /** @param in               control-rate signal to convert
     */
   def ar(in: GE): K2A = new K2A(in)
+  
+  def read(in: DataInput): K2A = {
+    readArity(in, 1)
+    val _in = readGE(in)
+    new K2A(_in)
+  }
 }
 
 /** A converter UGen that takes a control-rate input and produces an audio-rate
@@ -836,10 +933,16 @@ final case class K2A(in: GE) extends UGenSource.SingleOut with AudioRated {
   * @see [[de.sciss.synth.ugen.K2A$ K2A]]
   * @see [[de.sciss.synth.ugen.T2K$ T2K]]
   */
-object A2K {
+object A2K extends Reader[A2K] {
   /** @param in               audio-rate signal to convert
     */
   def kr(in: GE): A2K = new A2K(in)
+  
+  def read(in: DataInput): A2K = {
+    readArity(in, 1)
+    val _in = readGE(in)
+    new A2K(_in)
+  }
 }
 
 /** A converter UGen that takes an audio-rate input and produces a control-rate
@@ -879,10 +982,16 @@ final case class A2K(in: GE) extends UGenSource.SingleOut with ControlRated {
   * @see [[de.sciss.synth.ugen.T2K$ T2K]]
   * @see [[de.sciss.synth.ugen.Trig$ Trig]]
   */
-object T2K {
+object T2K extends Reader[T2K] {
   /** @param in               audio-rate trigger input
     */
   def kr(in: GE): T2K = new T2K(in)
+  
+  def read(in: DataInput): T2K = {
+    readArity(in, 1)
+    val _in = readGE(in)
+    new T2K(_in)
+  }
 }
 
 /** A UGen that converts an audio-rate trigger input into a control-rate trigger
@@ -926,10 +1035,16 @@ final case class T2K(in: GE) extends UGenSource.SingleOut with ControlRated {
   * @see [[de.sciss.synth.ugen.T2K$ T2K]]
   * @see [[de.sciss.synth.ugen.Trig$ Trig]]
   */
-object T2A {
+object T2A extends Reader[T2A] {
   /** @param in               control-rate trigger input
     */
   def ar(in: GE): T2A = new T2A(in)
+  
+  def read(in: DataInput): T2A = {
+    readArity(in, 1)
+    val _in = readGE(in)
+    new T2A(_in)
+  }
 }
 
 /** A UGen that converts a control-rate trigger input into an audio-rate trigger
@@ -967,7 +1082,7 @@ final case class T2A(in: GE) extends UGenSource.SingleOut with AudioRated {
   * 
   * @see [[de.sciss.synth.ugen.LeakDC$ LeakDC]]
   */
-object DC {
+object DC extends Reader[DC] {
   /** @param in               constant value to output, fixed at initialisation time.
     *                         ''(init-time only)''
     */
@@ -977,6 +1092,13 @@ object DC {
     *                         ''(init-time only)''
     */
   def ar(in: GE): DC = new DC(audio, in)
+  
+  def read(in: DataInput): DC = {
+    readArity(in, 2)
+    val _rate = readRate(in)
+    val _in   = readGE(in)
+    new DC(_rate, _in)
+  }
 }
 
 /** A UGen that creates a constant signal at a given calculation rate.
@@ -1006,7 +1128,7 @@ final case class DC(rate: Rate, in: GE) extends UGenSource.SingleOut {
   * @see [[de.sciss.synth.ugen.EnvGen$ EnvGen]]
   * @see [[de.sciss.synth.ugen.Ramp$ Ramp]]
   */
-object Line {
+object Line extends Reader[Line] {
   def kr: Line = kr()
   
   /** @param start            Starting value ''(init-time only)''
@@ -1028,6 +1150,16 @@ object Line {
     */
   def ar(start: GE = 0.0f, end: GE = 1.0f, dur: GE = 1.0f, doneAction: GE = doNothing): Line = 
     new Line(audio, start, end, dur, doneAction)
+  
+  def read(in: DataInput): Line = {
+    readArity(in, 5)
+    val _rate       = readRate(in)
+    val _start      = readGE(in)
+    val _end        = readGE(in)
+    val _dur        = readGE(in)
+    val _doneAction = readGE(in)
+    new Line(_rate, _start, _end, _dur, _doneAction)
+  }
 }
 
 /** A line generator UGen that moves from a start value to the end value in a given
@@ -1073,7 +1205,7 @@ final case class Line(rate: Rate, start: GE = 0.0f, end: GE = 1.0f, dur: GE = 1.
   * 
   * @see [[de.sciss.synth.ugen.Line$ Line]]
   */
-object XLine {
+object XLine extends Reader[XLine] {
   def kr: XLine = kr()
   
   /** @param start            Starting value ''(init-time only)''
@@ -1095,6 +1227,16 @@ object XLine {
     */
   def ar(start: GE = 1.0f, end: GE = 2.0f, dur: GE = 1.0f, doneAction: GE = doNothing): XLine = 
     new XLine(audio, start, end, dur, doneAction)
+  
+  def read(in: DataInput): XLine = {
+    readArity(in, 5)
+    val _rate       = readRate(in)
+    val _start      = readGE(in)
+    val _end        = readGE(in)
+    val _dur        = readGE(in)
+    val _doneAction = readGE(in)
+    new XLine(_rate, _start, _end, _dur, _doneAction)
+  }
 }
 
 /** An exponential curve generator UGen that moves from a start value to the end
@@ -1147,7 +1289,7 @@ final case class XLine(rate: Rate, start: GE = 1.0f, end: GE = 2.0f, dur: GE = 1
   * @see [[de.sciss.synth.ugen.Fold$ Fold]]
   * @see [[de.sciss.synth.ugen.Clip$ Clip]]
   */
-object Wrap {
+object Wrap extends Reader[Wrap] {
   /** @param in               input signal to constrain
     * @param lo               lower margin of wrapping (inclusive)
     * @param hi               upper margin of wrapping (exclusive)
@@ -1165,6 +1307,15 @@ object Wrap {
     * @param hi               upper margin of wrapping (exclusive)
     */
   def ar(in: GE, lo: GE = 0.0f, hi: GE = 1.0f): Wrap = new Wrap(audio, in, lo, hi)
+  
+  def read(in: DataInput): Wrap = {
+    readArity(in, 4)
+    val _rate = readRate(in)
+    val _in   = readGE(in)
+    val _lo   = readGE(in)
+    val _hi   = readGE(in)
+    new Wrap(_rate, _in, _lo, _hi)
+  }
 }
 
 /** A UGen that constrains a signal to a given range, by "wrapping" values outside
@@ -1213,7 +1364,7 @@ final case class Wrap(rate: Rate, in: GE, lo: GE = 0.0f, hi: GE = 1.0f) extends 
   * @see [[de.sciss.synth.ugen.Wrap$ Wrap]]
   * @see [[de.sciss.synth.ugen.Clip$ Clip]]
   */
-object Fold {
+object Fold extends Reader[Fold] {
   /** @param in               input signal to constrain
     * @param lo               lower margin of folding
     * @param hi               upper margin of folding
@@ -1231,6 +1382,15 @@ object Fold {
     * @param hi               upper margin of folding
     */
   def ar(in: GE, lo: GE = 0.0f, hi: GE = 1.0f): Fold = new Fold(audio, in, lo, hi)
+  
+  def read(in: DataInput): Fold = {
+    readArity(in, 4)
+    val _rate = readRate(in)
+    val _in   = readGE(in)
+    val _lo   = readGE(in)
+    val _hi   = readGE(in)
+    new Fold(_rate, _in, _lo, _hi)
+  }
 }
 
 /** A UGen that constrains a signal to a given range, by "folding" values outside
@@ -1284,7 +1444,7 @@ final case class Fold(rate: Rate, in: GE, lo: GE = 0.0f, hi: GE = 1.0f) extends 
   * @see [[de.sciss.synth.ugen.Wrap$ Wrap]]
   * @see [[de.sciss.synth.ugen.Fold$ Fold]]
   */
-object Clip {
+object Clip extends Reader[Clip] {
   /** @param in               input signal to constrain
     * @param lo               lower margin of clipping
     * @param hi               upper margin of clipping
@@ -1302,6 +1462,15 @@ object Clip {
     * @param hi               upper margin of clipping
     */
   def ar(in: GE, lo: GE = 0.0f, hi: GE = 1.0f): Clip = new Clip(audio, in, lo, hi)
+  
+  def read(in: DataInput): Clip = {
+    readArity(in, 4)
+    val _rate = readRate(in)
+    val _in   = readGE(in)
+    val _lo   = readGE(in)
+    val _hi   = readGE(in)
+    new Clip(_rate, _in, _lo, _hi)
+  }
 }
 
 /** A UGen that constrains a signal to a given range, by limiting values outside
@@ -1360,7 +1529,7 @@ final case class Clip(rate: Rate, in: GE, lo: GE = 0.0f, hi: GE = 1.0f) extends 
   * 
   * @see [[de.sciss.synth.ugen.AmpCompA$ AmpCompA]]
   */
-object AmpComp {
+object AmpComp extends Reader[AmpComp] {
   def ir: AmpComp = ir()
   
   /** @param freq             the frequency in Hertz for which to determine the
@@ -1402,6 +1571,15 @@ object AmpComp {
     */
   def ar(freq: GE = 261.626f, root: GE = 261.626f, expon: GE = 0.3333f): AmpComp = 
     new AmpComp(audio, freq, root, expon)
+  
+  def read(in: DataInput): AmpComp = {
+    readArity(in, 4)
+    val _rate   = readRate(in)
+    val _freq   = readGE(in)
+    val _root   = readGE(in)
+    val _expon  = readGE(in)
+    new AmpComp(_rate, _freq, _root, _expon)
+  }
 }
 
 /** A UGen that produces a psychoacoustic amplitude compensation factor for a given
@@ -1463,7 +1641,7 @@ final case class AmpComp(rate: Rate, freq: GE = 261.626f, root: GE = 261.626f, e
   * 
   * @see [[de.sciss.synth.ugen.AmpComp$ AmpComp]]
   */
-object AmpCompA {
+object AmpCompA extends Reader[AmpCompA] {
   def ir: AmpCompA = ir()
   
   /** @param freq             the frequency in Hertz for which to determine the
@@ -1514,6 +1692,16 @@ object AmpCompA {
     */
   def ar(freq: GE = 1000.0f, root: GE = 0.0f, minAmp: GE = 0.32f, rootAmp: GE = 1.0f): AmpCompA = 
     new AmpCompA(audio, freq, root, minAmp, rootAmp)
+  
+  def read(in: DataInput): AmpCompA = {
+    readArity(in, 5)
+    val _rate     = readRate(in)
+    val _freq     = readGE(in)
+    val _root     = readGE(in)
+    val _minAmp   = readGE(in)
+    val _rootAmp  = readGE(in)
+    new AmpCompA(_rate, _freq, _root, _minAmp, _rootAmp)
+  }
 }
 
 /** A UGen that produces a psychoacoustic amplitude compensation factor for a given
@@ -1566,7 +1754,7 @@ final case class AmpCompA(rate: Rate, freq: GE = 1000.0f, root: GE = 0.0f, minAm
   * @see [[de.sciss.synth.ugen.Clip$ Clip]]
   * @see [[de.sciss.synth.ugen.Schmidt$ Schmidt]]
   */
-object InRange {
+object InRange extends Reader[InRange] {
   /** @param in               input signal to test
     * @param lo               lower margin of test range (inclusive)
     * @param hi               upper margin of test range (inclusive)
@@ -1584,6 +1772,15 @@ object InRange {
     * @param hi               upper margin of test range (inclusive)
     */
   def ar(in: GE, lo: GE = 0.0f, hi: GE = 1.0f): InRange = new InRange(audio, in, lo, hi)
+  
+  def read(in: DataInput): InRange = {
+    readArity(in, 4)
+    val _rate = readRate(in)
+    val _in   = readGE(in)
+    val _lo   = readGE(in)
+    val _hi   = readGE(in)
+    new InRange(_rate, _in, _lo, _hi)
+  }
 }
 
 /** A UGen that tests if a signal is within a given range. If `in >= lo` and
@@ -1624,7 +1821,7 @@ final case class InRange(rate: Rate, in: GE, lo: GE = 0.0f, hi: GE = 1.0f) exten
   * @see [[de.sciss.synth.ugen.InRange$ InRange]]
   * @see [[de.sciss.synth.ugen.Clip$ Clip]]
   */
-object InRect {
+object InRect extends Reader[InRect] {
   /** @param x                "horizontal" signal to test
     * @param y                "vertical" signal to test
     * @param left             lower margin of horizontal test range (inclusive)
@@ -1654,6 +1851,18 @@ object InRect {
     */
   def ar(x: GE, y: GE, left: GE = 0.0f, top: GE = 0.0f, right: GE = 1.0f, bottom: GE = 1.0f): InRect = 
     new InRect(audio, x, y, left, top, right, bottom)
+  
+  def read(in: DataInput): InRect = {
+    readArity(in, 7)
+    val _rate   = readRate(in)
+    val _x      = readGE(in)
+    val _y      = readGE(in)
+    val _left   = readGE(in)
+    val _top    = readGE(in)
+    val _right  = readGE(in)
+    val _bottom = readGE(in)
+    new InRect(_rate, _x, _y, _left, _top, _right, _bottom)
+  }
 }
 
 /** A UGen that tests if two signals lie both within a given ranges. The two input
@@ -1703,7 +1912,7 @@ final case class InRect(rate: Rate, x: GE, y: GE, left: GE = 0.0f, top: GE = 0.0
   * @see [[de.sciss.synth.ugen.LinExp$ LinExp]]
   * @see [[de.sciss.synth.ugen.Clip$ Clip]]
   */
-object LinExp {
+object LinExp extends Reader[LinExp] {
   /** @param in               input signal to convert
     * @param srcLo            lower limit of input range
     * @param srcHi            upper limit of input range
@@ -1730,6 +1939,17 @@ object LinExp {
     */
   def ar(in: GE, srcLo: GE = 0.0f, srcHi: GE = 1.0f, dstLo: GE = 1.0f, dstHi: GE = 2.0f): LinExp = 
     new LinExp(audio, in, srcLo, srcHi, dstLo, dstHi)
+  
+  def read(in: DataInput): LinExp = {
+    readArity(in, 6)
+    val _rate   = readMaybeRate(in)
+    val _in     = readGE(in)
+    val _srcLo  = readGE(in)
+    val _srcHi  = readGE(in)
+    val _dstLo  = readGE(in)
+    val _dstHi  = readGE(in)
+    new LinExp(_rate, _in, _srcLo, _srcHi, _dstLo, _dstHi)
+  }
 }
 
 /** A UGen which maps a linear range to an exponential range. The equivalent
@@ -1862,7 +2082,7 @@ final case class LinExp(rate: MaybeRate, in: GE, srcLo: GE = 0.0f, srcHi: GE = 1
   * @see [[de.sciss.synth.ugen.Linen$ Linen]]
   * @see [[de.sciss.synth.ugen.Decay$ Decay]]
   */
-object EnvGen {
+object EnvGen extends Reader[EnvGen] {
   /** @param envelope         the description of the envelope break-points. Typically
     *                         you pass an instance of `Env` which will then
     *                         automatically expand to the correct format.
@@ -1906,6 +2126,18 @@ object EnvGen {
     */
   def ar(envelope: GE, gate: GE = 1, levelScale: GE = 1.0f, levelBias: GE = 0.0f, timeScale: GE = 1.0f, doneAction: GE = doNothing): EnvGen = 
     new EnvGen(audio, envelope, gate, levelScale, levelBias, timeScale, doneAction)
+  
+  def read(in: DataInput): EnvGen = {
+    readArity(in, 7)
+    val _rate       = readRate(in)
+    val _envelope   = readGE(in)
+    val _gate       = readGE(in)
+    val _levelScale = readGE(in)
+    val _levelBias  = readGE(in)
+    val _timeScale  = readGE(in)
+    val _doneAction = readGE(in)
+    new EnvGen(_rate, _envelope, _gate, _levelScale, _levelBias, _timeScale, _doneAction)
+  }
 }
 
 /** An envelope generator UGen. It uses a break point description in its `envelope`
@@ -2008,7 +2240,7 @@ final case class EnvGen(rate: Rate, envelope: GE, gate: GE = 1, levelScale: GE =
   * 
   * @see [[de.sciss.synth.ugen.EnvGen$ EnvGen]]
   */
-object Linen {
+object Linen extends Reader[Linen] {
   def kr: Linen = kr()
   
   /** @param gate             triggers the envelope and holds it open while greater
@@ -2022,6 +2254,17 @@ object Linen {
     */
   def kr(gate: GE = 1, attack: GE = 0.01f, sustain: GE = 1.0f, release: GE = 1.0f, doneAction: GE = doNothing): Linen = 
     new Linen(control, gate, attack, sustain, release, doneAction)
+  
+  def read(in: DataInput): Linen = {
+    readArity(in, 6)
+    val _rate       = readRate(in)
+    val _gate       = readGE(in)
+    val _attack     = readGE(in)
+    val _sustain    = readGE(in)
+    val _release    = readGE(in)
+    val _doneAction = readGE(in)
+    new Linen(_rate, _gate, _attack, _sustain, _release, _doneAction)
+  }
 }
 
 /** A linear ASR-type envelope generator UGen.
@@ -2083,7 +2326,7 @@ final case class Linen(rate: Rate, gate: GE = 1, attack: GE = 0.01f, sustain: GE
   * @see [[de.sciss.synth.ugen.IEnv$ IEnv]]
   * @see [[de.sciss.synth.ugen.EnvGen$ EnvGen]]
   */
-object IEnvGen {
+object IEnvGen extends Reader[IEnvGen] {
   /** @param envelope         the description of the envelope break-points. Typically
     *                         you pass an instance of `IEnv` which will then
     *                         automatically expand to the correct format.
@@ -2097,6 +2340,14 @@ object IEnvGen {
     * @param index            index point into the envelope, given as time in seconds
     */
   def ar(envelope: GE, index: GE): IEnvGen = new IEnvGen(audio, envelope, index)
+  
+  def read(in: DataInput): IEnvGen = {
+    readArity(in, 3)
+    val _rate     = readRate(in)
+    val _envelope = readGE(in)
+    val _index    = readGE(in)
+    new IEnvGen(_rate, _envelope, _index)
+  }
 }
 
 /** Envelope generator UGen with random access index pointer into the break-point

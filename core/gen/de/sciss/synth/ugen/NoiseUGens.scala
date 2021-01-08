@@ -23,7 +23,7 @@ import UGenSource._
   * @see [[de.sciss.synth.ugen.LFNoise0$ LFNoise0]]
   * @see [[de.sciss.synth.ugen.Dust$ Dust]]
   */
-object WhiteNoise {
+object WhiteNoise extends Reader[WhiteNoise] {
   def kr: WhiteNoise = kr()
   
   /** @param mul              Not actually a UGen input, this argument produces a
@@ -41,6 +41,13 @@ object WhiteNoise {
     *                         of multiple independent noise generators.
     */
   def ar(mul: GE = 1.0f): WhiteNoise = new WhiteNoise(audio, mul)
+  
+  def read(in: DataInput): WhiteNoise = {
+    readArity(in, 2)
+    val _rate = readRate(in)
+    val _mul  = readGE(in)
+    new WhiteNoise(_rate, _mul)
+  }
 }
 
 /** A noise generator UGens whose spectrum has equal power at all frequencies.
@@ -90,7 +97,7 @@ final case class WhiteNoise(rate: Rate, mul: GE = 1.0f) extends UGenSource.Singl
   * @see [[de.sciss.synth.ugen.LFNoise0$ LFNoise0]]
   * @see [[de.sciss.synth.ugen.Dust$ Dust]]
   */
-object GrayNoise {
+object GrayNoise extends Reader[GrayNoise] {
   def kr: GrayNoise = kr()
   
   /** @param mul              Not actually a UGen input, this argument produces a
@@ -108,6 +115,13 @@ object GrayNoise {
     *                         of multiple independent noise generators.
     */
   def ar(mul: GE = 1.0f): GrayNoise = new GrayNoise(audio, mul)
+  
+  def read(in: DataInput): GrayNoise = {
+    readArity(in, 2)
+    val _rate = readRate(in)
+    val _mul  = readGE(in)
+    new GrayNoise(_rate, _mul)
+  }
 }
 
 /** A noise generator UGen which results from flipping random bits in a word. The
@@ -158,7 +172,7 @@ final case class GrayNoise(rate: Rate, mul: GE = 1.0f) extends UGenSource.Single
   * @see [[de.sciss.synth.ugen.LFNoise0$ LFNoise0]]
   * @see [[de.sciss.synth.ugen.Dust$ Dust]]
   */
-object ClipNoise {
+object ClipNoise extends Reader[ClipNoise] {
   def kr: ClipNoise = kr()
   
   /** @param mul              Not actually a UGen input, this argument produces a
@@ -176,6 +190,13 @@ object ClipNoise {
     *                         of multiple independent noise generators.
     */
   def ar(mul: GE = 1.0f): ClipNoise = new ClipNoise(audio, mul)
+  
+  def read(in: DataInput): ClipNoise = {
+    readArity(in, 2)
+    val _rate = readRate(in)
+    val _mul  = readGE(in)
+    new ClipNoise(_rate, _mul)
+  }
 }
 
 /** A noise generator UGen whose values are either `-1` or `+1` (before being
@@ -224,7 +245,7 @@ final case class ClipNoise(rate: Rate, mul: GE = 1.0f) extends UGenSource.Single
   * @see [[de.sciss.synth.ugen.ClipNoise$ ClipNoise]]
   * @see [[de.sciss.synth.ugen.RandSeed$ RandSeed]]
   */
-object PinkNoise {
+object PinkNoise extends Reader[PinkNoise] {
   def kr: PinkNoise = kr()
   
   /** @param mul              Not actually a UGen input, this argument produces a
@@ -242,6 +263,13 @@ object PinkNoise {
     *                         of multiple independent noise generators.
     */
   def ar(mul: GE = 1.0f): PinkNoise = new PinkNoise(audio, mul)
+  
+  def read(in: DataInput): PinkNoise = {
+    readArity(in, 2)
+    val _rate = readRate(in)
+    val _mul  = readGE(in)
+    new PinkNoise(_rate, _mul)
+  }
 }
 
 /** A noise generator UGen whose spectrum falls off in power by 3 dB per octave.
@@ -287,7 +315,7 @@ final case class PinkNoise(rate: Rate, mul: GE = 1.0f) extends UGenSource.Single
   * @see [[de.sciss.synth.ugen.ClipNoise$ ClipNoise]]
   * @see [[de.sciss.synth.ugen.RandSeed$ RandSeed]]
   */
-object BrownNoise {
+object BrownNoise extends Reader[BrownNoise] {
   def kr: BrownNoise = kr()
   
   /** @param mul              Not actually a UGen input, this argument produces a
@@ -305,6 +333,13 @@ object BrownNoise {
     *                         of multiple independent noise generators.
     */
   def ar(mul: GE = 1.0f): BrownNoise = new BrownNoise(audio, mul)
+  
+  def read(in: DataInput): BrownNoise = {
+    readArity(in, 2)
+    val _rate = readRate(in)
+    val _mul  = readGE(in)
+    new BrownNoise(_rate, _mul)
+  }
 }
 
 /** A noise generator UGen whose spectrum falls off in power by 6 dB per octave.
@@ -351,7 +386,7 @@ final case class BrownNoise(rate: Rate, mul: GE = 1.0f) extends UGenSource.Singl
   * @see [[de.sciss.synth.ugen.GrayNoise$ GrayNoise]]
   * @see [[de.sciss.synth.ugen.CoinGate$ CoinGate]]
   */
-object Dust {
+object Dust extends Reader[Dust] {
   def kr: Dust = kr()
   
   /** @param density          the average number of impulses per second
@@ -363,6 +398,13 @@ object Dust {
   /** @param density          the average number of impulses per second
     */
   def ar(density: GE = 1.0f): Dust = new Dust(audio, density)
+  
+  def read(in: DataInput): Dust = {
+    readArity(in, 2)
+    val _rate     = readRate(in)
+    val _density  = readGE(in)
+    new Dust(_rate, _density)
+  }
 }
 
 /** A UGen generating random impulses with values ranging from `0` to `+1` . The
@@ -405,7 +447,7 @@ final case class Dust(rate: Rate, density: GE = 1.0f) extends UGenSource.SingleO
   * @see [[de.sciss.synth.ugen.ClipNoise$ ClipNoise]]
   * @see [[de.sciss.synth.ugen.CoinGate$ CoinGate]]
   */
-object Dust2 {
+object Dust2 extends Reader[Dust2] {
   def kr: Dust2 = kr()
   
   /** @param density          the average number of impulses per second
@@ -417,6 +459,13 @@ object Dust2 {
   /** @param density          the average number of impulses per second
     */
   def ar(density: GE = 1.0f): Dust2 = new Dust2(audio, density)
+  
+  def read(in: DataInput): Dust2 = {
+    readArity(in, 2)
+    val _rate     = readRate(in)
+    val _density  = readGE(in)
+    new Dust2(_rate, _density)
+  }
 }
 
 /** A UGen generating random impulses with values ranging from `-1` to `+1` . The
@@ -455,7 +504,7 @@ final case class Dust2(rate: Rate, density: GE = 1.0f) extends UGenSource.Single
   * @see [[de.sciss.synth.ugen.LatoocarfianN$ LatoocarfianN]]
   * @see [[de.sciss.synth.ugen.Logistic$ Logistic]]
   */
-object Crackle {
+object Crackle extends Reader[Crackle] {
   def kr: Crackle = kr()
   
   /** @param chaos            A parameter of the chaotic function with useful values
@@ -475,6 +524,13 @@ object Crackle {
     *                         crackling sound appears with a value of `1.33` .
     */
   def ar(chaos: GE = 1.5f): Crackle = new Crackle(audio, chaos)
+  
+  def read(in: DataInput): Crackle = {
+    readArity(in, 2)
+    val _rate   = readRate(in)
+    val _chaos  = readGE(in)
+    new Crackle(_rate, _chaos)
+  }
 }
 
 /** A noise generator UGen based on a chaotic function. Output values lie between
@@ -512,7 +568,7 @@ final case class Crackle(rate: Rate, chaos: GE = 1.5f) extends UGenSource.Single
   * @see [[de.sciss.synth.ugen.Crackle$ Crackle]]
   * @see [[de.sciss.synth.ugen.LatoocarfianN$ LatoocarfianN]]
   */
-object Logistic {
+object Logistic extends Reader[Logistic] {
   def kr: Logistic = kr()
   
   /** @param chaos            a parameter of the chaotic function with useful values
@@ -538,6 +594,15 @@ object Logistic {
     */
   def ar(chaos: GE = 3.0f, freq: GE = 1000.0f, init: GE = 0.5f): Logistic = 
     new Logistic(audio, chaos, freq, init)
+  
+  def read(in: DataInput): Logistic = {
+    readArity(in, 4)
+    val _rate   = readRate(in)
+    val _chaos  = readGE(in)
+    val _freq   = readGE(in)
+    val _init   = readGE(in)
+    new Logistic(_rate, _chaos, _freq, _init)
+  }
 }
 
 /** A noise generator UGen based on the logistic map. Its formula is
@@ -588,7 +653,7 @@ final case class Logistic(rate: Rate, chaos: GE = 3.0f, freq: GE = 1000.0f, init
   * }
   * }}}
   */
-object Hasher {
+object Hasher extends Reader[Hasher] {
   /** @param in               input to calculate the hash function for
     */
   def kr(in: GE): Hasher = new Hasher(control, in)
@@ -596,6 +661,13 @@ object Hasher {
   /** @param in               input to calculate the hash function for
     */
   def ar(in: GE): Hasher = new Hasher(audio, in)
+  
+  def read(in: DataInput): Hasher = {
+    readArity(in, 2)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    new Hasher(_rate, _in)
+  }
 }
 
 /** A UGen that returns a unique output value from -1 to +1 for each input value
@@ -628,7 +700,7 @@ final case class Hasher(rate: MaybeRate, in: GE) extends UGenSource.SingleOut {
   * }
   * }}}
   */
-object MantissaMask {
+object MantissaMask extends Reader[MantissaMask] {
   /** @param in               input signal to quantize
     * @param bits             The number of mantissa bits to preserve, from 0 to 23.
     */
@@ -638,6 +710,14 @@ object MantissaMask {
     * @param bits             The number of mantissa bits to preserve, from 0 to 23.
     */
   def ar(in: GE, bits: GE = 3): MantissaMask = new MantissaMask(audio, in, bits)
+  
+  def read(in: DataInput): MantissaMask = {
+    readArity(in, 3)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    val _bits = readGE(in)
+    new MantissaMask(_rate, _in, _bits)
+  }
 }
 
 /** A UGen that masks off bits in the mantissa of the floating point sample value.
@@ -685,7 +765,7 @@ final case class MantissaMask(rate: MaybeRate, in: GE, bits: GE = 3) extends UGe
   * @see [[de.sciss.synth.ugen.LFNoise0$ LFNoise0]]
   * @see [[de.sciss.synth.ugen.LFDClipNoise$ LFDClipNoise]]
   */
-object LFClipNoise {
+object LFClipNoise extends Reader[LFClipNoise] {
   def kr: LFClipNoise = kr()
   
   /** @param freq             rate at which to generate random values.
@@ -697,6 +777,13 @@ object LFClipNoise {
   /** @param freq             rate at which to generate random values.
     */
   def ar(freq: GE = 500.0f): LFClipNoise = new LFClipNoise(audio, freq)
+  
+  def read(in: DataInput): LFClipNoise = {
+    readArity(in, 2)
+    val _rate = readRate(in)
+    val _freq = readGE(in)
+    new LFClipNoise(_rate, _freq)
+  }
 }
 
 /** A UGen that randomly generates the values -1 or +1 at a rate given by the
@@ -740,7 +827,7 @@ final case class LFClipNoise(rate: Rate, freq: GE = 500.0f) extends UGenSource.S
   * @see [[de.sciss.synth.ugen.Dust$ Dust]]
   * @see [[de.sciss.synth.ugen.RandSeed$ RandSeed]]
   */
-object LFNoise0 {
+object LFNoise0 extends Reader[LFNoise0] {
   def kr: LFNoise0 = kr()
   
   /** @param freq             rate at which to generate random values.
@@ -752,6 +839,13 @@ object LFNoise0 {
   /** @param freq             rate at which to generate random values.
     */
   def ar(freq: GE = 500.0f): LFNoise0 = new LFNoise0(audio, freq)
+  
+  def read(in: DataInput): LFNoise0 = {
+    readArity(in, 2)
+    val _rate = readRate(in)
+    val _freq = readGE(in)
+    new LFNoise0(_rate, _freq)
+  }
 }
 
 /** A step noise UGen. It generates abruptly changing random values between `-1`
@@ -799,7 +893,7 @@ final case class LFNoise0(rate: Rate, freq: GE = 500.0f) extends UGenSource.Sing
   * @see [[de.sciss.synth.ugen.LFNoise2$ LFNoise2]]
   * @see [[de.sciss.synth.ugen.Ramp$ Ramp]]
   */
-object LFNoise1 {
+object LFNoise1 extends Reader[LFNoise1] {
   def kr: LFNoise1 = kr()
   
   /** @param freq             rate at which to generate new breakpoints.
@@ -811,6 +905,13 @@ object LFNoise1 {
   /** @param freq             rate at which to generate new breakpoints.
     */
   def ar(freq: GE = 500.0f): LFNoise1 = new LFNoise1(audio, freq)
+  
+  def read(in: DataInput): LFNoise1 = {
+    readArity(in, 2)
+    val _rate = readRate(in)
+    val _freq = readGE(in)
+    new LFNoise1(_rate, _freq)
+  }
 }
 
 /** A ramp noise UGen. It generates line segments whose start and end points are
@@ -857,7 +958,7 @@ final case class LFNoise1(rate: Rate, freq: GE = 500.0f) extends UGenSource.Sing
   * @see [[de.sciss.synth.ugen.LFNoise0$ LFNoise0]]
   * @see [[de.sciss.synth.ugen.LFNoise1$ LFNoise1]]
   */
-object LFNoise2 {
+object LFNoise2 extends Reader[LFNoise2] {
   def kr: LFNoise2 = kr()
   
   /** @param freq             rate at which to generate new breakpoints.
@@ -869,6 +970,13 @@ object LFNoise2 {
   /** @param freq             rate at which to generate new breakpoints.
     */
   def ar(freq: GE = 500.0f): LFNoise2 = new LFNoise2(audio, freq)
+  
+  def read(in: DataInput): LFNoise2 = {
+    readArity(in, 2)
+    val _rate = readRate(in)
+    val _freq = readGE(in)
+    new LFNoise2(_rate, _freq)
+  }
 }
 
 /** A quadratically interpolating noise UGen. This interpolation happens between
@@ -912,7 +1020,14 @@ final case class LFNoise2(rate: Rate, freq: GE = 500.0f) extends UGenSource.Sing
   * @see [[de.sciss.synth.ugen.ExpRand$ ExpRand]]
   * @see [[de.sciss.synth.ugen.RandSeed$ RandSeed]]
   */
-object Rand
+object Rand extends Reader[Rand] {
+  def read(in: DataInput): Rand = {
+    readArity(in, 2)
+    val _lo = readGE(in)
+    val _hi = readGE(in)
+    new Rand(_lo, _hi)
+  }
+}
 
 /** A scalar UGen that generates a single random decimal value, using a uniform
   * distribution from `lo` to `hi` .
@@ -951,7 +1066,14 @@ final case class Rand(lo: GE = 0.0f, hi: GE = 1.0f)
   * @see [[de.sciss.synth.ugen.ExpRand$ ExpRand]]
   * @see [[de.sciss.synth.ugen.RandSeed$ RandSeed]]
   */
-object IRand
+object IRand extends Reader[IRand] {
+  def read(in: DataInput): IRand = {
+    readArity(in, 2)
+    val _lo = readGE(in)
+    val _hi = readGE(in)
+    new IRand(_lo, _hi)
+  }
+}
 
 /** A scalar UGen that generates a single random integer value, using a uniform
   * distribution from `lo` to `hi` .
@@ -994,7 +1116,7 @@ final case class IRand(lo: GE = 0, hi: GE = 127)
   * @see [[de.sciss.synth.ugen.ExpRand$ ExpRand]]
   * @see [[de.sciss.synth.ugen.RandSeed$ RandSeed]]
   */
-object TRand {
+object TRand extends Reader[TRand] {
   /** @param lo               lower limit of the output range
     * @param hi               upper limit of the output range
     * @param trig             signal to trigger new random number
@@ -1006,6 +1128,15 @@ object TRand {
     * @param trig             signal to trigger new random number
     */
   def ar(lo: GE = 0.0f, hi: GE = 1.0f, trig: GE): TRand = new TRand(audio, lo, hi, trig)
+  
+  def read(in: DataInput): TRand = {
+    readArity(in, 4)
+    val _rate = readRate(in)
+    val _lo   = readGE(in)
+    val _hi   = readGE(in)
+    val _trig = readGE(in)
+    new TRand(_rate, _lo, _hi, _trig)
+  }
 }
 
 /** A UGen that generates a new random decimal value each time it is triggered,
@@ -1057,7 +1188,7 @@ final case class TRand(rate: Rate, lo: GE = 0.0f, hi: GE = 1.0f, trig: GE)
   * @see [[de.sciss.synth.ugen.ExpRand$ ExpRand]]
   * @see [[de.sciss.synth.ugen.RandSeed$ RandSeed]]
   */
-object TExpRand {
+object TExpRand extends Reader[TExpRand] {
   /** @param lo               lower limit of the output range
     * @param hi               upper limit of the output range
     * @param trig             signal to trigger new random number
@@ -1069,6 +1200,15 @@ object TExpRand {
     * @param trig             signal to trigger new random number
     */
   def ar(lo: GE = 0.01f, hi: GE = 1.0f, trig: GE): TExpRand = new TExpRand(audio, lo, hi, trig)
+  
+  def read(in: DataInput): TExpRand = {
+    readArity(in, 4)
+    val _rate = readRate(in)
+    val _lo   = readGE(in)
+    val _hi   = readGE(in)
+    val _trig = readGE(in)
+    new TExpRand(_rate, _lo, _hi, _trig)
+  }
 }
 
 /** A UGen that generates a new random decimal value each time it is triggered,
@@ -1118,7 +1258,7 @@ final case class TExpRand(rate: Rate, lo: GE = 0.01f, hi: GE = 1.0f, trig: GE)
   * @see [[de.sciss.synth.ugen.IRand$ IRand]]
   * @see [[de.sciss.synth.ugen.TRand$ TRand]]
   */
-object TIRand {
+object TIRand extends Reader[TIRand] {
   /** @param lo               lower limit of the output range
     * @param hi               upper limit of the output range (inclusive)
     * @param trig             signal to trigger new random number
@@ -1130,6 +1270,15 @@ object TIRand {
     * @param trig             signal to trigger new random number
     */
   def ar(lo: GE = 0, hi: GE = 127, trig: GE): TIRand = new TIRand(audio, lo, hi, trig)
+  
+  def read(in: DataInput): TIRand = {
+    readArity(in, 4)
+    val _rate = readRate(in)
+    val _lo   = readGE(in)
+    val _hi   = readGE(in)
+    val _trig = readGE(in)
+    new TIRand(_rate, _lo, _hi, _trig)
+  }
 }
 
 /** A UGen that outputs integer random numbers when triggered. The values have a
@@ -1177,7 +1326,15 @@ final case class TIRand(rate: Rate, lo: GE = 0, hi: GE = 127, trig: GE)
   * @see [[de.sciss.synth.ugen.ExpRand$ ExpRand]]
   * @see [[de.sciss.synth.ugen.RandSeed$ RandSeed]]
   */
-object NRand
+object NRand extends Reader[NRand] {
+  def read(in: DataInput): NRand = {
+    readArity(in, 3)
+    val _lo = readGE(in)
+    val _hi = readGE(in)
+    val _n  = readGE(in)
+    new NRand(_lo, _hi, _n)
+  }
+}
 
 /** A scalar UGen that generates a single random decimal value, averaging a given
   * number of samples from a uniform distribution between `lo` and `hi` .
@@ -1228,7 +1385,15 @@ final case class NRand(lo: GE = 0.0f, hi: GE = 1.0f, n: GE = 2)
   * @see [[de.sciss.synth.ugen.NRand$ NRand]]
   * @see [[de.sciss.synth.ugen.RandSeed$ RandSeed]]
   */
-object LinRand
+object LinRand extends Reader[LinRand] {
+  def read(in: DataInput): LinRand = {
+    readArity(in, 3)
+    val _lo     = readGE(in)
+    val _hi     = readGE(in)
+    val _minMax = readGE(in)
+    new LinRand(_lo, _hi, _minMax)
+  }
+}
 
 /** A scalar UGen that generates a single random decimal value between `lo` and
   * `hi` with a selectable skew towards either end.
@@ -1274,7 +1439,14 @@ final case class LinRand(lo: GE = 0.0f, hi: GE = 1.0f, minMax: GE = 0)
   * @see [[de.sciss.synth.ugen.TExpRand$ TExpRand]]
   * @see [[de.sciss.synth.ugen.RandSeed$ RandSeed]]
   */
-object ExpRand
+object ExpRand extends Reader[ExpRand] {
+  def read(in: DataInput): ExpRand = {
+    readArity(in, 2)
+    val _lo = readGE(in)
+    val _hi = readGE(in)
+    new ExpRand(_lo, _hi)
+  }
+}
 
 /** A scalar UGen that generates a single random decimal value, using an
   * exponential distribution from `lo` to `hi` . Values `lo` and `hi` must both have
@@ -1314,7 +1486,7 @@ final case class ExpRand(lo: GE = 0.01f, hi: GE = 1.0f)
   * @see [[de.sciss.synth.ugen.PulseDivider$ PulseDivider]]
   * @see [[de.sciss.synth.ugen.TRand$ TRand]]
   */
-object CoinGate {
+object CoinGate extends Reader[CoinGate] {
   /** @param in               the input triggers to filter
     * @param prob             the probability between zero (no trigger passed) and 1
     *                         (all triggers passed)
@@ -1326,6 +1498,14 @@ object CoinGate {
     *                         (all triggers passed)
     */
   def ar(in: GE, prob: GE = 0.5f): CoinGate = new CoinGate(audio, in, prob)
+  
+  def read(in: DataInput): CoinGate = {
+    readArity(in, 3)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    val _prob = readGE(in)
+    new CoinGate(_rate, _in, _prob)
+  }
 }
 
 /** A UGen that randomly filters an input trigger signal. When a trigger arrives,
@@ -1374,7 +1554,7 @@ final case class CoinGate(rate: MaybeRate, in: GE, prob: GE = 0.5f)
   * @see [[de.sciss.synth.ugen.IRand$ IRand]]
   * @see [[de.sciss.synth.ugen.WhiteNoise$ WhiteNoise]]
   */
-object RandSeed {
+object RandSeed extends Reader[RandSeed] {
   def ir: RandSeed = ir()
   
   /** @param trig             trigger that causes the seed to be set
@@ -1390,6 +1570,14 @@ object RandSeed {
     *                         moment the trigger arrives.
     */
   def kr(trig: GE = 1, seed: GE = 56789): RandSeed = new RandSeed(control, trig, seed)
+  
+  def read(in: DataInput): RandSeed = {
+    readArity(in, 3)
+    val _rate = readRate(in)
+    val _trig = readGE(in)
+    val _seed = readGE(in)
+    new RandSeed(_rate, _trig, _seed)
+  }
 }
 
 /** A UGen that resets the seed of the synth's random number generator upon
@@ -1441,7 +1629,7 @@ final case class RandSeed(rate: Rate, trig: GE = 1, seed: GE = 56789)
   * @see [[de.sciss.synth.ugen.IRand$ IRand]]
   * @see [[de.sciss.synth.ugen.WhiteNoise$ WhiteNoise]]
   */
-object RandID {
+object RandID extends Reader[RandID] {
   def ir: RandID = ir()
   
   /** @param id               the random number generator identifier from zero until
@@ -1457,6 +1645,13 @@ object RandID {
     *                         server switch `-r` (default: 64)
     */
   def kr(id: GE = 0): RandID = new RandID(control, id)
+  
+  def read(in: DataInput): RandID = {
+    readArity(in, 2)
+    val _rate = readRate(in)
+    val _id   = readGE(in)
+    new RandID(_rate, _id)
+  }
 }
 
 /** A UGen that determines which random number generator is used for the enclosing

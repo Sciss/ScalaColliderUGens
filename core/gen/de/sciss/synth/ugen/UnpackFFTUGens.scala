@@ -3,7 +3,16 @@ package de.sciss.synth
 package ugen
 
 import UGenSource._
-object Unpack1FFT
+object Unpack1FFT extends Reader[Unpack1FFT] {
+  def read(in: DataInput): Unpack1FFT = {
+    readArity(in, 4)
+    val _chain    = readGE(in)
+    val _fftSize  = readGE(in)
+    val _bin      = readGE(in)
+    val _which    = readGE(in)
+    new Unpack1FFT(_chain, _fftSize, _bin, _which)
+  }
+}
 final case class Unpack1FFT(chain: GE, fftSize: GE, bin: GE, which: GE = 0)
   extends UGenSource.SingleOut with DemandRated with IsIndividual {
 
@@ -45,7 +54,18 @@ final case class Unpack1FFT(chain: GE, fftSize: GE, bin: GE, which: GE = 0)
   * @see [[de.sciss.synth.ugen.IFFT$ IFFT]]
   * @see [[de.sciss.synth.ugen.SetBuf$ SetBuf]]
   */
-object PackFFT
+object PackFFT extends Reader[PackFFT] {
+  def read(in: DataInput): PackFFT = {
+    readArity(in, 6)
+    val _chain    = readGE(in)
+    val _fftSize  = readGE(in)
+    val _values   = readGE(in)
+    val _from     = readGE(in)
+    val _to       = readGE(in)
+    val _clear    = readGE(in)
+    new PackFFT(_chain, _fftSize, _values, _from, _to, _clear)
+  }
+}
 
 /** A UGen that writes a complex input signal into an FFT buffer. The input is a
   * sequence of interleaved magnitudes and phases. It is written to an FFT buffer

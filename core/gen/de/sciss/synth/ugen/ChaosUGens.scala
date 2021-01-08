@@ -27,7 +27,7 @@ import UGenSource._
   * 
   * @see [[de.sciss.synth.ugen.CuspL$ CuspL]]
   */
-object CuspN {
+object CuspN extends Reader[CuspN] {
   def ar: CuspN = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -37,6 +37,16 @@ object CuspN {
     */
   def ar(freq: GE = Nyquist(), a: GE = 1.0f, b: GE = 1.9f, xi: GE = 0.0f): CuspN = 
     new CuspN(audio, freq, a, b, xi)
+  
+  def read(in: DataInput): CuspN = {
+    readArity(in, 5)
+    val _rate = readRate(in)
+    val _freq = readGE(in)
+    val _a    = readGE(in)
+    val _b    = readGE(in)
+    val _xi   = readGE(in)
+    new CuspN(_rate, _freq, _a, _b, _xi)
+  }
 }
 
 /** A non-interpolating sound generator based on the difference equation:
@@ -84,7 +94,7 @@ final case class CuspN(rate: Rate, freq: GE = Nyquist(), a: GE = 1.0f, b: GE = 1
   * 
   * @see [[de.sciss.synth.ugen.CuspN$ CuspN]]
   */
-object CuspL {
+object CuspL extends Reader[CuspL] {
   def ar: CuspL = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -94,6 +104,16 @@ object CuspL {
     */
   def ar(freq: GE = Nyquist(), a: GE = 1.0f, b: GE = 1.9f, xi: GE = 0.0f): CuspL = 
     new CuspL(audio, freq, a, b, xi)
+  
+  def read(in: DataInput): CuspL = {
+    readArity(in, 5)
+    val _rate = readRate(in)
+    val _freq = readGE(in)
+    val _a    = readGE(in)
+    val _b    = readGE(in)
+    val _xi   = readGE(in)
+    new CuspL(_rate, _freq, _a, _b, _xi)
+  }
 }
 
 /** A linear-interpolating sound generator based on the difference equation:
@@ -160,7 +180,7 @@ final case class CuspL(rate: Rate, freq: GE = Nyquist(), a: GE = 1.0f, b: GE = 1
   * @see [[de.sciss.synth.ugen.FBSineL$ FBSineL]]
   * @see [[de.sciss.synth.ugen.FBSineC$ FBSineC]]
   */
-object FBSineN {
+object FBSineN extends Reader[FBSineN] {
   def ar: FBSineN = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -173,6 +193,19 @@ object FBSineN {
     */
   def ar(freq: GE = Nyquist(), im: GE = 1.0f, fb: GE = 0.1f, a: GE = 1.1f, c: GE = 0.5f, xi: GE = 0.1f, yi: GE = 0.1f): FBSineN = 
     new FBSineN(audio, freq, im, fb, a, c, xi, yi)
+  
+  def read(in: DataInput): FBSineN = {
+    readArity(in, 8)
+    val _rate = readRate(in)
+    val _freq = readGE(in)
+    val _im   = readGE(in)
+    val _fb   = readGE(in)
+    val _a    = readGE(in)
+    val _c    = readGE(in)
+    val _xi   = readGE(in)
+    val _yi   = readGE(in)
+    new FBSineN(_rate, _freq, _im, _fb, _a, _c, _xi, _yi)
+  }
 }
 
 /** A non-interpolating sound generator based on the difference equations:
@@ -245,7 +278,7 @@ final case class FBSineN(rate: Rate, freq: GE = Nyquist(), im: GE = 1.0f, fb: GE
   * @see [[de.sciss.synth.ugen.FBSineN$ FBSineN]]
   * @see [[de.sciss.synth.ugen.FBSineC$ FBSineC]]
   */
-object FBSineL {
+object FBSineL extends Reader[FBSineL] {
   def ar: FBSineL = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -258,6 +291,19 @@ object FBSineL {
     */
   def ar(freq: GE = Nyquist(), im: GE = 1.0f, fb: GE = 0.1f, a: GE = 1.1f, c: GE = 0.5f, xi: GE = 0.1f, yi: GE = 0.1f): FBSineL = 
     new FBSineL(audio, freq, im, fb, a, c, xi, yi)
+  
+  def read(in: DataInput): FBSineL = {
+    readArity(in, 8)
+    val _rate = readRate(in)
+    val _freq = readGE(in)
+    val _im   = readGE(in)
+    val _fb   = readGE(in)
+    val _a    = readGE(in)
+    val _c    = readGE(in)
+    val _xi   = readGE(in)
+    val _yi   = readGE(in)
+    new FBSineL(_rate, _freq, _im, _fb, _a, _c, _xi, _yi)
+  }
 }
 
 /** A non-interpolating sound generator based on the difference equations:
@@ -330,7 +376,7 @@ final case class FBSineL(rate: Rate, freq: GE = Nyquist(), im: GE = 1.0f, fb: GE
   * @see [[de.sciss.synth.ugen.FBSineN$ FBSineN]]
   * @see [[de.sciss.synth.ugen.FBSineL$ FBSineL]]
   */
-object FBSineC {
+object FBSineC extends Reader[FBSineC] {
   def ar: FBSineC = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -343,6 +389,19 @@ object FBSineC {
     */
   def ar(freq: GE = Nyquist(), im: GE = 1.0f, fb: GE = 0.1f, a: GE = 1.1f, c: GE = 0.5f, xi: GE = 0.1f, yi: GE = 0.1f): FBSineC = 
     new FBSineC(audio, freq, im, fb, a, c, xi, yi)
+  
+  def read(in: DataInput): FBSineC = {
+    readArity(in, 8)
+    val _rate = readRate(in)
+    val _freq = readGE(in)
+    val _im   = readGE(in)
+    val _fb   = readGE(in)
+    val _a    = readGE(in)
+    val _c    = readGE(in)
+    val _xi   = readGE(in)
+    val _yi   = readGE(in)
+    new FBSineC(_rate, _freq, _im, _fb, _a, _c, _xi, _yi)
+  }
 }
 
 /** A non-interpolating sound generator based on the difference equations:
@@ -402,13 +461,22 @@ final case class FBSineC(rate: Rate, freq: GE = Nyquist(), im: GE = 1.0f, fb: GE
   * 
   * @see [[de.sciss.synth.ugen.GbmanL$ GbmanL]]
   */
-object GbmanN {
+object GbmanN extends Reader[GbmanN] {
   def ar: GbmanN = ar()
   
   /** @param freq             Iteration frequency in Hertz
     * @param yi               Initial value of y
     */
   def ar(freq: GE = Nyquist(), xi: GE = 1.2f, yi: GE = 2.1f): GbmanN = new GbmanN(audio, freq, xi, yi)
+  
+  def read(in: DataInput): GbmanN = {
+    readArity(in, 4)
+    val _rate = readRate(in)
+    val _freq = readGE(in)
+    val _xi   = readGE(in)
+    val _yi   = readGE(in)
+    new GbmanN(_rate, _freq, _xi, _yi)
+  }
 }
 
 /** A non-interpolating sound generator based on the difference equations:
@@ -431,13 +499,22 @@ final case class GbmanN(rate: Rate, freq: GE = Nyquist(), xi: GE = 1.2f, yi: GE 
   
   protected def makeUGen(_args: Vec[UGenIn]): UGenInLike = UGen.SingleOut(name, rate, _args)
 }
-object GbmanL {
+object GbmanL extends Reader[GbmanL] {
   def ar: GbmanL = ar()
   
   /** @param freq             Iteration frequency in Hertz
     * @param yi               Initial value of y
     */
   def ar(freq: GE = Nyquist(), xi: GE = 1.2f, yi: GE = 2.1f): GbmanL = new GbmanL(audio, freq, xi, yi)
+  
+  def read(in: DataInput): GbmanL = {
+    readArity(in, 4)
+    val _rate = readRate(in)
+    val _freq = readGE(in)
+    val _xi   = readGE(in)
+    val _yi   = readGE(in)
+    new GbmanL(_rate, _freq, _xi, _yi)
+  }
 }
 
 /** @param freq             Iteration frequency in Hertz
@@ -486,7 +563,7 @@ final case class GbmanL(rate: Rate, freq: GE = Nyquist(), xi: GE = 1.2f, yi: GE 
   * @see [[de.sciss.synth.ugen.HenonL$ HenonL]]
   * @see [[de.sciss.synth.ugen.HenonC$ HenonC]]
   */
-object HenonN {
+object HenonN extends Reader[HenonN] {
   def ar: HenonN = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -497,6 +574,17 @@ object HenonN {
     */
   def ar(freq: GE = Nyquist(), a: GE = 1.4f, b: GE = 0.3f, x0: GE = 0.0f, x1: GE = 0.0f): HenonN = 
     new HenonN(audio, freq, a, b, x0, x1)
+  
+  def read(in: DataInput): HenonN = {
+    readArity(in, 6)
+    val _rate = readRate(in)
+    val _freq = readGE(in)
+    val _a    = readGE(in)
+    val _b    = readGE(in)
+    val _x0   = readGE(in)
+    val _x1   = readGE(in)
+    new HenonN(_rate, _freq, _a, _b, _x0, _x1)
+  }
 }
 
 /** A non-interpolating sound generator based on the difference equation:
@@ -559,7 +647,7 @@ final case class HenonN(rate: Rate, freq: GE = Nyquist(), a: GE = 1.4f, b: GE = 
   * @see [[de.sciss.synth.ugen.HenonL$ HenonL]]
   * @see [[de.sciss.synth.ugen.HenonC$ HenonC]]
   */
-object HenonL {
+object HenonL extends Reader[HenonL] {
   def ar: HenonL = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -570,6 +658,17 @@ object HenonL {
     */
   def ar(freq: GE = Nyquist(), a: GE = 1.4f, b: GE = 0.3f, x0: GE = 0.0f, x1: GE = 0.0f): HenonL = 
     new HenonL(audio, freq, a, b, x0, x1)
+  
+  def read(in: DataInput): HenonL = {
+    readArity(in, 6)
+    val _rate = readRate(in)
+    val _freq = readGE(in)
+    val _a    = readGE(in)
+    val _b    = readGE(in)
+    val _x0   = readGE(in)
+    val _x1   = readGE(in)
+    new HenonL(_rate, _freq, _a, _b, _x0, _x1)
+  }
 }
 
 /** A linear-interpolating sound generator based on the difference equation:
@@ -632,7 +731,7 @@ final case class HenonL(rate: Rate, freq: GE = Nyquist(), a: GE = 1.4f, b: GE = 
   * @see [[de.sciss.synth.ugen.HenonL$ HenonL]]
   * @see [[de.sciss.synth.ugen.HenonC$ HenonC]]
   */
-object HenonC {
+object HenonC extends Reader[HenonC] {
   def ar: HenonC = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -643,6 +742,17 @@ object HenonC {
     */
   def ar(freq: GE = Nyquist(), a: GE = 1.4f, b: GE = 0.3f, x0: GE = 0.0f, x1: GE = 0.0f): HenonC = 
     new HenonC(audio, freq, a, b, x0, x1)
+  
+  def read(in: DataInput): HenonC = {
+    readArity(in, 6)
+    val _rate = readRate(in)
+    val _freq = readGE(in)
+    val _a    = readGE(in)
+    val _b    = readGE(in)
+    val _x0   = readGE(in)
+    val _x1   = readGE(in)
+    new HenonC(_rate, _freq, _a, _b, _x0, _x1)
+  }
 }
 
 /** A cubic-interpolating sound generator based on the difference equation:
@@ -704,7 +814,7 @@ final case class HenonC(rate: Rate, freq: GE = Nyquist(), a: GE = 1.4f, b: GE = 
   * @see [[de.sciss.synth.ugen.LatoocarfianL$ LatoocarfianL]]
   * @see [[de.sciss.synth.ugen.LatoocarfianC$ LatoocarfianC]]
   */
-object LatoocarfianN {
+object LatoocarfianN extends Reader[LatoocarfianN] {
   def ar: LatoocarfianN = ar()
   
   /** @param freq             Iteration frequency in Hertz.
@@ -717,6 +827,19 @@ object LatoocarfianN {
     */
   def ar(freq: GE = Nyquist(), a: GE = 1.0f, b: GE = 3.0f, c: GE = 0.5f, d: GE = 0.5f, xi: GE = 0.5f, yi: GE = 0.5f): LatoocarfianN = 
     new LatoocarfianN(audio, freq, a, b, c, d, xi, yi)
+  
+  def read(in: DataInput): LatoocarfianN = {
+    readArity(in, 8)
+    val _rate = readRate(in)
+    val _freq = readGE(in)
+    val _a    = readGE(in)
+    val _b    = readGE(in)
+    val _c    = readGE(in)
+    val _d    = readGE(in)
+    val _xi   = readGE(in)
+    val _yi   = readGE(in)
+    new LatoocarfianN(_rate, _freq, _a, _b, _c, _d, _xi, _yi)
+  }
 }
 
 /** A non-interpolating sound generator based on a function given in Clifford
@@ -785,7 +908,7 @@ final case class LatoocarfianN(rate: Rate, freq: GE = Nyquist(), a: GE = 1.0f, b
   * @see [[de.sciss.synth.ugen.LatoocarfianN$ LatoocarfianN]]
   * @see [[de.sciss.synth.ugen.LatoocarfianC$ LatoocarfianC]]
   */
-object LatoocarfianL {
+object LatoocarfianL extends Reader[LatoocarfianL] {
   def ar: LatoocarfianL = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -798,6 +921,19 @@ object LatoocarfianL {
     */
   def ar(freq: GE = Nyquist(), a: GE = 1.0f, b: GE = 3.0f, c: GE = 0.5f, d: GE = 0.5f, xi: GE = 0.5f, yi: GE = 0.5f): LatoocarfianL = 
     new LatoocarfianL(audio, freq, a, b, c, d, xi, yi)
+  
+  def read(in: DataInput): LatoocarfianL = {
+    readArity(in, 8)
+    val _rate = readRate(in)
+    val _freq = readGE(in)
+    val _a    = readGE(in)
+    val _b    = readGE(in)
+    val _c    = readGE(in)
+    val _d    = readGE(in)
+    val _xi   = readGE(in)
+    val _yi   = readGE(in)
+    new LatoocarfianL(_rate, _freq, _a, _b, _c, _d, _xi, _yi)
+  }
 }
 
 /** A linear-interpolating sound generator based on a function given in Clifford
@@ -866,7 +1002,7 @@ final case class LatoocarfianL(rate: Rate, freq: GE = Nyquist(), a: GE = 1.0f, b
   * @see [[de.sciss.synth.ugen.LatoocarfianN$ LatoocarfianN]]
   * @see [[de.sciss.synth.ugen.LatoocarfianL$ LatoocarfianL]]
   */
-object LatoocarfianC {
+object LatoocarfianC extends Reader[LatoocarfianC] {
   def ar: LatoocarfianC = ar()
   
   /** @param freq             Iteration frequency in Hertz.
@@ -879,6 +1015,19 @@ object LatoocarfianC {
     */
   def ar(freq: GE = Nyquist(), a: GE = 1.0f, b: GE = 3.0f, c: GE = 0.5f, d: GE = 0.5f, xi: GE = 0.5f, yi: GE = 0.5f): LatoocarfianC = 
     new LatoocarfianC(audio, freq, a, b, c, d, xi, yi)
+  
+  def read(in: DataInput): LatoocarfianC = {
+    readArity(in, 8)
+    val _rate = readRate(in)
+    val _freq = readGE(in)
+    val _a    = readGE(in)
+    val _b    = readGE(in)
+    val _c    = readGE(in)
+    val _d    = readGE(in)
+    val _xi   = readGE(in)
+    val _yi   = readGE(in)
+    new LatoocarfianC(_rate, _freq, _a, _b, _c, _d, _xi, _yi)
+  }
 }
 
 /** A cubic-interpolating sound generator based on a function given in Clifford
@@ -953,7 +1102,7 @@ final case class LatoocarfianC(rate: Rate, freq: GE = Nyquist(), a: GE = 1.0f, b
   * @see [[de.sciss.synth.ugen.LinCongL$ LinCongL]]
   * @see [[de.sciss.synth.ugen.LinCongC$ LinCongC]]
   */
-object LinCongN {
+object LinCongN extends Reader[LinCongN] {
   def ar: LinCongN = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -964,6 +1113,17 @@ object LinCongN {
     */
   def ar(freq: GE = Nyquist(), a: GE = 1.1f, c: GE = 0.13f, m: GE = 1.0f, xi: GE = 0.0f): LinCongN = 
     new LinCongN(audio, freq, a, c, m, xi)
+  
+  def read(in: DataInput): LinCongN = {
+    readArity(in, 6)
+    val _rate = readRate(in)
+    val _freq = readGE(in)
+    val _a    = readGE(in)
+    val _c    = readGE(in)
+    val _m    = readGE(in)
+    val _xi   = readGE(in)
+    new LinCongN(_rate, _freq, _a, _c, _m, _xi)
+  }
 }
 
 /** A non-interpolating sound generator based on the difference equation:
@@ -1030,7 +1190,7 @@ final case class LinCongN(rate: Rate, freq: GE = Nyquist(), a: GE = 1.1f, c: GE 
   * @see [[de.sciss.synth.ugen.LinCongN$ LinCongN]]
   * @see [[de.sciss.synth.ugen.LinCongC$ LinCongC]]
   */
-object LinCongL {
+object LinCongL extends Reader[LinCongL] {
   def ar: LinCongL = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -1041,6 +1201,17 @@ object LinCongL {
     */
   def ar(freq: GE = Nyquist(), a: GE = 1.1f, c: GE = 0.13f, m: GE = 1.0f, xi: GE = 0.0f): LinCongL = 
     new LinCongL(audio, freq, a, c, m, xi)
+  
+  def read(in: DataInput): LinCongL = {
+    readArity(in, 6)
+    val _rate = readRate(in)
+    val _freq = readGE(in)
+    val _a    = readGE(in)
+    val _c    = readGE(in)
+    val _m    = readGE(in)
+    val _xi   = readGE(in)
+    new LinCongL(_rate, _freq, _a, _c, _m, _xi)
+  }
 }
 
 /** A linear-interpolating sound generator based on the difference equation:
@@ -1107,7 +1278,7 @@ final case class LinCongL(rate: Rate, freq: GE = Nyquist(), a: GE = 1.1f, c: GE 
   * @see [[de.sciss.synth.ugen.LinCongN$ LinCongN]]
   * @see [[de.sciss.synth.ugen.LinCongL$ LinCongL]]
   */
-object LinCongC {
+object LinCongC extends Reader[LinCongC] {
   def ar: LinCongC = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -1118,6 +1289,17 @@ object LinCongC {
     */
   def ar(freq: GE = Nyquist(), a: GE = 1.1f, c: GE = 0.13f, m: GE = 1.0f, xi: GE = 0.0f): LinCongC = 
     new LinCongC(audio, freq, a, c, m, xi)
+  
+  def read(in: DataInput): LinCongC = {
+    readArity(in, 6)
+    val _rate = readRate(in)
+    val _freq = readGE(in)
+    val _a    = readGE(in)
+    val _c    = readGE(in)
+    val _m    = readGE(in)
+    val _xi   = readGE(in)
+    new LinCongC(_rate, _freq, _a, _c, _m, _xi)
+  }
 }
 
 /** A cubic-interpolating sound generator based on the difference equation:
@@ -1178,7 +1360,7 @@ final case class LinCongC(rate: Rate, freq: GE = Nyquist(), a: GE = 1.1f, c: GE 
   * play { SinOsc.ar(Lag.ar(LorenzL.ar(MouseX.kr(1, 200)), 3e-3) * 800 + 900) * 0.4 }
   * }}}
   */
-object LorenzL {
+object LorenzL extends Reader[LorenzL] {
   def ar: LorenzL = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -1192,6 +1374,20 @@ object LorenzL {
     */
   def ar(freq: GE = Nyquist(), s: GE = 10.0f, r: GE = 28.0f, b: GE = 2.667f, h: GE = 0.05f, xi: GE = 0.1f, yi: GE = 0.0f, zi: GE = 0.0f): LorenzL = 
     new LorenzL(audio, freq, s, r, b, h, xi, yi, zi)
+  
+  def read(in: DataInput): LorenzL = {
+    readArity(in, 9)
+    val _rate = readRate(in)
+    val _freq = readGE(in)
+    val _s    = readGE(in)
+    val _r    = readGE(in)
+    val _b    = readGE(in)
+    val _h    = readGE(in)
+    val _xi   = readGE(in)
+    val _yi   = readGE(in)
+    val _zi   = readGE(in)
+    new LorenzL(_rate, _freq, _s, _r, _b, _h, _xi, _yi, _zi)
+  }
 }
 
 /** A strange attractor discovered by Edward N. Lorenz while studying mathematical
@@ -1255,7 +1451,7 @@ final case class LorenzL(rate: Rate, freq: GE = Nyquist(), s: GE = 10.0f, r: GE 
   * @see [[de.sciss.synth.ugen.QuadL$ QuadL]]
   * @see [[de.sciss.synth.ugen.QuadC$ QuadC]]
   */
-object QuadN {
+object QuadN extends Reader[QuadN] {
   def ar: QuadN = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -1266,6 +1462,17 @@ object QuadN {
     */
   def ar(freq: GE = Nyquist(), a: GE = 1.0f, b: GE = -1.0f, c: GE = -0.75f, xi: GE = 0.0f): QuadN = 
     new QuadN(audio, freq, a, b, c, xi)
+  
+  def read(in: DataInput): QuadN = {
+    readArity(in, 6)
+    val _rate = readRate(in)
+    val _freq = readGE(in)
+    val _a    = readGE(in)
+    val _b    = readGE(in)
+    val _c    = readGE(in)
+    val _xi   = readGE(in)
+    new QuadN(_rate, _freq, _a, _b, _c, _xi)
+  }
 }
 
 /** A non-interpolating sound generator based on the difference equation:
@@ -1323,7 +1530,7 @@ final case class QuadN(rate: Rate, freq: GE = Nyquist(), a: GE = 1.0f, b: GE = -
   * @see [[de.sciss.synth.ugen.QuadN$ QuadN]]
   * @see [[de.sciss.synth.ugen.QuadC$ QuadC]]
   */
-object QuadL {
+object QuadL extends Reader[QuadL] {
   def ar: QuadL = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -1334,6 +1541,17 @@ object QuadL {
     */
   def ar(freq: GE = Nyquist(), a: GE = 1.0f, b: GE = -1.0f, c: GE = -0.75f, xi: GE = 0.0f): QuadL = 
     new QuadL(audio, freq, a, b, c, xi)
+  
+  def read(in: DataInput): QuadL = {
+    readArity(in, 6)
+    val _rate = readRate(in)
+    val _freq = readGE(in)
+    val _a    = readGE(in)
+    val _b    = readGE(in)
+    val _c    = readGE(in)
+    val _xi   = readGE(in)
+    new QuadL(_rate, _freq, _a, _b, _c, _xi)
+  }
 }
 
 /** A linear-interpolating sound generator based on the difference equation:
@@ -1391,7 +1609,7 @@ final case class QuadL(rate: Rate, freq: GE = Nyquist(), a: GE = 1.0f, b: GE = -
   * @see [[de.sciss.synth.ugen.QuadN$ QuadN]]
   * @see [[de.sciss.synth.ugen.QuadL$ QuadL]]
   */
-object QuadC {
+object QuadC extends Reader[QuadC] {
   def ar: QuadC = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -1402,6 +1620,17 @@ object QuadC {
     */
   def ar(freq: GE = Nyquist(), a: GE = 1.0f, b: GE = -1.0f, c: GE = -0.75f, xi: GE = 0.0f): QuadC = 
     new QuadC(audio, freq, a, b, c, xi)
+  
+  def read(in: DataInput): QuadC = {
+    readArity(in, 6)
+    val _rate = readRate(in)
+    val _freq = readGE(in)
+    val _a    = readGE(in)
+    val _b    = readGE(in)
+    val _c    = readGE(in)
+    val _xi   = readGE(in)
+    new QuadC(_rate, _freq, _a, _b, _c, _xi)
+  }
 }
 
 /** A cubic-interpolating sound generator based on the difference equation:
@@ -1453,7 +1682,7 @@ final case class QuadC(rate: Rate, freq: GE = Nyquist(), a: GE = 1.0f, b: GE = -
   * 
   * @see [[de.sciss.synth.ugen.StandardL$ StandardL]]
   */
-object StandardN {
+object StandardN extends Reader[StandardN] {
   def ar: StandardN = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -1463,6 +1692,16 @@ object StandardN {
     */
   def ar(freq: GE = Nyquist(), k: GE = 1.0f, xi: GE = 0.5f, yi: GE = 0.0f): StandardN = 
     new StandardN(audio, freq, k, xi, yi)
+  
+  def read(in: DataInput): StandardN = {
+    readArity(in, 5)
+    val _rate = readRate(in)
+    val _freq = readGE(in)
+    val _k    = readGE(in)
+    val _xi   = readGE(in)
+    val _yi   = readGE(in)
+    new StandardN(_rate, _freq, _k, _xi, _yi)
+  }
 }
 
 /** A non-interpolating sound generator based on the difference equations:
@@ -1514,7 +1753,7 @@ final case class StandardN(rate: Rate, freq: GE = Nyquist(), k: GE = 1.0f, xi: G
   * 
   * @see [[de.sciss.synth.ugen.StandardN$ StandardN]]
   */
-object StandardL {
+object StandardL extends Reader[StandardL] {
   def ar: StandardL = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -1524,6 +1763,16 @@ object StandardL {
     */
   def ar(freq: GE = Nyquist(), k: GE = 1.0f, xi: GE = 0.5f, yi: GE = 0.0f): StandardL = 
     new StandardL(audio, freq, k, xi, yi)
+  
+  def read(in: DataInput): StandardL = {
+    readArity(in, 5)
+    val _rate = readRate(in)
+    val _freq = readGE(in)
+    val _k    = readGE(in)
+    val _xi   = readGE(in)
+    val _yi   = readGE(in)
+    new StandardL(_rate, _freq, _k, _xi, _yi)
+  }
 }
 
 /** A linear-interpolating sound generator based on the difference equations:

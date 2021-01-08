@@ -15,7 +15,7 @@ import UGenSource._
   * @see [[de.sciss.synth.ugen.VDiskIn$ VDiskIn]]
   * @see [[de.sciss.synth.ugen.PlayBuf$ PlayBuf]]
   */
-object DiskIn {
+object DiskIn extends Reader[DiskIn] {
   /** @param numChannels      the amount of channels the file and the buffer will
     *                         have. This is an Int and hence must be pre-determined.
     *                         Different SynthDefs must be created for different
@@ -25,6 +25,15 @@ object DiskIn {
     * @param loop             whether the file should loop when its end is reached
     */
   def ar(numChannels: Int, buf: GE, loop: GE = 0): DiskIn = new DiskIn(audio, numChannels, buf, loop)
+  
+  def read(in: DataInput): DiskIn = {
+    readArity(in, 4)
+    val _rate         = readRate(in)
+    val _numChannels  = readInt(in)
+    val _buf          = readGE(in)
+    val _loop         = readGE(in)
+    new DiskIn(_rate, _numChannels, _buf, _loop)
+  }
 }
 
 /** A UGen to stream in a signal from an audio file. Continuously plays a longer
@@ -69,7 +78,7 @@ final case class DiskIn(rate: Rate, numChannels: Int, buf: GE, loop: GE = 0)
   * @see [[de.sciss.synth.ugen.DiskIn$ DiskIn]]
   * @see [[de.sciss.synth.ugen.RecordBuf$ RecordBuf]]
   */
-object DiskOut {
+object DiskOut extends Reader[DiskOut] {
   /** @param buf              the buffer used internally by the UGen. this number of
     *                         frames in the buffer must be a power of two (this is
     *                         currently not checked!). The buffer must have been
@@ -82,6 +91,14 @@ object DiskOut {
     * @param in               the signal to be recorded
     */
   def ar(buf: GE, in: GE): DiskOut = new DiskOut(audio, buf, in)
+  
+  def read(in: DataInput): DiskOut = {
+    readArity(in, 3)
+    val _rate = readRate(in)
+    val _buf  = readGE(in)
+    val _in   = readGE(in)
+    new DiskOut(_rate, _buf, _in)
+  }
 }
 
 /** A UGen which writes a signal to a sound file on disk. To achieve this
@@ -135,7 +152,7 @@ final case class DiskOut(rate: Rate, buf: GE, in: GE)
   * @see [[de.sciss.synth.ugen.DiskOut$ DiskOut]]
   * @see [[de.sciss.synth.ugen.PlayBuf$ PlayBuf]]
   */
-object VDiskIn {
+object VDiskIn extends Reader[VDiskIn] {
   /** @param numChannels      the amount of channels the file and the buffer will
     *                         have. This is an Int and hence must be pre-determined.
     *                         Different SynthDefs must be created for different
@@ -158,6 +175,17 @@ object VDiskIn {
     */
   def ar(numChannels: Int, buf: GE, speed: GE = 1.0f, loop: GE = 0, sendId: GE = 0): VDiskIn = 
     new VDiskIn(audio, numChannels, buf, speed, loop, sendId)
+  
+  def read(in: DataInput): VDiskIn = {
+    readArity(in, 6)
+    val _rate         = readRate(in)
+    val _numChannels  = readInt(in)
+    val _buf          = readGE(in)
+    val _speed        = readGE(in)
+    val _loop         = readGE(in)
+    val _sendId       = readGE(in)
+    new VDiskIn(_rate, _numChannels, _buf, _speed, _loop, _sendId)
+  }
 }
 
 /** A UGen to stream in a signal from an audio file with variable playback speed.

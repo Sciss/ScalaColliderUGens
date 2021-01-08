@@ -23,7 +23,7 @@ import UGenSource._
   * @see [[de.sciss.synth.ugen.MouseButton$ MouseButton]]
   * @see [[de.sciss.synth.ugen.KeyState$ KeyState]]
   */
-object MouseX {
+object MouseX extends Reader[MouseX] {
   def kr: MouseX = kr()
   
   /** @param lo               value when the mouse is on the left side of the screen
@@ -43,6 +43,15 @@ object MouseX {
     */
   def kr(lo: GE = 0.0f, hi: GE = 1.0f, warp: GE = 0.0f, lag: GE = 0.2f): MouseX = 
     new MouseX(lo, hi, warp, lag)
+  
+  def read(in: DataInput): MouseX = {
+    readArity(in, 4)
+    val _lo   = readGE(in)
+    val _hi   = readGE(in)
+    val _warp = readGE(in)
+    val _lag  = readGE(in)
+    new MouseX(_lo, _hi, _warp, _lag)
+  }
 }
 
 /** A UGen that maps the horizontal screen location of the mouse to a given linear
@@ -99,7 +108,7 @@ final case class MouseX(lo: GE = 0.0f, hi: GE = 1.0f, warp: GE = 0.0f, lag: GE =
   * @see [[de.sciss.synth.ugen.MouseButton$ MouseButton]]
   * @see [[de.sciss.synth.ugen.KeyState$ KeyState]]
   */
-object MouseY {
+object MouseY extends Reader[MouseY] {
   def kr: MouseY = kr()
   
   /** @param lo               value when the mouse is on the bottom side of the
@@ -119,6 +128,15 @@ object MouseY {
     */
   def kr(lo: GE = 0.0f, hi: GE = 1.0f, warp: GE = 0.0f, lag: GE = 0.2f): MouseY = 
     new MouseY(lo, hi, warp, lag)
+  
+  def read(in: DataInput): MouseY = {
+    readArity(in, 4)
+    val _lo   = readGE(in)
+    val _hi   = readGE(in)
+    val _warp = readGE(in)
+    val _lag  = readGE(in)
+    new MouseY(_lo, _hi, _warp, _lag)
+  }
 }
 
 /** A UGen that maps the vertical screen location of the mouse to a given linear or
@@ -171,7 +189,7 @@ final case class MouseY(lo: GE = 0.0f, hi: GE = 1.0f, warp: GE = 0.0f, lag: GE =
   * @see [[de.sciss.synth.ugen.MouseY$ MouseY]]
   * @see [[de.sciss.synth.ugen.KeyState$ KeyState]]
   */
-object MouseButton {
+object MouseButton extends Reader[MouseButton] {
   def kr: MouseButton = kr()
   
   /** @param lo               value output while button is not pressed
@@ -180,6 +198,14 @@ object MouseButton {
     *                         avoid any smoothing.
     */
   def kr(lo: GE = 0.0f, hi: GE = 1.0f, lag: GE = 0.2f): MouseButton = new MouseButton(lo, hi, lag)
+  
+  def read(in: DataInput): MouseButton = {
+    readArity(in, 3)
+    val _lo   = readGE(in)
+    val _hi   = readGE(in)
+    val _lag  = readGE(in)
+    new MouseButton(_lo, _hi, _lag)
+  }
 }
 
 /** A UGen that outputs two different values depending on whether the mouse button

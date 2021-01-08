@@ -47,7 +47,7 @@ import UGenSource._
   * 
   * @see [[de.sciss.synth.ugen.CircleRamp$ CircleRamp]]
   */
-object VBAP {
+object VBAP extends Reader[VBAP] {
   /** @param numChannels      the number of output channels
     * @param in               the signal to be panned
     * @param buf              id of a buffer containing data calculated by
@@ -79,6 +79,18 @@ object VBAP {
     */
   def ar(numChannels: Int, in: GE, buf: GE, azimuth: GE = 0, elevation: GE = 1, spread: GE = 0): VBAP = 
     new VBAP(audio, numChannels, in, buf, azimuth, elevation, spread)
+  
+  def read(in: DataInput): VBAP = {
+    readArity(in, 7)
+    val _rate         = readMaybeRate(in)
+    val _numChannels  = readInt(in)
+    val _in           = readGE(in)
+    val _buf          = readGE(in)
+    val _azimuth      = readGE(in)
+    val _elevation    = readGE(in)
+    val _spread       = readGE(in)
+    new VBAP(_rate, _numChannels, _in, _buf, _azimuth, _elevation, _spread)
+  }
 }
 
 /** A UGen for Vector Base Amplitude Panning (VBAP). This allows for equal power
@@ -130,7 +142,7 @@ final case class VBAP(rate: MaybeRate, numChannels: Int, in: GE, buf: GE, azimut
   * @see [[de.sciss.synth.ugen.Ramp$ Ramp]]
   * @see [[de.sciss.synth.ugen.Lag$ Lag]]
   */
-object CircleRamp {
+object CircleRamp extends Reader[CircleRamp] {
   /** @param in               The signal to be smoothed.
     * @param dur              Ramp duration in seconds
     * @param lo               The lower wrap value
@@ -146,6 +158,16 @@ object CircleRamp {
     */
   def ar(in: GE, dur: GE = 0.1f, lo: GE = -180, hi: GE = 180): CircleRamp = 
     new CircleRamp(audio, in, dur, lo, hi)
+  
+  def read(in: DataInput): CircleRamp = {
+    readArity(in, 5)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    val _dur  = readGE(in)
+    val _lo   = readGE(in)
+    val _hi   = readGE(in)
+    new CircleRamp(_rate, _in, _dur, _lo, _hi)
+  }
 }
 
 /** This is a UGen like `Ramp` , but it always takes the shortest way around a

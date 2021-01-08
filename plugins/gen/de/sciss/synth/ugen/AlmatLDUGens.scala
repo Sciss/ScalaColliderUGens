@@ -26,12 +26,21 @@ import UGenSource._
   * 
   * @see [[de.sciss.synth.ugen.Kuramoto$ Kuramoto]]
   */
-object Hopf {
+object Hopf extends Reader[Hopf] {
   /** @param in               Input signal (force) to track.
     * @param coupling         Strength of coupling.
     * @param radius           Limit cycle radius (amplitude attractor).
     */
   def ar(in: GE, coupling: GE, radius: GE = 1.0f): Hopf = new Hopf(audio, in, coupling, radius)
+  
+  def read(in: DataInput): Hopf = {
+    readArity(in, 4)
+    val _rate     = readMaybeRate(in)
+    val _in       = readGE(in)
+    val _coupling = readGE(in)
+    val _radius   = readGE(in)
+    new Hopf(_rate, _in, _coupling, _radius)
+  }
 }
 
 /** A UGen based on Hopf bifurcations that tries to synchronize to an input signal.

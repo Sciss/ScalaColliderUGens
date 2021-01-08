@@ -2,7 +2,7 @@
  *  ClassGenerator.scala
  *  (ScalaColliderUGens)
  *
- *  Copyright (c) 2008-2020 Hanns Holger Rutz. All rights reserved.
+ *  Copyright (c) 2008-2021 Hanns Holger Rutz. All rights reserved.
  *
  *  This software is published under the GNU Lesser General Public License v2.1+
  *
@@ -35,8 +35,6 @@ final class ClassGenerator {
   val DocWidth      =  80
   val LineWidth     = 100
   val ParamColumns  =  24
-
-  private[this] val forceCompanion = true
 
   def performFile(node: scala.xml.Node, dir: File, name: String, docs: Boolean = true,
                   forceOverwrite: Boolean = false): Unit = try {
@@ -639,8 +637,63 @@ final class ClassGenerator {
     }
 
     val sortedRates = rates.set.toList.sorted
-    // the companion object's methods
-    val objectMethodDefs: List[Tree] = sortedRates.flatMap { rate =>
+
+    // ---- the companion object's methods ----
+
+    // a `MaybeRate` is used when no rate is implied and an input generally uses a same-as-ugen constraint.
+    // `maybeRateRef` contains the arguments which resolve the undefined rate at expansion time
+    val maybeRateRef = if (impliedRate.isEmpty) {
+      argsIn.filter(_.rates.get(UndefinedRate).contains(RateConstraint.SameAsUGen))
+    } else Vector.empty
+
+//    val readerType = if (outputs.isEmpty) "Lazy" else "GE"
+
+    val objectDefRead: Tree = {
+      val namePadSize = {
+        val numArgs = argsIn.size + (if (impliedRate.isDefined) 0 else 1)
+        if (numArgs <= 1) 0 else {
+          val n0 = if (argsIn.isEmpty) 0 else argsIn.iterator.map(_.name.length + 1).max
+          val n  = if (impliedRate.isDefined) n0 else math.max(n0, 5)
+          (n & ~1) + 1  // odd
+        }
+      }
+      val mArgs0 = argsIn.map { a =>
+        val rhs = a.tpe match {
+          case GE(Sig.String,_)   => "readString(in)"
+          case GE(Sig.DoneFlag,_) => "readGEDone(in)"
+          case GE(_,_)            => "readGE(in)"
+          case ArgumentType.Int   => "readInt(in)"
+        }
+        ValDef(s"_${a.name}".padTo(namePadSize, ' '), rhs = Ident(rhs))
+      }
+      val mArgs1 = if (impliedRate.isDefined) mArgs0 else {
+        val rateTpe = if (maybeRateRef.nonEmpty) strMaybeRate else strRate
+        ValDef("_rate".padTo(namePadSize, ' '), rhs = Ident(s"read$rateTpe(in)")) :: mArgs0
+      }
+
+      val mArgs = {
+        val arity = mArgs1.size
+        Ident(s"readArity(in, $arity)") :: mArgs1
+      }
+
+      val mNew: Tree = {
+        val argIdents = argsIn.map(a => Ident(s"_${a.name}"))
+        // prepend the rate argument if necessary
+        val applyArgs = if (impliedRate.isDefined) argIdents else Ident("_rate") :: argIdents
+        New(className, applyArgs)
+      }
+      val mBlock = mArgs :+ mNew
+
+      MethodDef(
+        name    = "read",
+        tpe     = Nil,
+        params  = (ParamDef("in", "DataInput") :: Nil) :: Nil,
+        ret     = className, // readerType,
+        body    = Block(mBlock: _*)
+      )
+    }
+
+    val objectDefCons: List[Tree] = sortedRates.flatMap { rate =>
       // e.g. `freq: GE, phase: GE = 0f`
       val objectMethodArgs: List[ParamDef] = argsIn.map { uArgInfo =>
         ParamDef(
@@ -719,22 +772,18 @@ final class ClassGenerator {
       }
     }
 
+    val objectMethodDefs = objectDefCons :+ objectDefRead
+
     // the complete companion object. this is given as a List[Tree],
     // because there might be no object (in that case objectDef is Nil).
-    val objectDef = if (forceCompanion || objectMethodDefs.nonEmpty) {
+    val objectDef = /*if (forceCompanion || objectMethodDefs.nonEmpty)*/ {
       val mod = ObjectDef(
         name    = className,
-        parents = Nil,
+        parents = s"Reader[$className]" :: Nil, // s"Reader[$readerType]" :: Nil,
         body    = objectMethodDefs  // body
       )
       wrapDoc(spec, mod, /* indent = 0, */ body = true, args = false, examples = true, thirdParty = thirdParty) :: Nil
-    } else Nil
-
-    // a `MaybeRate` is used when no rate is implied and an input generally uses a same-as-ugen constraint.
-    // `maybeRateRef` contains the arguments which resolve the undefined rate at expansion time
-    val maybeRateRef = if (impliedRate.isEmpty) {
-      argsIn.filter(_.rates.get(UndefinedRate).contains(RateConstraint.SameAsUGen))
-    } else Vector.empty
+    } // else Nil
 
     val caseClassConstrArgs: List[ParamDef] = {
       // for each argument the tuple (NoMods, argName, type or type-and-default)

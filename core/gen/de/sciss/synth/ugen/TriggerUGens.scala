@@ -23,7 +23,7 @@ import UGenSource._
   * 
   * @see [[de.sciss.synth.ugen.Trig$ Trig]]
   */
-object Trig1 {
+object Trig1 extends Reader[Trig1] {
   /** @param in               the trigger. This can be any signal. A trigger happens
     *                         when the signal changes from non-positive to positive.
     * @param dur              the duration for which the ugens holds the value of 1
@@ -37,6 +37,14 @@ object Trig1 {
     *                         when triggered
     */
   def ar(in: GE, dur: GE = 0.1f): Trig1 = new Trig1(audio, in, dur)
+  
+  def read(in: DataInput): Trig1 = {
+    readArity(in, 3)
+    val _rate = readRate(in)
+    val _in   = readGE(in)
+    val _dur  = readGE(in)
+    new Trig1(_rate, _in, _dur)
+  }
 }
 
 /** A UGen which outputs a value of 1 for a given duration when triggered.
@@ -82,7 +90,7 @@ final case class Trig1(rate: Rate, in: GE, dur: GE = 0.1f) extends UGenSource.Si
   * 
   * @see [[de.sciss.synth.ugen.Trig1$ Trig1]]
   */
-object Trig {
+object Trig extends Reader[Trig] {
   /** @param in               the trigger. This can be any signal. A trigger happens
     *                         when the signal changes from non-positive to positive.
     * @param dur              the duration for which the ugens holds the value of the
@@ -96,6 +104,14 @@ object Trig {
     *                         input signal when triggered
     */
   def ar(in: GE, dur: GE = 0.1f): Trig = new Trig(audio, in, dur)
+  
+  def read(in: DataInput): Trig = {
+    readArity(in, 3)
+    val _rate = readRate(in)
+    val _in   = readGE(in)
+    val _dur  = readGE(in)
+    new Trig(_rate, _in, _dur)
+  }
 }
 
 /** A UGen which holds and outputs an input value for a given duration when
@@ -133,7 +149,7 @@ final case class Trig(rate: Rate, in: GE, dur: GE = 0.1f) extends UGenSource.Sin
   * 
   * @see [[de.sciss.synth.ugen.SendReply$ SendReply]]
   */
-object SendTrig {
+object SendTrig extends Reader[SendTrig] {
   /** @param trig             the trigger signal causing the value to be read and
     *                         sent. A trigger occurs when passing from non-positive to
     *                         positive.
@@ -157,6 +173,15 @@ object SendTrig {
     *                         several SendTrig instances per SynthDef.
     */
   def ar(trig: GE, value: GE = 0.0f, id: GE = 0): SendTrig = new SendTrig(audio, trig, value, id)
+  
+  def read(in: DataInput): SendTrig = {
+    readArity(in, 4)
+    val _rate   = readMaybeRate(in)
+    val _trig   = readGE(in)
+    val _value  = readGE(in)
+    val _id     = readGE(in)
+    new SendTrig(_rate, _trig, _value, _id)
+  }
 }
 
 /** A UGen that sends a value from the server to all notified clients upon
@@ -203,7 +228,7 @@ final case class SendTrig(rate: MaybeRate, trig: GE, value: GE = 0.0f, id: GE = 
   * 
   * @see [[de.sciss.synth.ugen.SendTrig$ SendTrig]]
   */
-object SendReply {
+object SendReply extends Reader[SendReply] {
   /** @param trig             a non-positive to positive transition triggers a message
     * @param values           a graph element comprising the signal channels to be
     *                         polled
@@ -235,6 +260,16 @@ object SendReply {
     */
   def ar(trig: GE, values: GE, msgName: String = "/reply", id: GE = 0): SendReply = 
     new SendReply(audio, trig, values, msgName, id)
+  
+  def read(in: DataInput): SendReply = {
+    readArity(in, 5)
+    val _rate     = readMaybeRate(in)
+    val _trig     = readGE(in)
+    val _values   = readGE(in)
+    val _msgName  = readString(in)
+    val _id       = readGE(in)
+    new SendReply(_rate, _trig, _values, _msgName, _id)
+  }
 }
 
 /** A UGen which sends an sequence of values from the server to all notified
@@ -278,7 +313,7 @@ final case class SendReply(rate: MaybeRate, trig: GE, values: GE, msgName: Strin
   * 
   * @see [[de.sciss.synth.ugen.SendTrig$ SendTrig]]
   */
-object Poll {
+object Poll extends Reader[Poll] {
   /** @param trig             a non-positive to positive transition telling Poll to
     *                         return a value
     * @param in               the signal you want to poll
@@ -298,6 +333,16 @@ object Poll {
     */
   def ar(trig: GE, in: GE, label: String = "poll", trigId: GE = -1): Poll = 
     new Poll(audio, trig, in, label, trigId)
+  
+  def read(in: DataInput): Poll = {
+    readArity(in, 5)
+    val _rate   = readMaybeRate(in)
+    val _trig   = readGE(in)
+    val _in     = readGE(in)
+    val _label  = readString(in)
+    val _trigId = readGE(in)
+    new Poll(_rate, _trig, _in, _label, _trigId)
+  }
 }
 
 /** A UGen for printing the current output value of its input to the console.
@@ -343,7 +388,7 @@ final case class Poll(rate: MaybeRate, trig: GE, in: GE, label: String = "poll",
   * 
   * @see [[de.sciss.synth.ugen.SetResetFF$ SetResetFF]]
   */
-object ToggleFF {
+object ToggleFF extends Reader[ToggleFF] {
   /** @param trig             a signal to trigger the flip-flop. a trigger occurs
     *                         when the signal changes from non-positive to positive.
     */
@@ -353,6 +398,13 @@ object ToggleFF {
     *                         when the signal changes from non-positive to positive.
     */
   def ar(trig: GE): ToggleFF = new ToggleFF(audio, trig)
+  
+  def read(in: DataInput): ToggleFF = {
+    readArity(in, 2)
+    val _rate = readMaybeRate(in)
+    val _trig = readGE(in)
+    new ToggleFF(_rate, _trig)
+  }
 }
 
 /** A UGen that toggles like a flip-flop between zero and one upon receiving a
@@ -409,7 +461,7 @@ final case class ToggleFF(rate: MaybeRate, trig: GE) extends UGenSource.SingleOu
   * 
   * @see [[de.sciss.synth.ugen.ToggleFF$ ToggleFF]]
   */
-object SetResetFF {
+object SetResetFF extends Reader[SetResetFF] {
   /** @param trig             trigger that sets output to 1. A trigger happens when
     *                         the signal changes from non-positive to positive.
     * @param reset            trigger that sets output to 0. A trigger happens when
@@ -423,6 +475,14 @@ object SetResetFF {
     *                         the signal changes from non-positive to positive.
     */
   def ar(trig: GE, reset: GE): SetResetFF = new SetResetFF(audio, trig, reset)
+  
+  def read(in: DataInput): SetResetFF = {
+    readArity(in, 3)
+    val _rate   = readMaybeRate(in)
+    val _trig   = readGE(in)
+    val _reset  = readGE(in)
+    new SetResetFF(_rate, _trig, _reset)
+  }
 }
 
 /** A flip-flop UGen with two inputs, one (set) triggering an output of 1.0, the
@@ -455,7 +515,7 @@ final case class SetResetFF(rate: MaybeRate, trig: GE, reset: GE) extends UGenSo
   * @see [[de.sciss.synth.ugen.Gate$ Gate]]
   * @see [[de.sciss.synth.ugen.Demand$ Demand]]
   */
-object Latch {
+object Latch extends Reader[Latch] {
   /** @param in               the input signal
     * @param trig             the trigger. The can be any signal. A trigger happens
     *                         when the signal changes from non-positive to positive.
@@ -467,6 +527,14 @@ object Latch {
     *                         when the signal changes from non-positive to positive.
     */
   def ar(in: GE, trig: GE = 1): Latch = new Latch(audio, in, trig)
+  
+  def read(in: DataInput): Latch = {
+    readArity(in, 3)
+    val _rate = readRate(in)
+    val _in   = readGE(in)
+    val _trig = readGE(in)
+    new Latch(_rate, _in, _trig)
+  }
 }
 
 /** A sample-and-hold UGen. When triggered, a new value is taken from the input and
@@ -494,7 +562,7 @@ final case class Latch(rate: Rate, in: GE, trig: GE = 1) extends UGenSource.Sing
   * 
   * @see [[de.sciss.synth.ugen.Latch$ Latch]]
   */
-object Gate {
+object Gate extends Reader[Gate] {
   /** @param in               the input signal to gate
     * @param gate             the signal specifying whether to pass the input signal
     *                         (when greater than zero) or whether to close the gate
@@ -510,6 +578,14 @@ object Gate {
     *                         zero)
     */
   def ar(in: GE, gate: GE): Gate = new Gate(audio, in, gate)
+  
+  def read(in: DataInput): Gate = {
+    readArity(in, 3)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    val _gate = readGE(in)
+    new Gate(_rate, _in, _gate)
+  }
 }
 
 /** A gate or hold UGen. It allows the input signal value to pass when the `gate`
@@ -541,7 +617,7 @@ final case class Gate(rate: MaybeRate, in: GE, gate: GE) extends UGenSource.Sing
   * hysteresis behavior, preventing heavy oscillations in a noisy system which might
   * occur with a single-threshold trigger.
   */
-object Schmidt {
+object Schmidt extends Reader[Schmidt] {
   /** @param in               input signal to be analyzed
     * @param lo               low threshold
     * @param hi               high threshold
@@ -553,6 +629,15 @@ object Schmidt {
     * @param hi               high threshold
     */
   def ar(in: GE, lo: GE = 0.0f, hi: GE = 1.0f): Schmidt = new Schmidt(audio, in, lo, hi)
+  
+  def read(in: DataInput): Schmidt = {
+    readArity(in, 4)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    val _lo   = readGE(in)
+    val _hi   = readGE(in)
+    new Schmidt(_rate, _in, _lo, _hi)
+  }
 }
 
 /** A Schmidt trigger UGen. Initially it outputs zero. When the input signal rises
@@ -606,7 +691,7 @@ final case class Schmidt(rate: MaybeRate, in: GE, lo: GE = 0.0f, hi: GE = 1.0f)
   * @see [[de.sciss.synth.ugen.PulseCount$ PulseCount]]
   * @see [[de.sciss.synth.ugen.Stepper$ Stepper]]
   */
-object PulseDivider {
+object PulseDivider extends Reader[PulseDivider] {
   /** @param trig             a trigger occurs when the signal changes from
     *                         non-positive to positive.
     * @param div              decimation factor of the UGen. A value of 1 would cause
@@ -643,6 +728,15 @@ object PulseDivider {
     *                         happens after three input triggers.
     */
   def ar(trig: GE, div: GE = 2, start: GE = 0): PulseDivider = new PulseDivider(audio, trig, div, start)
+  
+  def read(in: DataInput): PulseDivider = {
+    readArity(in, 4)
+    val _rate   = readMaybeRate(in)
+    val _trig   = readGE(in)
+    val _div    = readGE(in)
+    val _start  = readGE(in)
+    new PulseDivider(_rate, _trig, _div, _start)
+  }
 }
 
 /** A UGen that decimates trigger by outputting one impulse each time a certain
@@ -696,7 +790,7 @@ final case class PulseDivider(rate: MaybeRate, trig: GE, div: GE = 2, start: GE 
   * 
   * @see [[de.sciss.synth.ugen.Stepper$ Stepper]]
   */
-object PulseCount {
+object PulseCount extends Reader[PulseCount] {
   /** @param trig             a trigger happens when the signal changes from
     *                         non-positive to positive
     * @param reset            when triggered, resets the counter to zero. When both
@@ -712,6 +806,14 @@ object PulseCount {
     *                         `reset` takes precedence (output will be zero).
     */
   def ar(trig: GE, reset: GE = 0): PulseCount = new PulseCount(audio, trig, reset)
+  
+  def read(in: DataInput): PulseCount = {
+    readArity(in, 3)
+    val _rate   = readMaybeRate(in)
+    val _trig   = readGE(in)
+    val _reset  = readGE(in)
+    new PulseCount(_rate, _trig, _reset)
+  }
 }
 
 /** A UGen that counts the number of triggers observed.
@@ -754,7 +856,7 @@ final case class PulseCount(rate: MaybeRate, trig: GE, reset: GE = 0) extends UG
   * 
   * @see [[de.sciss.synth.ugen.PulseCount$ PulseCount]]
   */
-object Stepper {
+object Stepper extends Reader[Stepper] {
   /** @param trig             The trigger signal which increments the counter. A
     *                         trigger happens when the signal changes from
     *                         non-positive to positive. Note that if the UGen is
@@ -832,6 +934,18 @@ object Stepper {
     */
   def ar(trig: GE, reset: GE = 0, lo: GE = 0, hi: GE = 2147483583, step: GE = 1, resetVal: GE = 0): Stepper = 
     new Stepper(audio, trig, reset, lo, hi, step, resetVal)
+  
+  def read(in: DataInput): Stepper = {
+    readArity(in, 7)
+    val _rate     = readMaybeRate(in)
+    val _trig     = readGE(in)
+    val _reset    = readGE(in)
+    val _lo       = readGE(in)
+    val _hi       = readGE(in)
+    val _step     = readGE(in)
+    val _resetVal = readGE(in)
+    new Stepper(_rate, _trig, _reset, _lo, _hi, _step, _resetVal)
+  }
 }
 
 /** A pulse counting UGen. Each trigger increments a counter which is output as a
@@ -895,7 +1009,7 @@ final case class Stepper(rate: MaybeRate, trig: GE, reset: GE = 0, lo: GE = 0, h
   * trigger arriving in the time between the previous trigger and the passing of the
   * delay time is ignored.
   */
-object TDelay {
+object TDelay extends Reader[TDelay] {
   /** @param trig             The input trigger. A trigger is recognized when the
     *                         signal passes from non-positive to positive. Note that,
     *                         no matter what the amplitude of the input trigger is,
@@ -911,6 +1025,14 @@ object TDelay {
     * @param dur              The delay time in seconds.
     */
   def ar(trig: GE, dur: GE = 0.1f): TDelay = new TDelay(audio, trig, dur)
+  
+  def read(in: DataInput): TDelay = {
+    readArity(in, 3)
+    val _rate = readMaybeRate(in)
+    val _trig = readGE(in)
+    val _dur  = readGE(in)
+    new TDelay(_rate, _trig, _dur)
+  }
 }
 
 /** A delay UGen for trigger signals. Other than a normal buffer delay, any new
@@ -953,7 +1075,7 @@ final case class TDelay(rate: MaybeRate, trig: GE, dur: GE = 0.1f) extends UGenS
   * 
   * @see [[de.sciss.synth.ugen.Pitch$ Pitch]]
   */
-object ZeroCrossing {
+object ZeroCrossing extends Reader[ZeroCrossing] {
   /** @param in               signal to analyze
     */
   def kr(in: GE): ZeroCrossing = new ZeroCrossing(control, in)
@@ -961,6 +1083,13 @@ object ZeroCrossing {
   /** @param in               signal to analyze
     */
   def ar(in: GE): ZeroCrossing = new ZeroCrossing(audio, in)
+  
+  def read(in: DataInput): ZeroCrossing = {
+    readArity(in, 2)
+    val _rate = readMaybeRate(in)
+    val _in   = readGE(in)
+    new ZeroCrossing(_rate, _in)
+  }
 }
 
 /** A pitch estimation UGen based on counting the zero-crossings of the input
@@ -988,7 +1117,7 @@ final case class ZeroCrossing(rate: MaybeRate, in: GE) extends UGenSource.Single
   * 
   * @see [[de.sciss.synth.ugen.Sweep$ Sweep]]
   */
-object Timer {
+object Timer extends Reader[Timer] {
   /** @param trig             the trigger to update the output signal. A trigger
     *                         occurs when trig signal crosses from non-positive to
     *                         positive.
@@ -1000,6 +1129,13 @@ object Timer {
     *                         positive.
     */
   def ar(trig: GE): Timer = new Timer(audio, trig)
+  
+  def read(in: DataInput): Timer = {
+    readArity(in, 2)
+    val _rate = readMaybeRate(in)
+    val _trig = readGE(in)
+    new Timer(_rate, _trig)
+  }
 }
 
 /** A UGen that returns time since last triggered. The time returned is in seconds
@@ -1032,7 +1168,7 @@ final case class Timer(rate: MaybeRate, trig: GE) extends UGenSource.SingleOut {
   * @see [[de.sciss.synth.ugen.Phasor$ Phasor]]
   * @see [[de.sciss.synth.ugen.Line$ Line]]
   */
-object Sweep {
+object Sweep extends Reader[Sweep] {
   /** @param trig             the trigger that restarts the ramp, when passing from
     *                         non-positive to positive
     * @param speed            the amount of increment of the output signal per
@@ -1050,6 +1186,14 @@ object Sweep {
     *                         UGen's calculation rate.
     */
   def ar(trig: GE, speed: GE): Sweep = new Sweep(audio, trig, speed)
+  
+  def read(in: DataInput): Sweep = {
+    readArity(in, 3)
+    val _rate   = readRate(in)
+    val _trig   = readGE(in)
+    val _speed  = readGE(in)
+    new Sweep(_rate, _trig, _speed)
+  }
 }
 
 /** A UGen which starts a linear raise from zero each time it is triggered.
@@ -1098,7 +1242,7 @@ final case class Sweep(rate: Rate, trig: GE, speed: GE) extends UGenSource.Singl
   * @see [[de.sciss.synth.ugen.Line$ Line]]
   * @see [[de.sciss.synth.ugen.LFSaw$ LFSaw]]
   */
-object Phasor {
+object Phasor extends Reader[Phasor] {
   def kr: Phasor = kr()
   
   /** @param trig             trigger signal that causes the phasor to jump to the
@@ -1132,6 +1276,17 @@ object Phasor {
     */
   def ar(trig: GE = 0, speed: GE = 1.0f, lo: GE = 0.0f, hi: GE = 1.0f, resetVal: GE = 0.0f): Phasor = 
     new Phasor(audio, trig, speed, lo, hi, resetVal)
+  
+  def read(in: DataInput): Phasor = {
+    readArity(in, 6)
+    val _rate     = readRate(in)
+    val _trig     = readGE(in)
+    val _speed    = readGE(in)
+    val _lo       = readGE(in)
+    val _hi       = readGE(in)
+    val _resetVal = readGE(in)
+    new Phasor(_rate, _trig, _speed, _lo, _hi, _resetVal)
+  }
 }
 
 /** A linear repeating ramp UGen between start and end values. Using a trigger
@@ -1204,7 +1359,7 @@ final case class Phasor(rate: Rate, trig: GE = 0, speed: GE = 1.0f, lo: GE = 0.0
   * @see [[de.sciss.synth.ugen.PeakFollower$ PeakFollower]]
   * @see [[de.sciss.synth.ugen.Amplitude$ Amplitude]]
   */
-object Peak {
+object Peak extends Reader[Peak] {
   /** @param in               input signal to analyze
     * @param trig             resets the maximum observed value to the current
     *                         absolute value of the input signal
@@ -1216,6 +1371,14 @@ object Peak {
     *                         absolute value of the input signal
     */
   def ar(in: GE, trig: GE): Peak = new Peak(audio, in, trig)
+  
+  def read(in: DataInput): Peak = {
+    readArity(in, 3)
+    val _rate = readRate(in)
+    val _in   = readGE(in)
+    val _trig = readGE(in)
+    new Peak(_rate, _in, _trig)
+  }
 }
 
 /** A UGen to measure a signal's peak amplitude. Technically, this UGen works like
@@ -1280,7 +1443,7 @@ final case class Peak(rate: Rate, in: GE, trig: GE) extends UGenSource.SingleOut
   * @see [[de.sciss.synth.ugen.Peak$ Peak]]
   * @see [[de.sciss.synth.ugen.RunningSum$ RunningSum]]
   */
-object RunningMin {
+object RunningMin extends Reader[RunningMin] {
   /** @param in               input signal to analyze
     * @param trig             resets the minimum observed value to the current value
     *                         of the input signal
@@ -1292,6 +1455,14 @@ object RunningMin {
     *                         of the input signal
     */
   def ar(in: GE, trig: GE): RunningMin = new RunningMin(audio, in, trig)
+  
+  def read(in: DataInput): RunningMin = {
+    readArity(in, 3)
+    val _rate = readRate(in)
+    val _in   = readGE(in)
+    val _trig = readGE(in)
+    new RunningMin(_rate, _in, _trig)
+  }
 }
 
 /** A UGen to measure a signal's minimum value between triggers.
@@ -1351,7 +1522,7 @@ final case class RunningMin(rate: Rate, in: GE, trig: GE) extends UGenSource.Sin
   * @see [[de.sciss.synth.ugen.Peak$ Peak]]
   * @see [[de.sciss.synth.ugen.RunningSum$ RunningSum]]
   */
-object RunningMax {
+object RunningMax extends Reader[RunningMax] {
   /** @param in               input signal to analyze
     * @param trig             resets the maximum observed value to the current value
     *                         of the input signal
@@ -1363,6 +1534,14 @@ object RunningMax {
     *                         of the input signal
     */
   def ar(in: GE, trig: GE): RunningMax = new RunningMax(audio, in, trig)
+  
+  def read(in: DataInput): RunningMax = {
+    readArity(in, 3)
+    val _rate = readRate(in)
+    val _in   = readGE(in)
+    val _trig = readGE(in)
+    new RunningMax(_rate, _in, _trig)
+  }
 }
 
 /** A UGen to measure a signal's maximum value between triggers.
@@ -1415,7 +1594,7 @@ final case class RunningMax(rate: Rate, in: GE, trig: GE) extends UGenSource.Sin
   * @see [[de.sciss.synth.ugen.RunningSum$ RunningSum]]
   * @see [[de.sciss.synth.ugen.LagUD$ LagUD]]
   */
-object PeakFollower {
+object PeakFollower extends Reader[PeakFollower] {
   /** @param in               input signal to trace
     * @param decay            feedback coefficient controlling the release rate. This
     *                         should be less than one, otherwise the UGen may blow up.
@@ -1427,6 +1606,14 @@ object PeakFollower {
     *                         should be less than one, otherwise the UGen may blow up.
     */
   def ar(in: GE, decay: GE = 0.999f): PeakFollower = new PeakFollower(audio, in, decay)
+  
+  def read(in: DataInput): PeakFollower = {
+    readArity(in, 3)
+    val _rate   = readMaybeRate(in)
+    val _in     = readGE(in)
+    val _decay  = readGE(in)
+    new PeakFollower(_rate, _in, _decay)
+  }
 }
 
 /** A UGen that continually reports the peak amplitude of the signal received at
@@ -1481,7 +1668,7 @@ final case class PeakFollower(rate: MaybeRate, in: GE, decay: GE = 0.999f) exten
   * 
   * @see [[de.sciss.synth.ugen.LeastChange$ LeastChange]]
   */
-object MostChange {
+object MostChange extends Reader[MostChange] {
   /** @param a                first input signal to select from
     * @param b                second input signal to select from
     */
@@ -1491,6 +1678,14 @@ object MostChange {
     * @param b                second input signal to select from
     */
   def ar(a: GE, b: GE): MostChange = new MostChange(audio, a, b)
+  
+  def read(in: DataInput): MostChange = {
+    readArity(in, 3)
+    val _rate = readRate(in)
+    val _a    = readGE(in)
+    val _b    = readGE(in)
+    new MostChange(_rate, _a, _b)
+  }
 }
 
 /** A UGen that switches between two input signal depending on which is changing
@@ -1536,7 +1731,7 @@ final case class MostChange(rate: Rate, a: GE, b: GE) extends UGenSource.SingleO
   * 
   * @see [[de.sciss.synth.ugen.MostChange$ MostChange]]
   */
-object LeastChange {
+object LeastChange extends Reader[LeastChange] {
   /** @param a                first input signal to select from
     * @param b                second input signal to select from
     */
@@ -1546,6 +1741,14 @@ object LeastChange {
     * @param b                second input signal to select from
     */
   def ar(a: GE, b: GE): LeastChange = new LeastChange(audio, a, b)
+  
+  def read(in: DataInput): LeastChange = {
+    readArity(in, 3)
+    val _rate = readMaybeRate(in)
+    val _a    = readGE(in)
+    val _b    = readGE(in)
+    new LeastChange(_rate, _a, _b)
+  }
 }
 
 /** A UGen that switches between two input signal depending on which is changing
@@ -1585,7 +1788,7 @@ final case class LeastChange(rate: MaybeRate, a: GE, b: GE) extends UGenSource.S
   * 
   * @see [[de.sciss.synth.ugen.Slew$ Slew]]
   */
-object LastValue {
+object LastValue extends Reader[LastValue] {
   /** @param in               input signal to analyze and filter
     * @param thresh           threshold below which the input sign
     */
@@ -1595,6 +1798,14 @@ object LastValue {
     * @param thresh           threshold below which the input sign
     */
   def ar(in: GE, thresh: GE = 0.01f): LastValue = new LastValue(audio, in, thresh)
+  
+  def read(in: DataInput): LastValue = {
+    readArity(in, 3)
+    val _rate   = readRate(in)
+    val _in     = readGE(in)
+    val _thresh = readGE(in)
+    new LastValue(_rate, _in, _thresh)
+  }
 }
 
 /** A sample-and-hold UGen that outputs the last value before the input changed
@@ -1623,10 +1834,16 @@ final case class LastValue(rate: Rate, in: GE, thresh: GE = 0.01f) extends UGenS
   * @see [[de.sciss.synth.ugen.Line$ Line]]
   * @see [[de.sciss.synth.ugen.EnvGen$ EnvGen]]
   */
-object Done {
+object Done extends Reader[Done] {
   /** @param src              the UGen to track
     */
   def kr(src: GE with HasDoneFlag): Done = new Done(src)
+  
+  def read(in: DataInput): Done = {
+    readArity(in, 1)
+    val _src = readGEDone(in)
+    new Done(_src)
+  }
 }
 
 /** A UGen which monitors another UGen to see when it is finished. Some UGens, such
@@ -1661,11 +1878,18 @@ final case class Done(src: GE with HasDoneFlag)
   * @see [[de.sciss.synth.ugen.Free$ Free]]
   * @see [[de.sciss.synth.ugen.PauseSelf$ PauseSelf]]
   */
-object Pause {
+object Pause extends Reader[Pause] {
   /** @param gate             when 0, node is paused, when 1, node is resumed
     * @param node             the id of the node to be paused or resumed
     */
   def kr(gate: GE, node: GE): Pause = new Pause(gate, node)
+  
+  def read(in: DataInput): Pause = {
+    readArity(in, 2)
+    val _gate = readGE(in)
+    val _node = readGE(in)
+    new Pause(_gate, _node)
+  }
 }
 
 /** A UGen which pauses and resumes another node. Note that the UGen initially
@@ -1703,10 +1927,16 @@ final case class Pause(gate: GE, node: GE)
   * @see [[de.sciss.synth.ugen.Free$ Free]]
   * @see [[de.sciss.synth.ugen.PauseSelf$ PauseSelf]]
   */
-object FreeSelf {
+object FreeSelf extends Reader[FreeSelf] {
   /** @param trig             the input signal which will trigger the action.
     */
   def kr(trig: GE): FreeSelf = new FreeSelf(trig)
+  
+  def read(in: DataInput): FreeSelf = {
+    readArity(in, 1)
+    val _trig = readGE(in)
+    new FreeSelf(_trig)
+  }
 }
 
 /** A UGen that, when triggered, frees enclosing synth. It frees the enclosing
@@ -1744,10 +1974,16 @@ final case class FreeSelf(trig: GE) extends UGenSource.SingleOut with ControlRat
   * @see [[de.sciss.synth.ugen.Pause$ Pause]]
   * @see [[de.sciss.synth.ugen.FreeSelf$ FreeSelf]]
   */
-object PauseSelf {
+object PauseSelf extends Reader[PauseSelf] {
   /** @param trig             the input signal which will trigger the action.
     */
   def kr(trig: GE): PauseSelf = new PauseSelf(trig)
+  
+  def read(in: DataInput): PauseSelf = {
+    readArity(in, 1)
+    val _trig = readGE(in)
+    new PauseSelf(_trig)
+  }
 }
 
 /** A UGen that, when triggered, pauses enclosing synth. It pauses the enclosing
@@ -1779,12 +2015,19 @@ final case class PauseSelf(trig: GE) extends UGenSource.SingleOut with ControlRa
   * @see [[de.sciss.synth.ugen.Pause$ Pause]]
   * @see [[de.sciss.synth.ugen.FreeSelf$ FreeSelf]]
   */
-object Free {
+object Free extends Reader[Free] {
   /** @param trig             the trigger to cause the action
     * @param node             the id of the target node to free upon receiving the
     *                         trigger
     */
   def kr(trig: GE, node: GE): Free = new Free(trig, node)
+  
+  def read(in: DataInput): Free = {
+    readArity(in, 2)
+    val _trig = readGE(in)
+    val _node = readGE(in)
+    new Free(_trig, _node)
+  }
 }
 
 /** A UGen that, when triggered, frees a given node.
@@ -1817,11 +2060,17 @@ final case class Free(trig: GE, node: GE) extends UGenSource.SingleOut with Cont
   * @see [[de.sciss.synth.ugen.PauseSelfWhenDone$ PauseSelfWhenDone]]
   * @see [[de.sciss.synth.ugen.Done$ Done]]
   */
-object FreeSelfWhenDone {
+object FreeSelfWhenDone extends Reader[FreeSelfWhenDone] {
   /** @param src              the input UGen which when finished will trigger the
     *                         action.
     */
   def kr(src: GE with HasDoneFlag): FreeSelfWhenDone = new FreeSelfWhenDone(src)
+  
+  def read(in: DataInput): FreeSelfWhenDone = {
+    readArity(in, 1)
+    val _src = readGEDone(in)
+    new FreeSelfWhenDone(_src)
+  }
 }
 
 /** A UGen that, when its input UGen is finished, frees enclosing synth. This is
@@ -1860,11 +2109,17 @@ final case class FreeSelfWhenDone(src: GE with HasDoneFlag)
   * @see [[de.sciss.synth.ugen.FreeSelfWhenDone$ FreeSelfWhenDone]]
   * @see [[de.sciss.synth.ugen.Done$ Done]]
   */
-object PauseSelfWhenDone {
+object PauseSelfWhenDone extends Reader[PauseSelfWhenDone] {
   /** @param src              the input UGen which when finished will trigger the
     *                         action.
     */
   def kr(src: GE with HasDoneFlag): PauseSelfWhenDone = new PauseSelfWhenDone(src)
+  
+  def read(in: DataInput): PauseSelfWhenDone = {
+    readArity(in, 1)
+    val _src = readGEDone(in)
+    new PauseSelfWhenDone(_src)
+  }
 }
 
 /** A UGen that, when its input UGen is finished, pauses enclosing synth. This is

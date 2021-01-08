@@ -2,7 +2,7 @@
  *  UGenSource.scala
  *  (ScalaColliderUGens)
  *
- *  Copyright (c) 2008-2020 Hanns Holger Rutz. All rights reserved.
+ *  Copyright (c) 2008-2021 Hanns Holger Rutz. All rights reserved.
  *
  *  This software is published under the GNU Lesser General Public License v2.1+
  *
@@ -13,10 +13,12 @@
 
 package de.sciss.synth
 
+import de.sciss.serial
 import de.sciss.synth.UGenSource.Vec
 import de.sciss.synth.ugen.Constant
 
 import scala.annotation.tailrec
+import scala.collection.mutable
 import scala.runtime.ScalaRunTime
 
 object UGenSource {
@@ -153,6 +155,75 @@ object UGenSource {
         } else ins  // can use `scalar` where `control` is required
       }
     }
+  }
+
+  // ---- serialization ----
+
+  type DataInput  = serial.DataInput
+  type Reader[+A] = serial.Reader[A]
+
+  private val mapRead = mutable.Map.empty[String, Reader[GE]]
+
+  def addReader(prefix: String, r: Reader[GE]): Unit = mapRead.synchronized {
+    val old = mapRead.put(prefix, r)
+    require (old.isEmpty, {
+      mapRead.put(prefix, old.get)
+      sys.error(s"Prefix '$prefix' was already registered")
+    })
+  }
+
+  def addReaders(xs: Iterable[(String, Reader[GE])]): Unit = mapRead.synchronized {
+    mapRead ++= xs
+    ()
+  }
+
+  def readGE(in: DataInput): GE = {
+    val cookie = in.readByte().toChar
+    cookie match {
+      case 'C' =>
+        val value = in.readFloat()
+        Constant(value)
+      case 'P' =>
+        val prefix = in.readUTF()
+        val r = mapRead.getOrElse(prefix, throw new NoSuchElementException(s"Unknown GE element '$prefix'"))
+        r.read(in)  // should we call this `readIdentified`?
+      case _ =>
+        sys.error(s"Unexpected cookie '$cookie' is not 'P'")
+    }
+  }
+
+  def readGEDone(in: DataInput): GE with HasDoneFlag =
+    readGE(in).asInstanceOf[GE with HasDoneFlag]
+
+  def readInt(in: DataInput): Int = {
+    val cookie = in.readByte()
+    if (cookie != 'I') sys.error(s"Unexpected cookie '$cookie' is not 'I'")
+    in.readInt()
+  }
+
+  def readString(in: DataInput): String = {
+    val cookie = in.readByte()
+    if (cookie != 'S') sys.error(s"Unexpected cookie '$cookie' is not 'S'")
+    in.readUTF()
+  }
+
+  def readRate(in: DataInput): Rate = {
+    val cookie = in.readByte().toChar
+    if (cookie != 'R') sys.error(s"Unexpected cookie '$cookie' is not 'R'")
+    val id = in.readByte().toInt
+    Rate(id)
+  }
+
+  def readMaybeRate(in: DataInput): MaybeRate = {
+    val cookie = in.readByte().toChar
+    if (cookie != 'R') sys.error(s"Unexpected cookie '$cookie' is not 'R'")
+    val id = in.readByte().toInt
+    MaybeRate(id)
+  }
+
+  def readArity(in: DataInput, expected: Int): Unit = {
+    val v = in.readShort().toInt
+    if (v != expected) sys.error(s"Unexpected arity $v is not $expected")
   }
 }
 

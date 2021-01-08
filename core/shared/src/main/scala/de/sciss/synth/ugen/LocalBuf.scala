@@ -2,7 +2,7 @@
  *  LocalBuf.scala
  *  (ScalaColliderUGens)
  *
- *  Copyright (c) 2008-2020 Hanns Holger Rutz. All rights reserved.
+ *  Copyright (c) 2008-2021 Hanns Holger Rutz. All rights reserved.
  *
  *  This software is published under the GNU Lesser General Public License v2.1+
  *
@@ -16,14 +16,19 @@ package ugen
 
 import UGenSource._
 
-// XXX TODO - SetBuf, ClearBuf
-
 /** A UGen that allocates a buffer local to the synth.
   * This is convenient for example when using an `FFT` chain.
   *
   * @see [[de.sciss.synth.ugen.FFT]]
   */
-object LocalBuf
+object LocalBuf extends Reader[LocalBuf] {
+  override def read(in: DataInput): LocalBuf = {
+    readArity(in, 2)
+    val _numFrames    = readGE(in)
+    val _numChannels  = readGE(in)
+    new LocalBuf(_numFrames, _numChannels)
+  }
+}
 /** A UGen that allocates a buffer local to the synth.
   * This is convenient for example when using an `FFT` chain.
   *
@@ -57,6 +62,12 @@ final case class LocalBuf(numFrames: GE, numChannels: GE = 1)
   // XXX TODO: def set(values: GE, offset: GE = 0): this.type = { SetBuf(this, values, offset); this }
 }
 
+private[synth] object MaxLocalBufs extends Reader[MaxLocalBufs] {
+  override def read(in: DataInput): MaxLocalBufs = {
+    readArity(in, 0)
+    new MaxLocalBufs
+  }
+}
 private[synth] final case class MaxLocalBufs() extends UGenSource.SingleOut with ScalarRated with HasSideEffect {
   @transient private[this] var count    = 0
   @transient private[this] var expanded = false

@@ -47,7 +47,18 @@ import UGenSource._
   * @see [[de.sciss.synth.ugen.IFFT$ IFFT]]
   * @see [[de.sciss.synth.ugen.FFTTrigger$ FFTTrigger]]
   */
-object FFT
+object FFT extends Reader[FFT] {
+  def read(in: DataInput): FFT = {
+    readArity(in, 6)
+    val _buf      = readGE(in)
+    val _in       = readGE(in)
+    val _hop      = readGE(in)
+    val _winType  = readGE(in)
+    val _active   = readGE(in)
+    val _winSize  = readGE(in)
+    new FFT(_buf, _in, _hop, _winType, _active, _winSize)
+  }
+}
 
 /** A UGen performing short-time forward fourier transformations. In order to
   * properly link the spectral ugens ( `PV_...` ), you should begin by using the
@@ -135,7 +146,7 @@ final case class FFT(buf: GE, in: GE, hop: GE = 0.5f, winType: GE = 0, active: G
   * 
   * @see [[de.sciss.synth.ugen.FFT$ FFT]]
   */
-object IFFT {
+object IFFT extends Reader[IFFT] {
   /** @param chain            reference to the spectral signal, returned as a
     *                         buffer-identifier from `FFT` or the `PV_...` UGens.
     * @param winType          The window function applied after each IFFT is taken.
@@ -159,6 +170,15 @@ object IFFT {
     *                         only)''
     */
   def ar(chain: GE, winType: GE = 0, winSize: GE = 0): IFFT = new IFFT(audio, chain, winType, winSize)
+  
+  def read(in: DataInput): IFFT = {
+    readArity(in, 4)
+    val _rate     = readRate(in)
+    val _chain    = readGE(in)
+    val _winType  = readGE(in)
+    val _winSize  = readGE(in)
+    new IFFT(_rate, _chain, _winType, _winSize)
+  }
 }
 
 /** A UGen performing an inverse FFT, transforming a buffer containing a spectral
@@ -190,7 +210,15 @@ final case class IFFT(rate: Rate, chain: GE, winType: GE = 0, winSize: GE = 0)
   * provide a buffer whose content had already been transformed into the Fourier
   * domain.
   */
-object FFTTrigger
+object FFTTrigger extends Reader[FFTTrigger] {
+  def read(in: DataInput): FFTTrigger = {
+    readArity(in, 3)
+    val _buf    = readGE(in)
+    val _hop    = readGE(in)
+    val _polar  = readGE(in)
+    new FFTTrigger(_buf, _hop, _polar)
+  }
+}
 
 /** A phase vocoder UGen that takes a buffer and prepares it to be used in FFT
   * chains, without doing an actual FFT on a signal. This is useful if you want to
@@ -215,7 +243,14 @@ final case class FFTTrigger(buf: GE, hop: GE = 0.5f, polar: GE = 0)
 /** A phase vocoder UGen that passes only those bins whose magnitudes are above a
   * given threshold.
   */
-object PV_MagAbove
+object PV_MagAbove extends Reader[PV_MagAbove] {
+  def read(in: DataInput): PV_MagAbove = {
+    readArity(in, 2)
+    val _chain  = readGE(in)
+    val _thresh = readGE(in)
+    new PV_MagAbove(_chain, _thresh)
+  }
+}
 
 /** A phase vocoder UGen that passes only those bins whose magnitudes are above a
   * given threshold.
@@ -235,7 +270,14 @@ final case class PV_MagAbove(chain: GE, thresh: GE = 0.0f)
 /** A phase vocoder UGen that passes only those bins whose magnitudes are below a
   * given threshold.
   */
-object PV_MagBelow
+object PV_MagBelow extends Reader[PV_MagBelow] {
+  def read(in: DataInput): PV_MagBelow = {
+    readArity(in, 2)
+    val _chain  = readGE(in)
+    val _thresh = readGE(in)
+    new PV_MagBelow(_chain, _thresh)
+  }
+}
 
 /** A phase vocoder UGen that passes only those bins whose magnitudes are below a
   * given threshold.
@@ -255,7 +297,14 @@ final case class PV_MagBelow(chain: GE, thresh: GE = 0.0f)
 /** A phase vocoder UGen that limits (clips) the magnitude of the bins to a given
   * threshold.
   */
-object PV_MagClip
+object PV_MagClip extends Reader[PV_MagClip] {
+  def read(in: DataInput): PV_MagClip = {
+    readArity(in, 2)
+    val _chain  = readGE(in)
+    val _thresh = readGE(in)
+    new PV_MagClip(_chain, _thresh)
+  }
+}
 
 /** A phase vocoder UGen that limits (clips) the magnitude of the bins to a given
   * threshold.
@@ -276,7 +325,14 @@ final case class PV_MagClip(chain: GE, thresh: GE = 0.0f)
 /** A phase vocoder UGen that multiplies the magnitudes of two inputs and keeps the
   * phases of the first input.
   */
-object PV_MagMul
+object PV_MagMul extends Reader[PV_MagMul] {
+  def read(in: DataInput): PV_MagMul = {
+    readArity(in, 2)
+    val _chainA = readGE(in)
+    val _chainB = readGE(in)
+    new PV_MagMul(_chainA, _chainB)
+  }
+}
 
 /** A phase vocoder UGen that multiplies the magnitudes of two inputs and keeps the
   * phases of the first input.
@@ -297,7 +353,15 @@ final case class PV_MagMul(chainA: GE, chainB: GE)
 /** A phase vocoder UGen that divides magnitudes of two inputs and keeps the phases
   * of the first input.
   */
-object PV_MagDiv
+object PV_MagDiv extends Reader[PV_MagDiv] {
+  def read(in: DataInput): PV_MagDiv = {
+    readArity(in, 3)
+    val _chainA = readGE(in)
+    val _chainB = readGE(in)
+    val _zeroes = readGE(in)
+    new PV_MagDiv(_chainA, _chainB, _zeroes)
+  }
+}
 
 /** A phase vocoder UGen that divides magnitudes of two inputs and keeps the phases
   * of the first input.
@@ -324,7 +388,13 @@ final case class PV_MagDiv(chainA: GE, chainB: GE, zeroes: GE = 1.0E-4f)
 /** A phase vocoder UGen that squares the magnitudes and re-normalizes to previous
   * peak. This makes weak bins weaker.
   */
-object PV_MagSquared
+object PV_MagSquared extends Reader[PV_MagSquared] {
+  def read(in: DataInput): PV_MagSquared = {
+    readArity(in, 1)
+    val _chain = readGE(in)
+    new PV_MagSquared(_chain)
+  }
+}
 
 /** A phase vocoder UGen that squares the magnitudes and re-normalizes to previous
   * peak. This makes weak bins weaker.
@@ -342,7 +412,13 @@ final case class PV_MagSquared(chain: GE)
 
 /** A phase vocoder UGen that multiplies the magnitudes by random noise.
   */
-object PV_MagNoise
+object PV_MagNoise extends Reader[PV_MagNoise] {
+  def read(in: DataInput): PV_MagNoise = {
+    readArity(in, 1)
+    val _chain = readGE(in)
+    new PV_MagNoise(_chain)
+  }
+}
 
 /** A phase vocoder UGen that multiplies the magnitudes by random noise.
   * 
@@ -364,7 +440,14 @@ final case class PV_MagNoise(chain: GE)
   * chainA, so you chan insert the ugen at the appropriate place in the signal
   * chain.
   */
-object PV_Copy
+object PV_Copy extends Reader[PV_Copy] {
+  def read(in: DataInput): PV_Copy = {
+    readArity(in, 2)
+    val _chainA = readGE(in)
+    val _chainB = readGE(in)
+    new PV_Copy(_chainA, _chainB)
+  }
+}
 
 /** A phase vocoder UGen that copies the spectral frames from chainA to chainB.
   * This allows for parallel processing of spectral data without the need for
@@ -389,7 +472,14 @@ final case class PV_Copy(chainA: GE, chainB: GE)
 /** A phase vocoder UGen that combines the magnitudes of first input and phases of
   * the second input. phases of the first input.
   */
-object PV_CopyPhase
+object PV_CopyPhase extends Reader[PV_CopyPhase] {
+  def read(in: DataInput): PV_CopyPhase = {
+    readArity(in, 2)
+    val _chainA = readGE(in)
+    val _chainB = readGE(in)
+    new PV_CopyPhase(_chainA, _chainB)
+  }
+}
 
 /** A phase vocoder UGen that combines the magnitudes of first input and phases of
   * the second input. phases of the first input.
@@ -409,7 +499,14 @@ final case class PV_CopyPhase(chainA: GE, chainB: GE)
 
 /** A phase vocoder UGen that shifts the phase of each bins by a given amount.
   */
-object PV_PhaseShift
+object PV_PhaseShift extends Reader[PV_PhaseShift] {
+  def read(in: DataInput): PV_PhaseShift = {
+    readArity(in, 2)
+    val _chain  = readGE(in)
+    val _shift  = readGE(in)
+    new PV_PhaseShift(_chain, _shift)
+  }
+}
 
 /** A phase vocoder UGen that shifts the phase of each bins by a given amount.
   * 
@@ -427,7 +524,13 @@ final case class PV_PhaseShift(chain: GE, shift: GE)
 
 /** A phase vocoder UGen that shift the phase of all bins by 90 degrees.
   */
-object PV_PhaseShift90
+object PV_PhaseShift90 extends Reader[PV_PhaseShift90] {
+  def read(in: DataInput): PV_PhaseShift90 = {
+    readArity(in, 1)
+    val _chain = readGE(in)
+    new PV_PhaseShift90(_chain)
+  }
+}
 
 /** A phase vocoder UGen that shift the phase of all bins by 90 degrees.
   * 
@@ -444,7 +547,13 @@ final case class PV_PhaseShift90(chain: GE)
 
 /** A phase vocoder UGen that shift the phase of all bins by 270 (or -90) degrees.
   */
-object PV_PhaseShift270
+object PV_PhaseShift270 extends Reader[PV_PhaseShift270] {
+  def read(in: DataInput): PV_PhaseShift270 = {
+    readArity(in, 1)
+    val _chain = readGE(in)
+    new PV_PhaseShift270(_chain)
+  }
+}
 
 /** A phase vocoder UGen that shift the phase of all bins by 270 (or -90) degrees.
   * 
@@ -462,7 +571,14 @@ final case class PV_PhaseShift270(chain: GE)
 /** A phase vocoder UGen that outputs the bins with the minimum magnitude of the
   * two inputs.
   */
-object PV_Min
+object PV_Min extends Reader[PV_Min] {
+  def read(in: DataInput): PV_Min = {
+    readArity(in, 2)
+    val _chainA = readGE(in)
+    val _chainB = readGE(in)
+    new PV_Min(_chainA, _chainB)
+  }
+}
 
 /** A phase vocoder UGen that outputs the bins with the minimum magnitude of the
   * two inputs.
@@ -483,7 +599,14 @@ final case class PV_Min(chainA: GE, chainB: GE)
 /** A phase vocoder UGen that outputs the bins with the maximum magnitude of the
   * two inputs.
   */
-object PV_Max
+object PV_Max extends Reader[PV_Max] {
+  def read(in: DataInput): PV_Max = {
+    readArity(in, 2)
+    val _chainA = readGE(in)
+    val _chainB = readGE(in)
+    new PV_Max(_chainA, _chainB)
+  }
+}
 
 /** A phase vocoder UGen that outputs the bins with the maximum magnitude of the
   * two inputs.
@@ -505,7 +628,14 @@ final case class PV_Max(chainA: GE, chainB: GE)
   * The formula is
   * `(Re(A) * Re(B) - Im(A) * Im(B)) + i(Im(A) * Re(B) + Re(A) * Im(B))` .
   */
-object PV_Mul
+object PV_Mul extends Reader[PV_Mul] {
+  def read(in: DataInput): PV_Mul = {
+    readArity(in, 2)
+    val _chainA = readGE(in)
+    val _chainB = readGE(in)
+    new PV_Mul(_chainA, _chainB)
+  }
+}
 
 /** A phase vocoder UGen that performs a complex multiplication of the two inputs.
   * The formula is
@@ -528,7 +658,14 @@ final case class PV_Mul(chainA: GE, chainB: GE)
   * careful that `chainB` , the divisor, does not contain zeroes as they would
   * obviously blow up the division.
   */
-object PV_Div
+object PV_Div extends Reader[PV_Div] {
+  def read(in: DataInput): PV_Div = {
+    readArity(in, 2)
+    val _chainA = readGE(in)
+    val _chainB = readGE(in)
+    new PV_Div(_chainA, _chainB)
+  }
+}
 
 /** A phase vocoder UGen that performs a complex division of the two inputs. Be
   * careful that `chainB` , the divisor, does not contain zeroes as they would
@@ -550,7 +687,14 @@ final case class PV_Div(chainA: GE, chainB: GE)
 /** A phase vocoder UGen that performs a complex addition of the two inputs. The
   * formula is `(Re(A) + Re(B)) + i(Im(A) + Im(B))` .
   */
-object PV_Add
+object PV_Add extends Reader[PV_Add] {
+  def read(in: DataInput): PV_Add = {
+    readArity(in, 2)
+    val _chainA = readGE(in)
+    val _chainB = readGE(in)
+    new PV_Add(_chainA, _chainB)
+  }
+}
 
 /** A phase vocoder UGen that performs a complex addition of the two inputs. The
   * formula is `(Re(A) + Re(B)) + i(Im(A) + Im(B))` .
@@ -575,7 +719,16 @@ final case class PV_Add(chainA: GE, chainB: GE)
   * 
   * @see [[de.sciss.synth.ugen.PV_RectComb2$ PV_RectComb2]]
   */
-object PV_RectComb
+object PV_RectComb extends Reader[PV_RectComb] {
+  def read(in: DataInput): PV_RectComb = {
+    readArity(in, 4)
+    val _chain    = readGE(in)
+    val _numTeeth = readGE(in)
+    val _phase    = readGE(in)
+    val _width    = readGE(in)
+    new PV_RectComb(_chain, _numTeeth, _phase, _width)
+  }
+}
 
 /** A phase vocoder UGen that makes a series of gaps in a spectrum. This is done by
   * multiplying the spectrum with a kind of rectangle wave that goes from zero to
@@ -616,7 +769,17 @@ final case class PV_RectComb(chain: GE, numTeeth: GE = 1.0f, phase: GE = 0.0f, w
   * 
   * @see [[de.sciss.synth.ugen.PV_RectComb$ PV_RectComb]]
   */
-object PV_RectComb2
+object PV_RectComb2 extends Reader[PV_RectComb2] {
+  def read(in: DataInput): PV_RectComb2 = {
+    readArity(in, 5)
+    val _chainA   = readGE(in)
+    val _chainB   = readGE(in)
+    val _numTeeth = readGE(in)
+    val _phase    = readGE(in)
+    val _width    = readGE(in)
+    new PV_RectComb2(_chainA, _chainB, _numTeeth, _phase, _width)
+  }
+}
 
 /** A phase vocoder UGen that switches between two input spectra according to a
   * rectangle wave. This is basically identical to `PV_RectComb` , however during
@@ -658,7 +821,14 @@ final case class PV_RectComb2(chainA: GE, chainB: GE, numTeeth: GE = 1.0f, phase
 
 /** A phase vocoder UGen that clears bins above or below a cutoff point.
   */
-object PV_BrickWall
+object PV_BrickWall extends Reader[PV_BrickWall] {
+  def read(in: DataInput): PV_BrickWall = {
+    readArity(in, 2)
+    val _chain  = readGE(in)
+    val _wipe   = readGE(in)
+    new PV_BrickWall(_chain, _wipe)
+  }
+}
 
 /** A phase vocoder UGen that clears bins above or below a cutoff point.
   * 
@@ -684,7 +854,15 @@ final case class PV_BrickWall(chain: GE, wipe: GE)
   * 
   * @see [[de.sciss.synth.ugen.PV_RandWipe$ PV_RandWipe]]
   */
-object PV_BinWipe
+object PV_BinWipe extends Reader[PV_BinWipe] {
+  def read(in: DataInput): PV_BinWipe = {
+    readArity(in, 3)
+    val _chainA = readGE(in)
+    val _chainB = readGE(in)
+    val _wipe   = readGE(in)
+    new PV_BinWipe(_chainA, _chainB, _wipe)
+  }
+}
 
 /** A phase vocoder UGen that combine low and high bins from two inputs. It does so
   * by copying low bins from one input and the high bins of the other, thus realizes
@@ -714,7 +892,14 @@ final case class PV_BinWipe(chainA: GE, chainB: GE, wipe: GE)
   * local maxima. Additionally, the given threshold is also used to filter out bins
   * whose magnitude lies below this threshold.
   */
-object PV_LocalMax
+object PV_LocalMax extends Reader[PV_LocalMax] {
+  def read(in: DataInput): PV_LocalMax = {
+    readArity(in, 2)
+    val _chain  = readGE(in)
+    val _thresh = readGE(in)
+    new PV_LocalMax(_chain, _thresh)
+  }
+}
 
 /** A phase vocoder UGen that passes only those bins whose magnitudes constitute
   * local maxima. Additionally, the given threshold is also used to filter out bins
@@ -737,7 +922,13 @@ final case class PV_LocalMax(chain: GE, thresh: GE = 0.0f)
   * counterparts. The complex conjugate is equal to the input, but with reversed
   * sign of the imaginary part.
   */
-object PV_Conj
+object PV_Conj extends Reader[PV_Conj] {
+  def read(in: DataInput): PV_Conj = {
+    readArity(in, 1)
+    val _chain = readGE(in)
+    new PV_Conj(_chain)
+  }
+}
 
 /** A phase vocoder UGen that converts the bins into their complex conjugate
   * counterparts. The complex conjugate is equal to the input, but with reversed
@@ -757,7 +948,16 @@ final case class PV_Conj(chain: GE)
 /** A phase vocoder UGen that randomizes the order of the bins. The trigger will
   * select a new random ordering.
   */
-object PV_BinScramble
+object PV_BinScramble extends Reader[PV_BinScramble] {
+  def read(in: DataInput): PV_BinScramble = {
+    readArity(in, 4)
+    val _chain  = readGE(in)
+    val _wipe   = readGE(in)
+    val _width  = readGE(in)
+    val _trig   = readGE(in)
+    new PV_BinScramble(_chain, _wipe, _width, _trig)
+  }
+}
 
 /** A phase vocoder UGen that randomizes the order of the bins. The trigger will
   * select a new random ordering.
@@ -784,7 +984,14 @@ final case class PV_BinScramble(chain: GE, wipe: GE = 0.5f, width: GE = 0.2f, tr
 
 /** A phase vocoder UGen that averages each bin's magnitude with its neighbors.
   */
-object PV_MagSmear
+object PV_MagSmear extends Reader[PV_MagSmear] {
+  def read(in: DataInput): PV_MagSmear = {
+    readArity(in, 2)
+    val _chain  = readGE(in)
+    val _bins   = readGE(in)
+    new PV_MagSmear(_chain, _bins)
+  }
+}
 
 /** A phase vocoder UGen that averages each bin's magnitude with its neighbors.
   * 
@@ -806,7 +1013,15 @@ final case class PV_MagSmear(chain: GE, bins: GE = 1)
   * bins (magnitude and phase), this only operates on the magnitudes and leaves the
   * phases in their original bins.
   */
-object PV_MagShift
+object PV_MagShift extends Reader[PV_MagShift] {
+  def read(in: DataInput): PV_MagShift = {
+    readArity(in, 3)
+    val _chain    = readGE(in)
+    val _stretch  = readGE(in)
+    val _shift    = readGE(in)
+    new PV_MagShift(_chain, _stretch, _shift)
+  }
+}
 
 /** A phase vocoder UGen that stretches and shifts the magnitudes of the spectrum.
   * This is live `PV_BinShift` but instead of scaling and shifting the whole complex
@@ -831,7 +1046,15 @@ final case class PV_MagShift(chain: GE, stretch: GE = 1.0f, shift: GE = 0.0f)
   * first stretches (scales) its position (bin number) with a given factor, and then
   * adds a shift to it.
   */
-object PV_BinShift
+object PV_BinShift extends Reader[PV_BinShift] {
+  def read(in: DataInput): PV_BinShift = {
+    readArity(in, 3)
+    val _chain    = readGE(in)
+    val _stretch  = readGE(in)
+    val _shift    = readGE(in)
+    new PV_BinShift(_chain, _stretch, _shift)
+  }
+}
 
 /** A phase vocoder UGen that stretches and shifts the spectrum. It takes each bin,
   * first stretches (scales) its position (bin number) with a given factor, and then
@@ -860,7 +1083,16 @@ final case class PV_BinShift(chain: GE, stretch: GE = 1.0f, shift: GE = 0.0f)
   * 
   * @see [[de.sciss.synth.ugen.PV_BinWipe$ PV_BinWipe]]
   */
-object PV_RandWipe
+object PV_RandWipe extends Reader[PV_RandWipe] {
+  def read(in: DataInput): PV_RandWipe = {
+    readArity(in, 4)
+    val _chainA = readGE(in)
+    val _chainB = readGE(in)
+    val _wipe   = readGE(in)
+    val _trig   = readGE(in)
+    new PV_RandWipe(_chainA, _chainB, _wipe, _trig)
+  }
+}
 
 /** A phase vocoder UGen that cross-fades between two input spectra by taking bins
   * randomly from them according to a given probability.
@@ -894,7 +1126,14 @@ final case class PV_RandWipe(chainA: GE, chainB: GE, wipe: GE, trig: GE)
 /** A phase vocoder UGen that adds a different constant random phase shift to each
   * bin. The trigger will select a new set of random phases.
   */
-object PV_Diffuser
+object PV_Diffuser extends Reader[PV_Diffuser] {
+  def read(in: DataInput): PV_Diffuser = {
+    readArity(in, 2)
+    val _chain  = readGE(in)
+    val _trig   = readGE(in)
+    new PV_Diffuser(_chain, _trig)
+  }
+}
 
 /** A phase vocoder UGen that adds a different constant random phase shift to each
   * bin. The trigger will select a new set of random phases.
@@ -916,7 +1155,15 @@ final case class PV_Diffuser(chain: GE, trig: GE = 1)
   * are wiped out is subject to a random choice (only the amount is specified) that
   * remains constant between triggers.
   */
-object PV_RandComb
+object PV_RandComb extends Reader[PV_RandComb] {
+  def read(in: DataInput): PV_RandComb = {
+    readArity(in, 3)
+    val _chain  = readGE(in)
+    val _wipe   = readGE(in)
+    val _trig   = readGE(in)
+    new PV_RandComb(_chain, _wipe, _trig)
+  }
+}
 
 /** A phase vocoder UGen that randomly clears out bins of the signal. Which bins
   * are wiped out is subject to a random choice (only the amount is specified) that
@@ -941,7 +1188,14 @@ final case class PV_RandComb(chain: GE, wipe: GE = 0.5f, trig: GE = 1)
 /** A phase vocoder UGen that freezes the magnitudes at current levels. Freezing
   * happens when the freeze input has a value of > 0.
   */
-object PV_MagFreeze
+object PV_MagFreeze extends Reader[PV_MagFreeze] {
+  def read(in: DataInput): PV_MagFreeze = {
+    readArity(in, 2)
+    val _chain  = readGE(in)
+    val _freeze = readGE(in)
+    new PV_MagFreeze(_chain, _freeze)
+  }
+}
 
 /** A phase vocoder UGen that freezes the magnitudes at current levels. Freezing
   * happens when the freeze input has a value of > 0.
@@ -1012,7 +1266,7 @@ final case class PV_MagFreeze(chain: GE, freeze: GE = 1)
   * @see [[de.sciss.synth.ugen.Convolution$ Convolution]]
   * @see [[de.sciss.synth.ugen.Convolution2$ Convolution2]]
   */
-object PartConv {
+object PartConv extends Reader[PartConv] {
   /** @param in               the realtime input to be convolved
     * @param fftSize          FFT size which is twice the input signal partition
     *                         size. This must be a multiple of the control-block size,
@@ -1022,6 +1276,15 @@ object PartConv {
     *                         only). ''(init-time only)''
     */
   def ar(in: GE, fftSize: GE, buf: GE): PartConv = new PartConv(audio, in, fftSize, buf)
+  
+  def read(in: DataInput): PartConv = {
+    readArity(in, 4)
+    val _rate     = readRate(in)
+    val _in       = readGE(in)
+    val _fftSize  = readGE(in)
+    val _buf      = readGE(in)
+    new PartConv(_rate, _in, _fftSize, _buf)
+  }
 }
 
 /** A UGen for partitioned convolution. Its advantage over non-partitioning UGens
