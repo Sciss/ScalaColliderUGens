@@ -37,7 +37,7 @@ object CheckBadValues extends ProductReader[CheckBadValues] {
     */
   def ar(in: GE, id: GE = 0, post: GE = 2): CheckBadValues = new CheckBadValues(audio, in, id, post)
   
-  def read(in: RefMapIn, arity: Int): CheckBadValues = {
+  def read(in: RefMapIn, prefix: String, arity: Int): CheckBadValues = {
     require (arity == 4)
     val _rate = in.readRate()
     val _in   = in.readGE()

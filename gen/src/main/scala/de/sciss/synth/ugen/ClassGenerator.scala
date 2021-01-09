@@ -60,7 +60,7 @@ final class ClassGenerator {
         source.close()
       }
     }
-    val (hasFile, names) = {
+    val (hasFile, classNames) = {
       val specs0 = (node \ "ugen") map { uNode =>
         UGenSpec.parse(uNode, docs = docs, verify = true)
       }
@@ -70,10 +70,10 @@ final class ClassGenerator {
         if (res) performSpecs(specs, f, revision = revision, thirdParty = thirdParty)
         res
       }
-      (_hasFile, specs0.map(_.name))
+      (_hasFile, specs0.map(_.className))
     }
     if (hasFile) println(f.absolutePath)
-    names.toIndexedSeq
+    classNames.toIndexedSeq
 
   } catch {
     case NonFatal(e) =>
@@ -696,7 +696,7 @@ final class ClassGenerator {
       MethodDef(
         name    = "read",
         tpe     = Nil,
-        params  = (ParamDef("in", "RefMapIn") :: ParamDef("arity", "Int") :: Nil) :: Nil,
+        params  = (ParamDef("in", "RefMapIn") :: ParamDef("prefix", "String") :: ParamDef("arity", "Int") :: Nil) :: Nil,
         ret     = className, // readerType,
         body    = Block(mBlock: _*)
       )

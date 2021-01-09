@@ -38,7 +38,7 @@ object BeatTrack extends ProductReader[BeatTrack] {
     */
   def kr(chain: GE, lock: GE = 0.0f): BeatTrack = new BeatTrack(chain, lock)
   
-  def read(in: RefMapIn, arity: Int): BeatTrack = {
+  def read(in: RefMapIn, prefix: String, arity: Int): BeatTrack = {
     require (arity == 2)
     val _chain  = in.readGE()
     val _lock   = in.readGE()
@@ -115,7 +115,7 @@ object Loudness extends ProductReader[Loudness] {
     */
   def kr(chain: GE, smask: GE = 0.25f, tmask: GE = 1.0f): Loudness = new Loudness(chain, smask, tmask)
   
-  def read(in: RefMapIn, arity: Int): Loudness = {
+  def read(in: RefMapIn, prefix: String, arity: Int): Loudness = {
     require (arity == 3)
     val _chain  = in.readGE()
     val _smask  = in.readGE()
@@ -180,7 +180,7 @@ object KeyTrack extends ProductReader[KeyTrack] {
   def kr(chain: GE, keyDecay: GE = 2.0f, chromaLeak: GE = 0.5f): KeyTrack = 
     new KeyTrack(chain, keyDecay, chromaLeak)
   
-  def read(in: RefMapIn, arity: Int): KeyTrack = {
+  def read(in: RefMapIn, prefix: String, arity: Int): KeyTrack = {
     require (arity == 3)
     val _chain      = in.readGE()
     val _keyDecay   = in.readGE()
@@ -248,7 +248,7 @@ object MFCC extends ProductReader[MFCC] {
     */
   def kr(chain: GE, numCoeffs: Int = 13): MFCC = new MFCC(chain, numCoeffs)
   
-  def read(in: RefMapIn, arity: Int): MFCC = {
+  def read(in: RefMapIn, prefix: String, arity: Int): MFCC = {
     require (arity == 2)
     val _chain      = in.readGE()
     val _numCoeffs  = in.readInt()
@@ -359,7 +359,7 @@ object Onsets extends ProductReader[Onsets] {
   def kr(chain: GE, thresh: GE = 0.5f, fun: GE = 3, decay: GE = 1.0f, noiseFloor: GE = 0.1f, minGap: GE = 10, medianSpan: GE = 11, whType: GE = 1, raw: GE = 0): Onsets = 
     new Onsets(chain, thresh, fun, decay, noiseFloor, minGap, medianSpan, whType, raw)
   
-  def read(in: RefMapIn, arity: Int): Onsets = {
+  def read(in: RefMapIn, prefix: String, arity: Int): Onsets = {
     require (arity == 9)
     val _chain      = in.readGE()
     val _thresh     = in.readGE()
@@ -505,7 +505,7 @@ object BeatTrack2 extends ProductReader[BeatTrack2] {
   def kr(bus: GE, numChannels: GE, winSize: GE = 2, phaseSpacing: GE = 0.02f, lock: GE = 0, weighting: GE = -2.1f): BeatTrack2 = 
     new BeatTrack2(bus, numChannels, winSize, phaseSpacing, lock, weighting)
   
-  def read(in: RefMapIn, arity: Int): BeatTrack2 = {
+  def read(in: RefMapIn, prefix: String, arity: Int): BeatTrack2 = {
     require (arity == 6)
     val _bus          = in.readGE()
     val _numChannels  = in.readGE()
@@ -617,7 +617,7 @@ object SpecFlatness extends ProductReader[SpecFlatness] {
     */
   def kr(chain: GE): SpecFlatness = new SpecFlatness(chain)
   
-  def read(in: RefMapIn, arity: Int): SpecFlatness = {
+  def read(in: RefMapIn, prefix: String, arity: Int): SpecFlatness = {
     require (arity == 1)
     val _chain = in.readGE()
     new SpecFlatness(_chain)
@@ -674,7 +674,7 @@ object SpecPcile extends ProductReader[SpecPcile] {
   def kr(chain: GE, percent: GE = 0.5f, interp: GE = 0): SpecPcile = 
     new SpecPcile(chain, percent, interp)
   
-  def read(in: RefMapIn, arity: Int): SpecPcile = {
+  def read(in: RefMapIn, prefix: String, arity: Int): SpecPcile = {
     require (arity == 3)
     val _chain    = in.readGE()
     val _percent  = in.readGE()
@@ -735,7 +735,7 @@ object SpecCentroid extends ProductReader[SpecCentroid] {
     */
   def kr(chain: GE): SpecCentroid = new SpecCentroid(chain)
   
-  def read(in: RefMapIn, arity: Int): SpecCentroid = {
+  def read(in: RefMapIn, prefix: String, arity: Int): SpecCentroid = {
     require (arity == 1)
     val _chain = in.readGE()
     new SpecCentroid(_chain)

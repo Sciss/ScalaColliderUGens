@@ -17,7 +17,7 @@ package ugen
 import UGenSource._
 
 object ChannelProxy extends ProductReader[ChannelProxy] {
-  def read(in: RefMapIn, arity: Int): ChannelProxy = {
+  override def read(in: RefMapIn, prefix: String, arity: Int): ChannelProxy = {
     require (arity == 2)
     val _elem   = in.readGE()
     val _index  = in.readInt()

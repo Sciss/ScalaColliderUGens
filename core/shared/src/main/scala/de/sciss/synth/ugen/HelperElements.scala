@@ -21,7 +21,7 @@ import de.sciss.synth.ugen.ControlProxyFactory._
 import scala.annotation.{switch, tailrec}
 
 object Flatten extends ProductReader[Flatten] {
-  def read(in: RefMapIn, arity: Int): Flatten = {
+  override def read(in: RefMapIn, prefix: String, arity: Int): Flatten = {
     require (arity == 1)
     val _elem = in.readGE()
     new Flatten(_elem)
@@ -176,14 +176,14 @@ object Mix extends ProductReader[Mix] {
     */
   def fold(elem: GE, n: Int)(fun: GE => GE): GE = (1 to n).foldLeft(elem) { (res, _) => fun(res) }
 
-  def read(in: RefMapIn, arity: Int): Mix = {
+  override def read(in: RefMapIn, prefix: String, arity: Int): Mix = {
     require (arity == 1)
     val _elem = in.readGE()
     new Mix(_elem)
   }
 
   object Mono extends ProductReader[Mono] {
-    def read(in: RefMapIn, arity: Int): Mono = {
+    override def read(in: RefMapIn, prefix: String, arity: Int): Mono = {
       require (arity == 1)
       val _elem = in.readGE()
       new Mono(_elem)
@@ -279,7 +279,7 @@ final case class Mix(elem: GE) extends UGenSource.SingleOut {  // XXX TODO: shou
 }
 
 object Zip extends ProductReader[Zip] {
-  def read(in: RefMapIn, arity: Int): Zip = {
+  override def read(in: RefMapIn, prefix: String, arity: Int): Zip = {
     require (arity == 1)
     val _elems = in.readGEVec()
     new Zip(_elems: _*)
@@ -335,10 +335,10 @@ object Reduce extends ProductReader[Reduce] {
   def |  (elem: GE): Reduce = apply(elem, BitOr )
   def ^  (elem: GE): Reduce = apply(elem, BitXor)
 
-  def read(in: RefMapIn, arity: Int): Reduce = {
+  override def read(in: RefMapIn, prefix: String, arity: Int): Reduce = {
     require (arity == 2)
     val _elem = in.readGE()
-    val _op   = BinaryOpUGen.readOp(in)
+    val _op   = in.readProductT[BinaryOpUGen.Op]()
     new Reduce(_elem, _op)
   }
 }
@@ -371,7 +371,7 @@ object WrapOut extends ProductReader[WrapOut] {
     res.expand.flatOutputs.head
   }
 
-  def read(in: RefMapIn, arity: Int): WrapOut = {
+  override def read(in: RefMapIn, prefix: String, arity: Int): WrapOut = {
     require (arity == 2)
     val _in       = in.readGE()
     val _fadeTime = in.readDouble()
@@ -435,7 +435,7 @@ object SplayAz extends ProductReader[SplayAz] {
          width: GE = 2f, orient: GE = 0f): SplayAz =
     apply(audio, numChannels, in, spread, center, level, width, orient)
 
-  def read(in: RefMapIn, arity: Int): SplayAz = {
+  override def read(in: RefMapIn, prefix: String, arity: Int): SplayAz = {
     require (arity == 8)
     val _rate         = in.readRate()
     val _numChannels  = in.readInt()
@@ -485,7 +485,7 @@ final case class SplayAz(rate: Rate, numChannels: Int, in: GE, spread: GE, cente
 }
 
 object LinLin extends ProductReader[LinLin] {
-  def read(in: RefMapIn, arity: Int): LinLin = {
+  override def read(in: RefMapIn, prefix: String, arity: Int): LinLin = {
     require (arity == 5)
     val _in     = in.readGE()
     val _srcLo  = in.readGE()
@@ -543,7 +543,7 @@ object Silent extends ProductReader[Silent] {
 
   def ar(numChannels: Int = 1): Silent = apply(numChannels)
 
-  def read(in: RefMapIn, arity: Int): Silent = {
+  override def read(in: RefMapIn, prefix: String, arity: Int): Silent = {
     require (arity == 1)
     val _numChannels = in.readInt()
     new Silent(_numChannels)
@@ -601,7 +601,7 @@ object PhysicalIn extends ProductReader[PhysicalIn] {
     */
   def ar(indices: GE, numChannels: Seq[Int]): PhysicalIn = apply(indices, numChannels)
 
-  def read(in: RefMapIn, arity: Int): PhysicalIn = {
+  override def read(in: RefMapIn, prefix: String, arity: Int): PhysicalIn = {
     require (arity == 2)
     val _indices      = in.readGE()
     val _numChannels  = in.readIntVec()
@@ -686,7 +686,7 @@ object PhysicalOut extends ProductReader[PhysicalOut] {
     */
   def ar(indices: GE = 0, in: GE): PhysicalOut = apply(indices, in)
 
-  def read(in: RefMapIn, arity: Int): PhysicalOut = {
+  override def read(in: RefMapIn, prefix: String, arity: Int): PhysicalOut = {
     require (arity == 2)
     val _indices  = in.readGE()
     val _in       = in.readGE()
@@ -735,7 +735,7 @@ final case class PhysicalOut(indices: GE, in: GE) extends UGenSource.ZeroOut wit
 }
 
 object RepeatChannels extends ProductReader[RepeatChannels] {
-  def read(in: RefMapIn, arity: Int): RepeatChannels = {
+  override def read(in: RefMapIn, prefix: String, arity: Int): RepeatChannels = {
     require (arity == 2)
     val _a    = in.readGE()
     val _num  = in.readInt()
@@ -807,7 +807,7 @@ final case class RepeatChannels(a: GE, num: Int) extends GE.Lazy {
 }
 
 object ChannelRangeProxy extends ProductReader[ChannelRangeProxy] {
-  def read(in: RefMapIn, arity: Int): ChannelRangeProxy = {
+  override def read(in: RefMapIn, prefix: String, arity: Int): ChannelRangeProxy = {
     require (arity == 4)
     val _elem   = in.readGE()
     val _from   = in.readInt()
@@ -868,7 +868,7 @@ final case class ChannelRangeProxy(elem: GE, from: Int, until: Int, step: Int) e
 }
 
 object ChannelIndices extends ProductReader[ChannelIndices] {
-  def read(in: RefMapIn, arity: Int): ChannelIndices = {
+  override def read(in: RefMapIn, prefix: String, arity: Int): ChannelIndices = {
     require (arity == 1)
     val _in = in.readGE()
     new ChannelIndices(_in)
@@ -903,7 +903,7 @@ final case class ChannelIndices(in: GE) extends UGenSource.SingleOut with Scalar
 }
 
 object NumChannels extends ProductReader[NumChannels] {
-  def read(in: RefMapIn, arity: Int): NumChannels = {
+  override def read(in: RefMapIn, prefix: String, arity: Int): NumChannels = {
     require (arity == 1)
     val _in = in.readGE()
     new NumChannels(_in)
@@ -949,7 +949,7 @@ object Pad extends ProductReader[Pad] {
     */
   def Split(in: GE): GE = GESeq(Vector(in))
 
-  def read(in: RefMapIn, arity: Int): Pad = {
+  override def read(in: RefMapIn, prefix: String, arity: Int): Pad = {
     require (arity == 2)
     val _in = in.readGE()
     val _to = in.readGE()

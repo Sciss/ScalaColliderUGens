@@ -15,11 +15,11 @@ package de.sciss.synth
 package ugen
 
 import java.io.IOException
-
 import de.sciss.file._
 import org.rogach.scallop.{ScallopConf, ScallopOption => Opt}
 import org.xml.sax.InputSource
 
+import java.net.MalformedURLException
 import scala.collection.immutable.{IndexedSeq => Vec}
 import scala.xml.XML
 
@@ -89,13 +89,19 @@ object Gen extends App {
       }
   }
 
-  val allNames: Vec[String] = inputs.flatMap { case (name, source) =>
-    val xml = XML.load(source)
+  val allClassNames: Vec[String] = inputs.flatMap { case (name, source) =>
+    val xml = try {
+      XML.load(source)
+    } catch {
+      case e: MalformedURLException =>
+        Console.err.println(s"Resource not found: $name")
+        throw e
+    }
     cg.performFile(xml, dir = outDir1, name = name, docs = docs, forceOverwrite = forceOverwrite)
-  } .toIndexedSeq
+  } .toIndexedSeq.sorted
 
   if (config.mkMap) {
-    val pairs = allNames.iterator.map { n =>
+    val pairs = allClassNames.iterator.map { n =>
       s"""    ("$n", $n),"""
     } .mkString("\n")
 

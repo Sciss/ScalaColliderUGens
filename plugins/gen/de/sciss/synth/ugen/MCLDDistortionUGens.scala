@@ -28,7 +28,7 @@ object InsideOut extends ProductReader[InsideOut] {
     */
   def ar(in: GE): InsideOut = new InsideOut(audio, in)
   
-  def read(in: RefMapIn, arity: Int): InsideOut = {
+  def read(in: RefMapIn, prefix: String, arity: Int): InsideOut = {
     require (arity == 2)
     val _rate = in.readMaybeRate()
     val _in   = in.readGE()
@@ -101,7 +101,7 @@ object WaveLoss extends ProductReader[WaveLoss] {
   def ar(in: GE, drop: GE = 20, chunk: GE = 40, mode: GE = 1): WaveLoss = 
     new WaveLoss(audio, in, drop, chunk, mode)
   
-  def read(in: RefMapIn, arity: Int): WaveLoss = {
+  def read(in: RefMapIn, prefix: String, arity: Int): WaveLoss = {
     require (arity == 5)
     val _rate   = in.readMaybeRate()
     val _in     = in.readGE()
@@ -193,7 +193,7 @@ object Squiz extends ProductReader[Squiz] {
   def ar(in: GE, pitchRatio: GE = 2, zeroCrossings: GE = 1, maxDur: GE = 0.1f): Squiz = 
     new Squiz(audio, in, pitchRatio, zeroCrossings, maxDur)
   
-  def read(in: RefMapIn, arity: Int): Squiz = {
+  def read(in: RefMapIn, prefix: String, arity: Int): Squiz = {
     require (arity == 5)
     val _rate           = in.readRate()
     val _in             = in.readGE()

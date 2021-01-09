@@ -33,7 +33,7 @@ object UnaryOpUGen extends ProductReader[UnaryOpUGen] {
 
   def unapply(b: UnaryOpUGen): Option[(Op, GE)] = Some((b.selector, b.a))
 
-  object Op {
+  object Op extends ProductReader[Op] {
     def apply(id: Int): Op = (id: @switch) match {
       case Neg        .id => Neg
       case Not        .id => Not
@@ -85,6 +85,12 @@ object UnaryOpUGen extends ProductReader[UnaryOpUGen] {
       case TriWindow  .id => TriWindow
       case Ramp       .id => Ramp
       case Scurve     .id => Scurve
+    }
+
+    override def read(in: RefMapIn, prefix: String, arity: Int): Op = {
+      require (arity == 1)
+      val _id = in.readInt()
+      Op(_id)
     }
   }
 
@@ -412,11 +418,9 @@ object UnaryOpUGen extends ProductReader[UnaryOpUGen] {
     def make1(a: Float): Float = rf2.sCurve(a)
   }
 
-  private def readOp(in: RefMapIn): Op = ???
-
-  def read(in: RefMapIn, arity: Int): UnaryOpUGen = {
+  override def read(in: RefMapIn, prefix: String, arity: Int): UnaryOpUGen = {
     require (arity == 2)
-    val _op = readOp(in)
+    val _op = in.readProductT[Op]()
     val _a  = in.readGE()
     apply(_op, _a)
   }
@@ -470,7 +474,7 @@ object BinaryOpUGen extends ProductReader[BinaryOpUGen] {
 
   def unapply(b: BinaryOpUGen): Option[(Op, GE, GE)] = Some((b.selector, b.a, b.b))
 
-  object Op {
+  object Op extends ProductReader[Op] {
     def apply(id: Int): Op = (id: @switch) match {
       case Plus     .id => Plus
       case Minus    .id => Minus
@@ -518,6 +522,12 @@ object BinaryOpUGen extends ProductReader[BinaryOpUGen] {
       case Firstarg .id => Firstarg
       case Rrand    .id => Rrand
       case Exprand  .id => Exprand
+    }
+
+    override def read(in: RefMapIn, prefix: String, arity: Int): Op = {
+      require (arity == 1)
+      val _id = in.readInt()
+      Op(_id)
     }
   }
 
@@ -926,11 +936,9 @@ object BinaryOpUGen extends ProductReader[BinaryOpUGen] {
     override val name = "expRand"
   }
 
-  def readOp(in: RefMapIn): Op = ???
-
-  def read(in: RefMapIn, arity: Int): BinaryOpUGen = {
+  override def read(in: RefMapIn, productPrefix: String, arity: Int): BinaryOpUGen = {
     require (arity == 3)
-    val _op = readOp(in)
+    val _op = in.readProductT[Op]()
     val _a  = in.readGE()
     val _b  = in.readGE()
     apply(_op, _a, _b)

@@ -160,8 +160,7 @@ object UGenSource {
   // ---- serialization ----
 
   trait ProductReader[+A] {
-    // should we call this `readIdentified`?
-    def read(in: RefMapIn, arity: Int): A
+    def read(in: RefMapIn, prefix: String, arity: Int): A
   }
 
   private val mapRead = mutable.Map.empty[String, ProductReader[Product]]
@@ -171,6 +170,9 @@ object UGenSource {
     private[this] var count = 0
 
     def in: DataInput = _in
+
+    def readProductT[A <: Product](): A =
+      readProduct().asInstanceOf[A]
 
     def readProduct(): Product = {
       val cookie = _in.readByte().toChar
@@ -183,7 +185,7 @@ object UGenSource {
           val prefix  = _in.readUTF()
           val r       = mapRead.getOrElse(prefix, throw new NoSuchElementException(s"Unknown element '$prefix'"))
           val arity   = in.readShort().toInt
-          val res     = r.read(this, arity)
+          val res     = r.read(this, prefix, arity)
           val id      = count
           map    += ((id, res))
           count   = id + 1
@@ -204,7 +206,7 @@ object UGenSource {
     def readGEDone(): GE with HasDoneFlag =
       readProduct().asInstanceOf[GE with HasDoneFlag]
 
-    private def readVec[A](elem: => A): Vec[A] = {
+    def readVec[A](elem: => A): Vec[A] = {
       val cookie = _in.readByte()
       if (cookie != 'X') sys.error(s"Unexpected cookie '$cookie' is not 'X'")
       val size = in.readInt()

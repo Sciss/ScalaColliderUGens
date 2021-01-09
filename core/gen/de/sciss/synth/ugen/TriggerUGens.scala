@@ -38,7 +38,7 @@ object Trig1 extends ProductReader[Trig1] {
     */
   def ar(in: GE, dur: GE = 0.1f): Trig1 = new Trig1(audio, in, dur)
   
-  def read(in: RefMapIn, arity: Int): Trig1 = {
+  def read(in: RefMapIn, prefix: String, arity: Int): Trig1 = {
     require (arity == 3)
     val _rate = in.readRate()
     val _in   = in.readGE()
@@ -105,7 +105,7 @@ object Trig extends ProductReader[Trig] {
     */
   def ar(in: GE, dur: GE = 0.1f): Trig = new Trig(audio, in, dur)
   
-  def read(in: RefMapIn, arity: Int): Trig = {
+  def read(in: RefMapIn, prefix: String, arity: Int): Trig = {
     require (arity == 3)
     val _rate = in.readRate()
     val _in   = in.readGE()
@@ -174,7 +174,7 @@ object SendTrig extends ProductReader[SendTrig] {
     */
   def ar(trig: GE, value: GE = 0.0f, id: GE = 0): SendTrig = new SendTrig(audio, trig, value, id)
   
-  def read(in: RefMapIn, arity: Int): SendTrig = {
+  def read(in: RefMapIn, prefix: String, arity: Int): SendTrig = {
     require (arity == 4)
     val _rate   = in.readMaybeRate()
     val _trig   = in.readGE()
@@ -261,7 +261,7 @@ object SendReply extends ProductReader[SendReply] {
   def ar(trig: GE, values: GE, msgName: String = "/reply", id: GE = 0): SendReply = 
     new SendReply(audio, trig, values, msgName, id)
   
-  def read(in: RefMapIn, arity: Int): SendReply = {
+  def read(in: RefMapIn, prefix: String, arity: Int): SendReply = {
     require (arity == 5)
     val _rate     = in.readMaybeRate()
     val _trig     = in.readGE()
@@ -334,7 +334,7 @@ object Poll extends ProductReader[Poll] {
   def ar(trig: GE, in: GE, label: String = "poll", trigId: GE = -1): Poll = 
     new Poll(audio, trig, in, label, trigId)
   
-  def read(in: RefMapIn, arity: Int): Poll = {
+  def read(in: RefMapIn, prefix: String, arity: Int): Poll = {
     require (arity == 5)
     val _rate   = in.readMaybeRate()
     val _trig   = in.readGE()
@@ -399,7 +399,7 @@ object ToggleFF extends ProductReader[ToggleFF] {
     */
   def ar(trig: GE): ToggleFF = new ToggleFF(audio, trig)
   
-  def read(in: RefMapIn, arity: Int): ToggleFF = {
+  def read(in: RefMapIn, prefix: String, arity: Int): ToggleFF = {
     require (arity == 2)
     val _rate = in.readMaybeRate()
     val _trig = in.readGE()
@@ -476,7 +476,7 @@ object SetResetFF extends ProductReader[SetResetFF] {
     */
   def ar(trig: GE, reset: GE): SetResetFF = new SetResetFF(audio, trig, reset)
   
-  def read(in: RefMapIn, arity: Int): SetResetFF = {
+  def read(in: RefMapIn, prefix: String, arity: Int): SetResetFF = {
     require (arity == 3)
     val _rate   = in.readMaybeRate()
     val _trig   = in.readGE()
@@ -528,7 +528,7 @@ object Latch extends ProductReader[Latch] {
     */
   def ar(in: GE, trig: GE = 1): Latch = new Latch(audio, in, trig)
   
-  def read(in: RefMapIn, arity: Int): Latch = {
+  def read(in: RefMapIn, prefix: String, arity: Int): Latch = {
     require (arity == 3)
     val _rate = in.readRate()
     val _in   = in.readGE()
@@ -579,7 +579,7 @@ object Gate extends ProductReader[Gate] {
     */
   def ar(in: GE, gate: GE): Gate = new Gate(audio, in, gate)
   
-  def read(in: RefMapIn, arity: Int): Gate = {
+  def read(in: RefMapIn, prefix: String, arity: Int): Gate = {
     require (arity == 3)
     val _rate = in.readMaybeRate()
     val _in   = in.readGE()
@@ -630,7 +630,7 @@ object Schmidt extends ProductReader[Schmidt] {
     */
   def ar(in: GE, lo: GE = 0.0f, hi: GE = 1.0f): Schmidt = new Schmidt(audio, in, lo, hi)
   
-  def read(in: RefMapIn, arity: Int): Schmidt = {
+  def read(in: RefMapIn, prefix: String, arity: Int): Schmidt = {
     require (arity == 4)
     val _rate = in.readMaybeRate()
     val _in   = in.readGE()
@@ -729,7 +729,7 @@ object PulseDivider extends ProductReader[PulseDivider] {
     */
   def ar(trig: GE, div: GE = 2, start: GE = 0): PulseDivider = new PulseDivider(audio, trig, div, start)
   
-  def read(in: RefMapIn, arity: Int): PulseDivider = {
+  def read(in: RefMapIn, prefix: String, arity: Int): PulseDivider = {
     require (arity == 4)
     val _rate   = in.readMaybeRate()
     val _trig   = in.readGE()
@@ -807,7 +807,7 @@ object PulseCount extends ProductReader[PulseCount] {
     */
   def ar(trig: GE, reset: GE = 0): PulseCount = new PulseCount(audio, trig, reset)
   
-  def read(in: RefMapIn, arity: Int): PulseCount = {
+  def read(in: RefMapIn, prefix: String, arity: Int): PulseCount = {
     require (arity == 3)
     val _rate   = in.readMaybeRate()
     val _trig   = in.readGE()
@@ -935,7 +935,7 @@ object Stepper extends ProductReader[Stepper] {
   def ar(trig: GE, reset: GE = 0, lo: GE = 0, hi: GE = 2147483583, step: GE = 1, resetVal: GE = 0): Stepper = 
     new Stepper(audio, trig, reset, lo, hi, step, resetVal)
   
-  def read(in: RefMapIn, arity: Int): Stepper = {
+  def read(in: RefMapIn, prefix: String, arity: Int): Stepper = {
     require (arity == 7)
     val _rate     = in.readMaybeRate()
     val _trig     = in.readGE()
@@ -1026,7 +1026,7 @@ object TDelay extends ProductReader[TDelay] {
     */
   def ar(trig: GE, dur: GE = 0.1f): TDelay = new TDelay(audio, trig, dur)
   
-  def read(in: RefMapIn, arity: Int): TDelay = {
+  def read(in: RefMapIn, prefix: String, arity: Int): TDelay = {
     require (arity == 3)
     val _rate = in.readMaybeRate()
     val _trig = in.readGE()
@@ -1084,7 +1084,7 @@ object ZeroCrossing extends ProductReader[ZeroCrossing] {
     */
   def ar(in: GE): ZeroCrossing = new ZeroCrossing(audio, in)
   
-  def read(in: RefMapIn, arity: Int): ZeroCrossing = {
+  def read(in: RefMapIn, prefix: String, arity: Int): ZeroCrossing = {
     require (arity == 2)
     val _rate = in.readMaybeRate()
     val _in   = in.readGE()
@@ -1130,7 +1130,7 @@ object Timer extends ProductReader[Timer] {
     */
   def ar(trig: GE): Timer = new Timer(audio, trig)
   
-  def read(in: RefMapIn, arity: Int): Timer = {
+  def read(in: RefMapIn, prefix: String, arity: Int): Timer = {
     require (arity == 2)
     val _rate = in.readMaybeRate()
     val _trig = in.readGE()
@@ -1187,7 +1187,7 @@ object Sweep extends ProductReader[Sweep] {
     */
   def ar(trig: GE, speed: GE): Sweep = new Sweep(audio, trig, speed)
   
-  def read(in: RefMapIn, arity: Int): Sweep = {
+  def read(in: RefMapIn, prefix: String, arity: Int): Sweep = {
     require (arity == 3)
     val _rate   = in.readRate()
     val _trig   = in.readGE()
@@ -1277,7 +1277,7 @@ object Phasor extends ProductReader[Phasor] {
   def ar(trig: GE = 0, speed: GE = 1.0f, lo: GE = 0.0f, hi: GE = 1.0f, resetVal: GE = 0.0f): Phasor = 
     new Phasor(audio, trig, speed, lo, hi, resetVal)
   
-  def read(in: RefMapIn, arity: Int): Phasor = {
+  def read(in: RefMapIn, prefix: String, arity: Int): Phasor = {
     require (arity == 6)
     val _rate     = in.readRate()
     val _trig     = in.readGE()
@@ -1372,7 +1372,7 @@ object Peak extends ProductReader[Peak] {
     */
   def ar(in: GE, trig: GE): Peak = new Peak(audio, in, trig)
   
-  def read(in: RefMapIn, arity: Int): Peak = {
+  def read(in: RefMapIn, prefix: String, arity: Int): Peak = {
     require (arity == 3)
     val _rate = in.readRate()
     val _in   = in.readGE()
@@ -1456,7 +1456,7 @@ object RunningMin extends ProductReader[RunningMin] {
     */
   def ar(in: GE, trig: GE): RunningMin = new RunningMin(audio, in, trig)
   
-  def read(in: RefMapIn, arity: Int): RunningMin = {
+  def read(in: RefMapIn, prefix: String, arity: Int): RunningMin = {
     require (arity == 3)
     val _rate = in.readRate()
     val _in   = in.readGE()
@@ -1535,7 +1535,7 @@ object RunningMax extends ProductReader[RunningMax] {
     */
   def ar(in: GE, trig: GE): RunningMax = new RunningMax(audio, in, trig)
   
-  def read(in: RefMapIn, arity: Int): RunningMax = {
+  def read(in: RefMapIn, prefix: String, arity: Int): RunningMax = {
     require (arity == 3)
     val _rate = in.readRate()
     val _in   = in.readGE()
@@ -1607,7 +1607,7 @@ object PeakFollower extends ProductReader[PeakFollower] {
     */
   def ar(in: GE, decay: GE = 0.999f): PeakFollower = new PeakFollower(audio, in, decay)
   
-  def read(in: RefMapIn, arity: Int): PeakFollower = {
+  def read(in: RefMapIn, prefix: String, arity: Int): PeakFollower = {
     require (arity == 3)
     val _rate   = in.readMaybeRate()
     val _in     = in.readGE()
@@ -1679,7 +1679,7 @@ object MostChange extends ProductReader[MostChange] {
     */
   def ar(a: GE, b: GE): MostChange = new MostChange(audio, a, b)
   
-  def read(in: RefMapIn, arity: Int): MostChange = {
+  def read(in: RefMapIn, prefix: String, arity: Int): MostChange = {
     require (arity == 3)
     val _rate = in.readRate()
     val _a    = in.readGE()
@@ -1742,7 +1742,7 @@ object LeastChange extends ProductReader[LeastChange] {
     */
   def ar(a: GE, b: GE): LeastChange = new LeastChange(audio, a, b)
   
-  def read(in: RefMapIn, arity: Int): LeastChange = {
+  def read(in: RefMapIn, prefix: String, arity: Int): LeastChange = {
     require (arity == 3)
     val _rate = in.readMaybeRate()
     val _a    = in.readGE()
@@ -1799,7 +1799,7 @@ object LastValue extends ProductReader[LastValue] {
     */
   def ar(in: GE, thresh: GE = 0.01f): LastValue = new LastValue(audio, in, thresh)
   
-  def read(in: RefMapIn, arity: Int): LastValue = {
+  def read(in: RefMapIn, prefix: String, arity: Int): LastValue = {
     require (arity == 3)
     val _rate   = in.readRate()
     val _in     = in.readGE()
@@ -1839,7 +1839,7 @@ object Done extends ProductReader[Done] {
     */
   def kr(src: GE with HasDoneFlag): Done = new Done(src)
   
-  def read(in: RefMapIn, arity: Int): Done = {
+  def read(in: RefMapIn, prefix: String, arity: Int): Done = {
     require (arity == 1)
     val _src = in.readGEDone()
     new Done(_src)
@@ -1884,7 +1884,7 @@ object Pause extends ProductReader[Pause] {
     */
   def kr(gate: GE, node: GE): Pause = new Pause(gate, node)
   
-  def read(in: RefMapIn, arity: Int): Pause = {
+  def read(in: RefMapIn, prefix: String, arity: Int): Pause = {
     require (arity == 2)
     val _gate = in.readGE()
     val _node = in.readGE()
@@ -1932,7 +1932,7 @@ object FreeSelf extends ProductReader[FreeSelf] {
     */
   def kr(trig: GE): FreeSelf = new FreeSelf(trig)
   
-  def read(in: RefMapIn, arity: Int): FreeSelf = {
+  def read(in: RefMapIn, prefix: String, arity: Int): FreeSelf = {
     require (arity == 1)
     val _trig = in.readGE()
     new FreeSelf(_trig)
@@ -1979,7 +1979,7 @@ object PauseSelf extends ProductReader[PauseSelf] {
     */
   def kr(trig: GE): PauseSelf = new PauseSelf(trig)
   
-  def read(in: RefMapIn, arity: Int): PauseSelf = {
+  def read(in: RefMapIn, prefix: String, arity: Int): PauseSelf = {
     require (arity == 1)
     val _trig = in.readGE()
     new PauseSelf(_trig)
@@ -2022,7 +2022,7 @@ object Free extends ProductReader[Free] {
     */
   def kr(trig: GE, node: GE): Free = new Free(trig, node)
   
-  def read(in: RefMapIn, arity: Int): Free = {
+  def read(in: RefMapIn, prefix: String, arity: Int): Free = {
     require (arity == 2)
     val _trig = in.readGE()
     val _node = in.readGE()
@@ -2066,7 +2066,7 @@ object FreeSelfWhenDone extends ProductReader[FreeSelfWhenDone] {
     */
   def kr(src: GE with HasDoneFlag): FreeSelfWhenDone = new FreeSelfWhenDone(src)
   
-  def read(in: RefMapIn, arity: Int): FreeSelfWhenDone = {
+  def read(in: RefMapIn, prefix: String, arity: Int): FreeSelfWhenDone = {
     require (arity == 1)
     val _src = in.readGEDone()
     new FreeSelfWhenDone(_src)
@@ -2115,7 +2115,7 @@ object PauseSelfWhenDone extends ProductReader[PauseSelfWhenDone] {
     */
   def kr(src: GE with HasDoneFlag): PauseSelfWhenDone = new PauseSelfWhenDone(src)
   
-  def read(in: RefMapIn, arity: Int): PauseSelfWhenDone = {
+  def read(in: RefMapIn, prefix: String, arity: Int): PauseSelfWhenDone = {
     require (arity == 1)
     val _src = in.readGEDone()
     new PauseSelfWhenDone(_src)

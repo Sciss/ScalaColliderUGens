@@ -26,7 +26,7 @@ object DiskIn extends ProductReader[DiskIn] {
     */
   def ar(numChannels: Int, buf: GE, loop: GE = 0): DiskIn = new DiskIn(audio, numChannels, buf, loop)
   
-  def read(in: RefMapIn, arity: Int): DiskIn = {
+  def read(in: RefMapIn, prefix: String, arity: Int): DiskIn = {
     require (arity == 4)
     val _rate         = in.readRate()
     val _numChannels  = in.readInt()
@@ -92,7 +92,7 @@ object DiskOut extends ProductReader[DiskOut] {
     */
   def ar(buf: GE, in: GE): DiskOut = new DiskOut(audio, buf, in)
   
-  def read(in: RefMapIn, arity: Int): DiskOut = {
+  def read(in: RefMapIn, prefix: String, arity: Int): DiskOut = {
     require (arity == 3)
     val _rate = in.readRate()
     val _buf  = in.readGE()
@@ -176,7 +176,7 @@ object VDiskIn extends ProductReader[VDiskIn] {
   def ar(numChannels: Int, buf: GE, speed: GE = 1.0f, loop: GE = 0, sendId: GE = 0): VDiskIn = 
     new VDiskIn(audio, numChannels, buf, speed, loop, sendId)
   
-  def read(in: RefMapIn, arity: Int): VDiskIn = {
+  def read(in: RefMapIn, prefix: String, arity: Int): VDiskIn = {
     require (arity == 6)
     val _rate         = in.readRate()
     val _numChannels  = in.readInt()

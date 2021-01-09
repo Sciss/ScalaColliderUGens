@@ -33,7 +33,7 @@ object Hopf extends ProductReader[Hopf] {
     */
   def ar(in: GE, coupling: GE, radius: GE = 1.0f): Hopf = new Hopf(audio, in, coupling, radius)
   
-  def read(in: RefMapIn, arity: Int): Hopf = {
+  def read(in: RefMapIn, prefix: String, arity: Int): Hopf = {
     require (arity == 4)
     val _rate     = in.readMaybeRate()
     val _in       = in.readGE()

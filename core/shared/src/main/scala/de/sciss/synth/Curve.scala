@@ -13,18 +13,19 @@
 
 package de.sciss.synth
 
-import de.sciss.serial.{DataInput, DataOutput, ConstFormat}
+import de.sciss.serial.{ConstFormat, DataInput, DataOutput}
+import de.sciss.synth.UGenSource.{ProductReader, RefMapIn}
 
 import scala.annotation.switch
 import scala.language.implicitConversions
 import scala.math.{Pi, abs, cos, pow, sin, sqrt}
 
-object Curve {
+object Curve extends ProductReader[Curve] {
   case object step extends Curve {
     final val id = 0
 
-    override def productPrefix  = "Curve$step$"  // compatible with SoundProcesses serialization
-    override def toString       = "step"
+    override final val productPrefix  = "Curve$step$"  // compatible with SoundProcesses serialization
+    override def toString             = "step"
 
     def levelAt(pos: Float, y1: Float, y2: Float): Float = if (pos < 1f) y1 else y2
   }
@@ -32,8 +33,8 @@ object Curve {
   case object linear extends Curve {
     final val id = 1
 
-    override def productPrefix  = "Curve$linear$"
-    override def toString       = "linear"
+    override final val productPrefix  = "Curve$linear$"
+    override def toString             = "linear"
 
     def levelAt(pos: Float, y1: Float, y2: Float): Float = pos * (y2 - y1) + y1
   }
@@ -42,8 +43,8 @@ object Curve {
   case object exponential extends Curve {
     final val id = 2
 
-    override def productPrefix  = "Curve$exponential$"
-    override def toString       = "exponential"
+    override final val productPrefix  = "Curve$exponential$"
+    override def toString             = "exponential"
 
     def levelAt(pos: Float, y1: Float, y2: Float): Float =
       if (y1 == 0) {
@@ -59,8 +60,8 @@ object Curve {
   case object sine extends Curve {
     final val id = 3
 
-    override def productPrefix  = "Curve$sine$"
-    override def toString       = "sine"
+    override final val productPrefix  = "Curve$sine$"
+    override def toString             = "sine"
 
     def levelAt(pos: Float, y1: Float, y2: Float): Float =
       (y1 + (y2 - y1) * (-cos(Pi * pos) * 0.5 + 0.5)).toFloat
@@ -69,8 +70,8 @@ object Curve {
   case object welch extends Curve {
     final val id = 4
 
-    override def productPrefix  = "Curve$welch$"
-    override def toString       = "welch"
+    override final val productPrefix  = "Curve$welch$"
+    override def toString             = "welch"
 
     def levelAt(pos: Float, y1: Float, y2: Float): Float = if (y1 < y2) {
       (y1 + (y2 - y1) * sin(Pi * 0.5 * pos)).toFloat
@@ -83,12 +84,14 @@ object Curve {
 
   object parametric {
     final val id = 5
+
+    final val productPrefix = s"Curve$$parametric"
   }
   final case class parametric(/*override val */ curvature: Float) extends Curve {
     def id: Int = parametric.id
 
-    override def productPrefix  = s"Curve$$parametric"
-    override def toString       = s"parametric($curvature)"
+    override def productPrefix: String  = parametric.productPrefix // s"Curve$$parametric"
+    override def toString               = s"parametric($curvature)"
 
     def levelAt(pos: Float, y1: Float, y2: Float): Float = if (abs(curvature) < 0.0001f) {
       pos * (y2 - y1) + y1
@@ -102,8 +105,8 @@ object Curve {
   case object squared extends Curve {
     final val id = 6
 
-    override def productPrefix  = "Curve$squared$"
-    override def toString       = "squared"
+    override final val productPrefix  = "Curve$squared$"
+    override def toString             = "squared"
 
     def levelAt(pos: Float, y1: Float, y2: Float): Float = {
       val y1Pow2  = sqrt(y1)
@@ -116,8 +119,8 @@ object Curve {
   case object cubed extends Curve {
     final val id = 7
 
-    override def productPrefix  = "Curve$cubed$"
-    override def toString       = "cubed"
+    override final val productPrefix  = "Curve$cubed$"
+    override def toString             = "cubed"
 
     def levelAt(pos: Float, y1: Float, y2: Float): Float = {
       val y1Pow3  = pow(y1, 0.3333333)
@@ -149,8 +152,27 @@ object Curve {
         case other          => sys.error(s"Unexpected envelope shape id $other")
       }
   }
+
+  override def read(in: RefMapIn, prefix: String, arity: Int): Curve =
+    prefix match {
+      case step       .productPrefix => step
+      case linear     .productPrefix => linear
+      case exponential.productPrefix => exponential
+      case sine       .productPrefix => sine
+      case welch      .productPrefix => welch
+
+      case parametric .productPrefix =>
+        require (arity == 1)
+        val _curvature = in.readFloat()
+        new parametric(_curvature)
+
+      case squared    .productPrefix => squared
+      case cubed      .productPrefix => cubed
+      case _ =>
+        sys.error(s"Unexpected product prefix '$prefix'")
+    }
 }
-sealed trait Curve {
+sealed trait Curve extends Product {
   def id: Int
   def levelAt(pos: Float, y1: Float, y2: Float): Float
 }

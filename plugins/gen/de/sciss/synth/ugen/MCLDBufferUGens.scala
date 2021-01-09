@@ -53,7 +53,7 @@ object Logger extends ProductReader[Logger] {
     */
   def kr(buf: GE, in: GE, trig: GE, reset: GE = 0): Logger = new Logger(control, buf, in, trig, reset)
   
-  def read(in: RefMapIn, arity: Int): Logger = {
+  def read(in: RefMapIn, prefix: String, arity: Int): Logger = {
     require (arity == 5)
     val _rate   = in.readRate()
     val _buf    = in.readGE()
@@ -156,7 +156,7 @@ object ListTrig extends ProductReader[ListTrig] {
   def kr(buf: GE, size: GE, reset: GE = 0, delay: GE = 0): ListTrig = 
     new ListTrig(control, buf, size, reset, delay)
   
-  def read(in: RefMapIn, arity: Int): ListTrig = {
+  def read(in: RefMapIn, prefix: String, arity: Int): ListTrig = {
     require (arity == 5)
     val _rate   = in.readRate()
     val _buf    = in.readGE()
@@ -255,7 +255,7 @@ object ListTrig2 extends ProductReader[ListTrig2] {
     */
   def kr(buf: GE, size: GE, reset: GE = 0): ListTrig2 = new ListTrig2(control, buf, size, reset)
   
-  def read(in: RefMapIn, arity: Int): ListTrig2 = {
+  def read(in: RefMapIn, prefix: String, arity: Int): ListTrig2 = {
     require (arity == 4)
     val _rate   = in.readRate()
     val _buf    = in.readGE()
@@ -348,7 +348,7 @@ object BufMax extends ProductReader[BufMax] {
     */
   def kr(buf: GE, gate: GE = 1): BufMax = new BufMax(control, buf, gate)
   
-  def read(in: RefMapIn, arity: Int): BufMax = {
+  def read(in: RefMapIn, prefix: String, arity: Int): BufMax = {
     require (arity == 3)
     val _rate = in.readRate()
     val _buf  = in.readGE()
@@ -431,7 +431,7 @@ object BufMin extends ProductReader[BufMin] {
     */
   def kr(buf: GE, gate: GE = 1): BufMin = new BufMin(control, buf, gate)
   
-  def read(in: RefMapIn, arity: Int): BufMin = {
+  def read(in: RefMapIn, prefix: String, arity: Int): BufMin = {
     require (arity == 3)
     val _rate = in.readRate()
     val _buf  = in.readGE()
@@ -501,7 +501,7 @@ object ArrayMax extends ProductReader[ArrayMax] {
     */
   def ar(in: GE): ArrayMax = new ArrayMax(audio, in)
   
-  def read(in: RefMapIn, arity: Int): ArrayMax = {
+  def read(in: RefMapIn, prefix: String, arity: Int): ArrayMax = {
     require (arity == 2)
     val _rate = in.readRate()
     val _in   = in.readGE()
@@ -565,7 +565,7 @@ object ArrayMin extends ProductReader[ArrayMin] {
     */
   def ar(in: GE): ArrayMin = new ArrayMin(audio, in)
   
-  def read(in: RefMapIn, arity: Int): ArrayMin = {
+  def read(in: RefMapIn, prefix: String, arity: Int): ArrayMin = {
     require (arity == 2)
     val _rate = in.readRate()
     val _in   = in.readGE()

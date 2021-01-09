@@ -44,7 +44,7 @@ object MouseX extends ProductReader[MouseX] {
   def kr(lo: GE = 0.0f, hi: GE = 1.0f, warp: GE = 0.0f, lag: GE = 0.2f): MouseX = 
     new MouseX(lo, hi, warp, lag)
   
-  def read(in: RefMapIn, arity: Int): MouseX = {
+  def read(in: RefMapIn, prefix: String, arity: Int): MouseX = {
     require (arity == 4)
     val _lo   = in.readGE()
     val _hi   = in.readGE()
@@ -129,7 +129,7 @@ object MouseY extends ProductReader[MouseY] {
   def kr(lo: GE = 0.0f, hi: GE = 1.0f, warp: GE = 0.0f, lag: GE = 0.2f): MouseY = 
     new MouseY(lo, hi, warp, lag)
   
-  def read(in: RefMapIn, arity: Int): MouseY = {
+  def read(in: RefMapIn, prefix: String, arity: Int): MouseY = {
     require (arity == 4)
     val _lo   = in.readGE()
     val _hi   = in.readGE()
@@ -199,7 +199,7 @@ object MouseButton extends ProductReader[MouseButton] {
     */
   def kr(lo: GE = 0.0f, hi: GE = 1.0f, lag: GE = 0.2f): MouseButton = new MouseButton(lo, hi, lag)
   
-  def read(in: RefMapIn, arity: Int): MouseButton = {
+  def read(in: RefMapIn, prefix: String, arity: Int): MouseButton = {
     require (arity == 3)
     val _lo   = in.readGE()
     val _hi   = in.readGE()

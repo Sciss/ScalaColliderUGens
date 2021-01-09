@@ -116,7 +116,7 @@ object JPverb extends ProductReader[JPverb] {
   def ar(inL: GE, inR: GE, revTime: GE = 1.0f, damp: GE = 0.0f, size: GE = 1.0f, earlyDiff: GE = 0.707f, modDepth: GE = 0.1f, modFreq: GE = 2.0f, low: GE = 1.0f, mid: GE = 1.0f, high: GE = 1.0f, lowCut: GE = 500.0f, highCut: GE = 2000.0f): JPverb = 
     new JPverb(audio, inL, inR, revTime, damp, size, earlyDiff, modDepth, modFreq, low, mid, high, lowCut, highCut)
   
-  def read(in: RefMapIn, arity: Int): JPverb = {
+  def read(in: RefMapIn, prefix: String, arity: Int): JPverb = {
     require (arity == 14)
     val _rate       = in.readRate()
     val _inL        = in.readGE()
@@ -258,7 +258,7 @@ object Greyhole extends ProductReader[Greyhole] {
   def ar(inL: GE, inR: GE, delayTime: GE = 2.0f, damp: GE = 0.0f, size: GE = 1.0f, diff: GE = 0.707f, feedback: GE = 0.9f, modDepth: GE = 0.1f, modFreq: GE = 2.0f): Greyhole = 
     new Greyhole(audio, inL, inR, delayTime, damp, size, diff, feedback, modDepth, modFreq)
   
-  def read(in: RefMapIn, arity: Int): Greyhole = {
+  def read(in: RefMapIn, prefix: String, arity: Int): Greyhole = {
     require (arity == 10)
     val _rate       = in.readRate()
     val _inL        = in.readGE()
@@ -357,7 +357,7 @@ object ComplexRes extends ProductReader[ComplexRes] {
   def ar(in: GE, freq: GE = 440.0f, decay: GE = 0.2f): ComplexRes = 
     new ComplexRes(audio, in, freq, decay)
   
-  def read(in: RefMapIn, arity: Int): ComplexRes = {
+  def read(in: RefMapIn, prefix: String, arity: Int): ComplexRes = {
     require (arity == 4)
     val _rate   = in.readRate()
     val _in     = in.readGE()
@@ -430,7 +430,7 @@ object DiodeRingMod extends ProductReader[DiodeRingMod] {
     */
   def ar(car: GE, mod: GE): DiodeRingMod = new DiodeRingMod(audio, car, mod)
   
-  def read(in: RefMapIn, arity: Int): DiodeRingMod = {
+  def read(in: RefMapIn, prefix: String, arity: Int): DiodeRingMod = {
     require (arity == 3)
     val _rate = in.readRate()
     val _car  = in.readGE()
@@ -498,7 +498,7 @@ final case class DiodeRingMod(rate: Rate, car: GE, mod: GE) extends UGenSource.S
   * @see [[de.sciss.synth.ugen.Demand$ Demand]]
   */
 object DNoiseRing extends ProductReader[DNoiseRing] {
-  def read(in: RefMapIn, arity: Int): DNoiseRing = {
+  def read(in: RefMapIn, prefix: String, arity: Int): DNoiseRing = {
     require (arity == 5)
     val _change   = in.readGE()
     val _chance   = in.readGE()
@@ -571,7 +571,7 @@ object RMS extends ProductReader[RMS] {
     */
   def ar(in: GE, lpf: GE = 2.0f): RMS = new RMS(audio, in, lpf)
   
-  def read(in: RefMapIn, arity: Int): RMS = {
+  def read(in: RefMapIn, prefix: String, arity: Int): RMS = {
     require (arity == 3)
     val _rate = in.readRate()
     val _in   = in.readGE()

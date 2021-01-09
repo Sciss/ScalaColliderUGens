@@ -32,7 +32,7 @@ import de.sciss.synth.UGenSource._
 object Nyquist extends ProductReader[Nyquist] {
   def ir: Nyquist = new Nyquist()
 
-  def read(in: RefMapIn, arity: Int): Nyquist = {
+  override def read(in: RefMapIn, prefix: String, arity: Int): Nyquist = {
     require (arity == 0)
     new Nyquist
   }

@@ -59,7 +59,7 @@ object OffsetOut extends ProductReader[OffsetOut] {
     */
   def ar(bus: GE, in: GE): OffsetOut = new OffsetOut(bus, in)
   
-  def read(in: RefMapIn, arity: Int): OffsetOut = {
+  def read(in: RefMapIn, prefix: String, arity: Int): OffsetOut = {
     require (arity == 2)
     val _bus  = in.readGE()
     val _in   = in.readGE()
@@ -212,7 +212,7 @@ object LocalIn extends ProductReader[LocalIn] {
     */
   def ar(init: GE = 0): LocalIn = new LocalIn(audio, init)
   
-  def read(in: RefMapIn, arity: Int): LocalIn = {
+  def read(in: RefMapIn, prefix: String, arity: Int): LocalIn = {
     require (arity == 2)
     val _rate = in.readRate()
     val _init = in.readGE()
@@ -299,7 +299,7 @@ object XOut extends ProductReader[XOut] {
     */
   def ar(bus: GE, in: GE, xfade: GE): XOut = new XOut(audio, bus, in, xfade)
   
-  def read(in: RefMapIn, arity: Int): XOut = {
+  def read(in: RefMapIn, prefix: String, arity: Int): XOut = {
     require (arity == 4)
     val _rate   = in.readRate()
     val _bus    = in.readGE()
@@ -387,7 +387,7 @@ object ReplaceOut extends ProductReader[ReplaceOut] {
     */
   def ar(bus: GE, in: GE): ReplaceOut = new ReplaceOut(bus, in)
   
-  def read(in: RefMapIn, arity: Int): ReplaceOut = {
+  def read(in: RefMapIn, prefix: String, arity: Int): ReplaceOut = {
     require (arity == 2)
     val _bus  = in.readGE()
     val _in   = in.readGE()
@@ -498,7 +498,7 @@ object Out extends ProductReader[Out] {
     */
   def ar(bus: GE, in: GE): Out = new Out(audio, bus, in)
   
-  def read(in: RefMapIn, arity: Int): Out = {
+  def read(in: RefMapIn, prefix: String, arity: Int): Out = {
     require (arity == 3)
     val _rate = in.readRate()
     val _bus  = in.readGE()
@@ -595,7 +595,7 @@ object LocalOut extends ProductReader[LocalOut] {
     */
   def ar(in: GE): LocalOut = new LocalOut(audio, in)
   
-  def read(in: RefMapIn, arity: Int): LocalOut = {
+  def read(in: RefMapIn, prefix: String, arity: Int): LocalOut = {
     require (arity == 2)
     val _rate = in.readRate()
     val _in   = in.readGE()
@@ -703,7 +703,7 @@ object In extends ProductReader[In] {
     */
   def ar(bus: GE, numChannels: Int = 1): In = new In(audio, bus, numChannels)
   
-  def read(in: RefMapIn, arity: Int): In = {
+  def read(in: RefMapIn, prefix: String, arity: Int): In = {
     require (arity == 3)
     val _rate         = in.readRate()
     val _bus          = in.readGE()
@@ -786,7 +786,7 @@ object LagIn extends ProductReader[LagIn] {
   def kr(bus: GE, numChannels: Int = 1, time: GE = 0.1f): LagIn = 
     new LagIn(control, bus, numChannels, time)
   
-  def read(in: RefMapIn, arity: Int): LagIn = {
+  def read(in: RefMapIn, prefix: String, arity: Int): LagIn = {
     require (arity == 4)
     val _rate         = in.readRate()
     val _bus          = in.readGE()
@@ -888,7 +888,7 @@ object InFeedback extends ProductReader[InFeedback] {
     */
   def ar(bus: GE, numChannels: Int = 1): InFeedback = new InFeedback(bus, numChannels)
   
-  def read(in: RefMapIn, arity: Int): InFeedback = {
+  def read(in: RefMapIn, prefix: String, arity: Int): InFeedback = {
     require (arity == 2)
     val _bus          = in.readGE()
     val _numChannels  = in.readInt()
@@ -979,7 +979,7 @@ object InTrig extends ProductReader[InTrig] {
     */
   def kr(bus: GE, numChannels: Int = 1): InTrig = new InTrig(bus, numChannels)
   
-  def read(in: RefMapIn, arity: Int): InTrig = {
+  def read(in: RefMapIn, prefix: String, arity: Int): InTrig = {
     require (arity == 2)
     val _bus          = in.readGE()
     val _numChannels  = in.readInt()

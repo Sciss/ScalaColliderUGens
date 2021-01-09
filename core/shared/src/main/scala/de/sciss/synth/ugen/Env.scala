@@ -14,13 +14,16 @@
 package de.sciss.synth
 package ugen
 
+import de.sciss.synth.{Curve => SCurve}
 import de.sciss.synth.Curve.{sine => sin, step => _step, _}
 import de.sciss.synth.GEOps._
+import de.sciss.synth.UGenSource.{ProductReader, RefMapIn}
+import de.sciss.synth.ugen.Env.Segment
 
 import scala.collection.immutable.{IndexedSeq => Vec}
 import scala.language.implicitConversions
 
-sealed trait EnvFactory[V] {
+sealed trait EnvFactory[V] extends ProductReader[V] {
   import Env.{Segment => Seg}
 
   protected def create(startLevel: GE, segments: Vec[Seg]): V
@@ -53,14 +56,23 @@ sealed trait EnvFactory[V] {
     create(0f, Vector[Seg]((attack, level, curve), (sustain, level, curve), (release, 0f, curve)))
 }
 
+sealed trait EnvLike extends GE {
+  def startLevel: GE
+  def segments: Seq[Env.Segment]
+  def isSustained: Boolean
+}
+
 object Env extends EnvFactory[Env] {
-  object Curve {
-    implicit def const(peer: de.sciss.synth.Curve): Curve = Const(peer)
+  object Curve extends ProductReader[Curve] {
+    implicit def const(peer: SCurve): Curve = Const(peer)
 
     implicit def fromDouble(d: Double): Curve = parametric(d.toFloat)
 
-    final case class Const(peer: de.sciss.synth.Curve) extends Curve {
-      override def productPrefix = "Env$Curve$Const"
+    object Const {
+      final val productPrefix = "Env$Curve$Const"
+    }
+    final case class Const(peer: SCurve) extends Curve {
+      override def productPrefix: String = Const.productPrefix
 
       override def toString = s"Env.Curve.Const($peer)"
 
@@ -74,24 +86,50 @@ object Env extends EnvFactory[Env] {
     def apply(id: GE, curvature: GE = 0f): Curve = Apply(id, curvature)
     def unapply(s: Curve): Option[(GE, GE)] = Some((s.id, s.curvature))
 
-    private final case class Apply(id: GE, curvature: GE) extends Curve {
-      override def productPrefix = "Env$Curve$Apply"
+    object Apply {
+      final val productPrefix = "Env$Curve$Apply"
+    }
+    final case class Apply(id: GE, curvature: GE) extends Curve {
+      override def productPrefix: String = Apply.productPrefix
 
       override def toString = s"Env.Curve($id, $curvature)"
     }
+
+    override def read(in: RefMapIn, prefix: String, arity: Int): Curve = {
+      prefix match {
+        case Const.productPrefix =>
+          require (arity == 1)
+          val _peer = in.readProductT[SCurve]()
+          new Const(_peer)
+
+        case Apply.productPrefix =>
+          require (arity == 2)
+          val _id         = in.readGE()
+          val _curvature  = in.readGE()
+          new Apply(_id, _curvature)
+      }
+    }
   }
-  sealed trait Curve {
+  sealed trait Curve extends Product {
     def id: GE
     def curvature: GE
   }
 
-  object Segment {
+  object Segment extends ProductReader[Segment] {
     implicit def fromTuple3[D, L, S](tup: (D, L, S))
                                     (implicit durView: D => GE, levelView: L => GE, curveView: S => Curve): Segment =
       Segment(durView(tup._1), levelView(tup._2), curveView(tup._3))
 
     implicit def fromTuple2[D, L](tup: (D, L))(implicit durView: D => GE, levelView: L => GE): Segment =
       Segment(durView(tup._1), levelView(tup._2), linear)
+
+    override def read(in: RefMapIn, prefix: String, arity: Int): Segment = {
+      require (arity == 3)
+      val _dur          = in.readGE()
+      val _targetLevel  = in.readGE()
+      val _curve        = in.readProductT[Curve]()
+      new Segment(_dur, _targetLevel, _curve)
+   }
   }
   final case class Segment(dur: GE, targetLevel: GE, curve: Curve = linear) {
     override def productPrefix = s"Env$$Segment"
@@ -144,12 +182,17 @@ object Env extends EnvFactory[Env] {
     new Env(levels.head, (levels, durs).zipped.map { case (lvl, dur) => Segment(dur, lvl, _step) },
       releaseNode = releaseNode, loopNode = loopNode)
   }
-}
 
-sealed trait EnvLike extends GE {
-  def startLevel: GE
-  def segments: Seq[Env.Segment]
-  def isSustained: Boolean
+  // ---- serialization ----
+
+  override def read(in: RefMapIn, prefix: String, arity: Int): Env = {
+    require (arity == 4)
+    val _startLevel   = in.readGE()
+    val _segments     = in.readVec(in.readProductT[Segment]())
+    val _releaseNode  = in.readGE()
+    val _loopNode     = in.readGE()
+    new Env(_startLevel, _segments, _releaseNode, _loopNode)
+  }
 }
 
 final case class Env(startLevel: GE, segments: Seq[Env.Segment],
@@ -173,6 +216,16 @@ final case class Env(startLevel: GE, segments: Seq[Env.Segment],
 
 object IEnv extends EnvFactory[IEnv] {
   protected def create(startLevel: GE, segments: Vec[Env.Segment]) = new IEnv(startLevel, segments)
+
+  // ---- serialization ----
+
+  override def read(in: RefMapIn, prefix: String, arity: Int): IEnv = {
+    require (arity == 4)
+    val _startLevel   = in.readGE()
+    val _segments     = in.readVec(in.readProductT[Segment]())
+    val _offset       = in.readGE()
+    new IEnv(_startLevel, _segments, _offset)
+  }
 }
 
 final case class IEnv(startLevel: GE, segments: Seq[Env.Segment], offset: GE = 0f)

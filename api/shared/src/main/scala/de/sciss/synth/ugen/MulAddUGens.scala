@@ -18,7 +18,7 @@ import de.sciss.synth.UGenSource._
 import de.sciss.synth.ugen.Constant.{C0, C1, Cm1}
 
 object MulAdd extends ProductReader[MulAdd] {
-  def read(in: RefMapIn, arity: Int): MulAdd = {
+  override def read(in: RefMapIn, prefix: String, arity: Int): MulAdd = {
     require (arity == 3)
     val _in   = in.readGE()
     val _mul  = in.readGE()
@@ -120,7 +120,7 @@ object Sum3 extends ProductReader[Sum3] {
     }
   }
 
-  def read(in: RefMapIn, arity: Int): Sum3 = {
+  override def read(in: RefMapIn, prefix: String, arity: Int): Sum3 = {
     require (arity == 3)
     val _in0 = in.readGE()
     val _in1 = in.readGE()
@@ -177,7 +177,7 @@ object Sum4 extends ProductReader[Sum4] {
     }
   }
 
-  def read(in: RefMapIn, arity: Int): Sum4 = {
+  override def read(in: RefMapIn, prefix: String, arity: Int): Sum4 = {
     require (arity == 4)
     val _in0 = in.readGE()
     val _in1 = in.readGE()
