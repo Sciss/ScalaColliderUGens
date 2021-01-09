@@ -926,7 +926,7 @@ object BinaryOpUGen extends ProductReader[BinaryOpUGen] {
     override val name = "expRand"
   }
 
-  private def readOp(in: RefMapIn): Op = ???
+  def readOp(in: RefMapIn): Op = ???
 
   def read(in: RefMapIn, arity: Int): BinaryOpUGen = {
     require (arity == 3)

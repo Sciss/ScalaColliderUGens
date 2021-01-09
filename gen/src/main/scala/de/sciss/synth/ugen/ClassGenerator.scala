@@ -37,7 +37,7 @@ final class ClassGenerator {
   val ParamColumns  =  24
 
   def performFile(node: scala.xml.Node, dir: File, name: String, docs: Boolean = true,
-                  forceOverwrite: Boolean = false): Unit = try {
+                  forceOverwrite: Boolean = false): Vec[String] = try {
     val revision    = (node \ "@revision").text.toInt
     val thirdParty  = {
       val txt = (node \ "@third-party").text
@@ -60,16 +60,20 @@ final class ClassGenerator {
         source.close()
       }
     }
-    val hasFile = !write || {
+    val (hasFile, names) = {
       val specs0 = (node \ "ugen") map { uNode =>
         UGenSpec.parse(uNode, docs = docs, verify = true)
       }
-      val specs = specs0.filterNot(_.attr.contains(HasSourceCode))
-      val res = specs.nonEmpty
-      if (res) performSpecs(specs, f, revision = revision, thirdParty = thirdParty)
-      res
+      val _hasFile = !write || {
+        val specs = specs0.filterNot(_.attr.contains(HasSourceCode))
+        val res = specs.nonEmpty
+        if (res) performSpecs(specs, f, revision = revision, thirdParty = thirdParty)
+        res
+      }
+      (_hasFile, specs0.map(_.name))
     }
     if (hasFile) println(f.absolutePath)
+    names.toIndexedSeq
 
   } catch {
     case NonFatal(e) =>
@@ -77,9 +81,18 @@ final class ClassGenerator {
       throw e
   }
 
-  def performSpecs(specs: SSeq[UGenSpec], file: File, revision: Int, thirdParty: Option[String]): Unit = {
+  def writeTextFile(file: File)(contents: => String): Unit = {
     val out = new FileOutputStream(file)
     try {
+      val bytes = contents.getBytes(CHARSET)
+      out.write(bytes)
+    } finally {
+      out.close()
+    }
+  }
+
+  def performSpecs(specs: SSeq[UGenSpec], file: File, revision: Int, thirdParty: Option[String]): Unit =
+    writeTextFile(file) {
       // create class trees
       val classes: List[Tree] = specs.iterator.flatMap(spec => performSpec(spec, thirdParty = thirdParty)).toList
 
@@ -97,12 +110,8 @@ final class ClassGenerator {
       // we prepend a revision line comment which reflects the version
       // of the spec file used
       val strRev  = s"// revision: $revision\n$strBody"
-      val bytes   = strRev.getBytes(CHARSET)
-      out.write(bytes)
-    } finally {
-      out.close()
+      strRev
     }
-  }
 
   // def compilationUnitOfFile(f: AbstractFile): Option[CompilationUnit] = unitOfFile.get(f)
 

@@ -204,11 +204,22 @@ object UGenSource {
     def readGEDone(): GE with HasDoneFlag =
       readProduct().asInstanceOf[GE with HasDoneFlag]
 
+    private def readVec[A](elem: => A): Vec[A] = {
+      val cookie = _in.readByte()
+      if (cookie != 'X') sys.error(s"Unexpected cookie '$cookie' is not 'X'")
+      val size = in.readInt()
+      Vector.fill(size)(elem)
+    }
+
+    def readGEVec(): Vec[GE] = readVec(readGE())
+
     def readInt(): Int = {
       val cookie = _in.readByte()
       if (cookie != 'I') sys.error(s"Unexpected cookie '$cookie' is not 'I'")
       _in.readInt()
     }
+
+    def readIntVec(): Vec[Int] = readVec(readInt())
 
     def readString(): String = {
       val cookie = _in.readByte()
@@ -229,12 +240,13 @@ object UGenSource {
       in.readFloat()
     }
 
-    def readFloatVec(): Vec[Float] = {
+    def readDouble(): Double = {
       val cookie = _in.readByte()
-      if (cookie != 'X') sys.error(s"Unexpected cookie '$cookie' is not 'X'")
-      val size = in.readInt()
-      Vector.fill(size)(readFloat())
+      if (cookie != 'D') sys.error(s"Unexpected cookie '$cookie' is not 'D'")
+      in.readDouble()
     }
+
+    def readFloatVec(): Vec[Float] = readVec(readFloat())
 
     def readRate(): Rate = {
       val cookie = _in.readByte().toChar

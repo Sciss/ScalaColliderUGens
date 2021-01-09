@@ -25,24 +25,28 @@ import scala.xml.XML
 
 object Gen extends App {
   sealed trait Input {
+    def mapName: String
     def switch: String
     def plugins: List[String]
   }
-  case object CustomUGens extends Input {
-    def switch = ""
+  case class CustomUGens(mapName: String) extends Input {
+    def switch = "--custom"
     def plugins: List[String] = Nil
   }
   case object StandardUGens extends Input {
-    def switch = "--standard"
+    def switch  = "--standard"
+    def mapName = "StandardUGens"
     def plugins: List[String] = UGenSpec.standardPlugins
   }
   case object ThirdPartyUGens extends Input {
-    def switch = "--plugins"
+    def switch  = "--plugins"
+    def mapName = "ThirdPartyUGens"
     def plugins: List[String] = UGenSpec.thirdPartyPlugins
   }
 
-  case class Config(input: Input = CustomUGens, forceOverwrite: Boolean = false, outDir: File = new File("out"),
-                    inFiles: Vec[File] = Vec.empty, docs: Boolean = true)
+  case class Config(input: Input = CustomUGens("Unnamed"),
+                    forceOverwrite: Boolean = false, outDir: File = new File("out"),
+                    inFiles: Vec[File] = Vec.empty, docs: Boolean = true, mkMap: Boolean = true)
 
   object parse extends ScallopConf(args) {
     printedName = "ScalaCollider-UGens"
@@ -50,39 +54,77 @@ object Gen extends App {
 
     val standard: Opt[Boolean]  = opt(descr = "Use standard resources as input")
     val plugins : Opt[Boolean]  = opt(descr = "Use third-party resources as input")
+    val custom  : Opt[String]   = opt(descr = "Use custom resources as input. Specify map object name.")
     val force   : Opt[Boolean]  = opt(descr = "Force overwrite of output files")
     val dir     : Opt[File]     = opt(descr = "Source output root directory", required = true)
     val noDocs  : Opt[Boolean]  = opt(name = "no-docs", descr = "Do not include scaladoc comments")
+    val noMap   : Opt[Boolean]  = opt(name = "no-map", descr = "Do not create mapping file")
 
     val input: Opt[List[File]] = trailArg[List[File]](required = false, default = Some(Nil),
       descr = "List of UGen description files (XML) to process"
     )
 
     verify()
-    val config = Config(input = if (standard()) StandardUGens else if (plugins()) ThirdPartyUGens else CustomUGens,
-      forceOverwrite = force(), outDir = dir(), inFiles = input().toIndexedSeq, docs = !noDocs()
-    )
+    val config: Config =
+      Config(input = if (standard()) StandardUGens else if (plugins()) ThirdPartyUGens else CustomUGens(custom()),
+        forceOverwrite = force(), outDir = dir(), inFiles = input().toIndexedSeq, docs = !noDocs(), mkMap = !noMap()
+      )
   }
 
   import parse.config
 
   import config._
-  val outDir1 = config.outDir / "de" / "sciss" / "synth" / "ugen"
+  val outDir0 = config.outDir / "de" / "sciss" / "synth"
+  val outDir1 = outDir0 / "ugen"
   if (!outDir1.isDirectory) if (!outDir1.mkdirs()) throw new IOException(s"Could not create directory $outDir1")
 
-  val synth = new ClassGenerator
+  val cg = new ClassGenerator
 
-  val inputs: Iterator[(String, InputSource)] = if (input == CustomUGens) {
-    inFiles.iterator.map(f => f.base -> scala.xml.Source.fromFile(f))
-  } else {
-    input.plugins.iterator.map { name =>
-      name -> scala.xml.Source.fromInputStream(getClass.getResourceAsStream(s"$name.xml"))
-    }
+  val inputs: Iterator[(String, InputSource)] = input match {
+    case CustomUGens(_) =>
+      inFiles.iterator.map(f => f.base -> scala.xml.Source.fromFile(f))
+    case _ =>
+      input.plugins.iterator.map { name =>
+        name -> scala.xml.Source.fromInputStream(getClass.getResourceAsStream(s"$name.xml"))
+      }
   }
 
-  inputs.foreach { case (name, source) =>
+  val allNames: Vec[String] = inputs.flatMap { case (name, source) =>
     val xml = XML.load(source)
-    synth.performFile(xml, dir = outDir1, name = name, docs = docs, forceOverwrite = forceOverwrite)
+    cg.performFile(xml, dir = outDir1, name = name, docs = docs, forceOverwrite = forceOverwrite)
+  } .toIndexedSeq
+
+  if (config.mkMap) {
+    val pairs = allNames.iterator.map { n =>
+      s"""    ("$n", $n),"""
+    } .mkString("\n")
+
+    val src =
+      s"""package de.sciss.synth
+         |
+         |import UGenSource._
+         |import ugen._
+         |
+         |object ${input.mapName} extends Map[String, ProductReader[Product]] {
+         |  type V = ProductReader[Product]
+         |
+         |  private val peer = Map[String, V](
+         |$pairs
+         |  )
+         |
+         |  def removed(key: String): Map[String, V] = peer.removed(key)
+         |
+         |  def updated[V1 >: V](key: String, value: V1): Map[String, V1] = peer.updated(key, value)
+         |
+         |  def get(key: String): Option[V] = peer.get(key)
+         |
+         |  def iterator: Iterator[(String, V)] = peer.iterator
+         |}
+         |""".stripMargin
+
+    val fMap = outDir0 / s"${input.mapName}.scala"
+    cg.writeTextFile(fMap)(src)
   }
+
   // sys.exit()
 }

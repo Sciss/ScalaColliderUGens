@@ -41,6 +41,9 @@ object ControlValues {
 }
 final case class ControlValues(seq: Vec[Float])
 
+object ControlProxyFactory {
+  implicit def fromString(s: String): ControlProxyFactory = new ControlProxyFactory(s)
+}
 final class ControlProxyFactory(val `this`: String) extends AnyVal { me =>
   import me.{`this` => name}
 
