@@ -13,11 +13,11 @@
 
 package de.sciss.synth
 
-import de.sciss.serial
+import de.sciss.serial.DataInput
 import de.sciss.synth.UGenSource.Vec
 import de.sciss.synth.ugen.Constant
 
-import scala.annotation.tailrec
+import scala.annotation.{switch, tailrec}
 import scala.collection.mutable
 import scala.runtime.ScalaRunTime
 
@@ -159,12 +159,99 @@ object UGenSource {
 
   // ---- serialization ----
 
-  type DataInput  = serial.DataInput
-  type Reader[+A] = serial.Reader[A]
+  trait ProductReader[+A] {
+    // should we call this `readIdentified`?
+    def read(in: RefMapIn, arity: Int): A
+  }
 
-  private val mapRead = mutable.Map.empty[String, Reader[GE]]
+  private val mapRead = mutable.Map.empty[String, ProductReader[Product]]
 
-  def addReader(prefix: String, r: Reader[GE]): Unit = mapRead.synchronized {
+  final class RefMapIn(_in: DataInput) {
+    private[this] val map   = mutable.Map.empty[Int, Product]
+    private[this] var count = 0
+
+    def in: DataInput = _in
+
+    def readProduct(): Product = {
+      val cookie = _in.readByte().toChar
+      (cookie: @switch) match {
+        case 'C' =>
+          val value = _in.readFloat()
+          Constant(value)
+
+        case 'P' =>
+          val prefix  = _in.readUTF()
+          val r       = mapRead.getOrElse(prefix, throw new NoSuchElementException(s"Unknown element '$prefix'"))
+          val arity   = in.readShort().toInt
+          val res     = r.read(this, arity)
+          val id      = count
+          map    += ((id, res))
+          count   = id + 1
+          res
+
+        case '<' =>
+          val id = _in.readInt()
+          map(id)
+
+        case _ =>
+          sys.error(s"Unexpected cookie '$cookie' is not 'P'")
+      }
+    }
+
+    def readGE(): GE =
+      readProduct().asInstanceOf[GE]
+
+    def readGEDone(): GE with HasDoneFlag =
+      readProduct().asInstanceOf[GE with HasDoneFlag]
+
+    def readInt(): Int = {
+      val cookie = _in.readByte()
+      if (cookie != 'I') sys.error(s"Unexpected cookie '$cookie' is not 'I'")
+      _in.readInt()
+    }
+
+    def readString(): String = {
+      val cookie = _in.readByte()
+      if (cookie != 'S') sys.error(s"Unexpected cookie '$cookie' is not 'S'")
+      _in.readUTF()
+    }
+
+    def readStringOption(): Option[String] = {
+      val cookie = _in.readByte()
+      if (cookie != 'O') sys.error(s"Unexpected cookie '$cookie' is not 'O'")
+      val defined = in.readBoolean()
+      if (defined) Some(readString()) else None
+    }
+
+    def readFloat(): Float = {
+      val cookie = _in.readByte()
+      if (cookie != 'F') sys.error(s"Unexpected cookie '$cookie' is not 'F'")
+      in.readFloat()
+    }
+
+    def readFloatVec(): Vec[Float] = {
+      val cookie = _in.readByte()
+      if (cookie != 'X') sys.error(s"Unexpected cookie '$cookie' is not 'X'")
+      val size = in.readInt()
+      Vector.fill(size)(readFloat())
+    }
+
+    def readRate(): Rate = {
+      val cookie = _in.readByte().toChar
+      if (cookie != 'R') sys.error(s"Unexpected cookie '$cookie' is not 'R'")
+      val id = _in.readByte().toInt
+      Rate(id)
+    }
+
+    def readMaybeRate(): MaybeRate = {
+      val cookie = in.readByte().toChar
+      if (cookie != 'R') sys.error(s"Unexpected cookie '$cookie' is not 'R'")
+      val id = in.readByte().toInt
+      MaybeRate(id)
+    }
+  }
+
+  def addProductReader(prefix: String, r: ProductReader[Product]): Unit = mapRead.synchronized {
     val old = mapRead.put(prefix, r)
     require (old.isEmpty, {
       mapRead.put(prefix, old.get)
@@ -172,58 +259,9 @@ object UGenSource {
     })
   }
 
-  def addReaders(xs: Iterable[(String, Reader[GE])]): Unit = mapRead.synchronized {
+  def addProductReaders(xs: Iterable[(String, ProductReader[Product])]): Unit = mapRead.synchronized {
     mapRead ++= xs
     ()
-  }
-
-  def readGE(in: DataInput): GE = {
-    val cookie = in.readByte().toChar
-    cookie match {
-      case 'C' =>
-        val value = in.readFloat()
-        Constant(value)
-      case 'P' =>
-        val prefix = in.readUTF()
-        val r = mapRead.getOrElse(prefix, throw new NoSuchElementException(s"Unknown GE element '$prefix'"))
-        r.read(in)  // should we call this `readIdentified`?
-      case _ =>
-        sys.error(s"Unexpected cookie '$cookie' is not 'P'")
-    }
-  }
-
-  def readGEDone(in: DataInput): GE with HasDoneFlag =
-    readGE(in).asInstanceOf[GE with HasDoneFlag]
-
-  def readInt(in: DataInput): Int = {
-    val cookie = in.readByte()
-    if (cookie != 'I') sys.error(s"Unexpected cookie '$cookie' is not 'I'")
-    in.readInt()
-  }
-
-  def readString(in: DataInput): String = {
-    val cookie = in.readByte()
-    if (cookie != 'S') sys.error(s"Unexpected cookie '$cookie' is not 'S'")
-    in.readUTF()
-  }
-
-  def readRate(in: DataInput): Rate = {
-    val cookie = in.readByte().toChar
-    if (cookie != 'R') sys.error(s"Unexpected cookie '$cookie' is not 'R'")
-    val id = in.readByte().toInt
-    Rate(id)
-  }
-
-  def readMaybeRate(in: DataInput): MaybeRate = {
-    val cookie = in.readByte().toChar
-    if (cookie != 'R') sys.error(s"Unexpected cookie '$cookie' is not 'R'")
-    val id = in.readByte().toInt
-    MaybeRate(id)
-  }
-
-  def readArity(in: DataInput, expected: Int): Unit = {
-    val v = in.readShort().toInt
-    if (v != expected) sys.error(s"Unexpected arity $v is not $expected")
   }
 }
 

@@ -10,7 +10,7 @@ import UGenSource._
   * 
   * This is a third-party UGen (TJUGens).
   */
-object DFM1 extends Reader[DFM1] {
+object DFM1 extends ProductReader[DFM1] {
   /** @param in               Input signal to filter.
     * @param freq             Cutoff frequency in Hertz.
     * @param res              Resonance of the filter. Resonance is minimal at `0.0`
@@ -24,15 +24,15 @@ object DFM1 extends Reader[DFM1] {
   def ar(in: GE, freq: GE = 440, res: GE = 0.1f, gain: GE = 1.0f, mode: GE = 0, noise: GE = 3.0E-4f): DFM1 = 
     new DFM1(audio, in, freq, res, gain, mode, noise)
   
-  def read(in: DataInput): DFM1 = {
-    readArity(in, 7)
-    val _rate   = readRate(in)
-    val _in     = readGE(in)
-    val _freq   = readGE(in)
-    val _res    = readGE(in)
-    val _gain   = readGE(in)
-    val _mode   = readGE(in)
-    val _noise  = readGE(in)
+  def read(in: RefMapIn, arity: Int): DFM1 = {
+    require (arity == 7)
+    val _rate   = in.readRate()
+    val _in     = in.readGE()
+    val _freq   = in.readGE()
+    val _res    = in.readGE()
+    val _gain   = in.readGE()
+    val _mode   = in.readGE()
+    val _noise  = in.readGE()
     new DFM1(_rate, _in, _freq, _res, _gain, _mode, _noise)
   }
 }

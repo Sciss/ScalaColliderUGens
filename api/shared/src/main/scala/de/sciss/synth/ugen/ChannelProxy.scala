@@ -16,11 +16,11 @@ package ugen
 
 import UGenSource._
 
-object ChannelProxy extends Reader[ChannelProxy] {
-  def read(in: DataInput): ChannelProxy = {
-    readArity(in, 2)
-    val _elem   = readGE(in)
-    val _index  = readInt(in)
+object ChannelProxy extends ProductReader[ChannelProxy] {
+  def read(in: RefMapIn, arity: Int): ChannelProxy = {
+    require (arity == 2)
+    val _elem   = in.readGE()
+    val _index  = in.readInt()
     new ChannelProxy(_elem, _index)
   }
 }

@@ -20,7 +20,7 @@ import UGenSource._
   * @see [[de.sciss.synth.ugen.Balance2$ Balance2]]
   * @see [[de.sciss.synth.ugen.XFade2$ XFade2]]
   */
-object Pan2 extends Reader[Pan2] {
+object Pan2 extends ProductReader[Pan2] {
   /** @param in               (monophonic) input signal to be panned
     * @param pos              panorama position between -1 (hard left) via 0 (center)
     *                         to +1 (hard right)
@@ -35,12 +35,12 @@ object Pan2 extends Reader[Pan2] {
     */
   def ar(in: GE, pos: GE = 0.0f, level: GE = 1.0f): Pan2 = new Pan2(audio, in, pos, level)
   
-  def read(in: DataInput): Pan2 = {
-    readArity(in, 4)
-    val _rate   = readRate(in)
-    val _in     = readGE(in)
-    val _pos    = readGE(in)
-    val _level  = readGE(in)
+  def read(in: RefMapIn, arity: Int): Pan2 = {
+    require (arity == 4)
+    val _rate   = in.readRate()
+    val _in     = in.readGE()
+    val _pos    = in.readGE()
+    val _level  = in.readGE()
     new Pan2(_rate, _in, _pos, _level)
   }
 }
@@ -93,7 +93,7 @@ final case class Pan2(rate: Rate, in: GE, pos: GE = 0.0f, level: GE = 1.0f) exte
   * @see [[de.sciss.synth.ugen.Pan2$ Pan2]]
   * @see [[de.sciss.synth.ugen.PanAz$ PanAz]]
   */
-object Pan4 extends Reader[Pan4] {
+object Pan4 extends ProductReader[Pan4] {
   /** @param in               (monophonic) input signal to be panned
     * @param xpos             horizontal panorama position from -1 (left) to +1
     *                         (right)
@@ -114,13 +114,13 @@ object Pan4 extends Reader[Pan4] {
   def ar(in: GE, xpos: GE = 0.0f, ypos: GE = 0.0f, level: GE = 1.0f): Pan4 = 
     new Pan4(audio, in, xpos, ypos, level)
   
-  def read(in: DataInput): Pan4 = {
-    readArity(in, 5)
-    val _rate   = readRate(in)
-    val _in     = readGE(in)
-    val _xpos   = readGE(in)
-    val _ypos   = readGE(in)
-    val _level  = readGE(in)
+  def read(in: RefMapIn, arity: Int): Pan4 = {
+    require (arity == 5)
+    val _rate   = in.readRate()
+    val _in     = in.readGE()
+    val _xpos   = in.readGE()
+    val _ypos   = in.readGE()
+    val _level  = in.readGE()
     new Pan4(_rate, _in, _xpos, _ypos, _level)
   }
 }
@@ -173,7 +173,7 @@ final case class Pan4(rate: Rate, in: GE, xpos: GE = 0.0f, ypos: GE = 0.0f, leve
   * @see [[de.sciss.synth.ugen.Balance2$ Balance2]]
   * @see [[de.sciss.synth.ugen.LinXFade2$ LinXFade2]]
   */
-object LinPan2 extends Reader[LinPan2] {
+object LinPan2 extends ProductReader[LinPan2] {
   /** @param in               (monophonic) input signal to be panned
     * @param pos              panorama position between -1 (hard left) via 0 (center)
     *                         to +1 (hard right)
@@ -188,12 +188,12 @@ object LinPan2 extends Reader[LinPan2] {
     */
   def ar(in: GE, pos: GE = 0.0f, level: GE = 1.0f): LinPan2 = new LinPan2(audio, in, pos, level)
   
-  def read(in: DataInput): LinPan2 = {
-    readArity(in, 4)
-    val _rate   = readRate(in)
-    val _in     = readGE(in)
-    val _pos    = readGE(in)
-    val _level  = readGE(in)
+  def read(in: RefMapIn, arity: Int): LinPan2 = {
+    require (arity == 4)
+    val _rate   = in.readRate()
+    val _in     = in.readGE()
+    val _pos    = in.readGE()
+    val _level  = in.readGE()
     new LinPan2(_rate, _in, _pos, _level)
   }
 }
@@ -231,7 +231,7 @@ final case class LinPan2(rate: Rate, in: GE, pos: GE = 0.0f, level: GE = 1.0f) e
   * @see [[de.sciss.synth.ugen.XFade2$ XFade2]]
   * @see [[de.sciss.synth.ugen.Pan2$ Pan2]]
   */
-object Balance2 extends Reader[Balance2] {
+object Balance2 extends ProductReader[Balance2] {
   /** @param inL              The left input signal
     * @param inR              The right input signal
     * @param pos              The balance position from `-1` (left only, right muted)
@@ -256,13 +256,13 @@ object Balance2 extends Reader[Balance2] {
   def ar(inL: GE, inR: GE, pos: GE = 0.0f, level: GE = 1.0f): Balance2 = 
     new Balance2(audio, inL, inR, pos, level)
   
-  def read(in: DataInput): Balance2 = {
-    readArity(in, 5)
-    val _rate   = readRate(in)
-    val _inL    = readGE(in)
-    val _inR    = readGE(in)
-    val _pos    = readGE(in)
-    val _level  = readGE(in)
+  def read(in: RefMapIn, arity: Int): Balance2 = {
+    require (arity == 5)
+    val _rate   = in.readRate()
+    val _inL    = in.readGE()
+    val _inR    = in.readGE()
+    val _pos    = in.readGE()
+    val _level  = in.readGE()
     new Balance2(_rate, _inL, _inR, _pos, _level)
   }
 }
@@ -330,7 +330,7 @@ final case class Balance2(rate: Rate, inL: GE, inR: GE, pos: GE = 0.0f, level: G
   * }
   * }}}
   */
-object Rotate2 extends Reader[Rotate2] {
+object Rotate2 extends ProductReader[Rotate2] {
   /** @param x                B-format X input channel
     * @param y                B-format Y input channel
     * @param pos              angle to rotate around the circle, normalized between
@@ -349,12 +349,12 @@ object Rotate2 extends Reader[Rotate2] {
     */
   def ar(x: GE, y: GE, pos: GE = 0.0f): Rotate2 = new Rotate2(audio, x, y, pos)
   
-  def read(in: DataInput): Rotate2 = {
-    readArity(in, 4)
-    val _rate = readRate(in)
-    val _x    = readGE(in)
-    val _y    = readGE(in)
-    val _pos  = readGE(in)
+  def read(in: RefMapIn, arity: Int): Rotate2 = {
+    require (arity == 4)
+    val _rate = in.readRate()
+    val _x    = in.readGE()
+    val _y    = in.readGE()
+    val _pos  = in.readGE()
     new Rotate2(_rate, _x, _y, _pos)
   }
 }
@@ -401,7 +401,7 @@ final case class Rotate2(rate: Rate, x: GE, y: GE, pos: GE = 0.0f) extends UGenS
   * @see [[de.sciss.synth.ugen.Pan2$ Pan2]]
   * @see [[de.sciss.synth.ugen.XOut$ XOut]]
   */
-object XFade2 extends Reader[XFade2] {
+object XFade2 extends ProductReader[XFade2] {
   /** @param inA              The first input signal
     * @param inB              The second input signal
     * @param pan              the cross-fade position from `-1` (only input A
@@ -422,13 +422,13 @@ object XFade2 extends Reader[XFade2] {
   def ar(inA: GE, inB: GE = 0.0f, pan: GE = 0.0f, level: GE = 1.0f): XFade2 = 
     new XFade2(audio, inA, inB, pan, level)
   
-  def read(in: DataInput): XFade2 = {
-    readArity(in, 5)
-    val _rate   = readRate(in)
-    val _inA    = readGE(in)
-    val _inB    = readGE(in)
-    val _pan    = readGE(in)
-    val _level  = readGE(in)
+  def read(in: RefMapIn, arity: Int): XFade2 = {
+    require (arity == 5)
+    val _rate   = in.readRate()
+    val _inA    = in.readGE()
+    val _inB    = in.readGE()
+    val _pan    = in.readGE()
+    val _level  = in.readGE()
     new XFade2(_rate, _inA, _inB, _pan, _level)
   }
 }
@@ -467,7 +467,7 @@ final case class XFade2(rate: Rate, inA: GE, inB: GE = 0.0f, pan: GE = 0.0f, lev
   * @see [[de.sciss.synth.ugen.LinPan2$ LinPan2]]
   * @see [[de.sciss.synth.ugen.XOut$ XOut]]
   */
-object LinXFade2 extends Reader[LinXFade2] {
+object LinXFade2 extends ProductReader[LinXFade2] {
   /** @param inA              The first input signal
     * @param inB              The second input signal
     * @param pan              the cross-fade position from `-1` (only input A
@@ -488,13 +488,13 @@ object LinXFade2 extends Reader[LinXFade2] {
   def ar(inA: GE, inB: GE = 0.0f, pan: GE = 0.0f, level: GE = 1.0f): LinXFade2 = 
     new LinXFade2(audio, inA, inB, pan, level)
   
-  def read(in: DataInput): LinXFade2 = {
-    readArity(in, 5)
-    val _rate   = readRate(in)
-    val _inA    = readGE(in)
-    val _inB    = readGE(in)
-    val _pan    = readGE(in)
-    val _level  = readGE(in)
+  def read(in: RefMapIn, arity: Int): LinXFade2 = {
+    require (arity == 5)
+    val _rate   = in.readRate()
+    val _inA    = in.readGE()
+    val _inB    = in.readGE()
+    val _pan    = in.readGE()
+    val _level  = in.readGE()
     new LinXFade2(_rate, _inA, _inB, _pan, _level)
   }
 }
@@ -536,7 +536,7 @@ final case class LinXFade2(rate: Rate, inA: GE, inB: GE = 0.0f, pan: GE = 0.0f, 
   * @see [[de.sciss.synth.ugen.PanB2$ PanB2]]
   * @see [[de.sciss.synth.ugen.DecodeB2$ DecodeB2]]
   */
-object PanB extends Reader[PanB] {
+object PanB extends ProductReader[PanB] {
   /** @param in               (monophonic) input signal to be encoded
     * @param azimuth          position around the circle in radians. -Pi/+Pi is
     *                         behind, -Pi/2 is left, 0 is front, +Pi/2 is right.
@@ -555,13 +555,13 @@ object PanB extends Reader[PanB] {
   def ar(in: GE, azimuth: GE = 0.0f, elevation: GE = 0.0f, level: GE = 1.0f): PanB = 
     new PanB(audio, in, azimuth, elevation, level)
   
-  def read(in: DataInput): PanB = {
-    readArity(in, 5)
-    val _rate       = readRate(in)
-    val _in         = readGE(in)
-    val _azimuth    = readGE(in)
-    val _elevation  = readGE(in)
-    val _level      = readGE(in)
+  def read(in: RefMapIn, arity: Int): PanB = {
+    require (arity == 5)
+    val _rate       = in.readRate()
+    val _in         = in.readGE()
+    val _azimuth    = in.readGE()
+    val _elevation  = in.readGE()
+    val _level      = in.readGE()
     new PanB(_rate, _in, _azimuth, _elevation, _level)
   }
 }
@@ -630,7 +630,7 @@ final case class PanB(rate: Rate, in: GE, azimuth: GE = 0.0f, elevation: GE = 0.
   * @see [[de.sciss.synth.ugen.DecodeB2$ DecodeB2]]
   * @see [[de.sciss.synth.ugen.Pan2$ Pan2]]
   */
-object PanB2 extends Reader[PanB2] {
+object PanB2 extends ProductReader[PanB2] {
   /** @param in               (monophonic) input signal to be encoded
     * @param azimuth          position around the circle from -1 to +1. -1 and +1
     *                         correspond to -180/+180 degrees (behind), -0.5 is 90
@@ -649,12 +649,12 @@ object PanB2 extends Reader[PanB2] {
     */
   def ar(in: GE, azimuth: GE = 0.0f, level: GE = 1.0f): PanB2 = new PanB2(audio, in, azimuth, level)
   
-  def read(in: DataInput): PanB2 = {
-    readArity(in, 4)
-    val _rate     = readRate(in)
-    val _in       = readGE(in)
-    val _azimuth  = readGE(in)
-    val _level    = readGE(in)
+  def read(in: RefMapIn, arity: Int): PanB2 = {
+    require (arity == 4)
+    val _rate     = in.readRate()
+    val _in       = in.readGE()
+    val _azimuth  = in.readGE()
+    val _level    = in.readGE()
     new PanB2(_rate, _in, _azimuth, _level)
   }
 }
@@ -720,7 +720,7 @@ final case class PanB2(rate: Rate, in: GE, azimuth: GE = 0.0f, level: GE = 1.0f)
   * @see [[de.sciss.synth.ugen.PanB2$ PanB2]]
   * @see [[de.sciss.synth.ugen.DecodeB2$ DecodeB2]]
   */
-object BiPanB2 extends Reader[BiPanB2] {
+object BiPanB2 extends ProductReader[BiPanB2] {
   /** @param inA              the first (monophonic) input signal, which will appear
     *                         opposite to the first second signal
     * @param inB              the second (monophonic) input signal, which will appear
@@ -737,13 +737,13 @@ object BiPanB2 extends Reader[BiPanB2] {
   def ar(inA: GE, inB: GE, azimuth: GE = 0.0f, level: GE = 1.0f): BiPanB2 = 
     new BiPanB2(audio, inA, inB, azimuth, level)
   
-  def read(in: DataInput): BiPanB2 = {
-    readArity(in, 5)
-    val _rate     = readRate(in)
-    val _inA      = readGE(in)
-    val _inB      = readGE(in)
-    val _azimuth  = readGE(in)
-    val _level    = readGE(in)
+  def read(in: RefMapIn, arity: Int): BiPanB2 = {
+    require (arity == 5)
+    val _rate     = in.readRate()
+    val _inA      = in.readGE()
+    val _inB      = in.readGE()
+    val _azimuth  = in.readGE()
+    val _level    = in.readGE()
     new BiPanB2(_rate, _inA, _inB, _azimuth, _level)
   }
 }
@@ -799,7 +799,7 @@ final case class BiPanB2(rate: Rate, inA: GE, inB: GE, azimuth: GE = 0.0f, level
   * @see [[de.sciss.synth.ugen.Pan2$ Pan2]]
   * @see [[de.sciss.synth.ugen.SplayAz$ SplayAz]]
   */
-object PanAz extends Reader[PanAz] {
+object PanAz extends ProductReader[PanAz] {
   /** @param numChannels      the number of output channels
     * @param in               the input signal
     * @param pos              the pan position. Channels are evenly spaced over a
@@ -872,15 +872,15 @@ object PanAz extends Reader[PanAz] {
   def ar(numChannels: Int, in: GE, pos: GE = 0.0f, level: GE = 1.0f, width: GE = 2.0f, orient: GE = 0.0f): PanAz = 
     new PanAz(audio, numChannels, in, pos, level, width, orient)
   
-  def read(in: DataInput): PanAz = {
-    readArity(in, 7)
-    val _rate         = readRate(in)
-    val _numChannels  = readInt(in)
-    val _in           = readGE(in)
-    val _pos          = readGE(in)
-    val _level        = readGE(in)
-    val _width        = readGE(in)
-    val _orient       = readGE(in)
+  def read(in: RefMapIn, arity: Int): PanAz = {
+    require (arity == 7)
+    val _rate         = in.readRate()
+    val _numChannels  = in.readInt()
+    val _in           = in.readGE()
+    val _pos          = in.readGE()
+    val _level        = in.readGE()
+    val _width        = in.readGE()
+    val _orient       = in.readGE()
     new PanAz(_rate, _numChannels, _in, _pos, _level, _width, _orient)
   }
 }
@@ -970,7 +970,7 @@ final case class PanAz(rate: Rate, numChannels: Int, in: GE, pos: GE = 0.0f, lev
   * @see [[de.sciss.synth.ugen.PanB$ PanB]]
   * @see [[de.sciss.synth.ugen.PanB2$ PanB2]]
   */
-object DecodeB2 extends Reader[DecodeB2] {
+object DecodeB2 extends ProductReader[DecodeB2] {
   /** @param numChannels      the number of output channels to produce
     * @param w                W (first) channel of B-format input signal
     * @param x                X (second) channel of B-format input signal
@@ -997,14 +997,14 @@ object DecodeB2 extends Reader[DecodeB2] {
   def ar(numChannels: Int, w: GE, x: GE, y: GE, orient: GE = 0.5f): DecodeB2 = 
     new DecodeB2(audio, numChannels, w, x, y, orient)
   
-  def read(in: DataInput): DecodeB2 = {
-    readArity(in, 6)
-    val _rate         = readRate(in)
-    val _numChannels  = readInt(in)
-    val _w            = readGE(in)
-    val _x            = readGE(in)
-    val _y            = readGE(in)
-    val _orient       = readGE(in)
+  def read(in: RefMapIn, arity: Int): DecodeB2 = {
+    require (arity == 6)
+    val _rate         = in.readRate()
+    val _numChannels  = in.readInt()
+    val _w            = in.readGE()
+    val _x            = in.readGE()
+    val _y            = in.readGE()
+    val _orient       = in.readGE()
     new DecodeB2(_rate, _numChannels, _w, _x, _y, _orient)
   }
 }

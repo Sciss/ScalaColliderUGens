@@ -17,12 +17,12 @@ package ugen
 import de.sciss.synth.UGenSource._
 import de.sciss.synth.ugen.Constant.{C0, C1, Cm1}
 
-object MulAdd extends Reader[MulAdd] {
-  def read(in: DataInput): MulAdd = {
-    readArity(in, 3)
-    val _in   = readGE(in)
-    val _mul  = readGE(in)
-    val _add  = readGE(in)
+object MulAdd extends ProductReader[MulAdd] {
+  def read(in: RefMapIn, arity: Int): MulAdd = {
+    require (arity == 3)
+    val _in   = in.readGE()
+    val _mul  = in.readGE()
+    val _add  = in.readGE()
     new MulAdd(_in, _mul, _add)
   }
 }
@@ -101,7 +101,7 @@ final case class MulAdd(in: GE, mul: GE, add: GE)
   * @see [[de.sciss.synth.ugen.MulAdd MulAdd]]
   * @see [[de.sciss.synth.ugen.Sum4$ Sum4]]
   */
-object Sum3 extends Reader[Sum3] {
+object Sum3 extends ProductReader[Sum3] {
   private[ugen] def make1(args: Vec[UGenIn]): UGenIn = {
     val in0i = args(0)
     val in1i = args(1)
@@ -120,11 +120,11 @@ object Sum3 extends Reader[Sum3] {
     }
   }
 
-  def read(in: DataInput): Sum3 = {
-    readArity(in, 3)
-    val _in0 = readGE(in)
-    val _in1 = readGE(in)
-    val _in2 = readGE(in)
+  def read(in: RefMapIn, arity: Int): Sum3 = {
+    require (arity == 3)
+    val _in0 = in.readGE()
+    val _in1 = in.readGE()
+    val _in2 = in.readGE()
     new Sum3(_in0, _in1, _in2)
   }
 }
@@ -155,7 +155,7 @@ final case class Sum3(in0: GE, in1: GE, in2: GE) extends UGenSource.SingleOut {
   * @see [[de.sciss.synth.ugen.MulAdd MulAdd]]
   * @see [[de.sciss.synth.ugen.Sum3$ Sum3]]
   */
-object Sum4 extends Reader[Sum4] {
+object Sum4 extends ProductReader[Sum4] {
   private[ugen] def make1(args: Vec[UGenIn]): UGenIn = {
     val in0i = args(0)
     val in1i = args(1)
@@ -177,12 +177,12 @@ object Sum4 extends Reader[Sum4] {
     }
   }
 
-  def read(in: DataInput): Sum4 = {
-    readArity(in, 4)
-    val _in0 = readGE(in)
-    val _in1 = readGE(in)
-    val _in2 = readGE(in)
-    val _in3 = readGE(in)
+  def read(in: RefMapIn, arity: Int): Sum4 = {
+    require (arity == 4)
+    val _in0 = in.readGE()
+    val _in1 = in.readGE()
+    val _in2 = in.readGE()
+    val _in3 = in.readGE()
     new Sum4(_in0, _in1, _in2, _in3)
   }
 }

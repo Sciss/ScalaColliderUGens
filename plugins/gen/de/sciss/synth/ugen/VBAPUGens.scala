@@ -47,7 +47,7 @@ import UGenSource._
   * 
   * @see [[de.sciss.synth.ugen.CircleRamp$ CircleRamp]]
   */
-object VBAP extends Reader[VBAP] {
+object VBAP extends ProductReader[VBAP] {
   /** @param numChannels      the number of output channels
     * @param in               the signal to be panned
     * @param buf              id of a buffer containing data calculated by
@@ -80,15 +80,15 @@ object VBAP extends Reader[VBAP] {
   def ar(numChannels: Int, in: GE, buf: GE, azimuth: GE = 0, elevation: GE = 1, spread: GE = 0): VBAP = 
     new VBAP(audio, numChannels, in, buf, azimuth, elevation, spread)
   
-  def read(in: DataInput): VBAP = {
-    readArity(in, 7)
-    val _rate         = readMaybeRate(in)
-    val _numChannels  = readInt(in)
-    val _in           = readGE(in)
-    val _buf          = readGE(in)
-    val _azimuth      = readGE(in)
-    val _elevation    = readGE(in)
-    val _spread       = readGE(in)
+  def read(in: RefMapIn, arity: Int): VBAP = {
+    require (arity == 7)
+    val _rate         = in.readMaybeRate()
+    val _numChannels  = in.readInt()
+    val _in           = in.readGE()
+    val _buf          = in.readGE()
+    val _azimuth      = in.readGE()
+    val _elevation    = in.readGE()
+    val _spread       = in.readGE()
     new VBAP(_rate, _numChannels, _in, _buf, _azimuth, _elevation, _spread)
   }
 }
@@ -142,7 +142,7 @@ final case class VBAP(rate: MaybeRate, numChannels: Int, in: GE, buf: GE, azimut
   * @see [[de.sciss.synth.ugen.Ramp$ Ramp]]
   * @see [[de.sciss.synth.ugen.Lag$ Lag]]
   */
-object CircleRamp extends Reader[CircleRamp] {
+object CircleRamp extends ProductReader[CircleRamp] {
   /** @param in               The signal to be smoothed.
     * @param dur              Ramp duration in seconds
     * @param lo               The lower wrap value
@@ -159,13 +159,13 @@ object CircleRamp extends Reader[CircleRamp] {
   def ar(in: GE, dur: GE = 0.1f, lo: GE = -180, hi: GE = 180): CircleRamp = 
     new CircleRamp(audio, in, dur, lo, hi)
   
-  def read(in: DataInput): CircleRamp = {
-    readArity(in, 5)
-    val _rate = readMaybeRate(in)
-    val _in   = readGE(in)
-    val _dur  = readGE(in)
-    val _lo   = readGE(in)
-    val _hi   = readGE(in)
+  def read(in: RefMapIn, arity: Int): CircleRamp = {
+    require (arity == 5)
+    val _rate = in.readMaybeRate()
+    val _in   = in.readGE()
+    val _dur  = in.readGE()
+    val _lo   = in.readGE()
+    val _hi   = in.readGE()
     new CircleRamp(_rate, _in, _dur, _lo, _hi)
   }
 }

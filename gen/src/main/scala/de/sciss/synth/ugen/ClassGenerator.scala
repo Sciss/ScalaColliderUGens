@@ -659,21 +659,21 @@ final class ClassGenerator {
       }
       val mArgs0 = argsIn.map { a =>
         val rhs = a.tpe match {
-          case GE(Sig.String,_)   => "readString(in)"
-          case GE(Sig.DoneFlag,_) => "readGEDone(in)"
-          case GE(_,_)            => "readGE(in)"
-          case ArgumentType.Int   => "readInt(in)"
+          case GE(Sig.String,_)   => "in.readString()"
+          case GE(Sig.DoneFlag,_) => "in.readGEDone()"
+          case GE(_,_)            => "in.readGE()"
+          case ArgumentType.Int   => "in.readInt()"
         }
         ValDef(s"_${a.name}".padTo(namePadSize, ' '), rhs = Ident(rhs))
       }
       val mArgs1 = if (impliedRate.isDefined) mArgs0 else {
         val rateTpe = if (maybeRateRef.nonEmpty) strMaybeRate else strRate
-        ValDef("_rate".padTo(namePadSize, ' '), rhs = Ident(s"read$rateTpe(in)")) :: mArgs0
+        ValDef("_rate".padTo(namePadSize, ' '), rhs = Ident(s"in.read$rateTpe()")) :: mArgs0
       }
 
       val mArgs = {
         val arity = mArgs1.size
-        Ident(s"readArity(in, $arity)") :: mArgs1
+        Ident(s"require (arity == $arity)") :: mArgs1
       }
 
       val mNew: Tree = {
@@ -687,7 +687,7 @@ final class ClassGenerator {
       MethodDef(
         name    = "read",
         tpe     = Nil,
-        params  = (ParamDef("in", "DataInput") :: Nil) :: Nil,
+        params  = (ParamDef("in", "RefMapIn") :: ParamDef("arity", "Int") :: Nil) :: Nil,
         ret     = className, // readerType,
         body    = Block(mBlock: _*)
       )
@@ -779,7 +779,7 @@ final class ClassGenerator {
     val objectDef = /*if (forceCompanion || objectMethodDefs.nonEmpty)*/ {
       val mod = ObjectDef(
         name    = className,
-        parents = s"Reader[$className]" :: Nil, // s"Reader[$readerType]" :: Nil,
+        parents = s"ProductReader[$className]" :: Nil, // s"Reader[$readerType]" :: Nil,
         body    = objectMethodDefs  // body
       )
       wrapDoc(spec, mod, /* indent = 0, */ body = true, args = false, examples = true, thirdParty = thirdParty) :: Nil

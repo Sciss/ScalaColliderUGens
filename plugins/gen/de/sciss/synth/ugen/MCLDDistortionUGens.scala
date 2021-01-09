@@ -19,7 +19,7 @@ import UGenSource._
   * 
   * This is a third-party UGen (MCLDUGens).
   */
-object InsideOut extends Reader[InsideOut] {
+object InsideOut extends ProductReader[InsideOut] {
   /** @param in               input signal to be distorted
     */
   def kr(in: GE): InsideOut = new InsideOut(control, in)
@@ -28,10 +28,10 @@ object InsideOut extends Reader[InsideOut] {
     */
   def ar(in: GE): InsideOut = new InsideOut(audio, in)
   
-  def read(in: DataInput): InsideOut = {
-    readArity(in, 2)
-    val _rate = readMaybeRate(in)
-    val _in   = readGE(in)
+  def read(in: RefMapIn, arity: Int): InsideOut = {
+    require (arity == 2)
+    val _rate = in.readMaybeRate()
+    val _in   = in.readGE()
     new InsideOut(_rate, _in)
   }
 }
@@ -74,7 +74,7 @@ final case class InsideOut(rate: MaybeRate, in: GE) extends UGenSource.SingleOut
   * 
   * This is a third-party UGen (MCLDUGens).
   */
-object WaveLoss extends Reader[WaveLoss] {
+object WaveLoss extends ProductReader[WaveLoss] {
   /** @param in               input signal to be distorted
     * @param drop             the number of wave segments to drop in each group of
     *                         size `chunk` .
@@ -101,13 +101,13 @@ object WaveLoss extends Reader[WaveLoss] {
   def ar(in: GE, drop: GE = 20, chunk: GE = 40, mode: GE = 1): WaveLoss = 
     new WaveLoss(audio, in, drop, chunk, mode)
   
-  def read(in: DataInput): WaveLoss = {
-    readArity(in, 5)
-    val _rate   = readMaybeRate(in)
-    val _in     = readGE(in)
-    val _drop   = readGE(in)
-    val _chunk  = readGE(in)
-    val _mode   = readGE(in)
+  def read(in: RefMapIn, arity: Int): WaveLoss = {
+    require (arity == 5)
+    val _rate   = in.readMaybeRate()
+    val _in     = in.readGE()
+    val _drop   = in.readGE()
+    val _chunk  = in.readGE()
+    val _mode   = in.readGE()
     new WaveLoss(_rate, _in, _drop, _chunk, _mode)
   }
 }
@@ -160,7 +160,7 @@ final case class WaveLoss(rate: MaybeRate, in: GE, drop: GE = 20, chunk: GE = 40
   * 
   * This is a third-party UGen (MCLDUGens).
   */
-object Squiz extends Reader[Squiz] {
+object Squiz extends ProductReader[Squiz] {
   /** @param in               input signal to be distorted
     * @param pitchRatio       the ratio by which pitch will be raised, e.g. the
     *                         default value of 2 will raise by one octave. Only
@@ -193,13 +193,13 @@ object Squiz extends Reader[Squiz] {
   def ar(in: GE, pitchRatio: GE = 2, zeroCrossings: GE = 1, maxDur: GE = 0.1f): Squiz = 
     new Squiz(audio, in, pitchRatio, zeroCrossings, maxDur)
   
-  def read(in: DataInput): Squiz = {
-    readArity(in, 5)
-    val _rate           = readRate(in)
-    val _in             = readGE(in)
-    val _pitchRatio     = readGE(in)
-    val _zeroCrossings  = readGE(in)
-    val _maxDur         = readGE(in)
+  def read(in: RefMapIn, arity: Int): Squiz = {
+    require (arity == 5)
+    val _rate           = in.readRate()
+    val _in             = in.readGE()
+    val _pitchRatio     = in.readGE()
+    val _zeroCrossings  = in.readGE()
+    val _maxDur         = in.readGE()
     new Squiz(_rate, _in, _pitchRatio, _zeroCrossings, _maxDur)
   }
 }

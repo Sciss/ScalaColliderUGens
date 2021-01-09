@@ -39,7 +39,7 @@ import UGenSource._
   * 
   * @see [[de.sciss.synth.ugen.ListTrig$ ListTrig]]
   */
-object Logger extends Reader[Logger] {
+object Logger extends ProductReader[Logger] {
   /** @param buf              identifier of the buffer to write to. Its number of
     *                         channels should match those of `in` .
     * @param in               (multi-channel) signal to write to the buffer. Its
@@ -53,13 +53,13 @@ object Logger extends Reader[Logger] {
     */
   def kr(buf: GE, in: GE, trig: GE, reset: GE = 0): Logger = new Logger(control, buf, in, trig, reset)
   
-  def read(in: DataInput): Logger = {
-    readArity(in, 5)
-    val _rate   = readRate(in)
-    val _buf    = readGE(in)
-    val _in     = readGE(in)
-    val _trig   = readGE(in)
-    val _reset  = readGE(in)
+  def read(in: RefMapIn, arity: Int): Logger = {
+    require (arity == 5)
+    val _rate   = in.readRate()
+    val _buf    = in.readGE()
+    val _in     = in.readGE()
+    val _trig   = in.readGE()
+    val _reset  = in.readGE()
     new Logger(_rate, _buf, _in, _trig, _reset)
   }
 }
@@ -137,7 +137,7 @@ final case class Logger(rate: Rate, buf: GE, in: GE, trig: GE, reset: GE = 0)
   * @see [[de.sciss.synth.ugen.Dbufrd$ Dbufrd]]
   * @see [[de.sciss.synth.ugen.Timer$ Timer]]
   */
-object ListTrig extends Reader[ListTrig] {
+object ListTrig extends ProductReader[ListTrig] {
   /** @param buf              identifier of the buffer containing the offsets for the
     *                         triggers in seconds. The offsets are taken against the
     *                         start time of the synth or the last time a `reset` was
@@ -156,13 +156,13 @@ object ListTrig extends Reader[ListTrig] {
   def kr(buf: GE, size: GE, reset: GE = 0, delay: GE = 0): ListTrig = 
     new ListTrig(control, buf, size, reset, delay)
   
-  def read(in: DataInput): ListTrig = {
-    readArity(in, 5)
-    val _rate   = readRate(in)
-    val _buf    = readGE(in)
-    val _size   = readGE(in)
-    val _reset  = readGE(in)
-    val _delay  = readGE(in)
+  def read(in: RefMapIn, arity: Int): ListTrig = {
+    require (arity == 5)
+    val _rate   = in.readRate()
+    val _buf    = in.readGE()
+    val _size   = in.readGE()
+    val _reset  = in.readGE()
+    val _delay  = in.readGE()
     new ListTrig(_rate, _buf, _size, _reset, _delay)
   }
 }
@@ -241,7 +241,7 @@ final case class ListTrig(rate: Rate, buf: GE, size: GE, reset: GE = 0, delay: G
   * @see [[de.sciss.synth.ugen.Dbufrd$ Dbufrd]]
   * @see [[de.sciss.synth.ugen.ListTrig2$ ListTrig2]]
   */
-object ListTrig2 extends Reader[ListTrig2] {
+object ListTrig2 extends ProductReader[ListTrig2] {
   /** @param buf              identifier of the buffer containing the durations for
     *                         the triggers in seconds. A value represents a relative
     *                         offsets with respect to its predecessor. The first value
@@ -255,12 +255,12 @@ object ListTrig2 extends Reader[ListTrig2] {
     */
   def kr(buf: GE, size: GE, reset: GE = 0): ListTrig2 = new ListTrig2(control, buf, size, reset)
   
-  def read(in: DataInput): ListTrig2 = {
-    readArity(in, 4)
-    val _rate   = readRate(in)
-    val _buf    = readGE(in)
-    val _size   = readGE(in)
-    val _reset  = readGE(in)
+  def read(in: RefMapIn, arity: Int): ListTrig2 = {
+    require (arity == 4)
+    val _rate   = in.readRate()
+    val _buf    = in.readGE()
+    val _size   = in.readGE()
+    val _reset  = in.readGE()
     new ListTrig2(_rate, _buf, _size, _reset)
   }
 }
@@ -331,7 +331,7 @@ final case class ListTrig2(rate: Rate, buf: GE, size: GE, reset: GE = 0)
   * @see [[de.sciss.synth.ugen.BufMin$ BufMin]]
   * @see [[de.sciss.synth.ugen.ArrayMax$ ArrayMax]]
   */
-object BufMax extends Reader[BufMax] {
+object BufMax extends ProductReader[BufMax] {
   /** @param buf              identifier of the buffer containing the values to
     *                         analyze. It treats multi-channel buffers as monophonic,
     *                         and indices will refer to the de-interleaved frames and
@@ -348,11 +348,11 @@ object BufMax extends Reader[BufMax] {
     */
   def kr(buf: GE, gate: GE = 1): BufMax = new BufMax(control, buf, gate)
   
-  def read(in: DataInput): BufMax = {
-    readArity(in, 3)
-    val _rate = readRate(in)
-    val _buf  = readGE(in)
-    val _gate = readGE(in)
+  def read(in: RefMapIn, arity: Int): BufMax = {
+    require (arity == 3)
+    val _rate = in.readRate()
+    val _buf  = in.readGE()
+    val _gate = in.readGE()
     new BufMax(_rate, _buf, _gate)
   }
 }
@@ -414,7 +414,7 @@ final case class BufMax(rate: Rate, buf: GE, gate: GE = 1) extends UGenSource.Mu
   * @see [[de.sciss.synth.ugen.BufMax$ BufMax]]
   * @see [[de.sciss.synth.ugen.ArrayMin$ ArrayMin]]
   */
-object BufMin extends Reader[BufMin] {
+object BufMin extends ProductReader[BufMin] {
   /** @param buf              identifier of the buffer containing the values to
     *                         analyze. It treats multi-channel buffers as monophonic,
     *                         and indices will refer to the de-interleaved frames and
@@ -431,11 +431,11 @@ object BufMin extends Reader[BufMin] {
     */
   def kr(buf: GE, gate: GE = 1): BufMin = new BufMin(control, buf, gate)
   
-  def read(in: DataInput): BufMin = {
-    readArity(in, 3)
-    val _rate = readRate(in)
-    val _buf  = readGE(in)
-    val _gate = readGE(in)
+  def read(in: RefMapIn, arity: Int): BufMin = {
+    require (arity == 3)
+    val _rate = in.readRate()
+    val _buf  = in.readGE()
+    val _gate = in.readGE()
     new BufMin(_rate, _buf, _gate)
   }
 }
@@ -488,7 +488,7 @@ final case class BufMin(rate: Rate, buf: GE, gate: GE = 1) extends UGenSource.Mu
   * @see [[de.sciss.synth.ugen.ArrayMin$ ArrayMin]]
   * @see [[de.sciss.synth.ugen.BufMax$ BufMax]]
   */
-object ArrayMax extends Reader[ArrayMax] {
+object ArrayMax extends ProductReader[ArrayMax] {
   /** @param in               multi-channel signal to analyze
     */
   def ir(in: GE): ArrayMax = new ArrayMax(scalar, in)
@@ -501,10 +501,10 @@ object ArrayMax extends Reader[ArrayMax] {
     */
   def ar(in: GE): ArrayMax = new ArrayMax(audio, in)
   
-  def read(in: DataInput): ArrayMax = {
-    readArity(in, 2)
-    val _rate = readRate(in)
-    val _in   = readGE(in)
+  def read(in: RefMapIn, arity: Int): ArrayMax = {
+    require (arity == 2)
+    val _rate = in.readRate()
+    val _in   = in.readGE()
     new ArrayMax(_rate, _in)
   }
 }
@@ -552,7 +552,7 @@ final case class ArrayMax(rate: Rate, in: GE) extends UGenSource.MultiOut {
   * @see [[de.sciss.synth.ugen.ArrayMax$ ArrayMax]]
   * @see [[de.sciss.synth.ugen.BufMin$ BufMin]]
   */
-object ArrayMin extends Reader[ArrayMin] {
+object ArrayMin extends ProductReader[ArrayMin] {
   /** @param in               multi-channel signal to analyze
     */
   def ir(in: GE): ArrayMin = new ArrayMin(scalar, in)
@@ -565,10 +565,10 @@ object ArrayMin extends Reader[ArrayMin] {
     */
   def ar(in: GE): ArrayMin = new ArrayMin(audio, in)
   
-  def read(in: DataInput): ArrayMin = {
-    readArity(in, 2)
-    val _rate = readRate(in)
-    val _in   = readGE(in)
+  def read(in: RefMapIn, arity: Int): ArrayMin = {
+    require (arity == 2)
+    val _rate = in.readRate()
+    val _in   = in.readGE()
     new ArrayMin(_rate, _in)
   }
 }

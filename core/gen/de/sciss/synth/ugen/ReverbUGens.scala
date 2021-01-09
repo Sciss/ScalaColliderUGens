@@ -24,7 +24,7 @@ import UGenSource._
   * @see [[de.sciss.synth.ugen.FreeVerb2$ FreeVerb2]]
   * @see [[de.sciss.synth.ugen.GVerb$ GVerb]]
   */
-object FreeVerb extends Reader[FreeVerb] {
+object FreeVerb extends ProductReader[FreeVerb] {
   /** @param in               input signal to reverberate
     * @param mix              dry/wet balance from zero (only dry) to one (only wet)
     * @param room             room size
@@ -33,12 +33,12 @@ object FreeVerb extends Reader[FreeVerb] {
   def ar(in: GE, mix: GE = 0.33f, room: GE = 0.5f, damp: GE = 0.5f): FreeVerb = 
     new FreeVerb(in, mix, room, damp)
   
-  def read(in: DataInput): FreeVerb = {
-    readArity(in, 4)
-    val _in   = readGE(in)
-    val _mix  = readGE(in)
-    val _room = readGE(in)
-    val _damp = readGE(in)
+  def read(in: RefMapIn, arity: Int): FreeVerb = {
+    require (arity == 4)
+    val _in   = in.readGE()
+    val _mix  = in.readGE()
+    val _room = in.readGE()
+    val _damp = in.readGE()
     new FreeVerb(_in, _mix, _room, _damp)
   }
 }
@@ -90,7 +90,7 @@ final case class FreeVerb(in: GE, mix: GE = 0.33f, room: GE = 0.5f, damp: GE = 0
   * @see [[de.sciss.synth.ugen.FreeVerb$ FreeVerb]]
   * @see [[de.sciss.synth.ugen.GVerb$ GVerb]]
   */
-object FreeVerb2 extends Reader[FreeVerb2] {
+object FreeVerb2 extends ProductReader[FreeVerb2] {
   /** @param inL              left channel of input signal to reverberate
     * @param inR              right channel of input signal to reverberate
     * @param mix              dry/wet balance from zero (only dry) to one (only wet)
@@ -100,13 +100,13 @@ object FreeVerb2 extends Reader[FreeVerb2] {
   def ar(inL: GE, inR: GE, mix: GE = 0.33f, room: GE = 0.5f, damp: GE = 0.5f): FreeVerb2 = 
     new FreeVerb2(inL, inR, mix, room, damp)
   
-  def read(in: DataInput): FreeVerb2 = {
-    readArity(in, 5)
-    val _inL  = readGE(in)
-    val _inR  = readGE(in)
-    val _mix  = readGE(in)
-    val _room = readGE(in)
-    val _damp = readGE(in)
+  def read(in: RefMapIn, arity: Int): FreeVerb2 = {
+    require (arity == 5)
+    val _inL  = in.readGE()
+    val _inR  = in.readGE()
+    val _mix  = in.readGE()
+    val _room = in.readGE()
+    val _damp = in.readGE()
     new FreeVerb2(_inL, _inR, _mix, _room, _damp)
   }
 }
@@ -168,7 +168,7 @@ final case class FreeVerb2(inL: GE, inR: GE, mix: GE = 0.33f, room: GE = 0.5f, d
   * @see [[de.sciss.synth.ugen.FreeVerb$ FreeVerb]]
   * @see [[de.sciss.synth.ugen.FreeVerb2$ FreeVerb2]]
   */
-object GVerb extends Reader[GVerb] {
+object GVerb extends ProductReader[GVerb] {
   /** @param roomSize         Size of the virtual room in meters. It must not be
     *                         greater than `maxRoomSize` . Note that quick changes in
     *                         `roomSize` may result in zipper noise and an audible
@@ -187,18 +187,18 @@ object GVerb extends Reader[GVerb] {
   def ar(in: GE, roomSize: GE = 10.0f, revTime: GE = 3.0f, damping: GE = 0.5f, inputBW: GE = 0.5f, spread: GE = 15.0f, dryLevel: GE = 1.0f, earlyRefLevel: GE = 0.7f, tailLevel: GE = 0.5f, maxRoomSize: GE = 300.0f): GVerb = 
     new GVerb(in, roomSize, revTime, damping, inputBW, spread, dryLevel, earlyRefLevel, tailLevel, maxRoomSize)
   
-  def read(in: DataInput): GVerb = {
-    readArity(in, 10)
-    val _in             = readGE(in)
-    val _roomSize       = readGE(in)
-    val _revTime        = readGE(in)
-    val _damping        = readGE(in)
-    val _inputBW        = readGE(in)
-    val _spread         = readGE(in)
-    val _dryLevel       = readGE(in)
-    val _earlyRefLevel  = readGE(in)
-    val _tailLevel      = readGE(in)
-    val _maxRoomSize    = readGE(in)
+  def read(in: RefMapIn, arity: Int): GVerb = {
+    require (arity == 10)
+    val _in             = in.readGE()
+    val _roomSize       = in.readGE()
+    val _revTime        = in.readGE()
+    val _damping        = in.readGE()
+    val _inputBW        = in.readGE()
+    val _spread         = in.readGE()
+    val _dryLevel       = in.readGE()
+    val _earlyRefLevel  = in.readGE()
+    val _tailLevel      = in.readGE()
+    val _maxRoomSize    = in.readGE()
     new GVerb(_in, _roomSize, _revTime, _damping, _inputBW, _spread, _dryLevel, _earlyRefLevel, _tailLevel, _maxRoomSize)
   }
 }

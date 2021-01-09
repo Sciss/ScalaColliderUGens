@@ -29,11 +29,11 @@ import de.sciss.synth.UGenSource._
   *
   * @see [[de.sciss.synth.ugen.SampleRate$ SampleRate]]
   */
-object Nyquist extends Reader[Nyquist] {
+object Nyquist extends ProductReader[Nyquist] {
   def ir: Nyquist = new Nyquist()
 
-  def read(in: DataInput): Nyquist = {
-    readArity(in, 0)
+  def read(in: RefMapIn, arity: Int): Nyquist = {
+    require (arity == 0)
     new Nyquist
   }
 }

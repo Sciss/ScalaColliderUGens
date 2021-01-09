@@ -3,19 +3,19 @@ package de.sciss.synth
 package ugen
 
 import UGenSource._
-object GrainIn extends Reader[GrainIn] {
+object GrainIn extends ProductReader[GrainIn] {
   def ar(numChannels: Int = 1, trig: GE, dur: GE = 1.0f, in: GE, pan: GE = 0.0f, envBuf: GE = -1, maxGrains: GE = 512): GrainIn = 
     new GrainIn(numChannels, trig, dur, in, pan, envBuf, maxGrains)
   
-  def read(in: DataInput): GrainIn = {
-    readArity(in, 7)
-    val _numChannels  = readInt(in)
-    val _trig         = readGE(in)
-    val _dur          = readGE(in)
-    val _in           = readGE(in)
-    val _pan          = readGE(in)
-    val _envBuf       = readGE(in)
-    val _maxGrains    = readGE(in)
+  def read(in: RefMapIn, arity: Int): GrainIn = {
+    require (arity == 7)
+    val _numChannels  = in.readInt()
+    val _trig         = in.readGE()
+    val _dur          = in.readGE()
+    val _in           = in.readGE()
+    val _pan          = in.readGE()
+    val _envBuf       = in.readGE()
+    val _maxGrains    = in.readGE()
     new GrainIn(_numChannels, _trig, _dur, _in, _pan, _envBuf, _maxGrains)
   }
 }
@@ -28,19 +28,19 @@ final case class GrainIn(numChannels: Int = 1, trig: GE, dur: GE = 1.0f, in: GE,
   protected def makeUGen(_args: Vec[UGenIn]): UGenInLike = 
     UGen.MultiOut(name, audio, Vector.fill(numChannels)(audio), _args, isIndividual = true)
 }
-object GrainSin extends Reader[GrainSin] {
+object GrainSin extends ProductReader[GrainSin] {
   def ar(numChannels: Int = 1, trig: GE, dur: GE = 1.0f, freq: GE = 440.0f, pan: GE = 0.0f, envBuf: GE = -1, maxGrains: GE = 512): GrainSin = 
     new GrainSin(numChannels, trig, dur, freq, pan, envBuf, maxGrains)
   
-  def read(in: DataInput): GrainSin = {
-    readArity(in, 7)
-    val _numChannels  = readInt(in)
-    val _trig         = readGE(in)
-    val _dur          = readGE(in)
-    val _freq         = readGE(in)
-    val _pan          = readGE(in)
-    val _envBuf       = readGE(in)
-    val _maxGrains    = readGE(in)
+  def read(in: RefMapIn, arity: Int): GrainSin = {
+    require (arity == 7)
+    val _numChannels  = in.readInt()
+    val _trig         = in.readGE()
+    val _dur          = in.readGE()
+    val _freq         = in.readGE()
+    val _pan          = in.readGE()
+    val _envBuf       = in.readGE()
+    val _maxGrains    = in.readGE()
     new GrainSin(_numChannels, _trig, _dur, _freq, _pan, _envBuf, _maxGrains)
   }
 }
@@ -53,21 +53,21 @@ final case class GrainSin(numChannels: Int = 1, trig: GE, dur: GE = 1.0f, freq: 
   protected def makeUGen(_args: Vec[UGenIn]): UGenInLike = 
     UGen.MultiOut(name, audio, Vector.fill(numChannels)(audio), _args, isIndividual = true)
 }
-object GrainFM extends Reader[GrainFM] {
+object GrainFM extends ProductReader[GrainFM] {
   def ar(numChannels: Int = 1, trig: GE, dur: GE = 1.0f, carFreq: GE = 440.0f, modFreq: GE = 200.0f, index: GE = 1.0f, pan: GE = 0.0f, envBuf: GE = -1, maxGrains: GE = 512): GrainFM = 
     new GrainFM(numChannels, trig, dur, carFreq, modFreq, index, pan, envBuf, maxGrains)
   
-  def read(in: DataInput): GrainFM = {
-    readArity(in, 9)
-    val _numChannels  = readInt(in)
-    val _trig         = readGE(in)
-    val _dur          = readGE(in)
-    val _carFreq      = readGE(in)
-    val _modFreq      = readGE(in)
-    val _index        = readGE(in)
-    val _pan          = readGE(in)
-    val _envBuf       = readGE(in)
-    val _maxGrains    = readGE(in)
+  def read(in: RefMapIn, arity: Int): GrainFM = {
+    require (arity == 9)
+    val _numChannels  = in.readInt()
+    val _trig         = in.readGE()
+    val _dur          = in.readGE()
+    val _carFreq      = in.readGE()
+    val _modFreq      = in.readGE()
+    val _index        = in.readGE()
+    val _pan          = in.readGE()
+    val _envBuf       = in.readGE()
+    val _maxGrains    = in.readGE()
     new GrainFM(_numChannels, _trig, _dur, _carFreq, _modFreq, _index, _pan, _envBuf, _maxGrains)
   }
 }
@@ -92,7 +92,7 @@ final case class GrainFM(numChannels: Int = 1, trig: GE, dur: GE = 1.0f, carFreq
   * @see [[de.sciss.synth.ugen.PlayBuf$ PlayBuf]]
   * @see [[de.sciss.synth.ugen.PanAz$ PanAz]]
   */
-object GrainBuf extends Reader[GrainBuf] {
+object GrainBuf extends ProductReader[GrainBuf] {
   /** @param numChannels      the number of channels to output. If `1` , a monophonic
     *                         signal is returned and the `pan` argument is ignored.
     * @param trig             a control- or audio-rate trigger to start a new grain.
@@ -122,18 +122,18 @@ object GrainBuf extends Reader[GrainBuf] {
   def ar(numChannels: Int = 1, trig: GE, dur: GE = 1.0f, buf: GE, speed: GE = 1.0f, pos: GE = 0.0f, interp: GE = 2, pan: GE = 0.0f, envBuf: GE = -1, maxGrains: GE = 512): GrainBuf = 
     new GrainBuf(numChannels, trig, dur, buf, speed, pos, interp, pan, envBuf, maxGrains)
   
-  def read(in: DataInput): GrainBuf = {
-    readArity(in, 10)
-    val _numChannels  = readInt(in)
-    val _trig         = readGE(in)
-    val _dur          = readGE(in)
-    val _buf          = readGE(in)
-    val _speed        = readGE(in)
-    val _pos          = readGE(in)
-    val _interp       = readGE(in)
-    val _pan          = readGE(in)
-    val _envBuf       = readGE(in)
-    val _maxGrains    = readGE(in)
+  def read(in: RefMapIn, arity: Int): GrainBuf = {
+    require (arity == 10)
+    val _numChannels  = in.readInt()
+    val _trig         = in.readGE()
+    val _dur          = in.readGE()
+    val _buf          = in.readGE()
+    val _speed        = in.readGE()
+    val _pos          = in.readGE()
+    val _interp       = in.readGE()
+    val _pan          = in.readGE()
+    val _envBuf       = in.readGE()
+    val _maxGrains    = in.readGE()
     new GrainBuf(_numChannels, _trig, _dur, _buf, _speed, _pos, _interp, _pan, _envBuf, _maxGrains)
   }
 }
@@ -184,21 +184,21 @@ final case class GrainBuf(numChannels: Int = 1, trig: GE, dur: GE = 1.0f, buf: G
   protected def makeUGen(_args: Vec[UGenIn]): UGenInLike = 
     UGen.MultiOut(name, audio, Vector.fill(numChannels)(audio), _args, isIndividual = true)
 }
-object Warp1 extends Reader[Warp1] {
+object Warp1 extends ProductReader[Warp1] {
   def ar(numChannels: Int, buf: GE, pos: GE = 0.0f, speed: GE = 1.0f, winSize: GE = 0.2f, envBuf: GE = -1, overlaps: GE = 8.0f, winRand: GE = 0.0f, interp: GE = 1): Warp1 = 
     new Warp1(numChannels, buf, pos, speed, winSize, envBuf, overlaps, winRand, interp)
   
-  def read(in: DataInput): Warp1 = {
-    readArity(in, 9)
-    val _numChannels  = readInt(in)
-    val _buf          = readGE(in)
-    val _pos          = readGE(in)
-    val _speed        = readGE(in)
-    val _winSize      = readGE(in)
-    val _envBuf       = readGE(in)
-    val _overlaps     = readGE(in)
-    val _winRand      = readGE(in)
-    val _interp       = readGE(in)
+  def read(in: RefMapIn, arity: Int): Warp1 = {
+    require (arity == 9)
+    val _numChannels  = in.readInt()
+    val _buf          = in.readGE()
+    val _pos          = in.readGE()
+    val _speed        = in.readGE()
+    val _winSize      = in.readGE()
+    val _envBuf       = in.readGE()
+    val _overlaps     = in.readGE()
+    val _winRand      = in.readGE()
+    val _interp       = in.readGE()
     new Warp1(_numChannels, _buf, _pos, _speed, _winSize, _envBuf, _overlaps, _winRand, _interp)
   }
 }

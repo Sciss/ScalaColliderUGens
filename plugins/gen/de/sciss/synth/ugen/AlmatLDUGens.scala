@@ -26,19 +26,19 @@ import UGenSource._
   * 
   * @see [[de.sciss.synth.ugen.Kuramoto$ Kuramoto]]
   */
-object Hopf extends Reader[Hopf] {
+object Hopf extends ProductReader[Hopf] {
   /** @param in               Input signal (force) to track.
     * @param coupling         Strength of coupling.
     * @param radius           Limit cycle radius (amplitude attractor).
     */
   def ar(in: GE, coupling: GE, radius: GE = 1.0f): Hopf = new Hopf(audio, in, coupling, radius)
   
-  def read(in: DataInput): Hopf = {
-    readArity(in, 4)
-    val _rate     = readMaybeRate(in)
-    val _in       = readGE(in)
-    val _coupling = readGE(in)
-    val _radius   = readGE(in)
+  def read(in: RefMapIn, arity: Int): Hopf = {
+    require (arity == 4)
+    val _rate     = in.readMaybeRate()
+    val _in       = in.readGE()
+    val _coupling = in.readGE()
+    val _radius   = in.readGE()
     new Hopf(_rate, _in, _coupling, _radius)
   }
 }

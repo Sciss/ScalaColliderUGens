@@ -3,13 +3,13 @@ package de.sciss.synth
 package ugen
 
 import UGenSource._
-object Unpack1FFT extends Reader[Unpack1FFT] {
-  def read(in: DataInput): Unpack1FFT = {
-    readArity(in, 4)
-    val _chain    = readGE(in)
-    val _fftSize  = readGE(in)
-    val _bin      = readGE(in)
-    val _which    = readGE(in)
+object Unpack1FFT extends ProductReader[Unpack1FFT] {
+  def read(in: RefMapIn, arity: Int): Unpack1FFT = {
+    require (arity == 4)
+    val _chain    = in.readGE()
+    val _fftSize  = in.readGE()
+    val _bin      = in.readGE()
+    val _which    = in.readGE()
     new Unpack1FFT(_chain, _fftSize, _bin, _which)
   }
 }
@@ -54,15 +54,15 @@ final case class Unpack1FFT(chain: GE, fftSize: GE, bin: GE, which: GE = 0)
   * @see [[de.sciss.synth.ugen.IFFT$ IFFT]]
   * @see [[de.sciss.synth.ugen.SetBuf$ SetBuf]]
   */
-object PackFFT extends Reader[PackFFT] {
-  def read(in: DataInput): PackFFT = {
-    readArity(in, 6)
-    val _chain    = readGE(in)
-    val _fftSize  = readGE(in)
-    val _values   = readGE(in)
-    val _from     = readGE(in)
-    val _to       = readGE(in)
-    val _clear    = readGE(in)
+object PackFFT extends ProductReader[PackFFT] {
+  def read(in: RefMapIn, arity: Int): PackFFT = {
+    require (arity == 6)
+    val _chain    = in.readGE()
+    val _fftSize  = in.readGE()
+    val _values   = in.readGE()
+    val _from     = in.readGE()
+    val _to       = in.readGE()
+    val _clear    = in.readGE()
     new PackFFT(_chain, _fftSize, _values, _from, _to, _clear)
   }
 }

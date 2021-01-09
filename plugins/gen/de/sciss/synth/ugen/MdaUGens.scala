@@ -12,7 +12,7 @@ import UGenSource._
   * 
   * This is a third-party UGen (MdaUGens).
   */
-object MdaPiano extends Reader[MdaPiano] {
+object MdaPiano extends ProductReader[MdaPiano] {
   def ar: MdaPiano = ar()
   
   /** @param freq             Frequency of the note in Hz.
@@ -37,24 +37,24 @@ object MdaPiano extends Reader[MdaPiano] {
   def ar(freq: GE = 440, gate: GE = 1, velocity: GE = 100, decay: GE = 0.8f, release: GE = 0.8f, hardness: GE = 0.8f, velHard: GE = 0.8f, muffle: GE = 0.8f, velMuff: GE = 0.8f, velCurve: GE = 0.8f, stereo: GE = 0.2f, tune: GE = 0.5f, random: GE = 0.1f, stretch: GE = 0.1f, sustain: GE = 0): MdaPiano = 
     new MdaPiano(audio, freq, gate, velocity, decay, release, hardness, velHard, muffle, velMuff, velCurve, stereo, tune, random, stretch, sustain)
   
-  def read(in: DataInput): MdaPiano = {
-    readArity(in, 16)
-    val _rate     = readRate(in)
-    val _freq     = readGE(in)
-    val _gate     = readGE(in)
-    val _velocity = readGE(in)
-    val _decay    = readGE(in)
-    val _release  = readGE(in)
-    val _hardness = readGE(in)
-    val _velHard  = readGE(in)
-    val _muffle   = readGE(in)
-    val _velMuff  = readGE(in)
-    val _velCurve = readGE(in)
-    val _stereo   = readGE(in)
-    val _tune     = readGE(in)
-    val _random   = readGE(in)
-    val _stretch  = readGE(in)
-    val _sustain  = readGE(in)
+  def read(in: RefMapIn, arity: Int): MdaPiano = {
+    require (arity == 16)
+    val _rate     = in.readRate()
+    val _freq     = in.readGE()
+    val _gate     = in.readGE()
+    val _velocity = in.readGE()
+    val _decay    = in.readGE()
+    val _release  = in.readGE()
+    val _hardness = in.readGE()
+    val _velHard  = in.readGE()
+    val _muffle   = in.readGE()
+    val _velMuff  = in.readGE()
+    val _velCurve = in.readGE()
+    val _stereo   = in.readGE()
+    val _tune     = in.readGE()
+    val _random   = in.readGE()
+    val _stretch  = in.readGE()
+    val _sustain  = in.readGE()
     new MdaPiano(_rate, _freq, _gate, _velocity, _decay, _release, _hardness, _velHard, _muffle, _velMuff, _velCurve, _stereo, _tune, _random, _stretch, _sustain)
   }
 }

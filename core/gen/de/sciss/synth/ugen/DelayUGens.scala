@@ -21,13 +21,13 @@ import UGenSource._
   * @see [[de.sciss.synth.ugen.ControlDur$ ControlDur]]
   * @see [[de.sciss.synth.ugen.SampleRate$ SampleRate]]
   */
-object ControlRate extends Reader[ControlRate] {
+object ControlRate extends ProductReader[ControlRate] {
   /** 
     */
   def ir: ControlRate = new ControlRate()
   
-  def read(in: DataInput): ControlRate = {
-    readArity(in, 0)
+  def read(in: RefMapIn, arity: Int): ControlRate = {
+    require (arity == 0)
     new ControlRate()
   }
 }
@@ -68,13 +68,13 @@ final case class ControlRate() extends UGenSource.SingleOut with ScalarRated {
   * @see [[de.sciss.synth.ugen.ControlRate$ ControlRate]]
   * @see [[de.sciss.synth.ugen.RadiansPerSample$ RadiansPerSample]]
   */
-object SampleRate extends Reader[SampleRate] {
+object SampleRate extends ProductReader[SampleRate] {
   /** 
     */
   def ir: SampleRate = new SampleRate()
   
-  def read(in: DataInput): SampleRate = {
-    readArity(in, 0)
+  def read(in: RefMapIn, arity: Int): SampleRate = {
+    require (arity == 0)
     new SampleRate()
   }
 }
@@ -105,13 +105,13 @@ final case class SampleRate() extends UGenSource.SingleOut with ScalarRated {
   * @see [[de.sciss.synth.ugen.SampleRate$ SampleRate]]
   * @see [[de.sciss.synth.ugen.ControlDur$ ControlDur]]
   */
-object SampleDur extends Reader[SampleDur] {
+object SampleDur extends ProductReader[SampleDur] {
   /** 
     */
   def ir: SampleDur = new SampleDur()
   
-  def read(in: DataInput): SampleDur = {
-    readArity(in, 0)
+  def read(in: RefMapIn, arity: Int): SampleDur = {
+    require (arity == 0)
     new SampleDur()
   }
 }
@@ -141,13 +141,13 @@ final case class SampleDur() extends UGenSource.SingleOut with ScalarRated {
   * @see [[de.sciss.synth.ugen.ControlRate$ ControlRate]]
   * @see [[de.sciss.synth.ugen.SampleDur$ SampleDur]]
   */
-object ControlDur extends Reader[ControlDur] {
+object ControlDur extends ProductReader[ControlDur] {
   /** 
     */
   def ir: ControlDur = new ControlDur()
   
-  def read(in: DataInput): ControlDur = {
-    readArity(in, 0)
+  def read(in: RefMapIn, arity: Int): ControlDur = {
+    require (arity == 0)
     new ControlDur()
   }
 }
@@ -208,13 +208,13 @@ final case class ControlDur() extends UGenSource.SingleOut with ScalarRated {
   * @see [[de.sciss.synth.ugen.SampleDur$ SampleDur]]
   * @see [[de.sciss.synth.ugen.OffsetOut$ OffsetOut]]
   */
-object SubsampleOffset extends Reader[SubsampleOffset] {
+object SubsampleOffset extends ProductReader[SubsampleOffset] {
   /** 
     */
   def ir: SubsampleOffset = new SubsampleOffset()
   
-  def read(in: DataInput): SubsampleOffset = {
-    readArity(in, 0)
+  def read(in: RefMapIn, arity: Int): SubsampleOffset = {
+    require (arity == 0)
     new SubsampleOffset()
   }
 }
@@ -255,13 +255,13 @@ final case class SubsampleOffset() extends UGenSource.SingleOut with ScalarRated
   * 
   * @see [[de.sciss.synth.ugen.SampleRate$ SampleRate]]
   */
-object RadiansPerSample extends Reader[RadiansPerSample] {
+object RadiansPerSample extends ProductReader[RadiansPerSample] {
   /** 
     */
   def ir: RadiansPerSample = new RadiansPerSample()
   
-  def read(in: DataInput): RadiansPerSample = {
-    readArity(in, 0)
+  def read(in: RefMapIn, arity: Int): RadiansPerSample = {
+    require (arity == 0)
     new RadiansPerSample()
   }
 }
@@ -294,13 +294,13 @@ final case class RadiansPerSample() extends UGenSource.SingleOut with ScalarRate
   * @see [[de.sciss.synth.ugen.NumOutputBuses$ NumOutputBuses]]
   * @see [[de.sciss.synth.ugen.NumRunningSynths$ NumRunningSynths]]
   */
-object NumInputBuses extends Reader[NumInputBuses] {
+object NumInputBuses extends ProductReader[NumInputBuses] {
   /** 
     */
   def ir: NumInputBuses = new NumInputBuses()
   
-  def read(in: DataInput): NumInputBuses = {
-    readArity(in, 0)
+  def read(in: RefMapIn, arity: Int): NumInputBuses = {
+    require (arity == 0)
     new NumInputBuses()
   }
 }
@@ -334,13 +334,13 @@ final case class NumInputBuses() extends UGenSource.SingleOut with ScalarRated {
   * @see [[de.sciss.synth.ugen.NumInputBuses$ NumInputBuses]]
   * @see [[de.sciss.synth.ugen.NumRunningSynths$ NumRunningSynths]]
   */
-object NumOutputBuses extends Reader[NumOutputBuses] {
+object NumOutputBuses extends ProductReader[NumOutputBuses] {
   /** 
     */
   def ir: NumOutputBuses = new NumOutputBuses()
   
-  def read(in: DataInput): NumOutputBuses = {
-    readArity(in, 0)
+  def read(in: RefMapIn, arity: Int): NumOutputBuses = {
+    require (arity == 0)
     new NumOutputBuses()
   }
 }
@@ -374,13 +374,13 @@ final case class NumOutputBuses() extends UGenSource.SingleOut with ScalarRated 
   * @see [[de.sciss.synth.ugen.NumOutputBuses$ NumOutputBuses]]
   * @see [[de.sciss.synth.ugen.NumRunningSynths$ NumRunningSynths]]
   */
-object NumAudioBuses extends Reader[NumAudioBuses] {
+object NumAudioBuses extends ProductReader[NumAudioBuses] {
   /** 
     */
   def ir: NumAudioBuses = new NumAudioBuses()
   
-  def read(in: DataInput): NumAudioBuses = {
-    readArity(in, 0)
+  def read(in: RefMapIn, arity: Int): NumAudioBuses = {
+    require (arity == 0)
     new NumAudioBuses()
   }
 }
@@ -414,13 +414,13 @@ final case class NumAudioBuses() extends UGenSource.SingleOut with ScalarRated {
   * @see [[de.sciss.synth.ugen.NumOutputBuses$ NumOutputBuses]]
   * @see [[de.sciss.synth.ugen.NumRunningSynths$ NumRunningSynths]]
   */
-object NumControlBuses extends Reader[NumControlBuses] {
+object NumControlBuses extends ProductReader[NumControlBuses] {
   /** 
     */
   def ir: NumControlBuses = new NumControlBuses()
   
-  def read(in: DataInput): NumControlBuses = {
-    readArity(in, 0)
+  def read(in: RefMapIn, arity: Int): NumControlBuses = {
+    require (arity == 0)
     new NumControlBuses()
   }
 }
@@ -454,13 +454,13 @@ final case class NumControlBuses() extends UGenSource.SingleOut with ScalarRated
   * @see [[de.sciss.synth.ugen.NumOutputBuses$ NumOutputBuses]]
   * @see [[de.sciss.synth.ugen.NumRunningSynths$ NumRunningSynths]]
   */
-object NumBuffers extends Reader[NumBuffers] {
+object NumBuffers extends ProductReader[NumBuffers] {
   /** 
     */
   def ir: NumBuffers = new NumBuffers()
   
-  def read(in: DataInput): NumBuffers = {
-    readArity(in, 0)
+  def read(in: RefMapIn, arity: Int): NumBuffers = {
+    require (arity == 0)
     new NumBuffers()
   }
 }
@@ -492,13 +492,13 @@ final case class NumBuffers() extends UGenSource.SingleOut with ScalarRated {
   * @see [[de.sciss.synth.ugen.Poll$ Poll]]
   * @see [[de.sciss.synth.ugen.NumRunningSynths$ NumRunningSynths]]
   */
-object NodeID extends Reader[NodeID] {
+object NodeID extends ProductReader[NodeID] {
   /** 
     */
   def ir: NodeID = new NodeID()
   
-  def read(in: DataInput): NodeID = {
-    readArity(in, 0)
+  def read(in: RefMapIn, arity: Int): NodeID = {
+    require (arity == 0)
     new NodeID()
   }
 }
@@ -530,13 +530,13 @@ final case class NodeID() extends UGenSource.SingleOut with ScalarRated {
   * @see [[de.sciss.synth.ugen.NumInputBuses$ NumInputBuses]]
   * @see [[de.sciss.synth.ugen.NumOutputBuses$ NumOutputBuses]]
   */
-object NumRunningSynths extends Reader[NumRunningSynths] {
+object NumRunningSynths extends ProductReader[NumRunningSynths] {
   /** 
     */
   def ir: NumRunningSynths = new NumRunningSynths()
   
-  def read(in: DataInput): NumRunningSynths = {
-    readArity(in, 0)
+  def read(in: RefMapIn, arity: Int): NumRunningSynths = {
+    require (arity == 0)
     new NumRunningSynths()
   }
 }
@@ -570,7 +570,7 @@ final case class NumRunningSynths() extends UGenSource.SingleOut with ScalarRate
   * @see [[de.sciss.synth.ugen.SampleRate$ SampleRate]]
   * @see [[de.sciss.synth.ugen.BufRateScale$ BufRateScale]]
   */
-object BufSampleRate extends Reader[BufSampleRate] {
+object BufSampleRate extends ProductReader[BufSampleRate] {
   /** @param buf              Buffer id.
     */
   def ir(buf: GE): BufSampleRate = new BufSampleRate(scalar, buf)
@@ -579,10 +579,10 @@ object BufSampleRate extends Reader[BufSampleRate] {
     */
   def kr(buf: GE): BufSampleRate = new BufSampleRate(control, buf)
   
-  def read(in: DataInput): BufSampleRate = {
-    readArity(in, 2)
-    val _rate = readRate(in)
-    val _buf  = readGE(in)
+  def read(in: RefMapIn, arity: Int): BufSampleRate = {
+    require (arity == 2)
+    val _rate = in.readRate()
+    val _buf  = in.readGE()
     new BufSampleRate(_rate, _buf)
   }
 }
@@ -621,7 +621,7 @@ final case class BufSampleRate(rate: Rate, buf: GE) extends UGenSource.SingleOut
   * @see [[de.sciss.synth.ugen.SampleRate$ SampleRate]]
   * @see [[de.sciss.synth.ugen.PlayBuf$ PlayBuf]]
   */
-object BufRateScale extends Reader[BufRateScale] {
+object BufRateScale extends ProductReader[BufRateScale] {
   /** @param buf              Buffer id.
     */
   def ir(buf: GE): BufRateScale = new BufRateScale(scalar, buf)
@@ -630,10 +630,10 @@ object BufRateScale extends Reader[BufRateScale] {
     */
   def kr(buf: GE): BufRateScale = new BufRateScale(control, buf)
   
-  def read(in: DataInput): BufRateScale = {
-    readArity(in, 2)
-    val _rate = readRate(in)
-    val _buf  = readGE(in)
+  def read(in: RefMapIn, arity: Int): BufRateScale = {
+    require (arity == 2)
+    val _rate = in.readRate()
+    val _buf  = in.readGE()
     new BufRateScale(_rate, _buf)
   }
 }
@@ -681,7 +681,7 @@ final case class BufRateScale(rate: Rate, buf: GE) extends UGenSource.SingleOut 
   * @see [[de.sciss.synth.ugen.BufChannels$ BufChannels]]
   * @see [[de.sciss.synth.ugen.BufDur$ BufDur]]
   */
-object BufSamples extends Reader[BufSamples] {
+object BufSamples extends ProductReader[BufSamples] {
   /** @param buf              Buffer id.
     */
   def ir(buf: GE): BufSamples = new BufSamples(scalar, buf)
@@ -690,10 +690,10 @@ object BufSamples extends Reader[BufSamples] {
     */
   def kr(buf: GE): BufSamples = new BufSamples(control, buf)
   
-  def read(in: DataInput): BufSamples = {
-    readArity(in, 2)
-    val _rate = readRate(in)
-    val _buf  = readGE(in)
+  def read(in: RefMapIn, arity: Int): BufSamples = {
+    require (arity == 2)
+    val _rate = in.readRate()
+    val _buf  = in.readGE()
     new BufSamples(_rate, _buf)
   }
 }
@@ -736,7 +736,7 @@ final case class BufSamples(rate: Rate, buf: GE) extends UGenSource.SingleOut {
   * @see [[de.sciss.synth.ugen.BufChannels$ BufChannels]]
   * @see [[de.sciss.synth.ugen.BufDur$ BufDur]]
   */
-object BufFrames extends Reader[BufFrames] {
+object BufFrames extends ProductReader[BufFrames] {
   /** @param buf              Buffer id.
     */
   def ir(buf: GE): BufFrames = new BufFrames(scalar, buf)
@@ -745,10 +745,10 @@ object BufFrames extends Reader[BufFrames] {
     */
   def kr(buf: GE): BufFrames = new BufFrames(control, buf)
   
-  def read(in: DataInput): BufFrames = {
-    readArity(in, 2)
-    val _rate = readRate(in)
-    val _buf  = readGE(in)
+  def read(in: RefMapIn, arity: Int): BufFrames = {
+    require (arity == 2)
+    val _rate = in.readRate()
+    val _buf  = in.readGE()
     new BufFrames(_rate, _buf)
   }
 }
@@ -782,7 +782,7 @@ final case class BufFrames(rate: Rate, buf: GE) extends UGenSource.SingleOut {
   * @see [[de.sciss.synth.ugen.BufFrames$ BufFrames]]
   * @see [[de.sciss.synth.ugen.BufSamples$ BufSamples]]
   */
-object BufChannels extends Reader[BufChannels] {
+object BufChannels extends ProductReader[BufChannels] {
   /** @param buf              Buffer id.
     */
   def ir(buf: GE): BufChannels = new BufChannels(scalar, buf)
@@ -791,10 +791,10 @@ object BufChannels extends Reader[BufChannels] {
     */
   def kr(buf: GE): BufChannels = new BufChannels(control, buf)
   
-  def read(in: DataInput): BufChannels = {
-    readArity(in, 2)
-    val _rate = readRate(in)
-    val _buf  = readGE(in)
+  def read(in: RefMapIn, arity: Int): BufChannels = {
+    require (arity == 2)
+    val _rate = in.readRate()
+    val _buf  = in.readGE()
     new BufChannels(_rate, _buf)
   }
 }
@@ -828,7 +828,7 @@ final case class BufChannels(rate: Rate, buf: GE) extends UGenSource.SingleOut {
   * @see [[de.sciss.synth.ugen.BufRateScale$ BufRateScale]]
   * @see [[de.sciss.synth.ugen.SampleDur$ SampleDur]]
   */
-object BufDur extends Reader[BufDur] {
+object BufDur extends ProductReader[BufDur] {
   /** @param buf              Buffer id.
     */
   def ir(buf: GE): BufDur = new BufDur(scalar, buf)
@@ -837,10 +837,10 @@ object BufDur extends Reader[BufDur] {
     */
   def kr(buf: GE): BufDur = new BufDur(control, buf)
   
-  def read(in: DataInput): BufDur = {
-    readArity(in, 2)
-    val _rate = readRate(in)
-    val _buf  = readGE(in)
+  def read(in: RefMapIn, arity: Int): BufDur = {
+    require (arity == 2)
+    val _rate = in.readRate()
+    val _buf  = in.readGE()
     new BufDur(_rate, _buf)
   }
 }
@@ -875,7 +875,7 @@ final case class BufDur(rate: Rate, buf: GE) extends UGenSource.SingleOut {
   * @see [[de.sciss.synth.ugen.BufRateScale$ BufRateScale]]
   * @see [[de.sciss.synth.ugen.BufFrames$ BufFrames]]
   */
-object PlayBuf extends Reader[PlayBuf] {
+object PlayBuf extends ProductReader[PlayBuf] {
   /** @param numChannels      the number of channels that the buffer will be. Since
     *                         this is a constant, a change in number of channels of
     *                         the underlying bus must be reflected by creating
@@ -930,16 +930,16 @@ object PlayBuf extends Reader[PlayBuf] {
   def ar(numChannels: Int, buf: GE, speed: GE = 1.0f, trig: GE = 1, offset: GE = 0.0f, loop: GE = 1, doneAction: GE = doNothing): PlayBuf = 
     new PlayBuf(audio, numChannels, buf, speed, trig, offset, loop, doneAction)
   
-  def read(in: DataInput): PlayBuf = {
-    readArity(in, 8)
-    val _rate         = readRate(in)
-    val _numChannels  = readInt(in)
-    val _buf          = readGE(in)
-    val _speed        = readGE(in)
-    val _trig         = readGE(in)
-    val _offset       = readGE(in)
-    val _loop         = readGE(in)
-    val _doneAction   = readGE(in)
+  def read(in: RefMapIn, arity: Int): PlayBuf = {
+    require (arity == 8)
+    val _rate         = in.readRate()
+    val _numChannels  = in.readInt()
+    val _buf          = in.readGE()
+    val _speed        = in.readGE()
+    val _trig         = in.readGE()
+    val _offset       = in.readGE()
+    val _loop         = in.readGE()
+    val _doneAction   = in.readGE()
     new PlayBuf(_rate, _numChannels, _buf, _speed, _trig, _offset, _loop, _doneAction)
   }
 }
@@ -1025,7 +1025,7 @@ final case class PlayBuf(rate: Rate, numChannels: Int, buf: GE, speed: GE = 1.0f
   * @see [[de.sciss.synth.ugen.BufRateScale$ BufRateScale]]
   * @see [[de.sciss.synth.ugen.BufFrames$ BufFrames]]
   */
-object RecordBuf extends Reader[RecordBuf] {
+object RecordBuf extends ProductReader[RecordBuf] {
   /** @param in               the signal to record
     * @param buf              the identifier of the buffer to use
     * @param offset           sample frame to begin writing from. This is read when a
@@ -1076,18 +1076,18 @@ object RecordBuf extends Reader[RecordBuf] {
   def ar(in: GE, buf: GE, offset: GE = 0, recLevel: GE = 1.0f, preLevel: GE = 0.0f, run: GE = 1, loop: GE = 1, trig: GE = 1, doneAction: GE = doNothing): RecordBuf = 
     new RecordBuf(audio, in, buf, offset, recLevel, preLevel, run, loop, trig, doneAction)
   
-  def read(in: DataInput): RecordBuf = {
-    readArity(in, 10)
-    val _rate       = readRate(in)
-    val _in         = readGE(in)
-    val _buf        = readGE(in)
-    val _offset     = readGE(in)
-    val _recLevel   = readGE(in)
-    val _preLevel   = readGE(in)
-    val _run        = readGE(in)
-    val _loop       = readGE(in)
-    val _trig       = readGE(in)
-    val _doneAction = readGE(in)
+  def read(in: RefMapIn, arity: Int): RecordBuf = {
+    require (arity == 10)
+    val _rate       = in.readRate()
+    val _in         = in.readGE()
+    val _buf        = in.readGE()
+    val _offset     = in.readGE()
+    val _recLevel   = in.readGE()
+    val _preLevel   = in.readGE()
+    val _run        = in.readGE()
+    val _loop       = in.readGE()
+    val _trig       = in.readGE()
+    val _doneAction = in.readGE()
     new RecordBuf(_rate, _in, _buf, _offset, _recLevel, _preLevel, _run, _loop, _trig, _doneAction)
   }
 }
@@ -1178,7 +1178,7 @@ final case class RecordBuf(rate: Rate, in: GE, buf: GE, offset: GE = 0, recLevel
   * @see [[de.sciss.synth.ugen.BufFrames$ BufFrames]]
   * @see [[de.sciss.synth.ugen.BufRateScale$ BufRateScale]]
   */
-object BufRd extends Reader[BufRd] {
+object BufRd extends ProductReader[BufRd] {
   /** @param numChannels      number of channels that the buffer will be. Since this
     *                         is an integer constant, a change in the number of
     *                         channels must be reflected by creating different
@@ -1224,14 +1224,14 @@ object BufRd extends Reader[BufRd] {
   def ar(numChannels: Int, buf: GE, index: GE = 0.0f, loop: GE = 1, interp: GE = 2): BufRd = 
     new BufRd(audio, numChannels, buf, index, loop, interp)
   
-  def read(in: DataInput): BufRd = {
-    readArity(in, 6)
-    val _rate         = readRate(in)
-    val _numChannels  = readInt(in)
-    val _buf          = readGE(in)
-    val _index        = readGE(in)
-    val _loop         = readGE(in)
-    val _interp       = readGE(in)
+  def read(in: RefMapIn, arity: Int): BufRd = {
+    require (arity == 6)
+    val _rate         = in.readRate()
+    val _numChannels  = in.readInt()
+    val _buf          = in.readGE()
+    val _index        = in.readGE()
+    val _loop         = in.readGE()
+    val _interp       = in.readGE()
     new BufRd(_rate, _numChannels, _buf, _index, _loop, _interp)
   }
 }
@@ -1321,7 +1321,7 @@ final case class BufRd(rate: Rate, numChannels: Int, buf: GE, index: GE = 0.0f, 
   * @see [[de.sciss.synth.ugen.BufFrames$ BufFrames]]
   * @see [[de.sciss.synth.ugen.BufRateScale$ BufRateScale]]
   */
-object BufWr extends Reader[BufWr] {
+object BufWr extends ProductReader[BufWr] {
   /** @param in               input signal to record
     * @param buf              the identifier of the buffer to use
     * @param index            audio rate frame-index into the buffer.
@@ -1348,13 +1348,13 @@ object BufWr extends Reader[BufWr] {
     */
   def ar(in: GE, buf: GE, index: GE = 0.0f, loop: GE = 1): BufWr = new BufWr(audio, in, buf, index, loop)
   
-  def read(in: DataInput): BufWr = {
-    readArity(in, 5)
-    val _rate   = readRate(in)
-    val _in     = readGE(in)
-    val _buf    = readGE(in)
-    val _index  = readGE(in)
-    val _loop   = readGE(in)
+  def read(in: RefMapIn, arity: Int): BufWr = {
+    require (arity == 5)
+    val _rate   = in.readRate()
+    val _in     = in.readGE()
+    val _buf    = in.readGE()
+    val _index  = in.readGE()
+    val _loop   = in.readGE()
     new BufWr(_rate, _in, _buf, _index, _loop)
   }
 }
@@ -1427,7 +1427,7 @@ final case class BufWr(rate: Rate, in: GE, buf: GE, index: GE = 0.0f, loop: GE =
   * }
   * }}}
   */
-object Pitch extends Reader[Pitch] {
+object Pitch extends ProductReader[Pitch] {
   /** @param in               The signal to be analyzed.
     * @param initFreq         The initial value of the `freq` output, until the first
     *                         valid pitch is found. ''(init-time only)''
@@ -1476,20 +1476,20 @@ object Pitch extends Reader[Pitch] {
   def kr(in: GE, initFreq: GE = 440.0f, minFreq: GE = 60.0f, maxFreq: GE = 4000.0f, execFreq: GE = 100.0f, binsPerOct: GE = 16, median: GE = 1, ampThresh: GE = 0.01f, peakThresh: GE = 0.5f, downSample: GE = 1, clarity: GE = 0): Pitch = 
     new Pitch(control, in, initFreq, minFreq, maxFreq, execFreq, binsPerOct, median, ampThresh, peakThresh, downSample, clarity)
   
-  def read(in: DataInput): Pitch = {
-    readArity(in, 12)
-    val _rate       = readRate(in)
-    val _in         = readGE(in)
-    val _initFreq   = readGE(in)
-    val _minFreq    = readGE(in)
-    val _maxFreq    = readGE(in)
-    val _execFreq   = readGE(in)
-    val _binsPerOct = readGE(in)
-    val _median     = readGE(in)
-    val _ampThresh  = readGE(in)
-    val _peakThresh = readGE(in)
-    val _downSample = readGE(in)
-    val _clarity    = readGE(in)
+  def read(in: RefMapIn, arity: Int): Pitch = {
+    require (arity == 12)
+    val _rate       = in.readRate()
+    val _in         = in.readGE()
+    val _initFreq   = in.readGE()
+    val _minFreq    = in.readGE()
+    val _maxFreq    = in.readGE()
+    val _execFreq   = in.readGE()
+    val _binsPerOct = in.readGE()
+    val _median     = in.readGE()
+    val _ampThresh  = in.readGE()
+    val _peakThresh = in.readGE()
+    val _downSample = in.readGE()
+    val _clarity    = in.readGE()
     new Pitch(_rate, _in, _initFreq, _minFreq, _maxFreq, _execFreq, _binsPerOct, _median, _ampThresh, _peakThresh, _downSample, _clarity)
   }
 }
@@ -1599,7 +1599,7 @@ final case class Pitch(rate: Rate, in: GE, initFreq: GE = 440.0f, minFreq: GE = 
   * @see [[de.sciss.synth.ugen.BufDelayL$ BufDelayL]]
   * @see [[de.sciss.synth.ugen.BufDelayC$ BufDelayC]]
   */
-object BufDelayN extends Reader[BufDelayN] {
+object BufDelayN extends ProductReader[BufDelayN] {
   /** @param buf              Buffer id.
     * @param in               The input signal.
     * @param delayTime        Delay time in seconds.
@@ -1612,12 +1612,12 @@ object BufDelayN extends Reader[BufDelayN] {
     */
   def ar(buf: GE, in: GE, delayTime: GE = 0.2f): BufDelayN = new BufDelayN(audio, buf, in, delayTime)
   
-  def read(in: DataInput): BufDelayN = {
-    readArity(in, 4)
-    val _rate       = readRate(in)
-    val _buf        = readGE(in)
-    val _in         = readGE(in)
-    val _delayTime  = readGE(in)
+  def read(in: RefMapIn, arity: Int): BufDelayN = {
+    require (arity == 4)
+    val _rate       = in.readRate()
+    val _buf        = in.readGE()
+    val _in         = in.readGE()
+    val _delayTime  = in.readGE()
     new BufDelayN(_rate, _buf, _in, _delayTime)
   }
 }
@@ -1659,7 +1659,7 @@ final case class BufDelayN(rate: Rate, buf: GE, in: GE, delayTime: GE = 0.2f)
   * @see [[de.sciss.synth.ugen.BufDelayN$ BufDelayN]]
   * @see [[de.sciss.synth.ugen.BufDelayC$ BufDelayC]]
   */
-object BufDelayL extends Reader[BufDelayL] {
+object BufDelayL extends ProductReader[BufDelayL] {
   /** @param buf              Buffer id.
     * @param in               The input signal.
     * @param delayTime        Delay time in seconds.
@@ -1672,12 +1672,12 @@ object BufDelayL extends Reader[BufDelayL] {
     */
   def ar(buf: GE, in: GE, delayTime: GE = 0.2f): BufDelayL = new BufDelayL(audio, buf, in, delayTime)
   
-  def read(in: DataInput): BufDelayL = {
-    readArity(in, 4)
-    val _rate       = readRate(in)
-    val _buf        = readGE(in)
-    val _in         = readGE(in)
-    val _delayTime  = readGE(in)
+  def read(in: RefMapIn, arity: Int): BufDelayL = {
+    require (arity == 4)
+    val _rate       = in.readRate()
+    val _buf        = in.readGE()
+    val _in         = in.readGE()
+    val _delayTime  = in.readGE()
     new BufDelayL(_rate, _buf, _in, _delayTime)
   }
 }
@@ -1719,7 +1719,7 @@ final case class BufDelayL(rate: Rate, buf: GE, in: GE, delayTime: GE = 0.2f)
   * @see [[de.sciss.synth.ugen.BufDelayN$ BufDelayN]]
   * @see [[de.sciss.synth.ugen.BufDelayL$ BufDelayL]]
   */
-object BufDelayC extends Reader[BufDelayC] {
+object BufDelayC extends ProductReader[BufDelayC] {
   /** @param buf              Buffer id.
     * @param in               The input signal.
     * @param delayTime        Delay time in seconds.
@@ -1732,12 +1732,12 @@ object BufDelayC extends Reader[BufDelayC] {
     */
   def ar(buf: GE, in: GE, delayTime: GE = 0.2f): BufDelayC = new BufDelayC(audio, buf, in, delayTime)
   
-  def read(in: DataInput): BufDelayC = {
-    readArity(in, 4)
-    val _rate       = readRate(in)
-    val _buf        = readGE(in)
-    val _in         = readGE(in)
-    val _delayTime  = readGE(in)
+  def read(in: RefMapIn, arity: Int): BufDelayC = {
+    require (arity == 4)
+    val _rate       = in.readRate()
+    val _buf        = in.readGE()
+    val _in         = in.readGE()
+    val _delayTime  = in.readGE()
     new BufDelayC(_rate, _buf, _in, _delayTime)
   }
 }
@@ -1814,7 +1814,7 @@ final case class BufDelayC(rate: Rate, buf: GE, in: GE, delayTime: GE = 0.2f)
   * @see [[de.sciss.synth.ugen.BufCombL$ BufCombL]]
   * @see [[de.sciss.synth.ugen.BufCombC$ BufCombC]]
   */
-object BufCombN extends Reader[BufCombN] {
+object BufCombN extends ProductReader[BufCombN] {
   /** @param buf              Buffer id.
     * @param in               The input signal.
     * @param delayTime        Delay time in seconds.
@@ -1826,13 +1826,13 @@ object BufCombN extends Reader[BufCombN] {
   def ar(buf: GE, in: GE, delayTime: GE = 0.2f, decayTime: GE = 1.0f): BufCombN = 
     new BufCombN(audio, buf, in, delayTime, decayTime)
   
-  def read(in: DataInput): BufCombN = {
-    readArity(in, 5)
-    val _rate       = readRate(in)
-    val _buf        = readGE(in)
-    val _in         = readGE(in)
-    val _delayTime  = readGE(in)
-    val _decayTime  = readGE(in)
+  def read(in: RefMapIn, arity: Int): BufCombN = {
+    require (arity == 5)
+    val _rate       = in.readRate()
+    val _buf        = in.readGE()
+    val _in         = in.readGE()
+    val _delayTime  = in.readGE()
+    val _decayTime  = in.readGE()
     new BufCombN(_rate, _buf, _in, _delayTime, _decayTime)
   }
 }
@@ -1901,7 +1901,7 @@ final case class BufCombN(rate: Rate, buf: GE, in: GE, delayTime: GE = 0.2f, dec
   * @see [[de.sciss.synth.ugen.BufCombN$ BufCombN]]
   * @see [[de.sciss.synth.ugen.BufCombC$ BufCombC]]
   */
-object BufCombL extends Reader[BufCombL] {
+object BufCombL extends ProductReader[BufCombL] {
   /** @param buf              Buffer id.
     * @param in               The input signal.
     * @param delayTime        Delay time in seconds.
@@ -1917,13 +1917,13 @@ object BufCombL extends Reader[BufCombL] {
   def ar(buf: GE, in: GE, delayTime: GE = 0.2f, decayTime: GE = 1.0f): BufCombL = 
     new BufCombL(audio, buf, in, delayTime, decayTime)
   
-  def read(in: DataInput): BufCombL = {
-    readArity(in, 5)
-    val _rate       = readRate(in)
-    val _buf        = readGE(in)
-    val _in         = readGE(in)
-    val _delayTime  = readGE(in)
-    val _decayTime  = readGE(in)
+  def read(in: RefMapIn, arity: Int): BufCombL = {
+    require (arity == 5)
+    val _rate       = in.readRate()
+    val _buf        = in.readGE()
+    val _in         = in.readGE()
+    val _delayTime  = in.readGE()
+    val _decayTime  = in.readGE()
     new BufCombL(_rate, _buf, _in, _delayTime, _decayTime)
   }
 }
@@ -1991,7 +1991,7 @@ final case class BufCombL(rate: Rate, buf: GE, in: GE, delayTime: GE = 0.2f, dec
   * @see [[de.sciss.synth.ugen.BufCombN$ BufCombN]]
   * @see [[de.sciss.synth.ugen.BufCombL$ BufCombL]]
   */
-object BufCombC extends Reader[BufCombC] {
+object BufCombC extends ProductReader[BufCombC] {
   /** @param buf              Buffer id.
     * @param in               The input signal.
     * @param delayTime        Delay time in seconds.
@@ -2007,13 +2007,13 @@ object BufCombC extends Reader[BufCombC] {
   def ar(buf: GE, in: GE, delayTime: GE = 0.2f, decayTime: GE = 1.0f): BufCombC = 
     new BufCombC(audio, buf, in, delayTime, decayTime)
   
-  def read(in: DataInput): BufCombC = {
-    readArity(in, 5)
-    val _rate       = readRate(in)
-    val _buf        = readGE(in)
-    val _in         = readGE(in)
-    val _delayTime  = readGE(in)
-    val _decayTime  = readGE(in)
+  def read(in: RefMapIn, arity: Int): BufCombC = {
+    require (arity == 5)
+    val _rate       = in.readRate()
+    val _buf        = in.readGE()
+    val _in         = in.readGE()
+    val _delayTime  = in.readGE()
+    val _decayTime  = in.readGE()
     new BufCombC(_rate, _buf, _in, _delayTime, _decayTime)
   }
 }
@@ -2101,7 +2101,7 @@ final case class BufCombC(rate: Rate, buf: GE, in: GE, delayTime: GE = 0.2f, dec
   * @see [[de.sciss.synth.ugen.BufAllpassL$ BufAllpassL]]
   * @see [[de.sciss.synth.ugen.BufAllpassC$ BufAllpassC]]
   */
-object BufAllpassN extends Reader[BufAllpassN] {
+object BufAllpassN extends ProductReader[BufAllpassN] {
   /** @param buf              Buffer id.
     * @param in               The input signal.
     * @param delayTime        Delay time in seconds.
@@ -2113,13 +2113,13 @@ object BufAllpassN extends Reader[BufAllpassN] {
   def ar(buf: GE, in: GE, delayTime: GE = 0.2f, decayTime: GE = 1.0f): BufAllpassN = 
     new BufAllpassN(audio, buf, in, delayTime, decayTime)
   
-  def read(in: DataInput): BufAllpassN = {
-    readArity(in, 5)
-    val _rate       = readRate(in)
-    val _buf        = readGE(in)
-    val _in         = readGE(in)
-    val _delayTime  = readGE(in)
-    val _decayTime  = readGE(in)
+  def read(in: RefMapIn, arity: Int): BufAllpassN = {
+    require (arity == 5)
+    val _rate       = in.readRate()
+    val _buf        = in.readGE()
+    val _in         = in.readGE()
+    val _delayTime  = in.readGE()
+    val _decayTime  = in.readGE()
     new BufAllpassN(_rate, _buf, _in, _delayTime, _decayTime)
   }
 }
@@ -2197,7 +2197,7 @@ final case class BufAllpassN(rate: Rate, buf: GE, in: GE, delayTime: GE = 0.2f, 
   * @see [[de.sciss.synth.ugen.BufAllpassN$ BufAllpassN]]
   * @see [[de.sciss.synth.ugen.BufAllpassC$ BufAllpassC]]
   */
-object BufAllpassL extends Reader[BufAllpassL] {
+object BufAllpassL extends ProductReader[BufAllpassL] {
   /** @param buf              Buffer id.
     * @param in               The input signal.
     * @param delayTime        Delay time in seconds.
@@ -2209,13 +2209,13 @@ object BufAllpassL extends Reader[BufAllpassL] {
   def ar(buf: GE, in: GE, delayTime: GE = 0.2f, decayTime: GE = 1.0f): BufAllpassL = 
     new BufAllpassL(audio, buf, in, delayTime, decayTime)
   
-  def read(in: DataInput): BufAllpassL = {
-    readArity(in, 5)
-    val _rate       = readRate(in)
-    val _buf        = readGE(in)
-    val _in         = readGE(in)
-    val _delayTime  = readGE(in)
-    val _decayTime  = readGE(in)
+  def read(in: RefMapIn, arity: Int): BufAllpassL = {
+    require (arity == 5)
+    val _rate       = in.readRate()
+    val _buf        = in.readGE()
+    val _in         = in.readGE()
+    val _delayTime  = in.readGE()
+    val _decayTime  = in.readGE()
     new BufAllpassL(_rate, _buf, _in, _delayTime, _decayTime)
   }
 }
@@ -2293,7 +2293,7 @@ final case class BufAllpassL(rate: Rate, buf: GE, in: GE, delayTime: GE = 0.2f, 
   * @see [[de.sciss.synth.ugen.BufAllpassN$ BufAllpassN]]
   * @see [[de.sciss.synth.ugen.BufAllpassL$ BufAllpassL]]
   */
-object BufAllpassC extends Reader[BufAllpassC] {
+object BufAllpassC extends ProductReader[BufAllpassC] {
   /** @param buf              Buffer id.
     * @param in               The input signal.
     * @param delayTime        Delay time in seconds.
@@ -2305,13 +2305,13 @@ object BufAllpassC extends Reader[BufAllpassC] {
   def ar(buf: GE, in: GE, delayTime: GE = 0.2f, decayTime: GE = 1.0f): BufAllpassC = 
     new BufAllpassC(audio, buf, in, delayTime, decayTime)
   
-  def read(in: DataInput): BufAllpassC = {
-    readArity(in, 5)
-    val _rate       = readRate(in)
-    val _buf        = readGE(in)
-    val _in         = readGE(in)
-    val _delayTime  = readGE(in)
-    val _decayTime  = readGE(in)
+  def read(in: RefMapIn, arity: Int): BufAllpassC = {
+    require (arity == 5)
+    val _rate       = in.readRate()
+    val _buf        = in.readGE()
+    val _in         = in.readGE()
+    val _delayTime  = in.readGE()
+    val _decayTime  = in.readGE()
     new BufAllpassC(_rate, _buf, _in, _delayTime, _decayTime)
   }
 }
@@ -2373,7 +2373,7 @@ final case class BufAllpassC(rate: Rate, buf: GE, in: GE, delayTime: GE = 0.2f, 
   * @see [[de.sciss.synth.ugen.DelayL$ DelayL]]
   * @see [[de.sciss.synth.ugen.DelayC$ DelayC]]
   */
-object DelayN extends Reader[DelayN] {
+object DelayN extends ProductReader[DelayN] {
   /** @param in               The input signal.
     * @param maxDelayTime     The maximum delay time in seconds. used to initialize
     *                         the delay buffer size. ''(init-time only)''
@@ -2390,12 +2390,12 @@ object DelayN extends Reader[DelayN] {
   def ar(in: GE, maxDelayTime: GE = 0.2f, delayTime: GE = 0.2f): DelayN = 
     new DelayN(audio, in, maxDelayTime, delayTime)
   
-  def read(in: DataInput): DelayN = {
-    readArity(in, 4)
-    val _rate         = readRate(in)
-    val _in           = readGE(in)
-    val _maxDelayTime = readGE(in)
-    val _delayTime    = readGE(in)
+  def read(in: RefMapIn, arity: Int): DelayN = {
+    require (arity == 4)
+    val _rate         = in.readRate()
+    val _in           = in.readGE()
+    val _maxDelayTime = in.readGE()
+    val _delayTime    = in.readGE()
     new DelayN(_rate, _in, _maxDelayTime, _delayTime)
   }
 }
@@ -2427,7 +2427,7 @@ final case class DelayN(rate: Rate, in: GE, maxDelayTime: GE = 0.2f, delayTime: 
   * @see [[de.sciss.synth.ugen.DelayN$ DelayN]]
   * @see [[de.sciss.synth.ugen.DelayC$ DelayC]]
   */
-object DelayL extends Reader[DelayL] {
+object DelayL extends ProductReader[DelayL] {
   /** @param in               The input signal.
     * @param maxDelayTime     The maximum delay time in seconds. used to initialize
     *                         the delay buffer size. ''(init-time only)''
@@ -2444,12 +2444,12 @@ object DelayL extends Reader[DelayL] {
   def ar(in: GE, maxDelayTime: GE = 0.2f, delayTime: GE = 0.2f): DelayL = 
     new DelayL(audio, in, maxDelayTime, delayTime)
   
-  def read(in: DataInput): DelayL = {
-    readArity(in, 4)
-    val _rate         = readRate(in)
-    val _in           = readGE(in)
-    val _maxDelayTime = readGE(in)
-    val _delayTime    = readGE(in)
+  def read(in: RefMapIn, arity: Int): DelayL = {
+    require (arity == 4)
+    val _rate         = in.readRate()
+    val _in           = in.readGE()
+    val _maxDelayTime = in.readGE()
+    val _delayTime    = in.readGE()
     new DelayL(_rate, _in, _maxDelayTime, _delayTime)
   }
 }
@@ -2481,7 +2481,7 @@ final case class DelayL(rate: Rate, in: GE, maxDelayTime: GE = 0.2f, delayTime: 
   * @see [[de.sciss.synth.ugen.DelayN$ DelayN]]
   * @see [[de.sciss.synth.ugen.DelayL$ DelayL]]
   */
-object DelayC extends Reader[DelayC] {
+object DelayC extends ProductReader[DelayC] {
   /** @param in               The input signal.
     * @param maxDelayTime     The maximum delay time in seconds. used to initialize
     *                         the delay buffer size. ''(init-time only)''
@@ -2498,12 +2498,12 @@ object DelayC extends Reader[DelayC] {
   def ar(in: GE, maxDelayTime: GE = 0.2f, delayTime: GE = 0.2f): DelayC = 
     new DelayC(audio, in, maxDelayTime, delayTime)
   
-  def read(in: DataInput): DelayC = {
-    readArity(in, 4)
-    val _rate         = readRate(in)
-    val _in           = readGE(in)
-    val _maxDelayTime = readGE(in)
-    val _delayTime    = readGE(in)
+  def read(in: RefMapIn, arity: Int): DelayC = {
+    require (arity == 4)
+    val _rate         = in.readRate()
+    val _in           = in.readGE()
+    val _maxDelayTime = in.readGE()
+    val _delayTime    = in.readGE()
     new DelayC(_rate, _in, _maxDelayTime, _delayTime)
   }
 }
@@ -2535,7 +2535,7 @@ final case class DelayC(rate: Rate, in: GE, maxDelayTime: GE = 0.2f, delayTime: 
   * @see [[de.sciss.synth.ugen.CombL$ CombL]]
   * @see [[de.sciss.synth.ugen.CombC$ CombC]]
   */
-object CombN extends Reader[CombN] {
+object CombN extends ProductReader[CombN] {
   /** @param in               The input signal.
     * @param maxDelayTime     The maximum delay time in seconds. used to initialize
     *                         the delay buffer size. ''(init-time only)''
@@ -2560,13 +2560,13 @@ object CombN extends Reader[CombN] {
   def ar(in: GE, maxDelayTime: GE = 0.2f, delayTime: GE = 0.2f, decayTime: GE = 1.0f): CombN = 
     new CombN(audio, in, maxDelayTime, delayTime, decayTime)
   
-  def read(in: DataInput): CombN = {
-    readArity(in, 5)
-    val _rate         = readRate(in)
-    val _in           = readGE(in)
-    val _maxDelayTime = readGE(in)
-    val _delayTime    = readGE(in)
-    val _decayTime    = readGE(in)
+  def read(in: RefMapIn, arity: Int): CombN = {
+    require (arity == 5)
+    val _rate         = in.readRate()
+    val _in           = in.readGE()
+    val _maxDelayTime = in.readGE()
+    val _delayTime    = in.readGE()
+    val _decayTime    = in.readGE()
     new CombN(_rate, _in, _maxDelayTime, _delayTime, _decayTime)
   }
 }
@@ -2602,7 +2602,7 @@ final case class CombN(rate: Rate, in: GE, maxDelayTime: GE = 0.2f, delayTime: G
   * @see [[de.sciss.synth.ugen.CombN$ CombN]]
   * @see [[de.sciss.synth.ugen.CombC$ CombC]]
   */
-object CombL extends Reader[CombL] {
+object CombL extends ProductReader[CombL] {
   /** @param in               The input signal.
     * @param maxDelayTime     The maximum delay time in seconds. used to initialize
     *                         the delay buffer size. ''(init-time only)''
@@ -2627,13 +2627,13 @@ object CombL extends Reader[CombL] {
   def ar(in: GE, maxDelayTime: GE = 0.2f, delayTime: GE = 0.2f, decayTime: GE = 1.0f): CombL = 
     new CombL(audio, in, maxDelayTime, delayTime, decayTime)
   
-  def read(in: DataInput): CombL = {
-    readArity(in, 5)
-    val _rate         = readRate(in)
-    val _in           = readGE(in)
-    val _maxDelayTime = readGE(in)
-    val _delayTime    = readGE(in)
-    val _decayTime    = readGE(in)
+  def read(in: RefMapIn, arity: Int): CombL = {
+    require (arity == 5)
+    val _rate         = in.readRate()
+    val _in           = in.readGE()
+    val _maxDelayTime = in.readGE()
+    val _delayTime    = in.readGE()
+    val _decayTime    = in.readGE()
     new CombL(_rate, _in, _maxDelayTime, _delayTime, _decayTime)
   }
 }
@@ -2669,7 +2669,7 @@ final case class CombL(rate: Rate, in: GE, maxDelayTime: GE = 0.2f, delayTime: G
   * @see [[de.sciss.synth.ugen.CombN$ CombN]]
   * @see [[de.sciss.synth.ugen.CombL$ CombL]]
   */
-object CombC extends Reader[CombC] {
+object CombC extends ProductReader[CombC] {
   /** @param in               The input signal.
     * @param maxDelayTime     The maximum delay time in seconds. used to initialize
     *                         the delay buffer size. ''(init-time only)''
@@ -2694,13 +2694,13 @@ object CombC extends Reader[CombC] {
   def ar(in: GE, maxDelayTime: GE = 0.2f, delayTime: GE = 0.2f, decayTime: GE = 1.0f): CombC = 
     new CombC(audio, in, maxDelayTime, delayTime, decayTime)
   
-  def read(in: DataInput): CombC = {
-    readArity(in, 5)
-    val _rate         = readRate(in)
-    val _in           = readGE(in)
-    val _maxDelayTime = readGE(in)
-    val _delayTime    = readGE(in)
-    val _decayTime    = readGE(in)
+  def read(in: RefMapIn, arity: Int): CombC = {
+    require (arity == 5)
+    val _rate         = in.readRate()
+    val _in           = in.readGE()
+    val _maxDelayTime = in.readGE()
+    val _delayTime    = in.readGE()
+    val _decayTime    = in.readGE()
     new CombC(_rate, _in, _maxDelayTime, _delayTime, _decayTime)
   }
 }
@@ -2736,7 +2736,7 @@ final case class CombC(rate: Rate, in: GE, maxDelayTime: GE = 0.2f, delayTime: G
   * @see [[de.sciss.synth.ugen.AllpassL$ AllpassL]]
   * @see [[de.sciss.synth.ugen.AllpassC$ AllpassC]]
   */
-object AllpassN extends Reader[AllpassN] {
+object AllpassN extends ProductReader[AllpassN] {
   /** @param in               The input signal.
     * @param maxDelayTime     The maximum delay time in seconds. used to initialize
     *                         the delay buffer size. ''(init-time only)''
@@ -2761,13 +2761,13 @@ object AllpassN extends Reader[AllpassN] {
   def ar(in: GE, maxDelayTime: GE = 0.2f, delayTime: GE = 0.2f, decayTime: GE = 1.0f): AllpassN = 
     new AllpassN(audio, in, maxDelayTime, delayTime, decayTime)
   
-  def read(in: DataInput): AllpassN = {
-    readArity(in, 5)
-    val _rate         = readRate(in)
-    val _in           = readGE(in)
-    val _maxDelayTime = readGE(in)
-    val _delayTime    = readGE(in)
-    val _decayTime    = readGE(in)
+  def read(in: RefMapIn, arity: Int): AllpassN = {
+    require (arity == 5)
+    val _rate         = in.readRate()
+    val _in           = in.readGE()
+    val _maxDelayTime = in.readGE()
+    val _delayTime    = in.readGE()
+    val _decayTime    = in.readGE()
     new AllpassN(_rate, _in, _maxDelayTime, _delayTime, _decayTime)
   }
 }
@@ -2803,7 +2803,7 @@ final case class AllpassN(rate: Rate, in: GE, maxDelayTime: GE = 0.2f, delayTime
   * @see [[de.sciss.synth.ugen.AllpassN$ AllpassN]]
   * @see [[de.sciss.synth.ugen.AllpassC$ AllpassC]]
   */
-object AllpassL extends Reader[AllpassL] {
+object AllpassL extends ProductReader[AllpassL] {
   /** @param in               The input signal.
     * @param maxDelayTime     The maximum delay time in seconds. used to initialize
     *                         the delay buffer size. ''(init-time only)''
@@ -2828,13 +2828,13 @@ object AllpassL extends Reader[AllpassL] {
   def ar(in: GE, maxDelayTime: GE = 0.2f, delayTime: GE = 0.2f, decayTime: GE = 1.0f): AllpassL = 
     new AllpassL(audio, in, maxDelayTime, delayTime, decayTime)
   
-  def read(in: DataInput): AllpassL = {
-    readArity(in, 5)
-    val _rate         = readRate(in)
-    val _in           = readGE(in)
-    val _maxDelayTime = readGE(in)
-    val _delayTime    = readGE(in)
-    val _decayTime    = readGE(in)
+  def read(in: RefMapIn, arity: Int): AllpassL = {
+    require (arity == 5)
+    val _rate         = in.readRate()
+    val _in           = in.readGE()
+    val _maxDelayTime = in.readGE()
+    val _delayTime    = in.readGE()
+    val _decayTime    = in.readGE()
     new AllpassL(_rate, _in, _maxDelayTime, _delayTime, _decayTime)
   }
 }
@@ -2870,7 +2870,7 @@ final case class AllpassL(rate: Rate, in: GE, maxDelayTime: GE = 0.2f, delayTime
   * @see [[de.sciss.synth.ugen.AllpassN$ AllpassN]]
   * @see [[de.sciss.synth.ugen.AllpassL$ AllpassL]]
   */
-object AllpassC extends Reader[AllpassC] {
+object AllpassC extends ProductReader[AllpassC] {
   /** @param in               The input signal.
     * @param maxDelayTime     The maximum delay time in seconds. used to initialize
     *                         the delay buffer size. ''(init-time only)''
@@ -2895,13 +2895,13 @@ object AllpassC extends Reader[AllpassC] {
   def ar(in: GE, maxDelayTime: GE = 0.2f, delayTime: GE = 0.2f, decayTime: GE = 1.0f): AllpassC = 
     new AllpassC(audio, in, maxDelayTime, delayTime, decayTime)
   
-  def read(in: DataInput): AllpassC = {
-    readArity(in, 5)
-    val _rate         = readRate(in)
-    val _in           = readGE(in)
-    val _maxDelayTime = readGE(in)
-    val _delayTime    = readGE(in)
-    val _decayTime    = readGE(in)
+  def read(in: RefMapIn, arity: Int): AllpassC = {
+    require (arity == 5)
+    val _rate         = in.readRate()
+    val _in           = in.readGE()
+    val _maxDelayTime = in.readGE()
+    val _delayTime    = in.readGE()
+    val _decayTime    = in.readGE()
     new AllpassC(_rate, _in, _maxDelayTime, _delayTime, _decayTime)
   }
 }
@@ -2935,7 +2935,7 @@ final case class AllpassC(rate: Rate, in: GE, maxDelayTime: GE = 0.2f, delayTime
 /** A time domain granular pitch shifter. Grains have a triangular amplitude
   * envelope and an overlap of 4:1.
   */
-object PitchShift extends Reader[PitchShift] {
+object PitchShift extends ProductReader[PitchShift] {
   /** @param in               The input signal.
     * @param winSize          The size of the grain window in seconds. ''(init-time
     *                         only)''
@@ -2951,13 +2951,13 @@ object PitchShift extends Reader[PitchShift] {
   def ar(in: GE, winSize: GE = 0.2f, pitchRatio: GE = 1.0f, pitchDispersion: GE = 0.0f, timeDispersion: GE = 0.0f): PitchShift = 
     new PitchShift(in, winSize, pitchRatio, pitchDispersion, timeDispersion)
   
-  def read(in: DataInput): PitchShift = {
-    readArity(in, 5)
-    val _in               = readGE(in)
-    val _winSize          = readGE(in)
-    val _pitchRatio       = readGE(in)
-    val _pitchDispersion  = readGE(in)
-    val _timeDispersion   = readGE(in)
+  def read(in: RefMapIn, arity: Int): PitchShift = {
+    require (arity == 5)
+    val _in               = in.readGE()
+    val _winSize          = in.readGE()
+    val _pitchRatio       = in.readGE()
+    val _pitchDispersion  = in.readGE()
+    val _timeDispersion   = in.readGE()
     new PitchShift(_in, _winSize, _pitchRatio, _pitchDispersion, _timeDispersion)
   }
 }
@@ -2996,7 +2996,7 @@ final case class PitchShift(in: GE, winSize: GE = 0.2f, pitchRatio: GE = 1.0f, p
   * 
   * @see [[de.sciss.synth.ugen.GrainBuf$ GrainBuf]]
   */
-object TGrains extends Reader[TGrains] {
+object TGrains extends ProductReader[TGrains] {
   /** @param numChannels      Number of output channels.
     * @param trig             At each trigger, the following arguments are sampled
     *                         and used as the arguments of a new grain. A trigger
@@ -3021,17 +3021,17 @@ object TGrains extends Reader[TGrains] {
   def ar(numChannels: Int, trig: GE, buf: GE, speed: GE = 1.0f, centerPos: GE = 0.0f, dur: GE = 0.1f, pan: GE = 0.0f, amp: GE = 0.1f, interp: GE = 4): TGrains = 
     new TGrains(numChannels, trig, buf, speed, centerPos, dur, pan, amp, interp)
   
-  def read(in: DataInput): TGrains = {
-    readArity(in, 9)
-    val _numChannels  = readInt(in)
-    val _trig         = readGE(in)
-    val _buf          = readGE(in)
-    val _speed        = readGE(in)
-    val _centerPos    = readGE(in)
-    val _dur          = readGE(in)
-    val _pan          = readGE(in)
-    val _amp          = readGE(in)
-    val _interp       = readGE(in)
+  def read(in: RefMapIn, arity: Int): TGrains = {
+    require (arity == 9)
+    val _numChannels  = in.readInt()
+    val _trig         = in.readGE()
+    val _buf          = in.readGE()
+    val _speed        = in.readGE()
+    val _centerPos    = in.readGE()
+    val _dur          = in.readGE()
+    val _pan          = in.readGE()
+    val _amp          = in.readGE()
+    val _interp       = in.readGE()
     new TGrains(_numChannels, _trig, _buf, _speed, _centerPos, _dur, _pan, _amp, _interp)
   }
 }
@@ -3076,16 +3076,16 @@ final case class TGrains(numChannels: Int, trig: GE, buf: GE, speed: GE = 1.0f, 
   protected def makeUGen(_args: Vec[UGenIn]): UGenInLike = 
     UGen.MultiOut(name, audio, Vector.fill(numChannels)(audio), _args, isIndividual = true)
 }
-object ScopeOut extends Reader[ScopeOut] {
+object ScopeOut extends ProductReader[ScopeOut] {
   def kr(buf: GE, in: GE): ScopeOut = new ScopeOut(control, buf, in)
   
   def ar(buf: GE, in: GE): ScopeOut = new ScopeOut(audio, buf, in)
   
-  def read(in: DataInput): ScopeOut = {
-    readArity(in, 3)
-    val _rate = readRate(in)
-    val _buf  = readGE(in)
-    val _in   = readGE(in)
+  def read(in: RefMapIn, arity: Int): ScopeOut = {
+    require (arity == 3)
+    val _rate = in.readRate()
+    val _buf  = in.readGE()
+    val _in   = in.readGE()
     new ScopeOut(_rate, _buf, _in)
   }
 }
@@ -3096,20 +3096,20 @@ final case class ScopeOut(rate: Rate, buf: GE, in: GE)
   
   protected def makeUGen(_args: Vec[UGenIn]): Unit = UGen.ZeroOut(name, rate, _args, isIndividual = true)
 }
-object ScopeOut2 extends Reader[ScopeOut2] {
+object ScopeOut2 extends ProductReader[ScopeOut2] {
   def kr(buf: GE, in: GE, maxFrames: GE = 4096, frames: GE): ScopeOut2 = 
     new ScopeOut2(control, buf, in, maxFrames, frames)
   
   def ar(buf: GE, in: GE, maxFrames: GE = 4096, frames: GE): ScopeOut2 = 
     new ScopeOut2(audio, buf, in, maxFrames, frames)
   
-  def read(in: DataInput): ScopeOut2 = {
-    readArity(in, 5)
-    val _rate       = readRate(in)
-    val _buf        = readGE(in)
-    val _in         = readGE(in)
-    val _maxFrames  = readGE(in)
-    val _frames     = readGE(in)
+  def read(in: RefMapIn, arity: Int): ScopeOut2 = {
+    require (arity == 5)
+    val _rate       = in.readRate()
+    val _buf        = in.readGE()
+    val _in         = in.readGE()
+    val _maxFrames  = in.readGE()
+    val _frames     = in.readGE()
     new ScopeOut2(_rate, _buf, _in, _maxFrames, _frames)
   }
 }
@@ -3124,7 +3124,7 @@ final case class ScopeOut2(rate: Rate, buf: GE, in: GE, maxFrames: GE = 4096, fr
 
 /** A Karplus-Strong UGen.
   */
-object Pluck extends Reader[Pluck] {
+object Pluck extends ProductReader[Pluck] {
   /** @param in               An excitation signal.
     * @param trig             Upon a negative to positive transition, the excitation
     *                         signal will be fed into the delay line.
@@ -3140,14 +3140,14 @@ object Pluck extends Reader[Pluck] {
   def ar(in: GE, trig: GE = 1, maxDelayTime: GE = 0.2f, delayTime: GE = 0.2f, decayTime: GE = 1.0f, coeff: GE = 0.5f): Pluck = 
     new Pluck(in, trig, maxDelayTime, delayTime, decayTime, coeff)
   
-  def read(in: DataInput): Pluck = {
-    readArity(in, 6)
-    val _in           = readGE(in)
-    val _trig         = readGE(in)
-    val _maxDelayTime = readGE(in)
-    val _delayTime    = readGE(in)
-    val _decayTime    = readGE(in)
-    val _coeff        = readGE(in)
+  def read(in: RefMapIn, arity: Int): Pluck = {
+    require (arity == 6)
+    val _in           = in.readGE()
+    val _trig         = in.readGE()
+    val _maxDelayTime = in.readGE()
+    val _delayTime    = in.readGE()
+    val _decayTime    = in.readGE()
+    val _coeff        = in.readGE()
     new Pluck(_in, _trig, _maxDelayTime, _delayTime, _decayTime, _coeff)
   }
 }
@@ -3179,7 +3179,7 @@ final case class Pluck(in: GE, trig: GE = 1, maxDelayTime: GE = 0.2f, delayTime:
   * 
   * @see [[de.sciss.synth.ugen.DelTapRd$ DelTapRd]]
   */
-object DelTapWr extends Reader[DelTapWr] {
+object DelTapWr extends ProductReader[DelTapWr] {
   /** @param buf              The buffer to write signal into. Max delay time is
     *                         based on buffer size. `DelTapWr` outputs its current
     *                         sample value for use in the `phase` argument of
@@ -3196,11 +3196,11 @@ object DelTapWr extends Reader[DelTapWr] {
     */
   def ar(buf: GE, in: GE): DelTapWr = new DelTapWr(audio, buf, in)
   
-  def read(in: DataInput): DelTapWr = {
-    readArity(in, 3)
-    val _rate = readRate(in)
-    val _buf  = readGE(in)
-    val _in   = readGE(in)
+  def read(in: RefMapIn, arity: Int): DelTapWr = {
+    require (arity == 3)
+    val _rate = in.readRate()
+    val _buf  = in.readGE()
+    val _in   = in.readGE()
     new DelTapWr(_rate, _buf, _in)
   }
 }
@@ -3228,7 +3228,7 @@ final case class DelTapWr(rate: Rate, buf: GE, in: GE)
   * 
   * @see [[de.sciss.synth.ugen.DelTapWr$ DelTapWr]]
   */
-object DelTapRd extends Reader[DelTapRd] {
+object DelTapRd extends ProductReader[DelTapRd] {
   /** @param buf              Buffer where DelTapWr has written signal. Max delay
     *                         time is based on buffer size.
     * @param phase            the current phase of the DelTapWr UGen. This is the
@@ -3251,13 +3251,13 @@ object DelTapRd extends Reader[DelTapRd] {
   def ar(buf: GE, phase: GE, delayTime: GE, interp: GE = 1): DelTapRd = 
     new DelTapRd(audio, buf, phase, delayTime, interp)
   
-  def read(in: DataInput): DelTapRd = {
-    readArity(in, 5)
-    val _rate       = readRate(in)
-    val _buf        = readGE(in)
-    val _phase      = readGE(in)
-    val _delayTime  = readGE(in)
-    val _interp     = readGE(in)
+  def read(in: RefMapIn, arity: Int): DelTapRd = {
+    require (arity == 5)
+    val _rate       = in.readRate()
+    val _buf        = in.readGE()
+    val _phase      = in.readGE()
+    val _delayTime  = in.readGE()
+    val _interp     = in.readGE()
     new DelTapRd(_rate, _buf, _phase, _delayTime, _interp)
   }
 }
@@ -3289,18 +3289,18 @@ final case class DelTapRd(rate: Rate, buf: GE, phase: GE, delayTime: GE, interp:
   * @see [[de.sciss.synth.ugen.LocalBuf$ LocalBuf]]
   * @see [[de.sciss.synth.ugen.ClearBuf$ ClearBuf]]
   */
-object SetBuf extends Reader[SetBuf] {
+object SetBuf extends ProductReader[SetBuf] {
   /** @param buf              the buffer to write the values into
     * @param values           values to write into the buffer
     * @param offset           frame offset into the buffer
     */
   def ir(buf: GE, values: GE, offset: GE = 0): SetBuf = new SetBuf(buf, values, offset)
   
-  def read(in: DataInput): SetBuf = {
-    readArity(in, 3)
-    val _buf    = readGE(in)
-    val _values = readGE(in)
-    val _offset = readGE(in)
+  def read(in: RefMapIn, arity: Int): SetBuf = {
+    require (arity == 3)
+    val _buf    = in.readGE()
+    val _values = in.readGE()
+    val _offset = in.readGE()
     new SetBuf(_buf, _values, _offset)
   }
 }
@@ -3333,14 +3333,14 @@ final case class SetBuf(buf: GE, values: GE, offset: GE = 0)
   * @see [[de.sciss.synth.ugen.LocalBuf$ LocalBuf]]
   * @see [[de.sciss.synth.ugen.SetBuf$ SetBuf]]
   */
-object ClearBuf extends Reader[ClearBuf] {
+object ClearBuf extends ProductReader[ClearBuf] {
   /** @param buf              the buffer to clear
     */
   def ir(buf: GE): ClearBuf = new ClearBuf(buf)
   
-  def read(in: DataInput): ClearBuf = {
-    readArity(in, 1)
-    val _buf = readGE(in)
+  def read(in: RefMapIn, arity: Int): ClearBuf = {
+    require (arity == 1)
+    val _buf = in.readGE()
     new ClearBuf(_buf)
   }
 }

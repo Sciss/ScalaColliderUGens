@@ -37,7 +37,7 @@ import de.sciss.synth.UGenSource._
   *
   * @see [[de.sciss.synth.ugen.Hopf$ Hopf]]
   */
-object Kuramoto extends Reader[Kuramoto] {
+object Kuramoto extends ProductReader[Kuramoto] {
   /**
     * @param mode `0`: all oscillators are coupled; `1`: neighboring oscillators are coupled
     *             (they can be imagined to form a ring); `2`:  neighboring oscillators are negatively coupled;
@@ -49,15 +49,15 @@ object Kuramoto extends Reader[Kuramoto] {
     apply(audio, mode = mode, initPhase = initPhase, incr = incr, extPhase = extPhase,
       intCoupling = intCoupling, extCoupling = extCoupling)
 
-  def read(in: DataInput): Kuramoto = {
-    readArity(in, 7)
-    val _rate         = readRate(in)
-    val _mode         = readGE(in)
-    val _initPhase    = readGE(in)
-    val _incr         = readGE(in)
-    val _extPhase     = readGE(in)
-    val _intCoupling  = readGE(in)
-    val _extCoupling  = readGE(in)
+  def read(in: RefMapIn, arity: Int): Kuramoto = {
+    require (arity == 7)
+    val _rate         = in.readRate()
+    val _mode         = in.readGE()
+    val _initPhase    = in.readGE()
+    val _incr         = in.readGE()
+    val _extPhase     = in.readGE()
+    val _intCoupling  = in.readGE()
+    val _extCoupling  = in.readGE()
     new Kuramoto(_rate, _mode, _initPhase, _incr, _extPhase, _intCoupling, _extCoupling)
   }
 }

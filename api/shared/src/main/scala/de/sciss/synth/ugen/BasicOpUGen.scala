@@ -26,7 +26,7 @@ import scala.annotation.switch
   * @see  GEOps
   * @see  BinaryOpUGen
   */
-object UnaryOpUGen extends Reader[UnaryOpUGen] {
+object UnaryOpUGen extends ProductReader[UnaryOpUGen] {
   // note: this is not optimizing, as would be `op.make(a)`, because it guarantees that the return
   // type is UnaryOpUGen. this is used in deserialization, you should prefer `op.make` instead.
   def apply(op: Op, a: GE): UnaryOpUGen = op.makeNoOptimization(a)
@@ -412,12 +412,12 @@ object UnaryOpUGen extends Reader[UnaryOpUGen] {
     def make1(a: Float): Float = rf2.sCurve(a)
   }
 
-  def readOp(in: DataInput): Op = ???
+  private def readOp(in: RefMapIn): Op = ???
 
-  def read(in: DataInput): UnaryOpUGen = {
-    readArity(in, 2)
+  def read(in: RefMapIn, arity: Int): UnaryOpUGen = {
+    require (arity == 2)
     val _op = readOp(in)
-    val _a  = readGE(in)
+    val _a  = in.readGE()
     apply(_op, _a)
   }
 
@@ -463,7 +463,7 @@ abstract class UnaryOpUGen extends UGenSource.SingleOut {
   * @see  GEOps
   * @see  UnaryOpUGen
   */
-object BinaryOpUGen extends Reader[BinaryOpUGen] {
+object BinaryOpUGen extends ProductReader[BinaryOpUGen] {
   // note: this is not optimizing, as would be `op.make(a, b)`, because it guarantees that the return
   // type is BinaryOpUGen. this is used in deserialization, you should prefer `op.make` instead.
   def apply(op: Op, a: GE, b: GE): BinaryOpUGen = op.makeNoOptimization(a, b)
@@ -926,13 +926,13 @@ object BinaryOpUGen extends Reader[BinaryOpUGen] {
     override val name = "expRand"
   }
 
-  def readOp(in: DataInput): Op = ???
+  private def readOp(in: RefMapIn): Op = ???
 
-  def read(in: DataInput): BinaryOpUGen = {
-    readArity(in, 3)
+  def read(in: RefMapIn, arity: Int): BinaryOpUGen = {
+    require (arity == 3)
     val _op = readOp(in)
-    val _a  = readGE(in)
-    val _b  = readGE(in)
+    val _a  = in.readGE()
+    val _b  = in.readGE()
     apply(_op, _a, _b)
   }
 
