@@ -24,7 +24,7 @@ object UGenSpec {
   final val standardPlugins: List[String] = List(
     "ChaosUGens", "DelayUGens", "DemandUGens", "DiskIOUGens", "DynNoiseUGens", "FFT2_UGens", "FFT_UGens",
     "FilterUGens", "GendynUGens", "GrainUGens", "IOUGens", "KeyboardUGens", "LFUGens", "MachineListening",
-    "MouseUGens", /* "MulAddUGens", */ "NoiseUGens", "OSCUGens", "PanUGens", "PhysicalModellingUGens", "ReverbUGens",
+    "MouseUGens", "MulAddUGens", "NoiseUGens", "OSCUGens", "PanUGens", "PhysicalModellingUGens", "ReverbUGens",
     "TestUGens", "TriggerUGens", "UnpackFFTUGens", "HelperElements"
   )
 
@@ -127,6 +127,17 @@ object UGenSpec {
       * ScalaCollider.
       */
     case object IsHelper extends Attribute
+
+    /** Indicates that this is might be optimized at runtime to other UGens than the nominal UGen.
+      * In this case, it is possible that the number of specified rates is zero.
+      */
+    case object IsOptimized extends Attribute
+
+    /** Indicates that this UGen is not fully specified on the client-side. The client should
+      * not make any specific assumptions about its workings, or assume that the specification
+      * is complete (for example, some arguments might be omitted that cannot be represented).
+      */
+    case object IsFragment extends Attribute
 
     /** Indicates that manual source code is provided for this UGen. */
     case object HasSourceCode extends Attribute
@@ -358,7 +369,6 @@ object UGenSpec {
   sealed trait RateMethod
 
   object Rates {
-
     /** An implied rate means that the UGen can only possibly run at one particular rate.
       * When an implied rate is used, the UGen mixes in a rate trait, such as `AudioRated` and
       * does not include an explicit `rate` argument in its case class constructor.

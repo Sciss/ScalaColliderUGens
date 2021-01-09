@@ -139,7 +139,9 @@ UGen Attributes (`ugenAttr`) are boolean flags (all false by default) which can 
 |`random`      |UGen depends on random seeding   |`WhiteNoise`|
 |`indiv`       |Each UGen is otherwise individual, even with identical inputs|Demand UGens advance their inputs|
 |`helper`      |A helper element that is not a genuine UGen itself|`Nyquist`|
+|`optimized`   |A UGen that might be optimized at runtime to other UGens (allows to skip rate specification)|`MulAdd`|
 |`sourcecode`  |Manually written source code is provided|`Nyquist`|
+|`fragment`    |UGen that cannot be fully represented in the spec. For example, it has hidden or currently not represented argument types|`LocalBuf`|
 |`elem`        |Client facing class name differing from UGen|`JPverbRaw`|
 
 Part of this information is used by ScalaCollider when building the UGen graph. For example, subtrees which do not 

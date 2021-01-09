@@ -1787,8 +1787,40 @@
         </doc>
     </ugen>
 
-    <!-- <ugen name="MaxLocalBufs"/> -->
-    <!-- <ugen name="LocalBuf"/> -->
+    <ugen name="MaxLocalBufs" sourcecode="true" fragment="true" side-effect="true">
+        <rate name="scalar" implied="true"/>
+        <doc>
+            <text>
+                An internally used UGen that tracks the number of `LocalBuf` instances.
+            </text>
+            <see>ugen.LocalBuf</see>
+        </doc>
+    </ugen>
+
+    <ugen name="LocalBuf" sourcecode="true" fragment="true" indiv="true">
+        <rate name="scalar" implied="true"/>
+        <arg name="numFrames">
+            <doc>
+                the number of sample frames to allocate
+            </doc>
+        </arg>
+        <arg name="numChannels" default="1">
+            <doc>
+                the number of channels to allocate
+            </doc>
+        </arg>
+        <doc>
+            <text>
+                A UGen that allocates an internal buffer local to the containing synth.
+                It outputs a corresponding buffer identifier, which is synthetically generated
+                instead of user provided. A typical use case is for `FFT` processing.
+            </text>
+            <see>ugen.SetBuf</see>
+            <see>ugen.ClearBuf</see>
+            <see>ugen.FFT</see>
+            <!-- TODO: example -->
+        </doc>
+    </ugen>
 
     <ugen name="SetBuf" writes-buf="true">
         <rate name="scalar" implied="true"/>

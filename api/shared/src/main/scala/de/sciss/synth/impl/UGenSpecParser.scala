@@ -37,7 +37,7 @@ private[synth] object UGenSpecParser {
     "reads-bus",  "reads-buf",  "reads-fft", "random", "indiv",
     "writes-bus", "writes-buf", "writes-fft", "side-effect",
     "done-flag" /* , "provided" */,
-    "helper", "sourcecode", "elem"
+    "helper", "optimized", "fragment", "sourcecode", "elem"
   )
 
   private val nodeChildKeys = Set(
@@ -412,6 +412,8 @@ private[synth] object UGenSpecParser {
     val indiv         = attrs.boolean("indiv")
 
     val isHelper      = attrs.boolean("helper")
+    val isOptimized   = attrs.boolean("optimized")
+    val isFragment    = attrs.boolean("fragment")
     val hasSourceCode = attrs.boolean("sourcecode")
 
     var uAttr         = Set.empty[Attribute]
@@ -429,6 +431,8 @@ private[synth] object UGenSpecParser {
 
     if (doneFlag)       uAttr += HasDoneFlag
     if (isHelper)       uAttr += IsHelper
+    if (isOptimized)    uAttr += IsOptimized
+    if (isFragment)     uAttr += IsFragment
     if (hasSourceCode)  uAttr += HasSourceCode
 
     // val indSideEffect = writesBus || writesBuffer || writesFFT
@@ -480,7 +484,7 @@ private[synth] object UGenSpecParser {
       }
 
     val rNodes = node \ "rate"
-    if (rNodes.isEmpty && !isHelper) sys.error(s"No rates specified for $uName")
+    if (rNodes.isEmpty && !(isHelper || isOptimized)) sys.error(s"No rates specified for $uName")
     val impliedRate = (rNodes.size == 1) && rNodes.head.attributes.asAttrMap.boolean("implied")
     val rates = if (impliedRate) {
       val rNode   = rNodes.head
@@ -607,7 +611,7 @@ private[synth] object UGenSpecParser {
 
       if (docs) {
         val aDoc  = (aNode \ "doc").text
-        if (!aDoc.isEmpty) {
+        if (aDoc.nonEmpty) {
           val aDocT = trimDoc(aDoc)
           if (aDocT.nonEmpty) argDocs += aName -> aDocT
         }
@@ -680,8 +684,8 @@ private[synth] object UGenSpecParser {
       outputs :+= out
 
       if (docs) {
-        val oDoc  = (oNode \ "doc").text
-        if (!oDoc.isEmpty) {
+        val oDoc = (oNode \ "doc").text
+        if (oDoc.nonEmpty) {
           oName match {
             case Some(n) =>
               val oDocT = trimDoc(oDoc)

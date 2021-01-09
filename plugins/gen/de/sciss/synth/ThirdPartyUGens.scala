@@ -3,10 +3,10 @@ package de.sciss.synth
 import UGenSource._
 import ugen._
 
-object ThirdPartyUGens extends Map[String, ProductReader[Product]] {
+object ThirdPartyUGens {
   type V = ProductReader[Product]
 
-  private val peer = Map[String, V](
+  val map: Map[String, V] = Map[String, V](
     ("ArrayMax", ArrayMax),
     ("ArrayMin", ArrayMin),
     ("BufMax", BufMax),
@@ -29,12 +29,4 @@ object ThirdPartyUGens extends Map[String, ProductReader[Product]] {
     ("VBAP", VBAP),
     ("WaveLoss", WaveLoss),
   )
-
-  def removed(key: String): Map[String, V] = peer.removed(key)
-
-  def updated[V1 >: V](key: String, value: V1): Map[String, V1] = peer.updated(key, value)
-
-  def get(key: String): Option[V] = peer.get(key)
-
-  def iterator: Iterator[(String, V)] = peer.iterator
 }

@@ -3,10 +3,10 @@ package de.sciss.synth
 import UGenSource._
 import ugen._
 
-object StandardUGens extends Map[String, ProductReader[Product]] {
+object StandardUGens {
   type V = ProductReader[Product]
 
-  private val peer = Map[String, V](
+  val map: Map[String, V] = Map[String, V](
     ("A2K", A2K),
     ("APF", APF),
     ("AllpassC", AllpassC),
@@ -215,6 +215,7 @@ object StandardUGens extends Map[String, ProductReader[Product]] {
     ("LinXFade2", LinXFade2),
     ("Line", Line),
     ("Linen", Linen),
+    ("LocalBuf", LocalBuf),
     ("LocalIn", LocalIn),
     ("LocalOut", LocalOut),
     ("Logistic", Logistic),
@@ -222,6 +223,7 @@ object StandardUGens extends Map[String, ProductReader[Product]] {
     ("Loudness", Loudness),
     ("MFCC", MFCC),
     ("MantissaMask", MantissaMask),
+    ("MaxLocalBufs", MaxLocalBufs),
     ("Median", Median),
     ("MidEQ", MidEQ),
     ("Mix", Mix),
@@ -230,6 +232,7 @@ object StandardUGens extends Map[String, ProductReader[Product]] {
     ("MouseButton", MouseButton),
     ("MouseX", MouseX),
     ("MouseY", MouseY),
+    ("MulAdd", MulAdd),
     ("NRand", NRand),
     ("NodeID", NodeID),
     ("Normalizer", Normalizer),
@@ -353,6 +356,8 @@ object StandardUGens extends Map[String, ProductReader[Product]] {
     ("Stepper", Stepper),
     ("StereoConvolution2L", StereoConvolution2L),
     ("SubsampleOffset", SubsampleOffset),
+    ("Sum3", Sum3),
+    ("Sum4", Sum4),
     ("Sweep", Sweep),
     ("SyncSaw", SyncSaw),
     ("T2A", T2A),
@@ -386,12 +391,4 @@ object StandardUGens extends Map[String, ProductReader[Product]] {
     ("XOut", XOut),
     ("ZeroCrossing", ZeroCrossing),
   )
-
-  def removed(key: String): Map[String, V] = peer.removed(key)
-
-  def updated[V1 >: V](key: String, value: V1): Map[String, V1] = peer.updated(key, value)
-
-  def get(key: String): Option[V] = peer.get(key)
-
-  def iterator: Iterator[(String, V)] = peer.iterator
 }
