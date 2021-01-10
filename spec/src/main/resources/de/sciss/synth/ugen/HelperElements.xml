@@ -224,6 +224,7 @@
             </text>
             <see>ugen.Reduce</see>
             <see>ugen.BinaryOpUGen</see>
+            <see>ugen.Mix.Mono</see>
             <example name="non-nested multi-channel signal reduced to mono (1)">
                 Mix(SinOsc.ar(440 :: 660 :: Nil)) * 0.2 // --> SinOsc.ar(440) + SinOsc.ar(660)
             </example>
@@ -275,6 +276,21 @@
                     ).max(0)    // clip negative amplitudes to zero
                 }
             </example>
+        </doc>
+    </ugen>
+    <ugen name="Mix.Mono" helper="true" sourcecode="true">
+        <arg name="elem">
+            <doc>
+                the graph element whose channels to mix together
+            </doc>
+        </arg>
+        <doc>
+            <text>
+                A graph element that mixes the channels of a signal together.
+                As opposed to `Mix`, `Mix.Mono` first flattens the input channel's multi-channel layers,
+                ensuring that the output is always monophonic.
+            </text>
+            <see>ugen.Mix</see>
         </doc>
     </ugen>
     <ugen name="NumChannels" helper="true" sourcecode="true">
@@ -336,7 +352,10 @@
             <!-- TODO: example -->
         </doc>
     </ugen>
-    <ugen name="PhysicalOut" helper="true" sourcecode="true">
+    <ugen name="PhysicalIn" helper="true" sourcecode="true" fragment="true" reads-bus="true">
+        <rate name="audio" implied="true"/>
+    </ugen>
+    <ugen name="PhysicalOut" helper="true" sourcecode="true" writes-bus="true">
         <no-outputs/>
         <rate name="audio" implied="true"/>
         <arg name="indices" default="0">
@@ -369,6 +388,7 @@
             <see>ugen.PhysicalIn</see>
         </doc>
     </ugen>
+    <ugen name="Reduce" helper="true" sourcecode="true" fragment="true" />
     <ugen name="RepeatChannels" helper="true" sourcecode="true">
         <arg name="a">
             <doc>
@@ -506,37 +526,8 @@
             <see>ugen.PanAz</see>
         </doc>
     </ugen>
-<!--    <ugen name="Zip" helper="true" sourcecode="true">
-        <arg name="elems">
-            VARARGS
-            <doc>
-                the signals to interleave in a multi-channel output signal
-            </doc>
-        </arg>
-        <doc>
-            <text>
-                A graph element that interleaves a number of (multi-channel) input signals.
-                For example, if two stereo-signals `a` and `b` are zipped, the output will be a four-channel
-                signal corresponding to `[ a out 0, b out 0, a out 1, b out 1 ]`. If the input signals
-                have different numbers of channels, the minimum number of channels is used.
-            </text>
-            <example name="peak and RMS metering" type="full">
-                val x = play {
-                  val sig   = PhysicalIn.ar(0 to 1)  // stereo input
-                  val tr    = Impulse.kr(5)
-                  val peak  = Peak.kr(sig, tr)
-                  val rms   = A2K.kr(Lag.ar(sig.squared, 0.1))
-                  SendReply.kr(tr, Zip(peak, rms), "/meter")
-                }
-
-                val r = message.Responder.add(x.server) {
-                  case osc.Message("/meter", x.id, _, peakL: Float, rmsL: Float, peakR: Float, rmsR: Float) =>
-                    println(f"peak-left $peakL%g, rms-left $rmsL%g, peak-right $peakR%g, rms-right $rmsR%g")
-                }
-
-                x.free(); r.remove()
-            </example>
-            <see>ugen.ChannelIndices</see>
-        </doc>
-    </ugen> -->
+    <ugen name="WrapOut" helper="true" sourcecode="true" fragment="true" writes-bus="true">
+        <no-outputs />
+    </ugen>
+    <ugen name="Zip" helper="true" sourcecode="true" fragment="true" />
 </ugens>

@@ -1,3 +1,3 @@
 #!/bin/bash
-sbt spec/publishLocal +apiJS/publishLocal +apiJVM/publishLocal +coreJVM/publishLocal +coreJS/publishLocal +pluginsJS/publishLocal +pluginsJVM/publishLocal
+sbt spec/publishLocal +apiJVM/publishLocal +apiJS/publishLocal +coreJVM/publishLocal +coreJS/publishLocal +pluginsJVM/publishLocal +pluginsJS/publishLocal
 

@@ -281,7 +281,7 @@ final case class Mix(elem: GE) extends UGenSource.SingleOut {  // XXX TODO: shou
 object Zip extends ProductReader[Zip] {
   override def read(in: RefMapIn, prefix: String, arity: Int): Zip = {
     require (arity == 1)
-    val _elems = in.readGEVec()
+    val _elems = in.readVec(in.readGE())
     new Zip(_elems: _*)
   }
 }

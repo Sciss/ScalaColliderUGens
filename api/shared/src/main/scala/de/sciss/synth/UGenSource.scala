@@ -227,7 +227,7 @@ object UGenSource {
       b.result()
     }
 
-    def readGEVec(): Vec[GE] = readVec(readGE())
+//    def readGEVec(): Vec[GE] = readVec(readGE())
 
     def readInt(): Int = {
       val cookie = _in.readByte()
@@ -243,12 +243,14 @@ object UGenSource {
       _in.readUTF()
     }
 
-    def readStringOption(): Option[String] = {
+    def readOption[A](elem: => A): Option[A] = {
       val cookie = _in.readByte()
       if (cookie != 'O') sys.error(s"Unexpected cookie '$cookie' is not 'O'")
       val defined = in.readBoolean()
-      if (defined) Some(readString()) else None
+      if (defined) Some(elem) else None
     }
+
+    def readStringOption(): Option[String] = readOption(readString())
 
     def readFloat(): Float = {
       val cookie = _in.readByte()
@@ -290,6 +292,23 @@ object UGenSource {
   def addProductReaders(xs: Iterable[(String, ProductReader[Product])]): Unit = mapRead.synchronized {
     mapRead ++= xs
     ()
+  }
+
+  final val PackageName: String = "de.sciss.synth.ugen"
+
+  /** Derives the `productPrefix` served by the reader by the reader's class name itself.  */
+  def addProductReaderSq(xs: Iterable[ProductReader[Product]]): Unit = {
+    val m = mapRead
+    m.synchronized {
+      xs.foreach { value =>
+        val cn    = value.getClass.getName
+        val nm    = cn.length - 1
+        val isObj = cn.charAt(nm) == '$'
+        val i     = if (cn.startsWith(PackageName)) PackageName.length + 1 else 0
+        val key   = if (isObj) cn.substring(i, nm) else cn.substring(i)
+        m += ((key, value))
+      }
+    }
   }
 }
 

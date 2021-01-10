@@ -4,9 +4,13 @@ import UGenSource._
 import ugen._
 
 object StandardUGens {
+  private lazy val _init: Unit = UGenSource.addProductReaders(map)
+
+  def init(): Unit = _init
+
   type V = ProductReader[Product]
 
-  val map: Map[String, V] = Map[String, V](
+  private def map = Map[String, V](
     ("A2K", A2K),
     ("APF", APF),
     ("AllpassC", AllpassC),
@@ -229,6 +233,7 @@ object StandardUGens {
     ("Median", Median),
     ("MidEQ", MidEQ),
     ("Mix", Mix),
+    ("Mix$Mono", Mix.Mono),
     ("MoogFF", MoogFF),
     ("MostChange", MostChange),
     ("MouseButton", MouseButton),
@@ -301,6 +306,7 @@ object StandardUGens {
     ("Peak", Peak),
     ("PeakFollower", PeakFollower),
     ("Phasor", Phasor),
+    ("PhysicalIn", PhysicalIn),
     ("PhysicalOut", PhysicalOut),
     ("PinkNoise", PinkNoise),
     ("Pitch", Pitch),
@@ -322,6 +328,7 @@ object StandardUGens {
     ("RandID", RandID),
     ("RandSeed", RandSeed),
     ("RecordBuf", RecordBuf),
+    ("Reduce", Reduce),
     ("RepeatChannels", RepeatChannels),
     ("ReplaceOut", ReplaceOut),
     ("Resonz", Resonz),
@@ -390,9 +397,11 @@ object StandardUGens {
     ("WhiteNoise", WhiteNoise),
     ("Wrap", Wrap),
     ("WrapIndex", WrapIndex),
+    ("WrapOut", WrapOut),
     ("XFade2", XFade2),
     ("XLine", XLine),
     ("XOut", XOut),
     ("ZeroCrossing", ZeroCrossing),
+    ("Zip", Zip),
   )
 }

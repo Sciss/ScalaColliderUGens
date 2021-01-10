@@ -24,8 +24,8 @@ object Curve extends ProductReader[Curve] {
   case object step extends Curve {
     final val id = 0
 
-    override final val productPrefix  = "Curve$step$"  // compatible with SoundProcesses serialization
-    override def toString             = "step"
+    override final val readerKey  = "Curve$step"  // compatible with SoundProcesses serialization
+    override def toString         = "step"
 
     def levelAt(pos: Float, y1: Float, y2: Float): Float = if (pos < 1f) y1 else y2
   }
@@ -33,8 +33,8 @@ object Curve extends ProductReader[Curve] {
   case object linear extends Curve {
     final val id = 1
 
-    override final val productPrefix  = "Curve$linear$"
-    override def toString             = "linear"
+    override final val readerKey  = "Curve$linear"
+    override def toString         = "linear"
 
     def levelAt(pos: Float, y1: Float, y2: Float): Float = pos * (y2 - y1) + y1
   }
@@ -43,8 +43,8 @@ object Curve extends ProductReader[Curve] {
   case object exponential extends Curve {
     final val id = 2
 
-    override final val productPrefix  = "Curve$exponential$"
-    override def toString             = "exponential"
+    override final val readerKey  = "Curve$exponential"
+    override def toString         = "exponential"
 
     def levelAt(pos: Float, y1: Float, y2: Float): Float =
       if (y1 == 0) {
@@ -60,8 +60,8 @@ object Curve extends ProductReader[Curve] {
   case object sine extends Curve {
     final val id = 3
 
-    override final val productPrefix  = "Curve$sine$"
-    override def toString             = "sine"
+    override final val readerKey  = "Curve$sine"
+    override def toString         = "sine"
 
     def levelAt(pos: Float, y1: Float, y2: Float): Float =
       (y1 + (y2 - y1) * (-cos(Pi * pos) * 0.5 + 0.5)).toFloat
@@ -70,8 +70,8 @@ object Curve extends ProductReader[Curve] {
   case object welch extends Curve {
     final val id = 4
 
-    override final val productPrefix  = "Curve$welch$"
-    override def toString             = "welch"
+    override final val readerKey  = "Curve$welch"
+    override def toString         = "welch"
 
     def levelAt(pos: Float, y1: Float, y2: Float): Float = if (y1 < y2) {
       (y1 + (y2 - y1) * sin(Pi * 0.5 * pos)).toFloat
@@ -85,13 +85,13 @@ object Curve extends ProductReader[Curve] {
   object parametric {
     final val id = 5
 
-    final val productPrefix = s"Curve$$parametric"
+    final val readerKey = s"Curve$$parametric"
   }
   final case class parametric(/*override val */ curvature: Float) extends Curve {
     def id: Int = parametric.id
 
-    override def productPrefix: String  = parametric.productPrefix // s"Curve$$parametric"
-    override def toString               = s"parametric($curvature)"
+    override def readerKey: String  = parametric.readerKey // s"Curve$$parametric"
+    override def toString           = s"parametric($curvature)"
 
     def levelAt(pos: Float, y1: Float, y2: Float): Float = if (abs(curvature) < 0.0001f) {
       pos * (y2 - y1) + y1
@@ -105,8 +105,8 @@ object Curve extends ProductReader[Curve] {
   case object squared extends Curve {
     final val id = 6
 
-    override final val productPrefix  = "Curve$squared$"
-    override def toString             = "squared"
+    override final val readerKey  = "Curve$squared"
+    override def toString         = "squared"
 
     def levelAt(pos: Float, y1: Float, y2: Float): Float = {
       val y1Pow2  = sqrt(y1)
@@ -119,8 +119,8 @@ object Curve extends ProductReader[Curve] {
   case object cubed extends Curve {
     final val id = 7
 
-    override final val productPrefix  = "Curve$cubed$"
-    override def toString             = "cubed"
+    override final val readerKey  = "Curve$cubed"
+    override def toString         = "cubed"
 
     def levelAt(pos: Float, y1: Float, y2: Float): Float = {
       val y1Pow3  = pow(y1, 0.3333333)
@@ -155,24 +155,29 @@ object Curve extends ProductReader[Curve] {
 
   override def read(in: RefMapIn, prefix: String, arity: Int): Curve =
     prefix match {
-      case step       .productPrefix => step
-      case linear     .productPrefix => linear
-      case exponential.productPrefix => exponential
-      case sine       .productPrefix => sine
-      case welch      .productPrefix => welch
+      case step       .readerKey => step
+      case linear     .readerKey => linear
+      case exponential.readerKey => exponential
+      case sine       .readerKey => sine
+      case welch      .readerKey => welch
 
-      case parametric .productPrefix =>
+      case parametric .readerKey =>
         require (arity == 1)
         val _curvature = in.readFloat()
         new parametric(_curvature)
 
-      case squared    .productPrefix => squared
-      case cubed      .productPrefix => cubed
+      case squared    .readerKey => squared
+      case cubed      .readerKey => cubed
       case _ =>
         sys.error(s"Unexpected product prefix '$prefix'")
     }
 }
 sealed trait Curve extends Product {
   def id: Int
+
+  override final def productPrefix: String = readerKey
+
+  def readerKey: String
+
   def levelAt(pos: Float, y1: Float, y2: Float): Float
 }

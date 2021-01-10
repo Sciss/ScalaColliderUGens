@@ -99,7 +99,7 @@ object Gen extends App {
     }
     val classNames  = cg.performFile(xml, dir = outDir1, name = name, docs = docs, forceOverwrite = forceOverwrite)
     val adjuncts    = cg.getAdjuncts(xml)
-    val classPairs  = classNames.iterator.map(n => (n, n)).toMap
+    val classPairs  = classNames.iterator.map(n => (n.replace('.', '$'), n)).toMap
     classPairs ++ adjuncts
 
   } .toMap
@@ -117,9 +117,13 @@ object Gen extends App {
          |import ugen._
          |
          |object ${input.mapName} {
+         |  private lazy val _init: Unit = UGenSource.addProductReaders(map)
+         |
+         |  def init(): Unit = _init
+         |
          |  type V = ProductReader[Product]
          |
-         |  val map: Map[String, V] = Map[String, V](
+         |  private def map = Map[String, V](
          |$pairs
          |  )
          |}
