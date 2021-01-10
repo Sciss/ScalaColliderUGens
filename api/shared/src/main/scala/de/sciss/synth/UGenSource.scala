@@ -213,6 +213,20 @@ object UGenSource {
       Vector.fill(size)(elem)
     }
 
+    def readSet[A](elem: => A): Set[A] = {
+      val cookie = _in.readByte()
+      if (cookie != 'T') sys.error(s"Unexpected cookie '$cookie' is not 'T'")
+      val size = in.readInt()
+      val b = Set.newBuilder[A] // Set does not have `fill` in Scala 2.12
+      b.sizeHint(size)
+      var i = 0
+      while (i < size) {
+        b += elem
+        i += 1
+      }
+      b.result()
+    }
+
     def readGEVec(): Vec[GE] = readVec(readGE())
 
     def readInt(): Int = {
