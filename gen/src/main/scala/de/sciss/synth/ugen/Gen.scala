@@ -89,7 +89,7 @@ object Gen extends App {
       }
   }
 
-  val allClassNames: Vec[String] = inputs.flatMap { case (name, source) =>
+  val allPairs: Map[String, String] = inputs.flatMap { case (name, source) =>
     val xml = try {
       XML.load(source)
     } catch {
@@ -97,12 +97,17 @@ object Gen extends App {
         Console.err.println(s"Resource not found: $name")
         throw e
     }
-    cg.performFile(xml, dir = outDir1, name = name, docs = docs, forceOverwrite = forceOverwrite)
-  } .toIndexedSeq.sorted
+    val classNames  = cg.performFile(xml, dir = outDir1, name = name, docs = docs, forceOverwrite = forceOverwrite)
+    val adjuncts    = cg.getAdjuncts(xml)
+    val classPairs  = classNames.iterator.map(n => (n, n)).toMap
+    classPairs ++ adjuncts
+
+  } .toMap
 
   if (config.mkMap) {
-    val pairs = allClassNames.iterator.map { n =>
-      s"""    ("$n", $n),"""
+    val allPairsSq = allPairs.toIndexedSeq.sorted
+    val pairs = allPairsSq.iterator.map { case (k, v) =>
+      s"""    ("$k", $v),"""
     } .mkString("\n")
 
     val src =

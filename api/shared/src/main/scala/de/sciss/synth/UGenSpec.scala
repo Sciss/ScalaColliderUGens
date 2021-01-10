@@ -22,10 +22,11 @@ import scala.collection.immutable.{IndexedSeq => Vec, Set => ISet}
 object UGenSpec {
   /** List of standard UGen plugin names, including ScalaCollider helper elements. */
   final val standardPlugins: List[String] = List(
-    "ChaosUGens", "DelayUGens", "DemandUGens", "DiskIOUGens", "DynNoiseUGens", "FFT2_UGens", "FFT_UGens",
-    "FilterUGens", "GendynUGens", "GrainUGens", "IOUGens", "KeyboardUGens", "LFUGens", "MachineListening",
+    "BinaryOpUGens", "ChaosUGens", "DelayUGens", "DemandUGens", "DiskIOUGens", "DynNoiseUGens", "FFT2_UGens",
+    "FFT_UGens", "FilterUGens", "GendynUGens", "GrainUGens", "IOUGens", "KeyboardUGens", "LFUGens", "MachineListening",
     "MouseUGens", "MulAddUGens", "NoiseUGens", "OSCUGens", "PanUGens", "PhysicalModellingUGens", "ReverbUGens",
-    "TestUGens", "TriggerUGens", "UnpackFFTUGens", "HelperElements"
+    "TestUGens", "TriggerUGens", "UnpackFFTUGens", "UnaryOpUGens",
+    "HelperElements",
   )
 
   /** List of third-party UGens as per https://github.com/supercollider/sc3-plugins,

@@ -72,14 +72,14 @@ private[synth] object UGenSpecParser {
   }
 
   private object IsFloat {
-    private val re = """\-?\d+\.\d+""".r.pattern
+    private val re = """-?\d+\.\d+""".r.pattern
     def unapply(s: String): Option[Float] = {
       if (re.matcher(s).matches()) Some(s.toFloat) else None
     }
   }
 
   private object IsInt {
-    private val re = """\-?\d+""".r.pattern
+    private val re = """-?\d+""".r.pattern
     def unapply(s: String): Option[Int] = {
       if (re.matcher(s).matches()) Some(s.toInt) else None
     }
@@ -367,7 +367,7 @@ private[synth] object UGenSpecParser {
       val dAttr     = dNode.attributes.asAttrMap
       val dWarnPos  = dAttr.boolean("warn-pos")
       val dText     = (dNode \ "text").text
-      val hasAny    = !dText.isEmpty || dSees.nonEmpty || dWarnPos || argDocs.nonEmpty || outputDocs.nonEmpty
+      val hasAny    = dText.nonEmpty || dSees.nonEmpty || dWarnPos || argDocs.nonEmpty || outputDocs.nonEmpty
       if (hasAny) {
         val dTextT  = trimDoc(dText)
         val doc     = UGenSpec.Doc(body = dTextT, args = argDocs, outputs = Map.empty, links = dSees,
@@ -442,7 +442,8 @@ private[synth] object UGenSpecParser {
 
     // ---- rates ----
 
-    var argRatesMap: Map[String, Map[Rate, (Option[String], Option[RateConstraint])]] = Map.empty withDefaultValue Map.empty
+    var argRatesMap: Map[String, Map[Rate, (Option[String], Option[RateConstraint])]] =
+      Map.empty.withDefaultValue(Map.empty)
 
     def getRateConstraint(map: Map[String, String]): Option[RateConstraint] = map.get("rate").map {
       case "ugen"     => RateConstraint.SameAsUGen

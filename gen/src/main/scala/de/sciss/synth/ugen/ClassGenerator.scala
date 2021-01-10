@@ -36,6 +36,20 @@ final class ClassGenerator {
   val LineWidth     = 100
   val ParamColumns  =  24
 
+  def getAdjuncts(node: scala.xml.Node): Map[String, String] =
+    (node \ "adjunct").iterator.flatMap { aNode =>
+      val aAttr   = aNode.attributes.asAttrMap
+      val reader  = aAttr.getOrElse("reader", sys.error("Adjunct does not contain 'reader' attribute"))
+      val hasSelf = aAttr.get("self").exists(_.toBoolean)
+      val others  = (aNode \ "prefix").toIndexedSeq.map { pNode =>
+        pNode.attributes.asAttrMap.getOrElse("name", s"Prefix for $reader misses name")
+      }
+      val all = if (!hasSelf) others else {
+        reader.replace('.', '$') +: others
+      }
+      all.map { key => (key, reader) }
+    } .toMap
+
   def performFile(node: scala.xml.Node, dir: File, name: String, docs: Boolean = true,
                   forceOverwrite: Boolean = false): Vec[String] = try {
     val revision    = (node \ "@revision").text.toInt

@@ -252,17 +252,19 @@ We decided to make the `XOut` arguments appear to the user in the order of _bus_
 ScalaCollider-UGens requires that we also add `pos="0"` to the `bus` argument, even if that does not affect its 
 final position. The whole UGen specification thus becomes:
 
-    <ugen name="XOut" writes-bus="true">
-       <no-outputs/>
-       <rate name="audio">
-          <arg name="in" rate="ugen"/>
-       </rate>
-       <rate name="control"/>
-       <arg name="bus" pos="0"/>
-       <arg name="xfade" pos="2"/>
-       <arg name="in" variadic="true" pos="1"/>
-       <doc warn-pos="true"/>
-    </ugen>
+```xml
+<ugen name="XOut" writes-bus="true">
+   <no-outputs/>
+   <rate name="audio">
+      <arg name="in" rate="ugen"/>
+   </rate>
+   <rate name="control"/>
+   <arg name="bus" pos="0"/>
+   <arg name="xfade" pos="2"/>
+   <arg name="in" variadic="true" pos="1"/>
+   <doc warn-pos="true"/>
+</ugen>
+```
 
 __Note__ how the attribute `warn-pos="true"` was added to the `doc` element. This makes Scaladoc add an extra note 
 to alert the user of the change in argument order. This is particularly important, as it may create confusion when 
@@ -280,29 +282,33 @@ additional `default` or `rate` attribute and may contain an additional `doc` ele
 
 As an example for different default values, here is the full text of `LeakDC`:
 
-    <ugen name="LeakDC">
-       <rate name="control">
-          <arg name="coeff" default="0.9"/>    <!-- provide a default value for the `kr` method -->
-       </rate>
-       <rate name="audio">
-          <arg name="coeff" default="0.995"/>  <!-- provide a default value for the `ar` method -->
-       </rate>
-       <arg name="in" rate="ugen"/>
-       <arg name="coeff"/>  <!-- the outer argument must still be provided -->
-    </ugen>
+```xml
+<ugen name="LeakDC">
+   <rate name="control">
+      <arg name="coeff" default="0.9"/>    <!-- provide a default value for the `kr` method -->
+   </rate>
+   <rate name="audio">
+      <arg name="coeff" default="0.995"/>  <!-- provide a default value for the `ar` method -->
+   </rate>
+   <arg name="in" rate="ugen"/>
+   <arg name="coeff"/>  <!-- the outer argument must still be provided -->
+</ugen>
+```
 
-An an example of restricting the argument's rate only in certain cases is `Out`:
+An example of restricting the argument's rate only in certain cases is `Out`:
 
-    <ugen name="Out" writes-bus="true">
-       <no-outputs/>
-       <rate name="audio">
-          <arg name="in" rate="ugen"/>
-       </rate>
-       <rate name="control"/>
-       <rate name="scalar"/>
-       <arg name="bus"/>
-       <arg name="in" variadic="true"/>
-    </ugen>
+```xml
+<ugen name="Out" writes-bus="true">
+   <no-outputs/>
+   <rate name="audio">
+      <arg name="in" rate="ugen"/>
+   </rate>
+   <rate name="control"/>
+   <rate name="scalar"/>
+   <arg name="bus"/>
+   <arg name="in" variadic="true"/>
+</ugen>
+```
 
 Here, the "outer" definition of argument `in` says that the argument is a multi-channel argument, but it does not 
 enforce a particular rate. Only for the case that `Out` is run at audio rate, the auxiliary entry for `in` enforces 
@@ -340,3 +346,16 @@ ranges and scale.
 Whenever the argument order has been significantly changed from the SCLang counterpart, the UGen's `doc` element 
 should contain the attribute `warn-pos="true"` which will create a special highlight in the Scala docs to alert the 
 reader of this change.
+
+#### Adjunct types
+
+In order to register all necessary deserialization factories, UGens may define adjunct types. An adjunct is
+defined by a reader class that implements `ProductReader`, and a number of product prefixes that are returned
+from the reader. For instance, the `BinaryOpUGen` and `UnaryOpUGen` each define their own `Op` types which have
+to be serialized and deserialized. In these cases, there is one reader and one returned type:
+
+```xml
+<adjunct reader="UnaryOpUGen.Op" self="true"/>
+```
+The reader object is `UnaryOpUGen.Op` and the prefixes supported solely consists of itself (it will be
+automatically translated to `UnaryOpUGen$Op`).

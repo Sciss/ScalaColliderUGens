@@ -1,0 +1,4 @@
+<ugens revision="1">
+    <ugen name="UnaryOpUGen" fragment="true" optimized="true" sourcecode="true" />
+    <adjunct reader="UnaryOpUGen.Op" self="true"/>
+</ugens>
