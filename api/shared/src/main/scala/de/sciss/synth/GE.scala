@@ -95,8 +95,17 @@ trait GE extends Product {
 }
 
 package ugen {
-  object GESeq {
+
+  import de.sciss.synth.UGenSource.{ProductReader, RefMapIn}
+
+  object GESeq extends ProductReader[GESeq] {
     def apply(elems: GE*): GESeq = new GESeq(elems.toIndexedSeq)
+
+    override def read(in: RefMapIn, prefix: String, arity: Int): GESeq = {
+      require (arity == 1)
+      val _elems = in.readVec(in.readGE())
+      new GESeq(_elems)
+    }
   }
   final case class GESeq(elems: Vec[GE]) extends GE {
     def numOutputs: Int           = elems.size
@@ -106,6 +115,13 @@ package ugen {
     override def toString: String = elems.mkString("GESeq(", ",", ")")
   }
 
+  private[synth] object UGenInSeq extends ProductReader[UGenInSeq] {
+    override def read(in: RefMapIn, prefix: String, arity: Int): UGenInSeq = {
+      require (arity == 1)
+      val _elems = in.readVec(in.readProductT[UGenIn]())
+      new UGenInSeq(_elems)
+    }
+  }
   private[synth] final case class UGenInSeq(elems: Vec[UGenIn]) extends GE {
     def numOutputs: Int           = elems.size
     def expand    : UGenInLike    = UGenInGroup(elems)

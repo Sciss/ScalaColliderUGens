@@ -530,4 +530,8 @@
         <no-outputs />
     </ugen>
     <ugen name="Zip" helper="true" sourcecode="true" fragment="true" />
+
+    <!-- other helpers -->
+    <ugen name="GESeq" helper="true" sourcecode="true" fragment="true" />
+    <ugen name="UGenInSeq" helper="true" sourcecode="true" fragment="true" />
 </ugens>

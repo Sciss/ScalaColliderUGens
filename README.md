@@ -358,4 +358,12 @@ to be serialized and deserialized. In these cases, there is one reader and one r
 <adjunct reader="UnaryOpUGen.Op" self="true"/>
 ```
 The reader object is `UnaryOpUGen.Op` and the prefixes supported solely consists of itself (it will be
-automatically translated to `UnaryOpUGen$Op`).
+automatically translated to `UnaryOpUGen$Op`). Any additional types deserialized can be added within the
+`adjunct` element as `prefix` element with `name` attributes:
+
+```xml
+<adjunct reader="Env.Curve">
+    <prefix name="Env$Curve$Apply" />
+    <prefix name="Env$Curve$Const" />
+</adjunct>
+```

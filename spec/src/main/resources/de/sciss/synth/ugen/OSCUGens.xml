@@ -658,4 +658,6 @@
             <see>ugen.Ringz</see>
         </doc>
     </ugen>
+    <adjunct reader="KlangSpec" self="true" />
+    <adjunct reader="KlangSpec.Seq" self="true" />
 </ugens>

@@ -22,10 +22,10 @@ import scala.collection.immutable.{IndexedSeq => Vec, Set => ISet}
 object UGenSpec {
   /** List of standard UGen plugin names, including ScalaCollider helper elements. */
   final val standardPlugins: List[String] = List(
-    "BinaryOpUGens", "ChaosUGens", "DelayUGens", "DemandUGens", "DiskIOUGens", "DynNoiseUGens", "FFT2_UGens",
+    "BasicOpUGens", "ChaosUGens", "DelayUGens", "DemandUGens", "DiskIOUGens", "DynNoiseUGens", "FFT2_UGens",
     "FFT_UGens", "FilterUGens", "GendynUGens", "GrainUGens", "IOUGens", "KeyboardUGens", "LFUGens", "MachineListening",
     "MouseUGens", "MulAddUGens", "NoiseUGens", "OSCUGens", "PanUGens", "PhysicalModellingUGens", "ReverbUGens",
-    "TestUGens", "TriggerUGens", "UnpackFFTUGens", "UnaryOpUGens",
+    "TestUGens", "TriggerUGens", "UnpackFFTUGens",
     "HelperElements",
   )
 

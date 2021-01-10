@@ -1,4 +1,0 @@
-<ugens revision="1">
-    <ugen name="BinaryOpUGen" fragment="true" optimized="true" sourcecode="true" />
-    <adjunct reader="BinaryOpUGen.Op" self="true"/>
-</ugens>

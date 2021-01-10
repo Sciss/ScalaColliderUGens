@@ -1138,6 +1138,22 @@
             <see>ugen.Decay</see>
         </doc>
     </ugen>
+    <adjunct reader="Env" self="true" />
+    <adjunct reader="Env.Segment" self="true" />
+    <adjunct reader="Env.Curve">
+        <prefix name="Env$Curve$Apply" />
+        <prefix name="Env$Curve$Const" />
+    </adjunct>
+    <adjunct reader="de.sciss.synth.Curve">
+        <prefix name="de.sciss.synth.Curve$step" />
+        <prefix name="de.sciss.synth.Curve$linear" />
+        <prefix name="de.sciss.synth.Curve$exponential" />
+        <prefix name="de.sciss.synth.Curve$sine" />
+        <prefix name="de.sciss.synth.Curve$welch" />
+        <prefix name="de.sciss.synth.Curve$parametric" />
+        <prefix name="de.sciss.synth.Curve$squared" />
+        <prefix name="de.sciss.synth.Curve$cubed" />
+    </adjunct>
     <ugen name="Linen" side-effect="true" done-flag="true">
         <rate name="control"/>
         <!-- NOT SUPPORTED: <rate name="audio"/> -->
@@ -1241,4 +1257,5 @@
             <see>ugen.EnvGen</see>
         </doc>
     </ugen>
+    <adjunct reader="IEnv" self="true" />
 </ugens>

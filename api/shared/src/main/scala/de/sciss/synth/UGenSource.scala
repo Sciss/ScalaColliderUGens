@@ -182,7 +182,10 @@ object UGenSource {
           Constant(value)
 
         case 'P' =>
-          val prefix  = _in.readUTF()
+          val prefix0 = _in.readUTF()
+          val nm      = prefix0.length - 1
+          // we store prefixes now always without trailing `$` character, even for case objects
+          val prefix  = if (prefix0.charAt(nm) == '$') prefix0.substring(0, nm) else prefix0
           val r       = mapRead.getOrElse(prefix, throw new NoSuchElementException(s"Unknown element '$prefix'"))
           val arity   = in.readShort().toInt
           val res     = r.read(this, prefix, arity)
@@ -236,6 +239,12 @@ object UGenSource {
     }
 
     def readIntVec(): Vec[Int] = readVec(readInt())
+
+    def readBoolean(): Boolean = {
+      val cookie = _in.readByte()
+      if (cookie != 'B') sys.error(s"Unexpected cookie '$cookie' is not 'B'")
+      _in.readBoolean()
+    }
 
     def readString(): String = {
       val cookie = _in.readByte()

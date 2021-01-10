@@ -1,5 +1,5 @@
-<ugens revision="3">
-    <!-- all documented -->
+<ugens revision="4">
+    <!-- all documented. NOT: controls are missing! -->
     <ugen name="OffsetOut" writes-bus="true">
         <no-outputs/>
         <rate name="audio" implied="true">
@@ -185,12 +185,28 @@
             <see>ugen.XOut</see>
         </doc>
     </ugen>
-    <!-- XXX TODO: these could well be here, and only the ProxyFactories are manually coded...
-    <ugen name="LagControl"/>
-    <ugen name="AudioControl"/>
-    <ugen name="Control"/>
-    <ugen name="TrigControl"/>
-    -->
+<!--    TODO: missing:-->
+<!--    <ugen name="LagControl"/>-->
+    <ugen name="AudioControl" fragment="true" sourcecode="true">
+        <rate name="audio" implied="true" />
+    </ugen>
+    <ugen name="AudioControlProxy" fragment="true" sourcecode="true" helper="true">
+        <rate name="audio" implied="true" />
+    </ugen>
+    <ugen name="Control" fragment="true" sourcecode="true">
+        <rate name="control" />
+        <rate name="scalar" />
+    </ugen>
+    <ugen name="ControlProxy" fragment="true" sourcecode="true" helper="true">
+        <rate name="control" />
+        <rate name="scalar" />
+    </ugen>
+    <ugen name="TrigControl" fragment="true" sourcecode="true">
+        <rate name="control" implied="true" />
+    </ugen>
+    <ugen name="TrigControlProxy" fragment="true" sourcecode="true" helper="true">
+        <rate name="control" implied="true" />
+    </ugen>
     <ugen name="ReplaceOut" writes-bus="true">
         <no-outputs/>
         <rate name="audio" implied="true">

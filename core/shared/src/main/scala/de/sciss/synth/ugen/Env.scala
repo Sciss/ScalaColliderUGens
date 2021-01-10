@@ -69,10 +69,10 @@ object Env extends EnvFactory[Env] {
     implicit def fromDouble(d: Double): Curve = parametric(d.toFloat)
 
     object Const {
-      final val productPrefix = "Env$Curve$Const"
+      final val readerKey = "Env$Curve$Const"
     }
     final case class Const(peer: SCurve) extends Curve {
-      override def productPrefix: String = Const.productPrefix
+      override def productPrefix: String = Const.readerKey
 
       override def toString = s"Env.Curve.Const($peer)"
 
@@ -97,7 +97,7 @@ object Env extends EnvFactory[Env] {
 
     override def read(in: RefMapIn, prefix: String, arity: Int): Curve = {
       prefix match {
-        case Const.productPrefix =>
+        case Const.`readerKey` =>
           require (arity == 1)
           val _peer = in.readProductT[SCurve]()
           new Const(_peer)

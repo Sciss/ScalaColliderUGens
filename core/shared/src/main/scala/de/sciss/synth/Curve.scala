@@ -153,7 +153,9 @@ object Curve extends ProductReader[Curve] {
       }
   }
 
-  override def read(in: RefMapIn, prefix: String, arity: Int): Curve =
+  override def read(in: RefMapIn, key: String, arity: Int): Curve = {
+    val n       = key.lastIndexOf('.')
+    val prefix  = key.substring(n + 1)
     prefix match {
       case step       .readerKey => step
       case linear     .readerKey => linear
@@ -171,6 +173,7 @@ object Curve extends ProductReader[Curve] {
       case _ =>
         sys.error(s"Unexpected product prefix '$prefix'")
     }
+  }
 }
 sealed trait Curve extends Product {
   def id: Int
