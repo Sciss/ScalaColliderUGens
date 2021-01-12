@@ -14,7 +14,7 @@ object Gendy1 extends ProductReader[Gendy1] {
   def ar(ampDist: GE = 1.0f, durDist: GE = 1.0f, adParam: GE = 1.0f, ddParam: GE = 1.0f, minFreq: GE = 440.0f, maxFreq: GE = 660.0f, ampScale: GE = 0.5f, durScale: GE = 0.5f, initCPs: GE = 12, kNum: GE = 12): Gendy1 = 
     new Gendy1(audio, ampDist, durDist, adParam, ddParam, minFreq, maxFreq, ampScale, durScale, initCPs, kNum)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): Gendy1 = {
+  def read(in: RefMapIn, key: String, arity: Int): Gendy1 = {
     require (arity == 11)
     val _rate     = in.readRate()
     val _ampDist  = in.readGE()
@@ -49,7 +49,7 @@ object Gendy2 extends ProductReader[Gendy2] {
   def ar(ampDist: GE = 1.0f, durDist: GE = 1.0f, adParam: GE = 1.0f, ddParam: GE = 1.0f, minFreq: GE = 440.0f, maxFreq: GE = 660.0f, ampScale: GE = 0.5f, durScale: GE = 0.5f, initCPs: GE = 12, kNum: GE = 12, a: GE = 1.17f, c: GE = 0.31f): Gendy2 = 
     new Gendy2(audio, ampDist, durDist, adParam, ddParam, minFreq, maxFreq, ampScale, durScale, initCPs, kNum, a, c)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): Gendy2 = {
+  def read(in: RefMapIn, key: String, arity: Int): Gendy2 = {
     require (arity == 13)
     val _rate     = in.readRate()
     val _ampDist  = in.readGE()
@@ -86,7 +86,7 @@ object Gendy3 extends ProductReader[Gendy3] {
   def ar(ampDist: GE = 1.0f, durDist: GE = 1.0f, adParam: GE = 1.0f, ddParam: GE = 1.0f, freq: GE = 440.0f, ampScale: GE = 0.5f, durScale: GE = 0.5f, initCPs: GE = 12, kNum: GE = 12): Gendy3 = 
     new Gendy3(audio, ampDist, durDist, adParam, ddParam, freq, ampScale, durScale, initCPs, kNum)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): Gendy3 = {
+  def read(in: RefMapIn, key: String, arity: Int): Gendy3 = {
     require (arity == 10)
     val _rate     = in.readRate()
     val _ampDist  = in.readGE()

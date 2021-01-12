@@ -80,7 +80,7 @@ object VBAP extends ProductReader[VBAP] {
   def ar(numChannels: Int, in: GE, buf: GE, azimuth: GE = 0, elevation: GE = 1, spread: GE = 0): VBAP = 
     new VBAP(audio, numChannels, in, buf, azimuth, elevation, spread)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): VBAP = {
+  def read(in: RefMapIn, key: String, arity: Int): VBAP = {
     require (arity == 7)
     val _rate         = in.readMaybeRate()
     val _numChannels  = in.readInt()
@@ -159,7 +159,7 @@ object CircleRamp extends ProductReader[CircleRamp] {
   def ar(in: GE, dur: GE = 0.1f, lo: GE = -180, hi: GE = 180): CircleRamp = 
     new CircleRamp(audio, in, dur, lo, hi)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): CircleRamp = {
+  def read(in: RefMapIn, key: String, arity: Int): CircleRamp = {
     require (arity == 5)
     val _rate = in.readMaybeRate()
     val _in   = in.readGE()

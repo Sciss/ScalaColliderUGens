@@ -13,11 +13,12 @@
 
 package de.sciss.synth
 
-import de.sciss.serial.DataInput
+import de.sciss.serial
+import de.sciss.serial.{DataInput, DataOutput}
 import de.sciss.synth.UGenSource.Vec
-import de.sciss.synth.ugen.Constant
+import de.sciss.synth.ugen.{Constant, ControlProxyLike}
 
-import scala.annotation.{switch, tailrec}
+import scala.annotation.tailrec
 import scala.collection.mutable
 import scala.runtime.ScalaRunTime
 
@@ -159,48 +160,35 @@ object UGenSource {
 
   // ---- serialization ----
 
+//  type ProductReader[+A] = serial.ProductReader[RefMapIn, A]
+
   trait ProductReader[+A] {
-    def read(in: RefMapIn, prefix: String, arity: Int): A
+    def read(in: RefMapIn, key: String, arity: Int): A
   }
 
   private val mapRead = mutable.Map.empty[String, ProductReader[Product]]
 
-  final class RefMapIn(_in: DataInput) {
-    private[this] val map   = mutable.Map.empty[Int, Product]
-    private[this] var count = 0
+  final class RefMapIn(in0: DataInput) extends serial.RefMapIn[RefMapIn](in0) {
+    type Const  = Constant
+    type R      = MaybeRate
+    type Y      = SynthGraph
 
-    def in: DataInput = _in
+    override protected def readProductWithKey(key: String, arity: Int): Product = {
+      val r = mapRead.getOrElse(key, throw new NoSuchElementException(s"Unknown element '$key'"))
+      r.read(this, key, arity)
+    }
 
-    def readProductT[A <: Product](): A =
-      readProduct().asInstanceOf[A]
+    override protected def readIdentifiedConst(): Constant = {
+      val value = in.readFloat()
+      Constant(value)
+    }
 
-    def readProduct(): Product = {
-      val cookie = _in.readByte().toChar
-      (cookie: @switch) match {
-        case 'C' =>
-          val value = _in.readFloat()
-          Constant(value)
+    override def readIdentifiedY(): SynthGraph = readIdentifiedGraph()
 
-        case 'P' =>
-          val prefix0 = _in.readUTF()
-          val nm      = prefix0.length - 1
-          // we store prefixes now always without trailing `$` character, even for case objects
-          val prefix  = if (prefix0.charAt(nm) == '$') prefix0.substring(0, nm) else prefix0
-          val r       = mapRead.getOrElse(prefix, throw new NoSuchElementException(s"Unknown element '$prefix'"))
-          val arity   = in.readShort().toInt
-          val res     = r.read(this, prefix, arity)
-          val id      = count
-          map    += ((id, res))
-          count   = id + 1
-          res
-
-        case '<' =>
-          val id = _in.readInt()
-          map(id)
-
-        case _ =>
-          sys.error(s"Unexpected cookie '$cookie' is not 'P'")
-      }
+    def readIdentifiedGraph(): SynthGraph = {
+      val sources   = readVec(readProductT[Lazy]())
+      val controls  = readSet(readProductT[ControlProxyLike]())
+      SynthGraph(sources, controls)
     }
 
     def readGE(): GE =
@@ -209,84 +197,47 @@ object UGenSource {
     def readGEDone(): GE with HasDoneFlag =
       readProduct().asInstanceOf[GE with HasDoneFlag]
 
-    def readVec[A](elem: => A): Vec[A] = {
-      val cookie = _in.readByte()
-      if (cookie != 'X') sys.error(s"Unexpected cookie '$cookie' is not 'X'")
-      val size = in.readInt()
-      Vector.fill(size)(elem)
+    override protected def readIdentifiedR(): MaybeRate = {
+      val id = in.readByte().toInt
+      MaybeRate(id)
     }
-
-    def readSet[A](elem: => A): Set[A] = {
-      val cookie = _in.readByte()
-      if (cookie != 'T') sys.error(s"Unexpected cookie '$cookie' is not 'T'")
-      val size = in.readInt()
-      val b = Set.newBuilder[A] // Set does not have `fill` in Scala 2.12
-      b.sizeHint(size)
-      var i = 0
-      while (i < size) {
-        b += elem
-        i += 1
-      }
-      b.result()
-    }
-
-//    def readGEVec(): Vec[GE] = readVec(readGE())
-
-    def readInt(): Int = {
-      val cookie = _in.readByte()
-      if (cookie != 'I') sys.error(s"Unexpected cookie '$cookie' is not 'I'")
-      _in.readInt()
-    }
-
-    def readIntVec(): Vec[Int] = readVec(readInt())
-
-    def readBoolean(): Boolean = {
-      val cookie = _in.readByte()
-      if (cookie != 'B') sys.error(s"Unexpected cookie '$cookie' is not 'B'")
-      _in.readBoolean()
-    }
-
-    def readString(): String = {
-      val cookie = _in.readByte()
-      if (cookie != 'S') sys.error(s"Unexpected cookie '$cookie' is not 'S'")
-      _in.readUTF()
-    }
-
-    def readOption[A](elem: => A): Option[A] = {
-      val cookie = _in.readByte()
-      if (cookie != 'O') sys.error(s"Unexpected cookie '$cookie' is not 'O'")
-      val defined = in.readBoolean()
-      if (defined) Some(elem) else None
-    }
-
-    def readStringOption(): Option[String] = readOption(readString())
-
-    def readFloat(): Float = {
-      val cookie = _in.readByte()
-      if (cookie != 'F') sys.error(s"Unexpected cookie '$cookie' is not 'F'")
-      in.readFloat()
-    }
-
-    def readDouble(): Double = {
-      val cookie = _in.readByte()
-      if (cookie != 'D') sys.error(s"Unexpected cookie '$cookie' is not 'D'")
-      in.readDouble()
-    }
-
-    def readFloatVec(): Vec[Float] = readVec(readFloat())
 
     def readRate(): Rate = {
-      val cookie = _in.readByte().toChar
+      val cookie = in.readByte().toChar
       if (cookie != 'R') sys.error(s"Unexpected cookie '$cookie' is not 'R'")
-      val id = _in.readByte().toInt
+      val id = in.readByte().toInt
       Rate(id)
     }
 
     def readMaybeRate(): MaybeRate = {
       val cookie = in.readByte().toChar
       if (cookie != 'R') sys.error(s"Unexpected cookie '$cookie' is not 'R'")
-      val id = in.readByte().toInt
-      MaybeRate(id)
+      readIdentifiedR()
+    }
+  }
+
+  final val DefaultPackage = "de.sciss.synth.ugen"
+
+  final class RefMapOut(out0: DataOutput) extends serial.RefMapOut(out0) {
+    override protected def isDefaultPackage(className: String): Boolean =
+      className.startsWith(DefaultPackage)
+
+    override def writeElem(e: Any): Unit = e match {
+      case c: Constant =>
+        out.writeByte('C')
+        out.writeFloat(c.value)
+      case r: MaybeRate =>
+        out.writeByte('R')
+        out.writeByte(r.id)
+      case y: SynthGraph =>
+        out.writeByte('Y')
+        writeIdentifiedGraph(y)
+      case _ => super.writeElem(e)
+    }
+
+    def writeIdentifiedGraph(v: SynthGraph): Unit = {
+      writeVec(v.sources        , writeProduct)
+      writeSet(v.controlProxies , writeProduct)
     }
   }
 
@@ -303,8 +254,6 @@ object UGenSource {
     ()
   }
 
-  final val PackageName: String = "de.sciss.synth.ugen"
-
   /** Derives the `productPrefix` served by the reader by the reader's class name itself.  */
   def addProductReaderSq(xs: Iterable[ProductReader[Product]]): Unit = {
     val m = mapRead
@@ -313,7 +262,7 @@ object UGenSource {
         val cn    = value.getClass.getName
         val nm    = cn.length - 1
         val isObj = cn.charAt(nm) == '$'
-        val i     = if (cn.startsWith(PackageName)) PackageName.length + 1 else 0
+        val i     = if (cn.startsWith(DefaultPackage)) DefaultPackage.length + 1 else 0
         val key   = if (isObj) cn.substring(i, nm) else cn.substring(i)
         m += ((key, value))
       }

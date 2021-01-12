@@ -48,7 +48,7 @@ object KeyState extends ProductReader[KeyState] {
   def kr(keyCode: GE, lo: GE = 0.0f, hi: GE = 1.0f, lag: GE = 0.2f): KeyState = 
     new KeyState(keyCode, lo, hi, lag)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): KeyState = {
+  def read(in: RefMapIn, key: String, arity: Int): KeyState = {
     require (arity == 4)
     val _keyCode  = in.readGE()
     val _lo       = in.readGE()

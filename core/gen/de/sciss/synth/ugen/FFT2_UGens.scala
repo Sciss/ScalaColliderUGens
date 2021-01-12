@@ -34,7 +34,7 @@ object Convolution extends ProductReader[Convolution] {
     */
   def ar(in: GE, kernel: GE, frameSize: GE): Convolution = new Convolution(audio, in, kernel, frameSize)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): Convolution = {
+  def read(in: RefMapIn, key: String, arity: Int): Convolution = {
     require (arity == 4)
     val _rate       = in.readRate()
     val _in         = in.readGE()
@@ -128,7 +128,7 @@ object Convolution2 extends ProductReader[Convolution2] {
   def ar(in: GE, kernel: GE, trig: GE = 1, frameSize: GE): Convolution2 = 
     new Convolution2(audio, in, kernel, trig, frameSize)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): Convolution2 = {
+  def read(in: RefMapIn, key: String, arity: Int): Convolution2 = {
     require (arity == 5)
     val _rate       = in.readRate()
     val _in         = in.readGE()
@@ -244,7 +244,7 @@ object Convolution2L extends ProductReader[Convolution2L] {
   def ar(in: GE, kernel: GE, trig: GE = 1, frameSize: GE, fadePeriods: GE = 1): Convolution2L = 
     new Convolution2L(audio, in, kernel, trig, frameSize, fadePeriods)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): Convolution2L = {
+  def read(in: RefMapIn, key: String, arity: Int): Convolution2L = {
     require (arity == 6)
     val _rate         = in.readRate()
     val _in           = in.readGE()
@@ -337,7 +337,7 @@ object StereoConvolution2L extends ProductReader[StereoConvolution2L] {
   def ar(in: GE, kernelL: GE, kernelR: GE, trig: GE = 1, frameSize: GE, fadePeriods: GE = 1): StereoConvolution2L = 
     new StereoConvolution2L(audio, in, kernelL, kernelR, trig, frameSize, fadePeriods)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): StereoConvolution2L = {
+  def read(in: RefMapIn, key: String, arity: Int): StereoConvolution2L = {
     require (arity == 7)
     val _rate         = in.readRate()
     val _in           = in.readGE()
@@ -418,7 +418,7 @@ object Convolution3 extends ProductReader[Convolution3] {
   def ar(in: GE, kernel: GE, trig: GE = 1, frameSize: GE): Convolution3 = 
     new Convolution3(audio, in, kernel, trig, frameSize)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): Convolution3 = {
+  def read(in: RefMapIn, key: String, arity: Int): Convolution3 = {
     require (arity == 5)
     val _rate       = in.readRate()
     val _in         = in.readGE()
@@ -482,7 +482,7 @@ final case class Convolution3(rate: Rate, in: GE, kernel: GE, trig: GE = 1, fram
   * }}}
   */
 object PV_ConformalMap extends ProductReader[PV_ConformalMap] {
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_ConformalMap = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_ConformalMap = {
     require (arity == 3)
     val _chain  = in.readGE()
     val _real   = in.readGE()
@@ -550,7 +550,7 @@ object PV_JensenAndersen extends ProductReader[PV_JensenAndersen] {
   def ar(chain: GE, centroid: GE = 0.25f, hfe: GE = 0.25f, hfc: GE = 0.25f, flux: GE = 0.25f, thresh: GE = 1.0f, waitTime: GE = 0.04f): PV_JensenAndersen = 
     new PV_JensenAndersen(audio, chain, centroid, hfe, hfc, flux, thresh, waitTime)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_JensenAndersen = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_JensenAndersen = {
     require (arity == 8)
     val _rate     = in.readRate()
     val _chain    = in.readGE()
@@ -632,7 +632,7 @@ object PV_HainsworthFoote extends ProductReader[PV_HainsworthFoote] {
   def ar(chain: GE, hainsworth: GE = 0.0f, foote: GE = 0.0f, thresh: GE = 1.0f, waitTime: GE = 0.04f): PV_HainsworthFoote = 
     new PV_HainsworthFoote(audio, chain, hainsworth, foote, thresh, waitTime)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_HainsworthFoote = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_HainsworthFoote = {
     require (arity == 6)
     val _rate       = in.readRate()
     val _chain      = in.readGE()
@@ -715,7 +715,7 @@ object RunningSum extends ProductReader[RunningSum] {
     */
   def ar(in: GE, length: GE = 440): RunningSum = new RunningSum(audio, in, length)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): RunningSum = {
+  def read(in: RefMapIn, key: String, arity: Int): RunningSum = {
     require (arity == 3)
     val _rate   = in.readMaybeRate()
     val _in     = in.readGE()

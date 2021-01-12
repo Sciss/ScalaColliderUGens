@@ -34,7 +34,7 @@ object LFDNoise0 extends ProductReader[LFDNoise0] {
     */
   def ar(freq: GE = 500.0f): LFDNoise0 = new LFDNoise0(audio, freq)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): LFDNoise0 = {
+  def read(in: RefMapIn, key: String, arity: Int): LFDNoise0 = {
     require (arity == 2)
     val _rate = in.readRate()
     val _freq = in.readGE()
@@ -97,7 +97,7 @@ object LFDNoise1 extends ProductReader[LFDNoise1] {
     */
   def ar(freq: GE = 500.0f): LFDNoise1 = new LFDNoise1(audio, freq)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): LFDNoise1 = {
+  def read(in: RefMapIn, key: String, arity: Int): LFDNoise1 = {
     require (arity == 2)
     val _rate = in.readRate()
     val _freq = in.readGE()
@@ -169,7 +169,7 @@ object LFDNoise3 extends ProductReader[LFDNoise3] {
     */
   def ar(freq: GE = 500.0f): LFDNoise3 = new LFDNoise3(audio, freq)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): LFDNoise3 = {
+  def read(in: RefMapIn, key: String, arity: Int): LFDNoise3 = {
     require (arity == 2)
     val _rate = in.readRate()
     val _freq = in.readGE()
@@ -241,7 +241,7 @@ object LFDClipNoise extends ProductReader[LFDClipNoise] {
     */
   def ar(freq: GE = 500.0f): LFDClipNoise = new LFDClipNoise(audio, freq)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): LFDClipNoise = {
+  def read(in: RefMapIn, key: String, arity: Int): LFDClipNoise = {
     require (arity == 2)
     val _rate = in.readRate()
     val _freq = in.readGE()

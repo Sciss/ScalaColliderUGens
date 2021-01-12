@@ -42,7 +42,7 @@ object WhiteNoise extends ProductReader[WhiteNoise] {
     */
   def ar(mul: GE = 1.0f): WhiteNoise = new WhiteNoise(audio, mul)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): WhiteNoise = {
+  def read(in: RefMapIn, key: String, arity: Int): WhiteNoise = {
     require (arity == 2)
     val _rate = in.readRate()
     val _mul  = in.readGE()
@@ -116,7 +116,7 @@ object GrayNoise extends ProductReader[GrayNoise] {
     */
   def ar(mul: GE = 1.0f): GrayNoise = new GrayNoise(audio, mul)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): GrayNoise = {
+  def read(in: RefMapIn, key: String, arity: Int): GrayNoise = {
     require (arity == 2)
     val _rate = in.readRate()
     val _mul  = in.readGE()
@@ -191,7 +191,7 @@ object ClipNoise extends ProductReader[ClipNoise] {
     */
   def ar(mul: GE = 1.0f): ClipNoise = new ClipNoise(audio, mul)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): ClipNoise = {
+  def read(in: RefMapIn, key: String, arity: Int): ClipNoise = {
     require (arity == 2)
     val _rate = in.readRate()
     val _mul  = in.readGE()
@@ -264,7 +264,7 @@ object PinkNoise extends ProductReader[PinkNoise] {
     */
   def ar(mul: GE = 1.0f): PinkNoise = new PinkNoise(audio, mul)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): PinkNoise = {
+  def read(in: RefMapIn, key: String, arity: Int): PinkNoise = {
     require (arity == 2)
     val _rate = in.readRate()
     val _mul  = in.readGE()
@@ -334,7 +334,7 @@ object BrownNoise extends ProductReader[BrownNoise] {
     */
   def ar(mul: GE = 1.0f): BrownNoise = new BrownNoise(audio, mul)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): BrownNoise = {
+  def read(in: RefMapIn, key: String, arity: Int): BrownNoise = {
     require (arity == 2)
     val _rate = in.readRate()
     val _mul  = in.readGE()
@@ -399,7 +399,7 @@ object Dust extends ProductReader[Dust] {
     */
   def ar(density: GE = 1.0f): Dust = new Dust(audio, density)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): Dust = {
+  def read(in: RefMapIn, key: String, arity: Int): Dust = {
     require (arity == 2)
     val _rate     = in.readRate()
     val _density  = in.readGE()
@@ -460,7 +460,7 @@ object Dust2 extends ProductReader[Dust2] {
     */
   def ar(density: GE = 1.0f): Dust2 = new Dust2(audio, density)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): Dust2 = {
+  def read(in: RefMapIn, key: String, arity: Int): Dust2 = {
     require (arity == 2)
     val _rate     = in.readRate()
     val _density  = in.readGE()
@@ -525,7 +525,7 @@ object Crackle extends ProductReader[Crackle] {
     */
   def ar(chaos: GE = 1.5f): Crackle = new Crackle(audio, chaos)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): Crackle = {
+  def read(in: RefMapIn, key: String, arity: Int): Crackle = {
     require (arity == 2)
     val _rate   = in.readRate()
     val _chaos  = in.readGE()
@@ -595,7 +595,7 @@ object Logistic extends ProductReader[Logistic] {
   def ar(chaos: GE = 3.0f, freq: GE = 1000.0f, init: GE = 0.5f): Logistic = 
     new Logistic(audio, chaos, freq, init)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): Logistic = {
+  def read(in: RefMapIn, key: String, arity: Int): Logistic = {
     require (arity == 4)
     val _rate   = in.readRate()
     val _chaos  = in.readGE()
@@ -662,7 +662,7 @@ object Hasher extends ProductReader[Hasher] {
     */
   def ar(in: GE): Hasher = new Hasher(audio, in)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): Hasher = {
+  def read(in: RefMapIn, key: String, arity: Int): Hasher = {
     require (arity == 2)
     val _rate = in.readMaybeRate()
     val _in   = in.readGE()
@@ -711,7 +711,7 @@ object MantissaMask extends ProductReader[MantissaMask] {
     */
   def ar(in: GE, bits: GE = 3): MantissaMask = new MantissaMask(audio, in, bits)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): MantissaMask = {
+  def read(in: RefMapIn, key: String, arity: Int): MantissaMask = {
     require (arity == 3)
     val _rate = in.readMaybeRate()
     val _in   = in.readGE()
@@ -778,7 +778,7 @@ object LFClipNoise extends ProductReader[LFClipNoise] {
     */
   def ar(freq: GE = 500.0f): LFClipNoise = new LFClipNoise(audio, freq)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): LFClipNoise = {
+  def read(in: RefMapIn, key: String, arity: Int): LFClipNoise = {
     require (arity == 2)
     val _rate = in.readRate()
     val _freq = in.readGE()
@@ -840,7 +840,7 @@ object LFNoise0 extends ProductReader[LFNoise0] {
     */
   def ar(freq: GE = 500.0f): LFNoise0 = new LFNoise0(audio, freq)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): LFNoise0 = {
+  def read(in: RefMapIn, key: String, arity: Int): LFNoise0 = {
     require (arity == 2)
     val _rate = in.readRate()
     val _freq = in.readGE()
@@ -906,7 +906,7 @@ object LFNoise1 extends ProductReader[LFNoise1] {
     */
   def ar(freq: GE = 500.0f): LFNoise1 = new LFNoise1(audio, freq)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): LFNoise1 = {
+  def read(in: RefMapIn, key: String, arity: Int): LFNoise1 = {
     require (arity == 2)
     val _rate = in.readRate()
     val _freq = in.readGE()
@@ -971,7 +971,7 @@ object LFNoise2 extends ProductReader[LFNoise2] {
     */
   def ar(freq: GE = 500.0f): LFNoise2 = new LFNoise2(audio, freq)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): LFNoise2 = {
+  def read(in: RefMapIn, key: String, arity: Int): LFNoise2 = {
     require (arity == 2)
     val _rate = in.readRate()
     val _freq = in.readGE()
@@ -1021,7 +1021,7 @@ final case class LFNoise2(rate: Rate, freq: GE = 500.0f) extends UGenSource.Sing
   * @see [[de.sciss.synth.ugen.RandSeed$ RandSeed]]
   */
 object Rand extends ProductReader[Rand] {
-  def read(in: RefMapIn, prefix: String, arity: Int): Rand = {
+  def read(in: RefMapIn, key: String, arity: Int): Rand = {
     require (arity == 2)
     val _lo = in.readGE()
     val _hi = in.readGE()
@@ -1067,7 +1067,7 @@ final case class Rand(lo: GE = 0.0f, hi: GE = 1.0f)
   * @see [[de.sciss.synth.ugen.RandSeed$ RandSeed]]
   */
 object IRand extends ProductReader[IRand] {
-  def read(in: RefMapIn, prefix: String, arity: Int): IRand = {
+  def read(in: RefMapIn, key: String, arity: Int): IRand = {
     require (arity == 2)
     val _lo = in.readGE()
     val _hi = in.readGE()
@@ -1129,7 +1129,7 @@ object TRand extends ProductReader[TRand] {
     */
   def ar(lo: GE = 0.0f, hi: GE = 1.0f, trig: GE): TRand = new TRand(audio, lo, hi, trig)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): TRand = {
+  def read(in: RefMapIn, key: String, arity: Int): TRand = {
     require (arity == 4)
     val _rate = in.readRate()
     val _lo   = in.readGE()
@@ -1201,7 +1201,7 @@ object TExpRand extends ProductReader[TExpRand] {
     */
   def ar(lo: GE = 0.01f, hi: GE = 1.0f, trig: GE): TExpRand = new TExpRand(audio, lo, hi, trig)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): TExpRand = {
+  def read(in: RefMapIn, key: String, arity: Int): TExpRand = {
     require (arity == 4)
     val _rate = in.readRate()
     val _lo   = in.readGE()
@@ -1271,7 +1271,7 @@ object TIRand extends ProductReader[TIRand] {
     */
   def ar(lo: GE = 0, hi: GE = 127, trig: GE): TIRand = new TIRand(audio, lo, hi, trig)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): TIRand = {
+  def read(in: RefMapIn, key: String, arity: Int): TIRand = {
     require (arity == 4)
     val _rate = in.readRate()
     val _lo   = in.readGE()
@@ -1327,7 +1327,7 @@ final case class TIRand(rate: Rate, lo: GE = 0, hi: GE = 127, trig: GE)
   * @see [[de.sciss.synth.ugen.RandSeed$ RandSeed]]
   */
 object NRand extends ProductReader[NRand] {
-  def read(in: RefMapIn, prefix: String, arity: Int): NRand = {
+  def read(in: RefMapIn, key: String, arity: Int): NRand = {
     require (arity == 3)
     val _lo = in.readGE()
     val _hi = in.readGE()
@@ -1386,7 +1386,7 @@ final case class NRand(lo: GE = 0.0f, hi: GE = 1.0f, n: GE = 2)
   * @see [[de.sciss.synth.ugen.RandSeed$ RandSeed]]
   */
 object LinRand extends ProductReader[LinRand] {
-  def read(in: RefMapIn, prefix: String, arity: Int): LinRand = {
+  def read(in: RefMapIn, key: String, arity: Int): LinRand = {
     require (arity == 3)
     val _lo     = in.readGE()
     val _hi     = in.readGE()
@@ -1440,7 +1440,7 @@ final case class LinRand(lo: GE = 0.0f, hi: GE = 1.0f, minMax: GE = 0)
   * @see [[de.sciss.synth.ugen.RandSeed$ RandSeed]]
   */
 object ExpRand extends ProductReader[ExpRand] {
-  def read(in: RefMapIn, prefix: String, arity: Int): ExpRand = {
+  def read(in: RefMapIn, key: String, arity: Int): ExpRand = {
     require (arity == 2)
     val _lo = in.readGE()
     val _hi = in.readGE()
@@ -1499,7 +1499,7 @@ object CoinGate extends ProductReader[CoinGate] {
     */
   def ar(in: GE, prob: GE = 0.5f): CoinGate = new CoinGate(audio, in, prob)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): CoinGate = {
+  def read(in: RefMapIn, key: String, arity: Int): CoinGate = {
     require (arity == 3)
     val _rate = in.readMaybeRate()
     val _in   = in.readGE()
@@ -1571,7 +1571,7 @@ object RandSeed extends ProductReader[RandSeed] {
     */
   def kr(trig: GE = 1, seed: GE = 56789): RandSeed = new RandSeed(control, trig, seed)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): RandSeed = {
+  def read(in: RefMapIn, key: String, arity: Int): RandSeed = {
     require (arity == 3)
     val _rate = in.readRate()
     val _trig = in.readGE()
@@ -1646,7 +1646,7 @@ object RandID extends ProductReader[RandID] {
     */
   def kr(id: GE = 0): RandID = new RandID(control, id)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): RandID = {
+  def read(in: RefMapIn, key: String, arity: Int): RandID = {
     require (arity == 2)
     val _rate = in.readRate()
     val _id   = in.readGE()

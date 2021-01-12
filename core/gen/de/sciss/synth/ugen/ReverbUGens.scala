@@ -33,7 +33,7 @@ object FreeVerb extends ProductReader[FreeVerb] {
   def ar(in: GE, mix: GE = 0.33f, room: GE = 0.5f, damp: GE = 0.5f): FreeVerb = 
     new FreeVerb(in, mix, room, damp)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): FreeVerb = {
+  def read(in: RefMapIn, key: String, arity: Int): FreeVerb = {
     require (arity == 4)
     val _in   = in.readGE()
     val _mix  = in.readGE()
@@ -100,7 +100,7 @@ object FreeVerb2 extends ProductReader[FreeVerb2] {
   def ar(inL: GE, inR: GE, mix: GE = 0.33f, room: GE = 0.5f, damp: GE = 0.5f): FreeVerb2 = 
     new FreeVerb2(inL, inR, mix, room, damp)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): FreeVerb2 = {
+  def read(in: RefMapIn, key: String, arity: Int): FreeVerb2 = {
     require (arity == 5)
     val _inL  = in.readGE()
     val _inR  = in.readGE()
@@ -187,7 +187,7 @@ object GVerb extends ProductReader[GVerb] {
   def ar(in: GE, roomSize: GE = 10.0f, revTime: GE = 3.0f, damping: GE = 0.5f, inputBW: GE = 0.5f, spread: GE = 15.0f, dryLevel: GE = 1.0f, earlyRefLevel: GE = 0.7f, tailLevel: GE = 0.5f, maxRoomSize: GE = 300.0f): GVerb = 
     new GVerb(in, roomSize, revTime, damping, inputBW, spread, dryLevel, earlyRefLevel, tailLevel, maxRoomSize)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): GVerb = {
+  def read(in: RefMapIn, key: String, arity: Int): GVerb = {
     require (arity == 10)
     val _in             = in.readGE()
     val _roomSize       = in.readGE()

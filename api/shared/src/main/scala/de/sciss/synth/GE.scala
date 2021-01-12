@@ -101,7 +101,7 @@ package ugen {
   object GESeq extends ProductReader[GESeq] {
     def apply(elems: GE*): GESeq = new GESeq(elems.toIndexedSeq)
 
-    override def read(in: RefMapIn, prefix: String, arity: Int): GESeq = {
+    override def read(in: RefMapIn, key: String, arity: Int): GESeq = {
       require (arity == 1)
       val _elems = in.readVec(in.readGE())
       new GESeq(_elems)
@@ -116,7 +116,7 @@ package ugen {
   }
 
   private[synth] object UGenInSeq extends ProductReader[UGenInSeq] {
-    override def read(in: RefMapIn, prefix: String, arity: Int): UGenInSeq = {
+    override def read(in: RefMapIn, key: String, arity: Int): UGenInSeq = {
       require (arity == 1)
       val _elems = in.readVec(in.readProductT[UGenIn]())
       new UGenInSeq(_elems)

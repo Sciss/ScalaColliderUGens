@@ -48,7 +48,7 @@ import UGenSource._
   * @see [[de.sciss.synth.ugen.FFTTrigger$ FFTTrigger]]
   */
 object FFT extends ProductReader[FFT] {
-  def read(in: RefMapIn, prefix: String, arity: Int): FFT = {
+  def read(in: RefMapIn, key: String, arity: Int): FFT = {
     require (arity == 6)
     val _buf      = in.readGE()
     val _in       = in.readGE()
@@ -171,7 +171,7 @@ object IFFT extends ProductReader[IFFT] {
     */
   def ar(chain: GE, winType: GE = 0, winSize: GE = 0): IFFT = new IFFT(audio, chain, winType, winSize)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): IFFT = {
+  def read(in: RefMapIn, key: String, arity: Int): IFFT = {
     require (arity == 4)
     val _rate     = in.readRate()
     val _chain    = in.readGE()
@@ -211,7 +211,7 @@ final case class IFFT(rate: Rate, chain: GE, winType: GE = 0, winSize: GE = 0)
   * domain.
   */
 object FFTTrigger extends ProductReader[FFTTrigger] {
-  def read(in: RefMapIn, prefix: String, arity: Int): FFTTrigger = {
+  def read(in: RefMapIn, key: String, arity: Int): FFTTrigger = {
     require (arity == 3)
     val _buf    = in.readGE()
     val _hop    = in.readGE()
@@ -244,7 +244,7 @@ final case class FFTTrigger(buf: GE, hop: GE = 0.5f, polar: GE = 0)
   * given threshold.
   */
 object PV_MagAbove extends ProductReader[PV_MagAbove] {
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_MagAbove = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_MagAbove = {
     require (arity == 2)
     val _chain  = in.readGE()
     val _thresh = in.readGE()
@@ -271,7 +271,7 @@ final case class PV_MagAbove(chain: GE, thresh: GE = 0.0f)
   * given threshold.
   */
 object PV_MagBelow extends ProductReader[PV_MagBelow] {
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_MagBelow = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_MagBelow = {
     require (arity == 2)
     val _chain  = in.readGE()
     val _thresh = in.readGE()
@@ -298,7 +298,7 @@ final case class PV_MagBelow(chain: GE, thresh: GE = 0.0f)
   * threshold.
   */
 object PV_MagClip extends ProductReader[PV_MagClip] {
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_MagClip = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_MagClip = {
     require (arity == 2)
     val _chain  = in.readGE()
     val _thresh = in.readGE()
@@ -326,7 +326,7 @@ final case class PV_MagClip(chain: GE, thresh: GE = 0.0f)
   * phases of the first input.
   */
 object PV_MagMul extends ProductReader[PV_MagMul] {
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_MagMul = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_MagMul = {
     require (arity == 2)
     val _chainA = in.readGE()
     val _chainB = in.readGE()
@@ -354,7 +354,7 @@ final case class PV_MagMul(chainA: GE, chainB: GE)
   * of the first input.
   */
 object PV_MagDiv extends ProductReader[PV_MagDiv] {
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_MagDiv = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_MagDiv = {
     require (arity == 3)
     val _chainA = in.readGE()
     val _chainB = in.readGE()
@@ -389,7 +389,7 @@ final case class PV_MagDiv(chainA: GE, chainB: GE, zeroes: GE = 1.0E-4f)
   * peak. This makes weak bins weaker.
   */
 object PV_MagSquared extends ProductReader[PV_MagSquared] {
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_MagSquared = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_MagSquared = {
     require (arity == 1)
     val _chain = in.readGE()
     new PV_MagSquared(_chain)
@@ -413,7 +413,7 @@ final case class PV_MagSquared(chain: GE)
 /** A phase vocoder UGen that multiplies the magnitudes by random noise.
   */
 object PV_MagNoise extends ProductReader[PV_MagNoise] {
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_MagNoise = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_MagNoise = {
     require (arity == 1)
     val _chain = in.readGE()
     new PV_MagNoise(_chain)
@@ -441,7 +441,7 @@ final case class PV_MagNoise(chain: GE)
   * chain.
   */
 object PV_Copy extends ProductReader[PV_Copy] {
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_Copy = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_Copy = {
     require (arity == 2)
     val _chainA = in.readGE()
     val _chainB = in.readGE()
@@ -473,7 +473,7 @@ final case class PV_Copy(chainA: GE, chainB: GE)
   * the second input. phases of the first input.
   */
 object PV_CopyPhase extends ProductReader[PV_CopyPhase] {
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_CopyPhase = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_CopyPhase = {
     require (arity == 2)
     val _chainA = in.readGE()
     val _chainB = in.readGE()
@@ -500,7 +500,7 @@ final case class PV_CopyPhase(chainA: GE, chainB: GE)
 /** A phase vocoder UGen that shifts the phase of each bins by a given amount.
   */
 object PV_PhaseShift extends ProductReader[PV_PhaseShift] {
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_PhaseShift = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_PhaseShift = {
     require (arity == 2)
     val _chain  = in.readGE()
     val _shift  = in.readGE()
@@ -525,7 +525,7 @@ final case class PV_PhaseShift(chain: GE, shift: GE)
 /** A phase vocoder UGen that shift the phase of all bins by 90 degrees.
   */
 object PV_PhaseShift90 extends ProductReader[PV_PhaseShift90] {
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_PhaseShift90 = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_PhaseShift90 = {
     require (arity == 1)
     val _chain = in.readGE()
     new PV_PhaseShift90(_chain)
@@ -548,7 +548,7 @@ final case class PV_PhaseShift90(chain: GE)
 /** A phase vocoder UGen that shift the phase of all bins by 270 (or -90) degrees.
   */
 object PV_PhaseShift270 extends ProductReader[PV_PhaseShift270] {
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_PhaseShift270 = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_PhaseShift270 = {
     require (arity == 1)
     val _chain = in.readGE()
     new PV_PhaseShift270(_chain)
@@ -572,7 +572,7 @@ final case class PV_PhaseShift270(chain: GE)
   * two inputs.
   */
 object PV_Min extends ProductReader[PV_Min] {
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_Min = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_Min = {
     require (arity == 2)
     val _chainA = in.readGE()
     val _chainB = in.readGE()
@@ -600,7 +600,7 @@ final case class PV_Min(chainA: GE, chainB: GE)
   * two inputs.
   */
 object PV_Max extends ProductReader[PV_Max] {
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_Max = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_Max = {
     require (arity == 2)
     val _chainA = in.readGE()
     val _chainB = in.readGE()
@@ -629,7 +629,7 @@ final case class PV_Max(chainA: GE, chainB: GE)
   * `(Re(A) * Re(B) - Im(A) * Im(B)) + i(Im(A) * Re(B) + Re(A) * Im(B))` .
   */
 object PV_Mul extends ProductReader[PV_Mul] {
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_Mul = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_Mul = {
     require (arity == 2)
     val _chainA = in.readGE()
     val _chainB = in.readGE()
@@ -659,7 +659,7 @@ final case class PV_Mul(chainA: GE, chainB: GE)
   * obviously blow up the division.
   */
 object PV_Div extends ProductReader[PV_Div] {
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_Div = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_Div = {
     require (arity == 2)
     val _chainA = in.readGE()
     val _chainB = in.readGE()
@@ -688,7 +688,7 @@ final case class PV_Div(chainA: GE, chainB: GE)
   * formula is `(Re(A) + Re(B)) + i(Im(A) + Im(B))` .
   */
 object PV_Add extends ProductReader[PV_Add] {
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_Add = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_Add = {
     require (arity == 2)
     val _chainA = in.readGE()
     val _chainB = in.readGE()
@@ -720,7 +720,7 @@ final case class PV_Add(chainA: GE, chainB: GE)
   * @see [[de.sciss.synth.ugen.PV_RectComb2$ PV_RectComb2]]
   */
 object PV_RectComb extends ProductReader[PV_RectComb] {
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_RectComb = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_RectComb = {
     require (arity == 4)
     val _chain    = in.readGE()
     val _numTeeth = in.readGE()
@@ -770,7 +770,7 @@ final case class PV_RectComb(chain: GE, numTeeth: GE = 1.0f, phase: GE = 0.0f, w
   * @see [[de.sciss.synth.ugen.PV_RectComb$ PV_RectComb]]
   */
 object PV_RectComb2 extends ProductReader[PV_RectComb2] {
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_RectComb2 = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_RectComb2 = {
     require (arity == 5)
     val _chainA   = in.readGE()
     val _chainB   = in.readGE()
@@ -822,7 +822,7 @@ final case class PV_RectComb2(chainA: GE, chainB: GE, numTeeth: GE = 1.0f, phase
 /** A phase vocoder UGen that clears bins above or below a cutoff point.
   */
 object PV_BrickWall extends ProductReader[PV_BrickWall] {
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_BrickWall = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_BrickWall = {
     require (arity == 2)
     val _chain  = in.readGE()
     val _wipe   = in.readGE()
@@ -855,7 +855,7 @@ final case class PV_BrickWall(chain: GE, wipe: GE)
   * @see [[de.sciss.synth.ugen.PV_RandWipe$ PV_RandWipe]]
   */
 object PV_BinWipe extends ProductReader[PV_BinWipe] {
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_BinWipe = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_BinWipe = {
     require (arity == 3)
     val _chainA = in.readGE()
     val _chainB = in.readGE()
@@ -893,7 +893,7 @@ final case class PV_BinWipe(chainA: GE, chainB: GE, wipe: GE)
   * whose magnitude lies below this threshold.
   */
 object PV_LocalMax extends ProductReader[PV_LocalMax] {
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_LocalMax = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_LocalMax = {
     require (arity == 2)
     val _chain  = in.readGE()
     val _thresh = in.readGE()
@@ -923,7 +923,7 @@ final case class PV_LocalMax(chain: GE, thresh: GE = 0.0f)
   * sign of the imaginary part.
   */
 object PV_Conj extends ProductReader[PV_Conj] {
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_Conj = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_Conj = {
     require (arity == 1)
     val _chain = in.readGE()
     new PV_Conj(_chain)
@@ -949,7 +949,7 @@ final case class PV_Conj(chain: GE)
   * select a new random ordering.
   */
 object PV_BinScramble extends ProductReader[PV_BinScramble] {
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_BinScramble = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_BinScramble = {
     require (arity == 4)
     val _chain  = in.readGE()
     val _wipe   = in.readGE()
@@ -985,7 +985,7 @@ final case class PV_BinScramble(chain: GE, wipe: GE = 0.5f, width: GE = 0.2f, tr
 /** A phase vocoder UGen that averages each bin's magnitude with its neighbors.
   */
 object PV_MagSmear extends ProductReader[PV_MagSmear] {
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_MagSmear = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_MagSmear = {
     require (arity == 2)
     val _chain  = in.readGE()
     val _bins   = in.readGE()
@@ -1014,7 +1014,7 @@ final case class PV_MagSmear(chain: GE, bins: GE = 1)
   * phases in their original bins.
   */
 object PV_MagShift extends ProductReader[PV_MagShift] {
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_MagShift = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_MagShift = {
     require (arity == 3)
     val _chain    = in.readGE()
     val _stretch  = in.readGE()
@@ -1047,7 +1047,7 @@ final case class PV_MagShift(chain: GE, stretch: GE = 1.0f, shift: GE = 0.0f)
   * adds a shift to it.
   */
 object PV_BinShift extends ProductReader[PV_BinShift] {
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_BinShift = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_BinShift = {
     require (arity == 3)
     val _chain    = in.readGE()
     val _stretch  = in.readGE()
@@ -1084,7 +1084,7 @@ final case class PV_BinShift(chain: GE, stretch: GE = 1.0f, shift: GE = 0.0f)
   * @see [[de.sciss.synth.ugen.PV_BinWipe$ PV_BinWipe]]
   */
 object PV_RandWipe extends ProductReader[PV_RandWipe] {
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_RandWipe = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_RandWipe = {
     require (arity == 4)
     val _chainA = in.readGE()
     val _chainB = in.readGE()
@@ -1127,7 +1127,7 @@ final case class PV_RandWipe(chainA: GE, chainB: GE, wipe: GE, trig: GE)
   * bin. The trigger will select a new set of random phases.
   */
 object PV_Diffuser extends ProductReader[PV_Diffuser] {
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_Diffuser = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_Diffuser = {
     require (arity == 2)
     val _chain  = in.readGE()
     val _trig   = in.readGE()
@@ -1156,7 +1156,7 @@ final case class PV_Diffuser(chain: GE, trig: GE = 1)
   * remains constant between triggers.
   */
 object PV_RandComb extends ProductReader[PV_RandComb] {
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_RandComb = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_RandComb = {
     require (arity == 3)
     val _chain  = in.readGE()
     val _wipe   = in.readGE()
@@ -1189,7 +1189,7 @@ final case class PV_RandComb(chain: GE, wipe: GE = 0.5f, trig: GE = 1)
   * happens when the freeze input has a value of > 0.
   */
 object PV_MagFreeze extends ProductReader[PV_MagFreeze] {
-  def read(in: RefMapIn, prefix: String, arity: Int): PV_MagFreeze = {
+  def read(in: RefMapIn, key: String, arity: Int): PV_MagFreeze = {
     require (arity == 2)
     val _chain  = in.readGE()
     val _freeze = in.readGE()
@@ -1277,7 +1277,7 @@ object PartConv extends ProductReader[PartConv] {
     */
   def ar(in: GE, fftSize: GE, buf: GE): PartConv = new PartConv(audio, in, fftSize, buf)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): PartConv = {
+  def read(in: RefMapIn, key: String, arity: Int): PartConv = {
     require (arity == 4)
     val _rate     = in.readRate()
     val _in       = in.readGE()

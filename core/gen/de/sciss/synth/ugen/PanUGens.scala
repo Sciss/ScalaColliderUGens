@@ -35,7 +35,7 @@ object Pan2 extends ProductReader[Pan2] {
     */
   def ar(in: GE, pos: GE = 0.0f, level: GE = 1.0f): Pan2 = new Pan2(audio, in, pos, level)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): Pan2 = {
+  def read(in: RefMapIn, key: String, arity: Int): Pan2 = {
     require (arity == 4)
     val _rate   = in.readRate()
     val _in     = in.readGE()
@@ -114,7 +114,7 @@ object Pan4 extends ProductReader[Pan4] {
   def ar(in: GE, xpos: GE = 0.0f, ypos: GE = 0.0f, level: GE = 1.0f): Pan4 = 
     new Pan4(audio, in, xpos, ypos, level)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): Pan4 = {
+  def read(in: RefMapIn, key: String, arity: Int): Pan4 = {
     require (arity == 5)
     val _rate   = in.readRate()
     val _in     = in.readGE()
@@ -188,7 +188,7 @@ object LinPan2 extends ProductReader[LinPan2] {
     */
   def ar(in: GE, pos: GE = 0.0f, level: GE = 1.0f): LinPan2 = new LinPan2(audio, in, pos, level)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): LinPan2 = {
+  def read(in: RefMapIn, key: String, arity: Int): LinPan2 = {
     require (arity == 4)
     val _rate   = in.readRate()
     val _in     = in.readGE()
@@ -256,7 +256,7 @@ object Balance2 extends ProductReader[Balance2] {
   def ar(inL: GE, inR: GE, pos: GE = 0.0f, level: GE = 1.0f): Balance2 = 
     new Balance2(audio, inL, inR, pos, level)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): Balance2 = {
+  def read(in: RefMapIn, key: String, arity: Int): Balance2 = {
     require (arity == 5)
     val _rate   = in.readRate()
     val _inL    = in.readGE()
@@ -349,7 +349,7 @@ object Rotate2 extends ProductReader[Rotate2] {
     */
   def ar(x: GE, y: GE, pos: GE = 0.0f): Rotate2 = new Rotate2(audio, x, y, pos)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): Rotate2 = {
+  def read(in: RefMapIn, key: String, arity: Int): Rotate2 = {
     require (arity == 4)
     val _rate = in.readRate()
     val _x    = in.readGE()
@@ -422,7 +422,7 @@ object XFade2 extends ProductReader[XFade2] {
   def ar(inA: GE, inB: GE = 0.0f, pan: GE = 0.0f, level: GE = 1.0f): XFade2 = 
     new XFade2(audio, inA, inB, pan, level)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): XFade2 = {
+  def read(in: RefMapIn, key: String, arity: Int): XFade2 = {
     require (arity == 5)
     val _rate   = in.readRate()
     val _inA    = in.readGE()
@@ -488,7 +488,7 @@ object LinXFade2 extends ProductReader[LinXFade2] {
   def ar(inA: GE, inB: GE = 0.0f, pan: GE = 0.0f, level: GE = 1.0f): LinXFade2 = 
     new LinXFade2(audio, inA, inB, pan, level)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): LinXFade2 = {
+  def read(in: RefMapIn, key: String, arity: Int): LinXFade2 = {
     require (arity == 5)
     val _rate   = in.readRate()
     val _inA    = in.readGE()
@@ -555,7 +555,7 @@ object PanB extends ProductReader[PanB] {
   def ar(in: GE, azimuth: GE = 0.0f, elevation: GE = 0.0f, level: GE = 1.0f): PanB = 
     new PanB(audio, in, azimuth, elevation, level)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): PanB = {
+  def read(in: RefMapIn, key: String, arity: Int): PanB = {
     require (arity == 5)
     val _rate       = in.readRate()
     val _in         = in.readGE()
@@ -649,7 +649,7 @@ object PanB2 extends ProductReader[PanB2] {
     */
   def ar(in: GE, azimuth: GE = 0.0f, level: GE = 1.0f): PanB2 = new PanB2(audio, in, azimuth, level)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): PanB2 = {
+  def read(in: RefMapIn, key: String, arity: Int): PanB2 = {
     require (arity == 4)
     val _rate     = in.readRate()
     val _in       = in.readGE()
@@ -737,7 +737,7 @@ object BiPanB2 extends ProductReader[BiPanB2] {
   def ar(inA: GE, inB: GE, azimuth: GE = 0.0f, level: GE = 1.0f): BiPanB2 = 
     new BiPanB2(audio, inA, inB, azimuth, level)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): BiPanB2 = {
+  def read(in: RefMapIn, key: String, arity: Int): BiPanB2 = {
     require (arity == 5)
     val _rate     = in.readRate()
     val _inA      = in.readGE()
@@ -872,7 +872,7 @@ object PanAz extends ProductReader[PanAz] {
   def ar(numChannels: Int, in: GE, pos: GE = 0.0f, level: GE = 1.0f, width: GE = 2.0f, orient: GE = 0.0f): PanAz = 
     new PanAz(audio, numChannels, in, pos, level, width, orient)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): PanAz = {
+  def read(in: RefMapIn, key: String, arity: Int): PanAz = {
     require (arity == 7)
     val _rate         = in.readRate()
     val _numChannels  = in.readInt()
@@ -997,7 +997,7 @@ object DecodeB2 extends ProductReader[DecodeB2] {
   def ar(numChannels: Int, w: GE, x: GE, y: GE, orient: GE = 0.5f): DecodeB2 = 
     new DecodeB2(audio, numChannels, w, x, y, orient)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): DecodeB2 = {
+  def read(in: RefMapIn, key: String, arity: Int): DecodeB2 = {
     require (arity == 6)
     val _rate         = in.readRate()
     val _numChannels  = in.readInt()

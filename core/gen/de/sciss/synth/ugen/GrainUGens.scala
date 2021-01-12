@@ -7,7 +7,7 @@ object GrainIn extends ProductReader[GrainIn] {
   def ar(numChannels: Int = 1, trig: GE, dur: GE = 1.0f, in: GE, pan: GE = 0.0f, envBuf: GE = -1, maxGrains: GE = 512): GrainIn = 
     new GrainIn(numChannels, trig, dur, in, pan, envBuf, maxGrains)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): GrainIn = {
+  def read(in: RefMapIn, key: String, arity: Int): GrainIn = {
     require (arity == 7)
     val _numChannels  = in.readInt()
     val _trig         = in.readGE()
@@ -32,7 +32,7 @@ object GrainSin extends ProductReader[GrainSin] {
   def ar(numChannels: Int = 1, trig: GE, dur: GE = 1.0f, freq: GE = 440.0f, pan: GE = 0.0f, envBuf: GE = -1, maxGrains: GE = 512): GrainSin = 
     new GrainSin(numChannels, trig, dur, freq, pan, envBuf, maxGrains)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): GrainSin = {
+  def read(in: RefMapIn, key: String, arity: Int): GrainSin = {
     require (arity == 7)
     val _numChannels  = in.readInt()
     val _trig         = in.readGE()
@@ -57,7 +57,7 @@ object GrainFM extends ProductReader[GrainFM] {
   def ar(numChannels: Int = 1, trig: GE, dur: GE = 1.0f, carFreq: GE = 440.0f, modFreq: GE = 200.0f, index: GE = 1.0f, pan: GE = 0.0f, envBuf: GE = -1, maxGrains: GE = 512): GrainFM = 
     new GrainFM(numChannels, trig, dur, carFreq, modFreq, index, pan, envBuf, maxGrains)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): GrainFM = {
+  def read(in: RefMapIn, key: String, arity: Int): GrainFM = {
     require (arity == 9)
     val _numChannels  = in.readInt()
     val _trig         = in.readGE()
@@ -122,7 +122,7 @@ object GrainBuf extends ProductReader[GrainBuf] {
   def ar(numChannels: Int = 1, trig: GE, dur: GE = 1.0f, buf: GE, speed: GE = 1.0f, pos: GE = 0.0f, interp: GE = 2, pan: GE = 0.0f, envBuf: GE = -1, maxGrains: GE = 512): GrainBuf = 
     new GrainBuf(numChannels, trig, dur, buf, speed, pos, interp, pan, envBuf, maxGrains)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): GrainBuf = {
+  def read(in: RefMapIn, key: String, arity: Int): GrainBuf = {
     require (arity == 10)
     val _numChannels  = in.readInt()
     val _trig         = in.readGE()
@@ -188,7 +188,7 @@ object Warp1 extends ProductReader[Warp1] {
   def ar(numChannels: Int, buf: GE, pos: GE = 0.0f, speed: GE = 1.0f, winSize: GE = 0.2f, envBuf: GE = -1, overlaps: GE = 8.0f, winRand: GE = 0.0f, interp: GE = 1): Warp1 = 
     new Warp1(numChannels, buf, pos, speed, winSize, envBuf, overlaps, winRand, interp)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): Warp1 = {
+  def read(in: RefMapIn, key: String, arity: Int): Warp1 = {
     require (arity == 9)
     val _numChannels  = in.readInt()
     val _buf          = in.readGE()

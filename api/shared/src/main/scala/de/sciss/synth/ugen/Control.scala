@@ -27,7 +27,7 @@ object Control extends ProductReader[Control] {
   def ir(values: ControlValues, name: Option[String] = None): Control = apply(scalar , values.seq, name)
   def kr(values: ControlValues, name: Option[String] = None): Control = apply(control, values.seq, name)
 
-  override def read(in: RefMapIn, prefix: String, arity: Int): Control = {
+  override def read(in: RefMapIn, key: String, arity: Int): Control = {
     require (arity == 3)
     val _rate     = in.readRate()
     val _values   = in.readFloatVec()
@@ -51,7 +51,7 @@ object ControlProxy extends ProductReader[ControlProxy] {
   private val scalarFactory  = new ControlFactory(scalar )
   private val controlFactory = new ControlFactory(control)
 
-  override def read(in: RefMapIn, prefix: String, arity: Int): ControlProxy = {
+  override def read(in: RefMapIn, key: String, arity: Int): ControlProxy = {
     require (arity == 3)
     val _rate     = in.readRate()
     val _values   = in.readFloatVec()
@@ -79,7 +79,7 @@ final class ControlFactory(rate: Rate) extends ControlFactoryLike {
 object TrigControl extends ProductReader[TrigControl] {
   def kr(values: ControlValues, name: Option[String] = None): TrigControl = apply(values.seq, name)
 
-  override def read(in: RefMapIn, prefix: String, arity: Int): TrigControl = {
+  override def read(in: RefMapIn, key: String, arity: Int): TrigControl = {
     require (arity == 2)
     val _values   = in.readFloatVec()
     val _ctrlName = in.readStringOption()
@@ -104,7 +104,7 @@ object TrigControlProxy extends ProductReader[TrigControlProxy] {
       impl.ControlImpl("TrigControl", control, numChannels = numChannels, specialIndex = specialIndex)
   }
 
-  override def read(in: RefMapIn, prefix: String, arity: Int): TrigControlProxy = {
+  override def read(in: RefMapIn, key: String, arity: Int): TrigControlProxy = {
     require (arity == 2)
     val _values   = in.readFloatVec()
     val _name     = in.readStringOption()
@@ -121,7 +121,7 @@ final case class TrigControlProxy(values: Vec[Float], name: Option[String])
 object AudioControl extends ProductReader[AudioControl] {
   def ar(values: ControlValues, name: Option[String] = None): AudioControl = apply(values.seq, name)
 
-  override def read(in: RefMapIn, prefix: String, arity: Int): AudioControl = {
+  override def read(in: RefMapIn, key: String, arity: Int): AudioControl = {
     require (arity == 2)
     val _values   = in.readFloatVec()
     val _ctrlName = in.readStringOption()
@@ -146,7 +146,7 @@ object AudioControlProxy extends ProductReader[AudioControlProxy] {
       impl.ControlImpl("AudioControl", audio, numChannels = numChannels, specialIndex = specialIndex)
   }
 
-  override def read(in: RefMapIn, prefix: String, arity: Int): AudioControlProxy = {
+  override def read(in: RefMapIn, key: String, arity: Int): AudioControlProxy = {
     require (arity == 2)
     val _values   = in.readFloatVec()
     val _name     = in.readStringOption()

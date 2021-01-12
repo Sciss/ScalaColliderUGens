@@ -87,7 +87,7 @@ object UnaryOpUGen extends ProductReader[UnaryOpUGen] {
       case Scurve     .id => Scurve
     }
 
-    override def read(in: RefMapIn, prefix: String, arity: Int): Op = {
+    override def read(in: RefMapIn, key: String, arity: Int): Op = {
       require (arity == 1)
       val _id = in.readInt()
       Op(_id)
@@ -418,7 +418,7 @@ object UnaryOpUGen extends ProductReader[UnaryOpUGen] {
     def make1(a: Float): Float = rf2.sCurve(a)
   }
 
-  override def read(in: RefMapIn, prefix: String, arity: Int): UnaryOpUGen = {
+  override def read(in: RefMapIn, key: String, arity: Int): UnaryOpUGen = {
     require (arity == 2)
     val _op = in.readProductT[Op]()
     val _a  = in.readGE()
@@ -524,7 +524,7 @@ object BinaryOpUGen extends ProductReader[BinaryOpUGen] {
       case Exprand  .id => Exprand
     }
 
-    override def read(in: RefMapIn, prefix: String, arity: Int): Op = {
+    override def read(in: RefMapIn, key: String, arity: Int): Op = {
       require (arity == 1)
       val _id = in.readInt()
       Op(_id)
@@ -936,7 +936,7 @@ object BinaryOpUGen extends ProductReader[BinaryOpUGen] {
     override val name = "expRand"
   }
 
-  override def read(in: RefMapIn, productPrefix: String, arity: Int): BinaryOpUGen = {
+  override def read(in: RefMapIn, key: String, arity: Int): BinaryOpUGen = {
     require (arity == 3)
     val _op = in.readProductT[Op]()
     val _a  = in.readGE()

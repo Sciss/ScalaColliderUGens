@@ -710,7 +710,7 @@ final class ClassGenerator {
       MethodDef(
         name    = "read",
         tpe     = Nil,
-        params  = (ParamDef("in", "RefMapIn") :: ParamDef("prefix", "String") :: ParamDef("arity", "Int") :: Nil) :: Nil,
+        params  = (ParamDef("in", "RefMapIn") :: ParamDef("key", "String") :: ParamDef("arity", "Int") :: Nil) :: Nil,
         ret     = className, // readerType,
         body    = Block(mBlock: _*)
       )

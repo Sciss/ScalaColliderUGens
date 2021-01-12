@@ -37,7 +37,7 @@ object MdaPiano extends ProductReader[MdaPiano] {
   def ar(freq: GE = 440, gate: GE = 1, velocity: GE = 100, decay: GE = 0.8f, release: GE = 0.8f, hardness: GE = 0.8f, velHard: GE = 0.8f, muffle: GE = 0.8f, velMuff: GE = 0.8f, velCurve: GE = 0.8f, stereo: GE = 0.2f, tune: GE = 0.5f, random: GE = 0.1f, stretch: GE = 0.1f, sustain: GE = 0): MdaPiano = 
     new MdaPiano(audio, freq, gate, velocity, decay, release, hardness, velHard, muffle, velMuff, velCurve, stereo, tune, random, stretch, sustain)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): MdaPiano = {
+  def read(in: RefMapIn, key: String, arity: Int): MdaPiano = {
     require (arity == 16)
     val _rate     = in.readRate()
     val _freq     = in.readGE()

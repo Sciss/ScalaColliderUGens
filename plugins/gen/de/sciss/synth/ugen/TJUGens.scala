@@ -24,7 +24,7 @@ object DFM1 extends ProductReader[DFM1] {
   def ar(in: GE, freq: GE = 440, res: GE = 0.1f, gain: GE = 1.0f, mode: GE = 0, noise: GE = 3.0E-4f): DFM1 = 
     new DFM1(audio, in, freq, res, gain, mode, noise)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): DFM1 = {
+  def read(in: RefMapIn, key: String, arity: Int): DFM1 = {
     require (arity == 7)
     val _rate   = in.readRate()
     val _in     = in.readGE()

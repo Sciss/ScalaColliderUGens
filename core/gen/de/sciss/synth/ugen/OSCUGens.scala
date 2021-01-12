@@ -47,7 +47,7 @@ object DegreeToKey extends ProductReader[DegreeToKey] {
     */
   def ar(buf: GE, in: GE, octave: GE = 12): DegreeToKey = new DegreeToKey(audio, buf, in, octave)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): DegreeToKey = {
+  def read(in: RefMapIn, key: String, arity: Int): DegreeToKey = {
     require (arity == 4)
     val _rate   = in.readRate()
     val _buf    = in.readGE()
@@ -112,7 +112,7 @@ object Select extends ProductReader[Select] {
     */
   def ar(index: GE, in: GE): Select = new Select(audio, index, in)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): Select = {
+  def read(in: RefMapIn, key: String, arity: Int): Select = {
     require (arity == 3)
     val _rate   = in.readRate()
     val _index  = in.readGE()
@@ -182,7 +182,7 @@ object TWindex extends ProductReader[TWindex] {
     */
   def ar(trig: GE, prob: GE, normalize: GE = 0): TWindex = new TWindex(audio, trig, prob, normalize)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): TWindex = {
+  def read(in: RefMapIn, key: String, arity: Int): TWindex = {
     require (arity == 4)
     val _rate       = in.readRate()
     val _trig       = in.readGE()
@@ -258,7 +258,7 @@ object Index extends ProductReader[Index] {
     */
   def ar(buf: GE, in: GE = 0): Index = new Index(audio, buf, in)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): Index = {
+  def read(in: RefMapIn, key: String, arity: Int): Index = {
     require (arity == 3)
     val _rate = in.readRate()
     val _buf  = in.readGE()
@@ -327,7 +327,7 @@ object IndexL extends ProductReader[IndexL] {
     */
   def ar(buf: GE, in: GE = 0): IndexL = new IndexL(audio, buf, in)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): IndexL = {
+  def read(in: RefMapIn, key: String, arity: Int): IndexL = {
     require (arity == 3)
     val _rate = in.readRate()
     val _buf  = in.readGE()
@@ -397,7 +397,7 @@ object FoldIndex extends ProductReader[FoldIndex] {
     */
   def ar(buf: GE, in: GE = 0): FoldIndex = new FoldIndex(audio, buf, in)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): FoldIndex = {
+  def read(in: RefMapIn, key: String, arity: Int): FoldIndex = {
     require (arity == 3)
     val _rate = in.readRate()
     val _buf  = in.readGE()
@@ -468,7 +468,7 @@ object WrapIndex extends ProductReader[WrapIndex] {
     */
   def ar(buf: GE, in: GE = 0): WrapIndex = new WrapIndex(audio, buf, in)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): WrapIndex = {
+  def read(in: RefMapIn, key: String, arity: Int): WrapIndex = {
     require (arity == 3)
     val _rate = in.readRate()
     val _buf  = in.readGE()
@@ -543,7 +543,7 @@ object IndexInBetween extends ProductReader[IndexInBetween] {
     */
   def ar(buf: GE, in: GE): IndexInBetween = new IndexInBetween(audio, buf, in)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): IndexInBetween = {
+  def read(in: RefMapIn, key: String, arity: Int): IndexInBetween = {
     require (arity == 3)
     val _rate = in.readRate()
     val _buf  = in.readGE()
@@ -610,7 +610,7 @@ object DetectIndex extends ProductReader[DetectIndex] {
     */
   def ar(buf: GE, in: GE): DetectIndex = new DetectIndex(audio, buf, in)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): DetectIndex = {
+  def read(in: RefMapIn, key: String, arity: Int): DetectIndex = {
     require (arity == 3)
     val _rate = in.readRate()
     val _buf  = in.readGE()
@@ -664,7 +664,7 @@ object Shaper extends ProductReader[Shaper] {
     */
   def ar(buf: GE, in: GE): Shaper = new Shaper(audio, buf, in)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): Shaper = {
+  def read(in: RefMapIn, key: String, arity: Int): Shaper = {
     require (arity == 3)
     val _rate = in.readRate()
     val _buf  = in.readGE()
@@ -738,7 +738,7 @@ object FSinOsc extends ProductReader[FSinOsc] {
     */
   def ar(freq: GE = 440.0f, iphase: GE = 0.0f): FSinOsc = new FSinOsc(audio, freq, iphase)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): FSinOsc = {
+  def read(in: RefMapIn, key: String, arity: Int): FSinOsc = {
     require (arity == 3)
     val _rate   = in.readRate()
     val _freq   = in.readGE()
@@ -812,7 +812,7 @@ object SinOsc extends ProductReader[SinOsc] {
     */
   def ar(freq: GE = 440.0f, phase: GE = 0.0f): SinOsc = new SinOsc(audio, freq, phase)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): SinOsc = {
+  def read(in: RefMapIn, key: String, arity: Int): SinOsc = {
     require (arity == 3)
     val _rate   = in.readRate()
     val _freq   = in.readGE()
@@ -873,7 +873,7 @@ object SinOscFB extends ProductReader[SinOscFB] {
     */
   def ar(freq: GE = 440.0f, feedback: GE = 0.0f): SinOscFB = new SinOscFB(audio, freq, feedback)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): SinOscFB = {
+  def read(in: RefMapIn, key: String, arity: Int): SinOscFB = {
     require (arity == 3)
     val _rate     = in.readRate()
     val _freq     = in.readGE()
@@ -904,7 +904,7 @@ object VOsc extends ProductReader[VOsc] {
   
   def ar(bufPos: GE, freq: GE = 440.0f, phase: GE = 0.0f): VOsc = new VOsc(audio, bufPos, freq, phase)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): VOsc = {
+  def read(in: RefMapIn, key: String, arity: Int): VOsc = {
     require (arity == 4)
     val _rate   = in.readRate()
     val _bufPos = in.readGE()
@@ -927,7 +927,7 @@ object VOsc3 extends ProductReader[VOsc3] {
   def ar(bufPos: GE, freq1: GE = 110.0f, freq2: GE = 220.0f, freq3: GE = 440.0f): VOsc3 = 
     new VOsc3(audio, bufPos, freq1, freq2, freq3)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): VOsc3 = {
+  def read(in: RefMapIn, key: String, arity: Int): VOsc3 = {
     require (arity == 5)
     val _rate   = in.readRate()
     val _bufPos = in.readGE()
@@ -990,7 +990,7 @@ object Osc extends ProductReader[Osc] {
     */
   def ar(buf: GE, freq: GE = 440.0f, phase: GE = 0.0f): Osc = new Osc(audio, buf, freq, phase)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): Osc = {
+  def read(in: RefMapIn, key: String, arity: Int): Osc = {
     require (arity == 4)
     val _rate   = in.readRate()
     val _buf    = in.readGE()
@@ -1031,7 +1031,7 @@ object OscN extends ProductReader[OscN] {
   
   def ar(buf: GE, freq: GE = 440.0f, phase: GE = 0.0f): OscN = new OscN(audio, buf, freq, phase)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): OscN = {
+  def read(in: RefMapIn, key: String, arity: Int): OscN = {
     require (arity == 4)
     val _rate   = in.readRate()
     val _buf    = in.readGE()
@@ -1050,7 +1050,7 @@ final case class OscN(rate: Rate, buf: GE, freq: GE = 440.0f, phase: GE = 0.0f)
 object COsc extends ProductReader[COsc] {
   def ar(buf: GE, freq: GE = 440.0f, beats: GE = 0.5f): COsc = new COsc(audio, buf, freq, beats)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): COsc = {
+  def read(in: RefMapIn, key: String, arity: Int): COsc = {
     require (arity == 4)
     val _rate   = in.readRate()
     val _buf    = in.readGE()
@@ -1102,7 +1102,7 @@ object Formant extends ProductReader[Formant] {
   def ar(fundFreq: GE = 440.0f, formFreq: GE = 1760.0f, bw: GE = 880.0f): Formant = 
     new Formant(audio, fundFreq, formFreq, bw)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): Formant = {
+  def read(in: RefMapIn, key: String, arity: Int): Formant = {
     require (arity == 4)
     val _rate     = in.readRate()
     val _fundFreq = in.readGE()
@@ -1170,7 +1170,7 @@ object Blip extends ProductReader[Blip] {
     */
   def ar(freq: GE = 440.0f, numHarm: GE = 200): Blip = new Blip(audio, freq, numHarm)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): Blip = {
+  def read(in: RefMapIn, key: String, arity: Int): Blip = {
     require (arity == 3)
     val _rate     = in.readRate()
     val _freq     = in.readGE()
@@ -1224,7 +1224,7 @@ object Saw extends ProductReader[Saw] {
     */
   def ar(freq: GE = 440.0f): Saw = new Saw(audio, freq)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): Saw = {
+  def read(in: RefMapIn, key: String, arity: Int): Saw = {
     require (arity == 2)
     val _rate = in.readRate()
     val _freq = in.readGE()
@@ -1285,7 +1285,7 @@ object Pulse extends ProductReader[Pulse] {
     */
   def ar(freq: GE = 440.0f, width: GE = 0.5f): Pulse = new Pulse(audio, freq, width)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): Pulse = {
+  def read(in: RefMapIn, key: String, arity: Int): Pulse = {
     require (arity == 3)
     val _rate   = in.readRate()
     val _freq   = in.readGE()
@@ -1316,7 +1316,7 @@ object Klang extends ProductReader[Klang] {
   def ar(specs: GE, freqScale: GE = 1.0f, freqOffset: GE = 0.0f): Klang = 
     new Klang(specs, freqScale, freqOffset)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): Klang = {
+  def read(in: RefMapIn, key: String, arity: Int): Klang = {
     require (arity == 3)
     val _specs      = in.readGE()
     val _freqScale  = in.readGE()
@@ -1353,7 +1353,7 @@ object Klank extends ProductReader[Klank] {
   def ar(specs: GE, in: GE, freqScale: GE = 1.0f, freqOffset: GE = 0.0f, decayScale: GE = 1.0f): Klank = 
     new Klank(specs, in, freqScale, freqOffset, decayScale)
   
-  def read(in: RefMapIn, prefix: String, arity: Int): Klank = {
+  def read(in: RefMapIn, key: String, arity: Int): Klank = {
     require (arity == 5)
     val _specs      = in.readGE()
     val _in         = in.readGE()

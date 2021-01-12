@@ -26,7 +26,7 @@ object KlangSpec extends ProductReader[KlangSpec] {
     Seq(Vec.tabulate[(GE, GE, GE)](n)(func).map(tup => KlangSpec(tup._1, tup._2, tup._3)))
 
   object Seq extends ProductReader[KlangSpec.Seq] {
-    override def read(in: RefMapIn, prefix: String, arity: Int): KlangSpec.Seq = {
+    override def read(in: RefMapIn, key: String, arity: Int): KlangSpec.Seq = {
       require (arity == 1)
       val _elems = in.readVec(in.readProductT[KlangSpec]())
       new KlangSpec.Seq(_elems)
@@ -41,7 +41,7 @@ object KlangSpec extends ProductReader[KlangSpec] {
     def expand                : UGenInLike  = UGenInGroup(elems.flatMap(_.expand.outputs))
   }
 
-  override def read(in: RefMapIn, prefix: String, arity: Int): KlangSpec = {
+  override def read(in: RefMapIn, key: String, arity: Int): KlangSpec = {
     require (arity == 3)
     val _freq   = in.readGE()
     val _amp    = in.readGE()

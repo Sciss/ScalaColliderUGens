@@ -25,7 +25,7 @@ lazy val deps = new {
   val main = new {
     val numbers      = "0.2.1"
     val scalaXML     = "1.3.0"
-    val serial       = "2.0.0"
+    val serial       = "2.0.1-SNAPSHOT"
   }
   val test = new {
     val scalaTest    = "3.2.3"

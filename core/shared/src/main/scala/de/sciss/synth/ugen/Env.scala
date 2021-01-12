@@ -95,8 +95,8 @@ object Env extends EnvFactory[Env] {
       override def toString = s"Env.Curve($id, $curvature)"
     }
 
-    override def read(in: RefMapIn, prefix: String, arity: Int): Curve = {
-      prefix match {
+    override def read(in: RefMapIn, key: String, arity: Int): Curve = {
+      key match {
         case Const.`readerKey` =>
           require (arity == 1)
           val _peer = in.readProductT[SCurve]()
@@ -123,7 +123,7 @@ object Env extends EnvFactory[Env] {
     implicit def fromTuple2[D, L](tup: (D, L))(implicit durView: D => GE, levelView: L => GE): Segment =
       Segment(durView(tup._1), levelView(tup._2), linear)
 
-    override def read(in: RefMapIn, prefix: String, arity: Int): Segment = {
+    override def read(in: RefMapIn, key: String, arity: Int): Segment = {
       require (arity == 3)
       val _dur          = in.readGE()
       val _targetLevel  = in.readGE()
@@ -185,7 +185,7 @@ object Env extends EnvFactory[Env] {
 
   // ---- serialization ----
 
-  override def read(in: RefMapIn, prefix: String, arity: Int): Env = {
+  override def read(in: RefMapIn, key: String, arity: Int): Env = {
     require (arity == 4)
     val _startLevel   = in.readGE()
     val _segments     = in.readVec(in.readProductT[Segment]())
@@ -219,7 +219,7 @@ object IEnv extends EnvFactory[IEnv] {
 
   // ---- serialization ----
 
-  override def read(in: RefMapIn, prefix: String, arity: Int): IEnv = {
+  override def read(in: RefMapIn, key: String, arity: Int): IEnv = {
     require (arity == 4)
     val _startLevel   = in.readGE()
     val _segments     = in.readVec(in.readProductT[Segment]())

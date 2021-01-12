@@ -49,7 +49,7 @@ object Kuramoto extends ProductReader[Kuramoto] {
     apply(audio, mode = mode, initPhase = initPhase, incr = incr, extPhase = extPhase,
       intCoupling = intCoupling, extCoupling = extCoupling)
 
-  override def read(in: RefMapIn, prefix: String, arity: Int): Kuramoto = {
+  override def read(in: RefMapIn, key: String, arity: Int): Kuramoto = {
     require (arity == 7)
     val _rate         = in.readRate()
     val _mode         = in.readGE()
