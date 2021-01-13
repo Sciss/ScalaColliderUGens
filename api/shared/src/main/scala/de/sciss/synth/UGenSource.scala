@@ -219,8 +219,8 @@ object UGenSource {
   final val DefaultPackage = "de.sciss.synth.ugen"
 
   final class RefMapOut(out0: DataOutput) extends serial.RefMapOut(out0) {
-    override protected def isDefaultPackage(className: String): Boolean =
-      className.startsWith(DefaultPackage)
+    override protected def isDefaultPackage(pck: String): Boolean =
+      pck == DefaultPackage
 
     override def writeElem(e: Any): Unit = e match {
       case c: Constant =>
