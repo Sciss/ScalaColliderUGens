@@ -1,7 +1,7 @@
 lazy val baseName       = "ScalaColliderUGens"
 lazy val baseNameL      = baseName.toLowerCase
 
-lazy val projectVersion = "1.21.0"
+lazy val projectVersion = "1.21.1"
 lazy val mimaVersion    = "1.21.0"
 
 // sonatype plugin requires that these are in global

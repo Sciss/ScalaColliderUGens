@@ -185,6 +185,12 @@ object UGenSource {
 
     override def readIdentifiedY(): SynthGraph = readIdentifiedGraph()
 
+    def readGraph(): SynthGraph = {
+      val cookie = in0.readByte().toChar
+      if (cookie != 'Y') unexpectedCookie(cookie, 'Y')
+      readIdentifiedGraph()
+    }
+
     def readIdentifiedGraph(): SynthGraph = {
       val sources   = readVec(readProductT[Lazy]())
       val controls  = readSet(readProductT[ControlProxyLike]())
