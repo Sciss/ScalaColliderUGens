@@ -22,7 +22,7 @@ lazy val commonSettings = Seq(
 ) ++ publishSettings
 
 lazy val commonJvmSettings = Seq(
-  crossScalaVersions := Seq("3.0.0-M3", "2.13.4", "2.12.12"),
+  crossScalaVersions := Seq("3.0.0-RC1", "2.13.4", "2.12.13"),
 )
 
 lazy val deps = new {
@@ -32,7 +32,7 @@ lazy val deps = new {
     val serial       = "2.0.1"
   }
   val test = new {
-    val scalaTest    = "3.2.3"
+    val scalaTest    = "3.2.4"
   }
   // --- gen project (not published, thus not subject to major version concerns) ---
   val gen = new {
