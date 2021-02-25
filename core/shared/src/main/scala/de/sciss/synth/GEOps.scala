@@ -980,7 +980,7 @@ final class GEOps(private val g: GE) extends AnyVal {
     * @see  [[clip2]]
     */
   def clip(low: GE, high: GE): GE = {
-    import GEOps._
+    import GEOps.{fromGE => geOps}  // N.B. renamed to shadow ScalaCollider's package object's `geOps` (unidoc!)
     val r = getRate(g, "clip")
     if (r == demand) g.max(low).min(high) else Clip(r, g, low, high)
   }
@@ -1018,7 +1018,7 @@ final class GEOps(private val g: GE) extends AnyVal {
     * The formula is `(a - inLow) / (inHigh - inLow) * (outHigh - outLow) + outLow`.
     */
   def linLin(inLow: GE, inHigh: GE, outLow: GE, outHigh: GE): GE = {
-    import GEOps._
+    import GEOps.{fromGE => geOps}
     val r = getRate(g, "linLin")
     if (r == demand) {
       (g - inLow) / (inHigh - inLow) * (outHigh - outLow) + outLow
@@ -1031,7 +1031,7 @@ final class GEOps(private val g: GE) extends AnyVal {
     * The formula is `(outHigh / outLow).pow((a - inLow) / (inHigh - inLow)) * outLow`.
     */
   def linExp(inLow: GE, inHigh: GE, outLow: GE, outHigh: GE): GE = {
-    import GEOps._
+    import GEOps.{fromGE => geOps}
     val r = getRate(g, "linExp")
     if (r == demand) {
       (outHigh / outLow).pow((g - inLow) / (inHigh - inLow)) * outLow
@@ -1044,7 +1044,7 @@ final class GEOps(private val g: GE) extends AnyVal {
     * The formula is `(a / inLow).log / (inHigh / inLow).log * (outHigh - outLow) + outLow`.
     */
   def expLin(inLow: GE, inHigh: GE, outLow: GE, outHigh: GE): GE = {
-    import GEOps._
+    import GEOps.{fromGE => geOps}
     (g / inLow).log / (inHigh / inLow).log * (outHigh - outLow) + outLow
   }
 
@@ -1052,7 +1052,7 @@ final class GEOps(private val g: GE) extends AnyVal {
     * The formula is `(outHigh / outLow).pow((a / inLow).log / (inHigh / inLow).log) * outLow`.
     */
   def expExp(inLow: GE, inHigh: GE, outLow: GE, outHigh: GE): GE = {
-    import GEOps._
+    import GEOps.{fromGE => geOps}
     (outHigh / outLow).pow((g / inLow).log / (inHigh / inLow).log) * outLow
   }
 }
