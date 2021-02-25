@@ -16,7 +16,7 @@ package ugen
 
 import de.sciss.synth.{Curve => SCurve}
 import de.sciss.synth.Curve.{sine => sin, step => _step, _}
-import de.sciss.synth.GEOps._
+import de.sciss.synth.GEOps.{fromGE => geOps}  // N.B. renamed to shadow ScalaCollider's package object's `geOps` (unidoc!)
 import de.sciss.synth.UGenSource.{ProductReader, RefMapIn}
 import de.sciss.synth.ugen.Env.Segment
 

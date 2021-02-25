@@ -14,7 +14,7 @@
 package de.sciss.synth
 package ugen
 
-import de.sciss.synth.GEOps._
+import de.sciss.synth.GEOps.{fromGE => geOps}  // N.B. renamed to shadow ScalaCollider's package object's `geOps` (unidoc!)
 import de.sciss.synth.UGenSource._
 import de.sciss.synth.ugen.ControlProxyFactory._
 
