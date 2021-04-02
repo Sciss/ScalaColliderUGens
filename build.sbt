@@ -13,7 +13,7 @@ lazy val commonSettings = Seq(
 //  organization       := "de.sciss",
   description        := "UGens for ScalaCollider",
   homepage           := Some(url(s"https://github.com/Sciss/$baseName")),
-  scalaVersion       := "2.13.4",
+  scalaVersion       := "2.13.5",
   scalacOptions      ++= Seq("-deprecation", "-unchecked", "-feature", "-encoding", "utf8", "-Xlint", "-Xsource:2.13"),
   initialCommands in console := """import de.sciss.synth._""",
   sources in (Compile, doc) := {
@@ -22,22 +22,23 @@ lazy val commonSettings = Seq(
 ) ++ publishSettings
 
 lazy val commonJvmSettings = Seq(
-  crossScalaVersions := Seq("3.0.0-RC1", "2.13.4", "2.12.13"),
+  crossScalaVersions := Seq("3.0.0-RC2", "2.13.5", "2.12.13"),
 )
 
 lazy val deps = new {
   val main = new {
     val numbers      = "0.2.1"
     val scalaXML     = "1.3.0"
+    val scalaXMLDotty = "2.0.0-RC1"  // no stable release available at the moment :-/
     val serial       = "2.0.1"
   }
   val test = new {
-    val scalaTest    = "3.2.4"
+    val scalaTest    = "3.2.7"
   }
   // --- gen project (not published, thus not subject to major version concerns) ---
   val gen = new {
     val fileUtil     = "1.1.5"
-    val scallop      = "3.5.1"
+    val scallop      = "4.0.2"
   }
 }
 
@@ -96,7 +97,8 @@ lazy val api = crossProject(JVMPlatform, JSPlatform).in(file("api"))
       "de.sciss" %%% "serial"  % deps.main.serial,
     ),
     libraryDependencies += {
-      ("org.scala-lang.modules" %%% "scala-xml" % deps.main.scalaXML).withDottyCompat(scalaVersion.value)
+      val v = if (isDotty.value) deps.main.scalaXMLDotty else deps.main.scalaXML
+      "org.scala-lang.modules" %%% "scala-xml" % v
     },
     buildInfoKeys := Seq(name, organization, version, scalaVersion, description,
       BuildInfoKey.map(homepage) {
