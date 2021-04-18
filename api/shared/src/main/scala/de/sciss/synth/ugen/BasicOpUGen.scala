@@ -191,7 +191,7 @@ object UnaryOpUGen extends ProductType[UnaryOpUGen] {
   // case object NotNil      extends Op(  3 )
   case object BitNot extends PureOp {
     final val id = 4
-    def make1(a: Float): Float = ~a.toInt
+    def make1(a: Float): Float = (~a.toInt).toFloat
   }
   case object Abs extends PureOp {
     final val id = 5

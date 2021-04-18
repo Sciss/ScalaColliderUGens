@@ -40,7 +40,7 @@ object UGenSource {
     val bs: Array[Byte] = s.getBytes
     val resB = Vec.newBuilder[UGenIn]
     resB.sizeHint(bs.length + 1)
-    resB += Constant(bs.length)
+    resB += Constant(bs.length.toFloat)
     bs.foreach { b =>
       resB += Constant(b)
     }
@@ -170,7 +170,6 @@ object UGenSource {
 
   private val sync          = new AnyRef
   private val mapReadByName = mutable.Map.empty[String, ProductReader[Product]]
-//  private val mapReadById   = mutable.Map.empty[Int   , ProductType  [Product]]
   private val mapNameToId   = mutable.Map.empty[String, Int]
   private val mapIdToName   = mutable.Map.empty[Int, String]
 
@@ -269,19 +268,36 @@ object UGenSource {
     })
   }
 
+  /** Registers a product-type for a given key.
+    *
+    * It is possible to register multiple keys with the same
+    * product-type, for example to register the different curve keys
+    * with one and the same curve reader. In this case, the order of
+    * registration is crucial and must be deterministic: each successive
+    * registration internally increases a sub-id integer to unambiguously
+    * distinguish the different keys. As a result, the product type's id
+    * can use 20 bits, and the top 12 bits are reserved for the sub-ids.
+    */
   def addProductType(key: String, r: ProductType[Product]): Unit = sync.synchronized {
-    val id = r.typeId
-    if (mapReadByName .put(key, r ).isDefined) throw new IllegalArgumentException(s"Name $key / $r was already added for ${mapReadByName.get(key)}")
-    if (mapNameToId   .put(key, id).isDefined) throw new IllegalArgumentException(s"Name $key / $id was already added for ${mapNameToId.get(key)}")
-    if (mapIdToName   .put(id, key).isDefined) throw new IllegalArgumentException(s"TypeId $id / $key was already added for ${mapIdToName.get(id)}")
+    if (mapReadByName.put(key, r).isDefined) throw new IllegalArgumentException(s"Name $key / $r was already added for ${mapReadByName.get(key)}")
 
-//    mapIdToName.get(id) match {
-//      case Some(key0) =>
-//        val value0 = mapReadByName(key0)
-//        if (r ne value0) throw new IllegalArgumentException(s"TypeId $id / $key was already added for ${mapIdToName.get(id)}")
-//      case None =>
-//        mapIdToName.put(id, key)
-//    }
+    @tailrec
+    def loop(id: Int): Unit = {
+      mapIdToName.get(id) match {
+        case Some(key0) =>
+          val value0 = mapReadByName(key0)
+          if (r ne value0) throw new IllegalArgumentException(s"TypeId $id / $key was already added for ${mapIdToName.get(id)}")
+          loop(id + 0x80000)
+
+        case None =>
+          if (mapNameToId.put(key, id).isDefined) throw new IllegalArgumentException(s"Name $key / $id was already added for ${mapNameToId.get(key)}")
+          mapIdToName.put(id, key)
+      }
+    }
+
+    val id0 = r.typeId
+    require (id0 >= 0 && id0 < 0x80000)
+    loop(id0)
   }
 
   def addProductReaders(xs: Iterable[(String, ProductReader[Product])]): Unit = sync.synchronized {

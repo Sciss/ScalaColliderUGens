@@ -10,7 +10,7 @@ object ThirdPartyUGens {
 
   type V = ProductType[Product]
 
-  private def map = Map[String, V](
+  private def map = Seq[(String, V)](
     ("ArrayMax", ArrayMax),
     ("ArrayMin", ArrayMin),
     ("BufMax", BufMax),

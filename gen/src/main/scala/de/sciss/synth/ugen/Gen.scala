@@ -89,24 +89,29 @@ object Gen extends App {
       }
   }
 
-  val allPairs: Map[String, String] = inputs.flatMap { case (name, source) =>
-    val xml = try {
-      XML.load(source)
-    } catch {
-      case e: MalformedURLException =>
-        Console.err.println(s"Resource not found: $name")
-        throw e
-    }
-    val classNames  = cg.performFile(xml, dir = outDir1, name = name, docs = docs, forceOverwrite = forceOverwrite)
-    val adjuncts    = cg.getAdjuncts(xml)
-    val classPairs  = classNames.iterator.map(n => (n.replace('.', '$'), n)).toMap
-    classPairs ++ adjuncts
+  val allPairs: Seq[(String, String)] = {
+    var allClassPairs = Seq.empty[(String, String)]
+    var allAdjuncts   = Seq.empty[(String, String)]
+    inputs.foreach { case (name, source) =>
+      val xml = try {
+        XML.load(source)
+      } catch {
+        case e: MalformedURLException =>
+          Console.err.println(s"Resource not found: $name")
+          throw e
+      }
+      val classNames  = cg.performFile(xml, dir = outDir1, name = name, docs = docs, forceOverwrite = forceOverwrite)
+      val adjuncts    = cg.getAdjuncts(xml)
+      val classPairs  = classNames.iterator.map(n => (n.replace('.', '$'), n)).toMap
+      allClassPairs ++= classPairs
+      allAdjuncts   ++= adjuncts
 
-  } .toMap
+    }
+    allClassPairs.sorted ++ allAdjuncts
+  }
 
   if (config.mkMap) {
-    val allPairsSq = allPairs.toIndexedSeq.sorted
-    val pairs = allPairsSq.iterator.map { case (k, v) =>
+    val pairs = allPairs.iterator.map { case (k, v) =>
       s"""    ("$k", $v),"""
     } .mkString("\n")
 
@@ -123,7 +128,7 @@ object Gen extends App {
          |
          |  type V = ProductType[Product]
          |
-         |  private def map = Map[String, V](
+         |  private def map = Seq[(String, V)](
          |$pairs
          |  )
          |}

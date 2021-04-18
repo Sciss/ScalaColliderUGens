@@ -36,7 +36,7 @@ final class ClassGenerator {
   val LineWidth     = 100
   val ParamColumns  =  24
 
-  def getAdjuncts(node: scala.xml.Node): Map[String, String] =
+  def getAdjuncts(node: scala.xml.Node): Seq[(String, String)] =
     (node \ "adjunct").iterator.flatMap { aNode =>
       val aAttr   = aNode.attributes.asAttrMap
       val reader  = aAttr.getOrElse("reader", sys.error("Adjunct does not contain 'reader' attribute"))
@@ -48,7 +48,7 @@ final class ClassGenerator {
         reader.replace('.', '$') +: others
       }
       all.map { key => (key, reader) }
-    } .toMap
+    } .toSeq
 
   def performFile(node: scala.xml.Node, dir: File, name: String, docs: Boolean = true,
                   forceOverwrite: Boolean = false): Vec[String] = try {

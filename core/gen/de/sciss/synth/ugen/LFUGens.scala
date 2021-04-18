@@ -2105,7 +2105,7 @@ final case class LinExp(rate: MaybeRate, in: GE, srcLo: GE = 0.0f, srcHi: GE = 1
   * {{{
   * // control gate and done-action
   * val x = play {
-  *   var gen = EnvGen.kr(Env.adsr(), "gate".kr(0), doneAction = "done".kr(0))
+  *   val gen = EnvGen.kr(Env.adsr(), "gate".kr(0), doneAction = "done".kr(0))
   *   SinOsc.ar(440) * gen * 0.1
   * }
   * 
