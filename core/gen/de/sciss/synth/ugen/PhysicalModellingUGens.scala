@@ -1,12 +1,14 @@
-// revision: 2
+// revision: 3
 package de.sciss.synth
 package ugen
 
 import UGenSource._
-object Spring extends ProductReader[Spring] {
+object Spring extends ProductType[Spring] {
   def kr(in: GE, spring: GE = 1.0f, damp: GE = 0.0f): Spring = new Spring(control, in, spring, damp)
   
   def ar(in: GE, spring: GE = 1.0f, damp: GE = 0.0f): Spring = new Spring(audio, in, spring, damp)
+  
+  final val typeId = 350
   
   def read(in: RefMapIn, key: String, arity: Int): Spring = {
     require (arity == 4)
@@ -28,12 +30,14 @@ final case class Spring(rate: MaybeRate, in: GE, spring: GE = 1.0f, damp: GE = 0
     UGen.SingleOut(name, _rate, _args1)
   }
 }
-object Ball extends ProductReader[Ball] {
+object Ball extends ProductType[Ball] {
   def kr(in: GE, g: GE = 1.0f, damp: GE = 0.0f, friction: GE = 0.01f): Ball = 
     new Ball(control, in, g, damp, friction)
   
   def ar(in: GE, g: GE = 1.0f, damp: GE = 0.0f, friction: GE = 0.01f): Ball = 
     new Ball(audio, in, g, damp, friction)
+  
+  final val typeId = 351
   
   def read(in: RefMapIn, key: String, arity: Int): Ball = {
     require (arity == 5)
@@ -57,12 +61,14 @@ final case class Ball(rate: MaybeRate, in: GE, g: GE = 1.0f, damp: GE = 0.0f, fr
     UGen.SingleOut(name, _rate, _args1)
   }
 }
-object TBall extends ProductReader[TBall] {
+object TBall extends ProductType[TBall] {
   def kr(in: GE, g: GE = 10.0f, damp: GE = 0.0f, friction: GE = 0.01f): TBall = 
     new TBall(control, in, g, damp, friction)
   
   def ar(in: GE, g: GE = 10.0f, damp: GE = 0.0f, friction: GE = 0.01f): TBall = 
     new TBall(audio, in, g, damp, friction)
+  
+  final val typeId = 352
   
   def read(in: RefMapIn, key: String, arity: Int): TBall = {
     require (arity == 5)

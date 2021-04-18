@@ -1,4 +1,4 @@
-// revision: 2
+// revision: 3
 package de.sciss.synth
 package ugen
 
@@ -9,7 +9,7 @@ import UGenSource._
   * denormal. According to the post settings it will print the information to the
   * console along with a given identifier.
   */
-object CheckBadValues extends ProductReader[CheckBadValues] {
+object CheckBadValues extends ProductType[CheckBadValues] {
   /** @param in               the signal to be tested
     * @param id               an identifier showing up with the values in the console
     * @param post             One of three post modes: 0 = no posting; 1 = post a
@@ -36,6 +36,8 @@ object CheckBadValues extends ProductReader[CheckBadValues] {
     *                         NaN and vice versa)
     */
   def ar(in: GE, id: GE = 0, post: GE = 2): CheckBadValues = new CheckBadValues(audio, in, id, post)
+  
+  final val typeId = 356
   
   def read(in: RefMapIn, key: String, arity: Int): CheckBadValues = {
     require (arity == 4)

@@ -1,11 +1,13 @@
-// revision: 4
+// revision: 5
 package de.sciss.synth
 package ugen
 
 import UGenSource._
-object GrainIn extends ProductReader[GrainIn] {
+object GrainIn extends ProductType[GrainIn] {
   def ar(numChannels: Int = 1, trig: GE, dur: GE = 1.0f, in: GE, pan: GE = 0.0f, envBuf: GE = -1, maxGrains: GE = 512): GrainIn = 
     new GrainIn(numChannels, trig, dur, in, pan, envBuf, maxGrains)
+  
+  final val typeId = 211
   
   def read(in: RefMapIn, key: String, arity: Int): GrainIn = {
     require (arity == 7)
@@ -28,9 +30,11 @@ final case class GrainIn(numChannels: Int = 1, trig: GE, dur: GE = 1.0f, in: GE,
   protected def makeUGen(_args: Vec[UGenIn]): UGenInLike = 
     UGen.MultiOut(name, audio, Vector.fill(numChannels)(audio), _args, isIndividual = true)
 }
-object GrainSin extends ProductReader[GrainSin] {
+object GrainSin extends ProductType[GrainSin] {
   def ar(numChannels: Int = 1, trig: GE, dur: GE = 1.0f, freq: GE = 440.0f, pan: GE = 0.0f, envBuf: GE = -1, maxGrains: GE = 512): GrainSin = 
     new GrainSin(numChannels, trig, dur, freq, pan, envBuf, maxGrains)
+  
+  final val typeId = 212
   
   def read(in: RefMapIn, key: String, arity: Int): GrainSin = {
     require (arity == 7)
@@ -53,9 +57,11 @@ final case class GrainSin(numChannels: Int = 1, trig: GE, dur: GE = 1.0f, freq: 
   protected def makeUGen(_args: Vec[UGenIn]): UGenInLike = 
     UGen.MultiOut(name, audio, Vector.fill(numChannels)(audio), _args, isIndividual = true)
 }
-object GrainFM extends ProductReader[GrainFM] {
+object GrainFM extends ProductType[GrainFM] {
   def ar(numChannels: Int = 1, trig: GE, dur: GE = 1.0f, carFreq: GE = 440.0f, modFreq: GE = 200.0f, index: GE = 1.0f, pan: GE = 0.0f, envBuf: GE = -1, maxGrains: GE = 512): GrainFM = 
     new GrainFM(numChannels, trig, dur, carFreq, modFreq, index, pan, envBuf, maxGrains)
+  
+  final val typeId = 213
   
   def read(in: RefMapIn, key: String, arity: Int): GrainFM = {
     require (arity == 9)
@@ -92,7 +98,7 @@ final case class GrainFM(numChannels: Int = 1, trig: GE, dur: GE = 1.0f, carFreq
   * @see [[de.sciss.synth.ugen.PlayBuf$ PlayBuf]]
   * @see [[de.sciss.synth.ugen.PanAz$ PanAz]]
   */
-object GrainBuf extends ProductReader[GrainBuf] {
+object GrainBuf extends ProductType[GrainBuf] {
   /** @param numChannels      the number of channels to output. If `1` , a monophonic
     *                         signal is returned and the `pan` argument is ignored.
     * @param trig             a control- or audio-rate trigger to start a new grain.
@@ -121,6 +127,8 @@ object GrainBuf extends ProductReader[GrainBuf] {
     */
   def ar(numChannels: Int = 1, trig: GE, dur: GE = 1.0f, buf: GE, speed: GE = 1.0f, pos: GE = 0.0f, interp: GE = 2, pan: GE = 0.0f, envBuf: GE = -1, maxGrains: GE = 512): GrainBuf = 
     new GrainBuf(numChannels, trig, dur, buf, speed, pos, interp, pan, envBuf, maxGrains)
+  
+  final val typeId = 214
   
   def read(in: RefMapIn, key: String, arity: Int): GrainBuf = {
     require (arity == 10)
@@ -184,9 +192,11 @@ final case class GrainBuf(numChannels: Int = 1, trig: GE, dur: GE = 1.0f, buf: G
   protected def makeUGen(_args: Vec[UGenIn]): UGenInLike = 
     UGen.MultiOut(name, audio, Vector.fill(numChannels)(audio), _args, isIndividual = true)
 }
-object Warp1 extends ProductReader[Warp1] {
+object Warp1 extends ProductType[Warp1] {
   def ar(numChannels: Int, buf: GE, pos: GE = 0.0f, speed: GE = 1.0f, winSize: GE = 0.2f, envBuf: GE = -1, overlaps: GE = 8.0f, winRand: GE = 0.0f, interp: GE = 1): Warp1 = 
     new Warp1(numChannels, buf, pos, speed, winSize, envBuf, overlaps, winRand, interp)
+  
+  final val typeId = 215
   
   def read(in: RefMapIn, key: String, arity: Int): Warp1 = {
     require (arity == 9)

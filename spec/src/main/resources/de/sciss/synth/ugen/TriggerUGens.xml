@@ -1,6 +1,6 @@
-<ugens revision="10">
+<ugens revision="11">
     <!-- all documented -->
-    <ugen name="Trig1">
+    <ugen name="Trig1" type-id="357">
         <rate name="audio"/>
         <rate name="control"/>
         <arg name="in" type="trig">
@@ -32,7 +32,7 @@
             <see>ugen.Trig</see>
         </doc>
     </ugen>
-    <ugen name="Trig">
+    <ugen name="Trig" type-id="358">
         <rate name="audio"/>
         <rate name="control"/>
         <arg name="in" type="trig">
@@ -64,7 +64,7 @@
             <see>ugen.Trig1</see>
         </doc>
     </ugen>
-    <ugen name="SendTrig" side-effect="true">
+    <ugen name="SendTrig" type-id="359" side-effect="true">
         <no-outputs/>
         <rate name="audio"/>
         <rate name="control"/>
@@ -98,7 +98,7 @@
         </doc>
     </ugen>
 
-    <ugen name="SendReply" side-effect="true">
+    <ugen name="SendReply" type-id="360" side-effect="true">
         <no-outputs/>
         <rate name="control"/>
         <rate name="audio"/>
@@ -138,7 +138,7 @@
         </doc>
     </ugen>
 
-    <ugen name="Poll" side-effect="true">
+    <ugen name="Poll" type-id="361" side-effect="true">
         <rate name="audio"/>
         <rate name="control"/>
         <arg name="trig" type="trig" pos="0" rate="ugen">
@@ -171,7 +171,7 @@
         </doc>
     </ugen>
 
-    <ugen name="ToggleFF">
+    <ugen name="ToggleFF" type-id="362">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="trig" type="trig" rate="ugen">
@@ -196,7 +196,7 @@
             <see>ugen.SetResetFF</see>
         </doc>
     </ugen>
-    <ugen name="SetResetFF">
+    <ugen name="SetResetFF" type-id="363">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="trig" type="trig" rate="ugen">
@@ -239,7 +239,7 @@
             <see>ugen.ToggleFF</see>
         </doc>
     </ugen>
-    <ugen name="Latch">
+    <ugen name="Latch" type-id="364">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="in">
@@ -265,7 +265,7 @@
             <see>ugen.Demand</see>
         </doc>
     </ugen>
-    <ugen name="Gate">
+    <ugen name="Gate" type-id="365">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="in" rate="ugen">
@@ -291,7 +291,7 @@
             <see>ugen.Latch</see>
         </doc>
     </ugen>
-    <ugen name="Schmidt">
+    <ugen name="Schmidt" type-id="366">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="in" rate="ugen">
@@ -319,7 +319,7 @@
             <!-- TODO: example -->
         </doc>
     </ugen>
-    <ugen name="PulseDivider">
+    <ugen name="PulseDivider" type-id="367">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="trig" type="trig" rate="ugen">
@@ -366,7 +366,7 @@
             <see>ugen.Stepper</see>
         </doc>
     </ugen>
-    <ugen name="PulseCount">
+    <ugen name="PulseCount" type-id="368">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="trig" type="trig" rate="ugen">
@@ -394,7 +394,7 @@
             <see>ugen.Stepper</see>
         </doc>
     </ugen>
-    <ugen name="Stepper">
+    <ugen name="Stepper" type-id="369">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="trig" type="trig" rate="ugen">
@@ -457,7 +457,7 @@
             <see>ugen.PulseCount</see>
         </doc>
     </ugen>
-    <ugen name="TDelay">
+    <ugen name="TDelay" type-id="370">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="trig" type="trig" rate="ugen">
@@ -482,7 +482,7 @@
             <!-- TODO: example -->
         </doc>
     </ugen>
-    <ugen name="ZeroCrossing">
+    <ugen name="ZeroCrossing" type-id="371">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="in" rate="ugen">
@@ -506,7 +506,7 @@
             <see>ugen.Pitch</see>
         </doc>
     </ugen>
-    <ugen name="Timer">
+    <ugen name="Timer" type-id="372">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="trig" type="trig" rate="ugen">
@@ -527,7 +527,7 @@
             <see>ugen.Sweep</see>
         </doc>
     </ugen>
-    <ugen name="Sweep">
+    <ugen name="Sweep" type-id="373">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="trig" type="trig">
@@ -557,7 +557,7 @@
             <see>ugen.Line</see>
         </doc>
     </ugen>
-    <ugen name="Phasor">
+    <ugen name="Phasor" type-id="374">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="trig" type="trig" default="low">
@@ -608,7 +608,7 @@
             <see>ugen.LFSaw</see>
         </doc>
     </ugen>
-    <ugen name="Peak">
+    <ugen name="Peak" type-id="375">
         <rate name="control"/>
         <rate name="audio">
             <arg name="in" rate="ugen"/> <!-- workaround -->
@@ -658,7 +658,7 @@
             <see>ugen.Amplitude</see>
         </doc>
     </ugen>
-    <ugen name="RunningMin">
+    <ugen name="RunningMin" type-id="376">
         <rate name="control"/>
         <rate name="audio">
             <arg name="in" rate="ugen"/> <!-- workaround -->
@@ -702,7 +702,7 @@
             <see>ugen.RunningSum</see>
         </doc>
     </ugen>
-    <ugen name="RunningMax">
+    <ugen name="RunningMax" type-id="377">
         <rate name="control"/>
         <rate name="audio">
             <arg name="in" rate="ugen"/> <!-- workaround -->
@@ -746,7 +746,7 @@
             <see>ugen.RunningSum</see>
         </doc>
     </ugen>
-    <ugen name="PeakFollower">
+    <ugen name="PeakFollower" type-id="378">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="in" rate="ugen">
@@ -782,7 +782,7 @@
             <see>ugen.LagUD</see>
         </doc>
     </ugen>
-    <ugen name="MostChange">
+    <ugen name="MostChange" type-id="379">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="a">
@@ -819,7 +819,7 @@
             <see>ugen.LeastChange</see>
         </doc>
     </ugen>
-    <ugen name="LeastChange">
+    <ugen name="LeastChange" type-id="380">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="a" rate="ugen">
@@ -856,7 +856,7 @@
             <see>ugen.MostChange</see>
         </doc>
     </ugen>
-    <ugen name="LastValue">
+    <ugen name="LastValue" type-id="381">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="in">
@@ -883,7 +883,7 @@
             <see>ugen.Slew</see>
         </doc>
     </ugen>
-    <ugen name="Done" side-effect="true">
+    <ugen name="Done" type-id="382" side-effect="true">
         <rate name="control" implied="true"/>
         <arg name="src" type="done-flag">
             <doc>
@@ -904,7 +904,7 @@
             <see>ugen.EnvGen</see>
         </doc>
     </ugen>
-    <ugen name="Pause" side-effect="true">
+    <ugen name="Pause" type-id="383" side-effect="true">
         <rate name="control" implied="true"/>
         <arg name="gate" type="gate"> <!-- actually checks for _ == 0f -->
             <doc>
@@ -932,7 +932,7 @@
             <see>ugen.PauseSelf</see>
         </doc>
     </ugen>
-    <ugen name="FreeSelf" side-effect="true">
+    <ugen name="FreeSelf" type-id="384" side-effect="true">
         <rate name="control" implied="true"/>
         <arg name="trig" type="trig">
             <doc>
@@ -956,7 +956,7 @@
             <see>ugen.PauseSelf</see>
         </doc>
     </ugen>
-    <ugen name="PauseSelf" side-effect="true">
+    <ugen name="PauseSelf" type-id="385" side-effect="true">
         <rate name="control" implied="true"/>
         <arg name="trig" type="trig">
             <doc>
@@ -980,7 +980,7 @@
             <see>ugen.FreeSelf</see>
         </doc>
     </ugen>
-    <ugen name="Free" side-effect="true">
+    <ugen name="Free" type-id="386" side-effect="true">
         <rate name="control" implied="true"/>
         <arg name="trig" type="trig">
             <doc>
@@ -1003,7 +1003,7 @@
             <see>ugen.FreeSelf</see>
         </doc>
     </ugen>
-    <ugen name="FreeSelfWhenDone" side-effect="true">
+    <ugen name="FreeSelfWhenDone" type-id="387" side-effect="true">
         <rate name="control" implied="true"/>
         <arg name="src" type="done-flag">
             <doc>
@@ -1026,7 +1026,7 @@
             <see>ugen.Done</see>
         </doc>
     </ugen>
-    <ugen name="PauseSelfWhenDone" side-effect="true">
+    <ugen name="PauseSelfWhenDone" type-id="388" side-effect="true">
         <rate name="control" implied="true"/>
         <arg name="src" type="done-flag">
             <doc>

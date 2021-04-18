@@ -1,6 +1,6 @@
-<ugens revision="2">
+<ugens revision="3">
     <!-- all documented -->
-    <ugen name="MouseX">
+    <ugen name="MouseX" type-id="279">
         <rate name="control" implied="true"/>
         <arg name="lo" default="0.0">
             <doc>
@@ -43,7 +43,7 @@
             <see>ugen.KeyState</see>
         </doc>
     </ugen>
-    <ugen name="MouseY">
+    <ugen name="MouseY" type-id="280">
         <rate name="control" implied="true"/>
         <arg name="lo" default="0.0">
             <doc>
@@ -88,7 +88,7 @@
             <see>ugen.KeyState</see>
         </doc>
     </ugen>
-    <ugen name="MouseButton">
+    <ugen name="MouseButton" type-id="281">
         <rate name="control" implied="true"/>
         <arg name="lo" default="0.0">
             <doc>

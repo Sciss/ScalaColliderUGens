@@ -1,4 +1,4 @@
-// revision: 10
+// revision: 11
 package de.sciss.synth
 package ugen
 
@@ -23,7 +23,7 @@ import UGenSource._
   * 
   * @see [[de.sciss.synth.ugen.Trig$ Trig]]
   */
-object Trig1 extends ProductReader[Trig1] {
+object Trig1 extends ProductType[Trig1] {
   /** @param in               the trigger. This can be any signal. A trigger happens
     *                         when the signal changes from non-positive to positive.
     * @param dur              the duration for which the ugens holds the value of 1
@@ -37,6 +37,8 @@ object Trig1 extends ProductReader[Trig1] {
     *                         when triggered
     */
   def ar(in: GE, dur: GE = 0.1f): Trig1 = new Trig1(audio, in, dur)
+  
+  final val typeId = 357
   
   def read(in: RefMapIn, key: String, arity: Int): Trig1 = {
     require (arity == 3)
@@ -90,7 +92,7 @@ final case class Trig1(rate: Rate, in: GE, dur: GE = 0.1f) extends UGenSource.Si
   * 
   * @see [[de.sciss.synth.ugen.Trig1$ Trig1]]
   */
-object Trig extends ProductReader[Trig] {
+object Trig extends ProductType[Trig] {
   /** @param in               the trigger. This can be any signal. A trigger happens
     *                         when the signal changes from non-positive to positive.
     * @param dur              the duration for which the ugens holds the value of the
@@ -104,6 +106,8 @@ object Trig extends ProductReader[Trig] {
     *                         input signal when triggered
     */
   def ar(in: GE, dur: GE = 0.1f): Trig = new Trig(audio, in, dur)
+  
+  final val typeId = 358
   
   def read(in: RefMapIn, key: String, arity: Int): Trig = {
     require (arity == 3)
@@ -149,7 +153,7 @@ final case class Trig(rate: Rate, in: GE, dur: GE = 0.1f) extends UGenSource.Sin
   * 
   * @see [[de.sciss.synth.ugen.SendReply$ SendReply]]
   */
-object SendTrig extends ProductReader[SendTrig] {
+object SendTrig extends ProductType[SendTrig] {
   /** @param trig             the trigger signal causing the value to be read and
     *                         sent. A trigger occurs when passing from non-positive to
     *                         positive.
@@ -173,6 +177,8 @@ object SendTrig extends ProductReader[SendTrig] {
     *                         several SendTrig instances per SynthDef.
     */
   def ar(trig: GE, value: GE = 0.0f, id: GE = 0): SendTrig = new SendTrig(audio, trig, value, id)
+  
+  final val typeId = 359
   
   def read(in: RefMapIn, key: String, arity: Int): SendTrig = {
     require (arity == 4)
@@ -228,7 +234,7 @@ final case class SendTrig(rate: MaybeRate, trig: GE, value: GE = 0.0f, id: GE = 
   * 
   * @see [[de.sciss.synth.ugen.SendTrig$ SendTrig]]
   */
-object SendReply extends ProductReader[SendReply] {
+object SendReply extends ProductType[SendReply] {
   /** @param trig             a non-positive to positive transition triggers a message
     * @param values           a graph element comprising the signal channels to be
     *                         polled
@@ -260,6 +266,8 @@ object SendReply extends ProductReader[SendReply] {
     */
   def ar(trig: GE, values: GE, msgName: String = "/reply", id: GE = 0): SendReply = 
     new SendReply(audio, trig, values, msgName, id)
+  
+  final val typeId = 360
   
   def read(in: RefMapIn, key: String, arity: Int): SendReply = {
     require (arity == 5)
@@ -313,7 +321,7 @@ final case class SendReply(rate: MaybeRate, trig: GE, values: GE, msgName: Strin
   * 
   * @see [[de.sciss.synth.ugen.SendTrig$ SendTrig]]
   */
-object Poll extends ProductReader[Poll] {
+object Poll extends ProductType[Poll] {
   /** @param trig             a non-positive to positive transition telling Poll to
     *                         return a value
     * @param in               the signal you want to poll
@@ -333,6 +341,8 @@ object Poll extends ProductReader[Poll] {
     */
   def ar(trig: GE, in: GE, label: String = "poll", trigId: GE = -1): Poll = 
     new Poll(audio, trig, in, label, trigId)
+  
+  final val typeId = 361
   
   def read(in: RefMapIn, key: String, arity: Int): Poll = {
     require (arity == 5)
@@ -388,7 +398,7 @@ final case class Poll(rate: MaybeRate, trig: GE, in: GE, label: String = "poll",
   * 
   * @see [[de.sciss.synth.ugen.SetResetFF$ SetResetFF]]
   */
-object ToggleFF extends ProductReader[ToggleFF] {
+object ToggleFF extends ProductType[ToggleFF] {
   /** @param trig             a signal to trigger the flip-flop. a trigger occurs
     *                         when the signal changes from non-positive to positive.
     */
@@ -398,6 +408,8 @@ object ToggleFF extends ProductReader[ToggleFF] {
     *                         when the signal changes from non-positive to positive.
     */
   def ar(trig: GE): ToggleFF = new ToggleFF(audio, trig)
+  
+  final val typeId = 362
   
   def read(in: RefMapIn, key: String, arity: Int): ToggleFF = {
     require (arity == 2)
@@ -461,7 +473,7 @@ final case class ToggleFF(rate: MaybeRate, trig: GE) extends UGenSource.SingleOu
   * 
   * @see [[de.sciss.synth.ugen.ToggleFF$ ToggleFF]]
   */
-object SetResetFF extends ProductReader[SetResetFF] {
+object SetResetFF extends ProductType[SetResetFF] {
   /** @param trig             trigger that sets output to 1. A trigger happens when
     *                         the signal changes from non-positive to positive.
     * @param reset            trigger that sets output to 0. A trigger happens when
@@ -475,6 +487,8 @@ object SetResetFF extends ProductReader[SetResetFF] {
     *                         the signal changes from non-positive to positive.
     */
   def ar(trig: GE, reset: GE): SetResetFF = new SetResetFF(audio, trig, reset)
+  
+  final val typeId = 363
   
   def read(in: RefMapIn, key: String, arity: Int): SetResetFF = {
     require (arity == 3)
@@ -515,7 +529,7 @@ final case class SetResetFF(rate: MaybeRate, trig: GE, reset: GE) extends UGenSo
   * @see [[de.sciss.synth.ugen.Gate$ Gate]]
   * @see [[de.sciss.synth.ugen.Demand$ Demand]]
   */
-object Latch extends ProductReader[Latch] {
+object Latch extends ProductType[Latch] {
   /** @param in               the input signal
     * @param trig             the trigger. The can be any signal. A trigger happens
     *                         when the signal changes from non-positive to positive.
@@ -527,6 +541,8 @@ object Latch extends ProductReader[Latch] {
     *                         when the signal changes from non-positive to positive.
     */
   def ar(in: GE, trig: GE = 1): Latch = new Latch(audio, in, trig)
+  
+  final val typeId = 364
   
   def read(in: RefMapIn, key: String, arity: Int): Latch = {
     require (arity == 3)
@@ -562,7 +578,7 @@ final case class Latch(rate: Rate, in: GE, trig: GE = 1) extends UGenSource.Sing
   * 
   * @see [[de.sciss.synth.ugen.Latch$ Latch]]
   */
-object Gate extends ProductReader[Gate] {
+object Gate extends ProductType[Gate] {
   /** @param in               the input signal to gate
     * @param gate             the signal specifying whether to pass the input signal
     *                         (when greater than zero) or whether to close the gate
@@ -578,6 +594,8 @@ object Gate extends ProductReader[Gate] {
     *                         zero)
     */
   def ar(in: GE, gate: GE): Gate = new Gate(audio, in, gate)
+  
+  final val typeId = 365
   
   def read(in: RefMapIn, key: String, arity: Int): Gate = {
     require (arity == 3)
@@ -617,7 +635,7 @@ final case class Gate(rate: MaybeRate, in: GE, gate: GE) extends UGenSource.Sing
   * hysteresis behavior, preventing heavy oscillations in a noisy system which might
   * occur with a single-threshold trigger.
   */
-object Schmidt extends ProductReader[Schmidt] {
+object Schmidt extends ProductType[Schmidt] {
   /** @param in               input signal to be analyzed
     * @param lo               low threshold
     * @param hi               high threshold
@@ -629,6 +647,8 @@ object Schmidt extends ProductReader[Schmidt] {
     * @param hi               high threshold
     */
   def ar(in: GE, lo: GE = 0.0f, hi: GE = 1.0f): Schmidt = new Schmidt(audio, in, lo, hi)
+  
+  final val typeId = 366
   
   def read(in: RefMapIn, key: String, arity: Int): Schmidt = {
     require (arity == 4)
@@ -691,7 +711,7 @@ final case class Schmidt(rate: MaybeRate, in: GE, lo: GE = 0.0f, hi: GE = 1.0f)
   * @see [[de.sciss.synth.ugen.PulseCount$ PulseCount]]
   * @see [[de.sciss.synth.ugen.Stepper$ Stepper]]
   */
-object PulseDivider extends ProductReader[PulseDivider] {
+object PulseDivider extends ProductType[PulseDivider] {
   /** @param trig             a trigger occurs when the signal changes from
     *                         non-positive to positive.
     * @param div              decimation factor of the UGen. A value of 1 would cause
@@ -728,6 +748,8 @@ object PulseDivider extends ProductReader[PulseDivider] {
     *                         happens after three input triggers.
     */
   def ar(trig: GE, div: GE = 2, start: GE = 0): PulseDivider = new PulseDivider(audio, trig, div, start)
+  
+  final val typeId = 367
   
   def read(in: RefMapIn, key: String, arity: Int): PulseDivider = {
     require (arity == 4)
@@ -790,7 +812,7 @@ final case class PulseDivider(rate: MaybeRate, trig: GE, div: GE = 2, start: GE 
   * 
   * @see [[de.sciss.synth.ugen.Stepper$ Stepper]]
   */
-object PulseCount extends ProductReader[PulseCount] {
+object PulseCount extends ProductType[PulseCount] {
   /** @param trig             a trigger happens when the signal changes from
     *                         non-positive to positive
     * @param reset            when triggered, resets the counter to zero. When both
@@ -806,6 +828,8 @@ object PulseCount extends ProductReader[PulseCount] {
     *                         `reset` takes precedence (output will be zero).
     */
   def ar(trig: GE, reset: GE = 0): PulseCount = new PulseCount(audio, trig, reset)
+  
+  final val typeId = 368
   
   def read(in: RefMapIn, key: String, arity: Int): PulseCount = {
     require (arity == 3)
@@ -856,7 +880,7 @@ final case class PulseCount(rate: MaybeRate, trig: GE, reset: GE = 0) extends UG
   * 
   * @see [[de.sciss.synth.ugen.PulseCount$ PulseCount]]
   */
-object Stepper extends ProductReader[Stepper] {
+object Stepper extends ProductType[Stepper] {
   /** @param trig             The trigger signal which increments the counter. A
     *                         trigger happens when the signal changes from
     *                         non-positive to positive. Note that if the UGen is
@@ -935,6 +959,8 @@ object Stepper extends ProductReader[Stepper] {
   def ar(trig: GE, reset: GE = 0, lo: GE = 0, hi: GE = 2147483583, step: GE = 1, resetVal: GE = 0): Stepper = 
     new Stepper(audio, trig, reset, lo, hi, step, resetVal)
   
+  final val typeId = 369
+  
   def read(in: RefMapIn, key: String, arity: Int): Stepper = {
     require (arity == 7)
     val _rate     = in.readMaybeRate()
@@ -1009,7 +1035,7 @@ final case class Stepper(rate: MaybeRate, trig: GE, reset: GE = 0, lo: GE = 0, h
   * trigger arriving in the time between the previous trigger and the passing of the
   * delay time is ignored.
   */
-object TDelay extends ProductReader[TDelay] {
+object TDelay extends ProductType[TDelay] {
   /** @param trig             The input trigger. A trigger is recognized when the
     *                         signal passes from non-positive to positive. Note that,
     *                         no matter what the amplitude of the input trigger is,
@@ -1025,6 +1051,8 @@ object TDelay extends ProductReader[TDelay] {
     * @param dur              The delay time in seconds.
     */
   def ar(trig: GE, dur: GE = 0.1f): TDelay = new TDelay(audio, trig, dur)
+  
+  final val typeId = 370
   
   def read(in: RefMapIn, key: String, arity: Int): TDelay = {
     require (arity == 3)
@@ -1075,7 +1103,7 @@ final case class TDelay(rate: MaybeRate, trig: GE, dur: GE = 0.1f) extends UGenS
   * 
   * @see [[de.sciss.synth.ugen.Pitch$ Pitch]]
   */
-object ZeroCrossing extends ProductReader[ZeroCrossing] {
+object ZeroCrossing extends ProductType[ZeroCrossing] {
   /** @param in               signal to analyze
     */
   def kr(in: GE): ZeroCrossing = new ZeroCrossing(control, in)
@@ -1083,6 +1111,8 @@ object ZeroCrossing extends ProductReader[ZeroCrossing] {
   /** @param in               signal to analyze
     */
   def ar(in: GE): ZeroCrossing = new ZeroCrossing(audio, in)
+  
+  final val typeId = 371
   
   def read(in: RefMapIn, key: String, arity: Int): ZeroCrossing = {
     require (arity == 2)
@@ -1117,7 +1147,7 @@ final case class ZeroCrossing(rate: MaybeRate, in: GE) extends UGenSource.Single
   * 
   * @see [[de.sciss.synth.ugen.Sweep$ Sweep]]
   */
-object Timer extends ProductReader[Timer] {
+object Timer extends ProductType[Timer] {
   /** @param trig             the trigger to update the output signal. A trigger
     *                         occurs when trig signal crosses from non-positive to
     *                         positive.
@@ -1129,6 +1159,8 @@ object Timer extends ProductReader[Timer] {
     *                         positive.
     */
   def ar(trig: GE): Timer = new Timer(audio, trig)
+  
+  final val typeId = 372
   
   def read(in: RefMapIn, key: String, arity: Int): Timer = {
     require (arity == 2)
@@ -1168,7 +1200,7 @@ final case class Timer(rate: MaybeRate, trig: GE) extends UGenSource.SingleOut {
   * @see [[de.sciss.synth.ugen.Phasor$ Phasor]]
   * @see [[de.sciss.synth.ugen.Line$ Line]]
   */
-object Sweep extends ProductReader[Sweep] {
+object Sweep extends ProductType[Sweep] {
   /** @param trig             the trigger that restarts the ramp, when passing from
     *                         non-positive to positive
     * @param speed            the amount of increment of the output signal per
@@ -1186,6 +1218,8 @@ object Sweep extends ProductReader[Sweep] {
     *                         UGen's calculation rate.
     */
   def ar(trig: GE, speed: GE): Sweep = new Sweep(audio, trig, speed)
+  
+  final val typeId = 373
   
   def read(in: RefMapIn, key: String, arity: Int): Sweep = {
     require (arity == 3)
@@ -1242,7 +1276,7 @@ final case class Sweep(rate: Rate, trig: GE, speed: GE) extends UGenSource.Singl
   * @see [[de.sciss.synth.ugen.Line$ Line]]
   * @see [[de.sciss.synth.ugen.LFSaw$ LFSaw]]
   */
-object Phasor extends ProductReader[Phasor] {
+object Phasor extends ProductType[Phasor] {
   def kr: Phasor = kr()
   
   /** @param trig             trigger signal that causes the phasor to jump to the
@@ -1276,6 +1310,8 @@ object Phasor extends ProductReader[Phasor] {
     */
   def ar(trig: GE = 0, speed: GE = 1.0f, lo: GE = 0.0f, hi: GE = 1.0f, resetVal: GE = 0.0f): Phasor = 
     new Phasor(audio, trig, speed, lo, hi, resetVal)
+  
+  final val typeId = 374
   
   def read(in: RefMapIn, key: String, arity: Int): Phasor = {
     require (arity == 6)
@@ -1359,7 +1395,7 @@ final case class Phasor(rate: Rate, trig: GE = 0, speed: GE = 1.0f, lo: GE = 0.0
   * @see [[de.sciss.synth.ugen.PeakFollower$ PeakFollower]]
   * @see [[de.sciss.synth.ugen.Amplitude$ Amplitude]]
   */
-object Peak extends ProductReader[Peak] {
+object Peak extends ProductType[Peak] {
   /** @param in               input signal to analyze
     * @param trig             resets the maximum observed value to the current
     *                         absolute value of the input signal
@@ -1371,6 +1407,8 @@ object Peak extends ProductReader[Peak] {
     *                         absolute value of the input signal
     */
   def ar(in: GE, trig: GE): Peak = new Peak(audio, in, trig)
+  
+  final val typeId = 375
   
   def read(in: RefMapIn, key: String, arity: Int): Peak = {
     require (arity == 3)
@@ -1443,7 +1481,7 @@ final case class Peak(rate: Rate, in: GE, trig: GE) extends UGenSource.SingleOut
   * @see [[de.sciss.synth.ugen.Peak$ Peak]]
   * @see [[de.sciss.synth.ugen.RunningSum$ RunningSum]]
   */
-object RunningMin extends ProductReader[RunningMin] {
+object RunningMin extends ProductType[RunningMin] {
   /** @param in               input signal to analyze
     * @param trig             resets the minimum observed value to the current value
     *                         of the input signal
@@ -1455,6 +1493,8 @@ object RunningMin extends ProductReader[RunningMin] {
     *                         of the input signal
     */
   def ar(in: GE, trig: GE): RunningMin = new RunningMin(audio, in, trig)
+  
+  final val typeId = 376
   
   def read(in: RefMapIn, key: String, arity: Int): RunningMin = {
     require (arity == 3)
@@ -1522,7 +1562,7 @@ final case class RunningMin(rate: Rate, in: GE, trig: GE) extends UGenSource.Sin
   * @see [[de.sciss.synth.ugen.Peak$ Peak]]
   * @see [[de.sciss.synth.ugen.RunningSum$ RunningSum]]
   */
-object RunningMax extends ProductReader[RunningMax] {
+object RunningMax extends ProductType[RunningMax] {
   /** @param in               input signal to analyze
     * @param trig             resets the maximum observed value to the current value
     *                         of the input signal
@@ -1534,6 +1574,8 @@ object RunningMax extends ProductReader[RunningMax] {
     *                         of the input signal
     */
   def ar(in: GE, trig: GE): RunningMax = new RunningMax(audio, in, trig)
+  
+  final val typeId = 377
   
   def read(in: RefMapIn, key: String, arity: Int): RunningMax = {
     require (arity == 3)
@@ -1594,7 +1636,7 @@ final case class RunningMax(rate: Rate, in: GE, trig: GE) extends UGenSource.Sin
   * @see [[de.sciss.synth.ugen.RunningSum$ RunningSum]]
   * @see [[de.sciss.synth.ugen.LagUD$ LagUD]]
   */
-object PeakFollower extends ProductReader[PeakFollower] {
+object PeakFollower extends ProductType[PeakFollower] {
   /** @param in               input signal to trace
     * @param decay            feedback coefficient controlling the release rate. This
     *                         should be less than one, otherwise the UGen may blow up.
@@ -1606,6 +1648,8 @@ object PeakFollower extends ProductReader[PeakFollower] {
     *                         should be less than one, otherwise the UGen may blow up.
     */
   def ar(in: GE, decay: GE = 0.999f): PeakFollower = new PeakFollower(audio, in, decay)
+  
+  final val typeId = 378
   
   def read(in: RefMapIn, key: String, arity: Int): PeakFollower = {
     require (arity == 3)
@@ -1668,7 +1712,7 @@ final case class PeakFollower(rate: MaybeRate, in: GE, decay: GE = 0.999f) exten
   * 
   * @see [[de.sciss.synth.ugen.LeastChange$ LeastChange]]
   */
-object MostChange extends ProductReader[MostChange] {
+object MostChange extends ProductType[MostChange] {
   /** @param a                first input signal to select from
     * @param b                second input signal to select from
     */
@@ -1678,6 +1722,8 @@ object MostChange extends ProductReader[MostChange] {
     * @param b                second input signal to select from
     */
   def ar(a: GE, b: GE): MostChange = new MostChange(audio, a, b)
+  
+  final val typeId = 379
   
   def read(in: RefMapIn, key: String, arity: Int): MostChange = {
     require (arity == 3)
@@ -1731,7 +1777,7 @@ final case class MostChange(rate: Rate, a: GE, b: GE) extends UGenSource.SingleO
   * 
   * @see [[de.sciss.synth.ugen.MostChange$ MostChange]]
   */
-object LeastChange extends ProductReader[LeastChange] {
+object LeastChange extends ProductType[LeastChange] {
   /** @param a                first input signal to select from
     * @param b                second input signal to select from
     */
@@ -1741,6 +1787,8 @@ object LeastChange extends ProductReader[LeastChange] {
     * @param b                second input signal to select from
     */
   def ar(a: GE, b: GE): LeastChange = new LeastChange(audio, a, b)
+  
+  final val typeId = 380
   
   def read(in: RefMapIn, key: String, arity: Int): LeastChange = {
     require (arity == 3)
@@ -1788,7 +1836,7 @@ final case class LeastChange(rate: MaybeRate, a: GE, b: GE) extends UGenSource.S
   * 
   * @see [[de.sciss.synth.ugen.Slew$ Slew]]
   */
-object LastValue extends ProductReader[LastValue] {
+object LastValue extends ProductType[LastValue] {
   /** @param in               input signal to analyze and filter
     * @param thresh           threshold below which the input sign
     */
@@ -1798,6 +1846,8 @@ object LastValue extends ProductReader[LastValue] {
     * @param thresh           threshold below which the input sign
     */
   def ar(in: GE, thresh: GE = 0.01f): LastValue = new LastValue(audio, in, thresh)
+  
+  final val typeId = 381
   
   def read(in: RefMapIn, key: String, arity: Int): LastValue = {
     require (arity == 3)
@@ -1834,10 +1884,12 @@ final case class LastValue(rate: Rate, in: GE, thresh: GE = 0.01f) extends UGenS
   * @see [[de.sciss.synth.ugen.Line$ Line]]
   * @see [[de.sciss.synth.ugen.EnvGen$ EnvGen]]
   */
-object Done extends ProductReader[Done] {
+object Done extends ProductType[Done] {
   /** @param src              the UGen to track
     */
   def kr(src: GE with HasDoneFlag): Done = new Done(src)
+  
+  final val typeId = 382
   
   def read(in: RefMapIn, key: String, arity: Int): Done = {
     require (arity == 1)
@@ -1878,11 +1930,13 @@ final case class Done(src: GE with HasDoneFlag)
   * @see [[de.sciss.synth.ugen.Free$ Free]]
   * @see [[de.sciss.synth.ugen.PauseSelf$ PauseSelf]]
   */
-object Pause extends ProductReader[Pause] {
+object Pause extends ProductType[Pause] {
   /** @param gate             when 0, node is paused, when 1, node is resumed
     * @param node             the id of the node to be paused or resumed
     */
   def kr(gate: GE, node: GE): Pause = new Pause(gate, node)
+  
+  final val typeId = 383
   
   def read(in: RefMapIn, key: String, arity: Int): Pause = {
     require (arity == 2)
@@ -1927,10 +1981,12 @@ final case class Pause(gate: GE, node: GE)
   * @see [[de.sciss.synth.ugen.Free$ Free]]
   * @see [[de.sciss.synth.ugen.PauseSelf$ PauseSelf]]
   */
-object FreeSelf extends ProductReader[FreeSelf] {
+object FreeSelf extends ProductType[FreeSelf] {
   /** @param trig             the input signal which will trigger the action.
     */
   def kr(trig: GE): FreeSelf = new FreeSelf(trig)
+  
+  final val typeId = 384
   
   def read(in: RefMapIn, key: String, arity: Int): FreeSelf = {
     require (arity == 1)
@@ -1974,10 +2030,12 @@ final case class FreeSelf(trig: GE) extends UGenSource.SingleOut with ControlRat
   * @see [[de.sciss.synth.ugen.Pause$ Pause]]
   * @see [[de.sciss.synth.ugen.FreeSelf$ FreeSelf]]
   */
-object PauseSelf extends ProductReader[PauseSelf] {
+object PauseSelf extends ProductType[PauseSelf] {
   /** @param trig             the input signal which will trigger the action.
     */
   def kr(trig: GE): PauseSelf = new PauseSelf(trig)
+  
+  final val typeId = 385
   
   def read(in: RefMapIn, key: String, arity: Int): PauseSelf = {
     require (arity == 1)
@@ -2015,12 +2073,14 @@ final case class PauseSelf(trig: GE) extends UGenSource.SingleOut with ControlRa
   * @see [[de.sciss.synth.ugen.Pause$ Pause]]
   * @see [[de.sciss.synth.ugen.FreeSelf$ FreeSelf]]
   */
-object Free extends ProductReader[Free] {
+object Free extends ProductType[Free] {
   /** @param trig             the trigger to cause the action
     * @param node             the id of the target node to free upon receiving the
     *                         trigger
     */
   def kr(trig: GE, node: GE): Free = new Free(trig, node)
+  
+  final val typeId = 386
   
   def read(in: RefMapIn, key: String, arity: Int): Free = {
     require (arity == 2)
@@ -2060,11 +2120,13 @@ final case class Free(trig: GE, node: GE) extends UGenSource.SingleOut with Cont
   * @see [[de.sciss.synth.ugen.PauseSelfWhenDone$ PauseSelfWhenDone]]
   * @see [[de.sciss.synth.ugen.Done$ Done]]
   */
-object FreeSelfWhenDone extends ProductReader[FreeSelfWhenDone] {
+object FreeSelfWhenDone extends ProductType[FreeSelfWhenDone] {
   /** @param src              the input UGen which when finished will trigger the
     *                         action.
     */
   def kr(src: GE with HasDoneFlag): FreeSelfWhenDone = new FreeSelfWhenDone(src)
+  
+  final val typeId = 387
   
   def read(in: RefMapIn, key: String, arity: Int): FreeSelfWhenDone = {
     require (arity == 1)
@@ -2109,11 +2171,13 @@ final case class FreeSelfWhenDone(src: GE with HasDoneFlag)
   * @see [[de.sciss.synth.ugen.FreeSelfWhenDone$ FreeSelfWhenDone]]
   * @see [[de.sciss.synth.ugen.Done$ Done]]
   */
-object PauseSelfWhenDone extends ProductReader[PauseSelfWhenDone] {
+object PauseSelfWhenDone extends ProductType[PauseSelfWhenDone] {
   /** @param src              the input UGen which when finished will trigger the
     *                         action.
     */
   def kr(src: GE with HasDoneFlag): PauseSelfWhenDone = new PauseSelfWhenDone(src)
+  
+  final val typeId = 388
   
   def read(in: RefMapIn, key: String, arity: Int): PauseSelfWhenDone = {
     require (arity == 1)

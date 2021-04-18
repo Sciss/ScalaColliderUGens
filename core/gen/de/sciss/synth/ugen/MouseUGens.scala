@@ -1,4 +1,4 @@
-// revision: 2
+// revision: 3
 package de.sciss.synth
 package ugen
 
@@ -23,7 +23,7 @@ import UGenSource._
   * @see [[de.sciss.synth.ugen.MouseButton$ MouseButton]]
   * @see [[de.sciss.synth.ugen.KeyState$ KeyState]]
   */
-object MouseX extends ProductReader[MouseX] {
+object MouseX extends ProductType[MouseX] {
   def kr: MouseX = kr()
   
   /** @param lo               value when the mouse is on the left side of the screen
@@ -43,6 +43,8 @@ object MouseX extends ProductReader[MouseX] {
     */
   def kr(lo: GE = 0.0f, hi: GE = 1.0f, warp: GE = 0.0f, lag: GE = 0.2f): MouseX = 
     new MouseX(lo, hi, warp, lag)
+  
+  final val typeId = 279
   
   def read(in: RefMapIn, key: String, arity: Int): MouseX = {
     require (arity == 4)
@@ -108,7 +110,7 @@ final case class MouseX(lo: GE = 0.0f, hi: GE = 1.0f, warp: GE = 0.0f, lag: GE =
   * @see [[de.sciss.synth.ugen.MouseButton$ MouseButton]]
   * @see [[de.sciss.synth.ugen.KeyState$ KeyState]]
   */
-object MouseY extends ProductReader[MouseY] {
+object MouseY extends ProductType[MouseY] {
   def kr: MouseY = kr()
   
   /** @param lo               value when the mouse is on the bottom side of the
@@ -128,6 +130,8 @@ object MouseY extends ProductReader[MouseY] {
     */
   def kr(lo: GE = 0.0f, hi: GE = 1.0f, warp: GE = 0.0f, lag: GE = 0.2f): MouseY = 
     new MouseY(lo, hi, warp, lag)
+  
+  final val typeId = 280
   
   def read(in: RefMapIn, key: String, arity: Int): MouseY = {
     require (arity == 4)
@@ -189,7 +193,7 @@ final case class MouseY(lo: GE = 0.0f, hi: GE = 1.0f, warp: GE = 0.0f, lag: GE =
   * @see [[de.sciss.synth.ugen.MouseY$ MouseY]]
   * @see [[de.sciss.synth.ugen.KeyState$ KeyState]]
   */
-object MouseButton extends ProductReader[MouseButton] {
+object MouseButton extends ProductType[MouseButton] {
   def kr: MouseButton = kr()
   
   /** @param lo               value output while button is not pressed
@@ -198,6 +202,8 @@ object MouseButton extends ProductReader[MouseButton] {
     *                         avoid any smoothing.
     */
   def kr(lo: GE = 0.0f, hi: GE = 1.0f, lag: GE = 0.2f): MouseButton = new MouseButton(lo, hi, lag)
+  
+  final val typeId = 281
   
   def read(in: RefMapIn, key: String, arity: Int): MouseButton = {
     require (arity == 3)

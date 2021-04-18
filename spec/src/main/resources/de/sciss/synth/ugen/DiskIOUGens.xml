@@ -1,7 +1,7 @@
-<ugens revision="5">
+<ugens revision="6">
     <!-- all documented -->
     <!-- // side-effect: advancing sf offset -->
-    <ugen name="DiskIn" reads-buf="true" side-effect="true" done-flag="true">
+    <ugen name="DiskIn" type-id="102" reads-buf="true" side-effect="true" done-flag="true">
         <rate name="audio"/> <!-- implied="true" -->
         <output variadic="numChannels"/>
         <arg name="numChannels" type="int">
@@ -36,7 +36,7 @@
         </doc>
     </ugen>
 
-    <ugen name="DiskOut" writes-buf="true">
+    <ugen name="DiskOut" type-id="103" writes-buf="true">
         <rate name="audio">
             <arg name="in" rate="ugen"/>
         </rate>
@@ -74,7 +74,7 @@
     </ugen>
 
     <!-- // side-effect: advancing sf offset -->
-    <ugen name="VDiskIn" reads-buf="true" side-effect="true" done-flag="true">
+    <ugen name="VDiskIn" type-id="104" reads-buf="true" side-effect="true" done-flag="true">
         <!-- note: argument 'rate' renamed to 'speed' -->
         <rate name="audio"/> <!-- implied="true" -->
         <output variadic="numChannels"/>

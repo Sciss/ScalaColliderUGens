@@ -1,6 +1,6 @@
-<ugens revision="3">
+<ugens revision="4">
     <!-- all documented -->
-    <ugen name="Convolution" reads-buf="true">
+    <ugen name="Convolution" type-id="109" reads-buf="true">
         <rate name="audio"/>
         <arg name="in">
             <doc>
@@ -36,7 +36,7 @@
             <!-- <see>ugen.StereoConvolution2L</see> -->
         </doc>
     </ugen>
-    <ugen name="Convolution2" reads-buf="true">
+    <ugen name="Convolution2" type-id="110" reads-buf="true">
         <rate name="audio"/>
         <arg name="in">
             <doc>
@@ -106,7 +106,7 @@
             <!-- <see>ugen.StereoConvolution2L</see> -->
         </doc>
     </ugen>
-    <ugen name="Convolution2L" reads-buf="true">
+    <ugen name="Convolution2L" type-id="111" reads-buf="true">
         <rate name="audio"/>
         <arg name="in">
             <doc>
@@ -190,7 +190,7 @@
             <!-- <see>ugen.StereoConvolution2L</see> -->
         </doc>
     </ugen>
-    <ugen name="StereoConvolution2L" reads-buf="true">
+    <ugen name="StereoConvolution2L" type-id="112" reads-buf="true">
         <rate name="audio"/>
         <output name="left"/>
         <output name="right"/>
@@ -248,7 +248,7 @@
             <see>ugen.Convolution2L</see>
         </doc>
     </ugen>
-    <ugen name="Convolution3" reads-buf="true">
+    <ugen name="Convolution3" type-id="113" reads-buf="true">
         <rate name="audio"/>
         <arg name="in">
             <doc>
@@ -282,8 +282,7 @@
             <see>ugen.Convolution2L</see>
         </doc>
     </ugen>
-
-    <ugen name="PV_ConformalMap" reads-fft="true" writes-fft="true">
+    <ugen name="PV_ConformalMap" type-id="114" reads-fft="true" writes-fft="true">
         <rate name="control" implied="true" method="apply"/>
         <output name="chain" type="fft"/>
         <arg name="chain" type="fft">
@@ -323,8 +322,7 @@
             </example>
         </doc>
     </ugen>
-
-    <ugen name="PV_JensenAndersen" reads-fft="true">
+    <ugen name="PV_JensenAndersen" type-id="115" reads-fft="true">
         <rate name="audio"/>
         <arg name="chain" type="fft">
             <doc>
@@ -382,7 +380,7 @@
             <see>ugen.PV_HainsworthFoote</see>
         </doc>
     </ugen>
-    <ugen name="PV_HainsworthFoote" reads-fft="true">
+    <ugen name="PV_HainsworthFoote" type-id="116" reads-fft="true">
         <rate name="audio"/>
         <arg name="chain" type="fft">
             <doc>
@@ -431,8 +429,7 @@
             <see>ugen.PV_JensenAndersen</see>
         </doc>
     </ugen>
-
-    <ugen name="RunningSum">
+    <ugen name="RunningSum" type-id="117">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="in" rate="ugen">

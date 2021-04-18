@@ -14,7 +14,7 @@
 package de.sciss.synth
 package impl
 
-import de.sciss.synth.UGenSpec.{ArgumentType, ArgumentValue}
+import de.sciss.synth.UGenSpec.{ArgumentType, ArgumentValue, Parsed}
 
 import scala.collection.SeqLike
 import scala.collection.immutable.{IndexedSeq => Vec}
@@ -34,6 +34,7 @@ private[synth] object UGenSpecParser {
 
   private val nodeAttrKeys = Set(
     "name", // required
+    "type-id",  // required
     "reads-bus",  "reads-buf",  "reads-fft", "random", "indiv",
     "writes-bus", "writes-buf", "writes-fft", "side-effect",
     "done-flag" /* , "provided" */,
@@ -379,14 +380,21 @@ private[synth] object UGenSpecParser {
     }
   }
 
-  def parse(node: scala.xml.Node, docs: Boolean, verify: Boolean): UGenSpec = {
+  private final case class ParsedImpl(typeId: Int, spec: UGenSpec) extends Parsed
+
+  def parse(node: scala.xml.Node, docs: Boolean, verify: Boolean): UGenSpec =
+    parseFull(node, docs = docs, verify = verify).spec
+
+  def parseFull(node: scala.xml.Node, docs: Boolean, verify: Boolean): Parsed = {
     if (node.label != "ugen") throw new IllegalArgumentException(s"Not a 'ugen' node: $node")
 
     import UGenSpec.{SignalShape => Sig, _}
 
-    val attrs = node.attributes.asAttrMap
-    val uName = attrs.string("name")
-    val eName = attrs.get   ("elem")
+    val attrs     = node.attributes.asAttrMap
+    val uName     = attrs.string("name")
+    val uTypeId   = attrs.intOption("type-id")
+      .getOrElse(throw new Exception(s"Missing type-id attribute for $uName"))
+    val eName     = attrs.get("elem")
 
     if (verify) {
       val unknown = attrs.keySet -- nodeAttrKeys
@@ -701,8 +709,9 @@ private[synth] object UGenSpecParser {
     // ---- wrap up ----
 
     val uDoc = if (docs) mkDoc(node, argDocs = argDocs, outputDocs = outputDocs) else None
-
-    UGenSpec(name = uName, attr = uAttr, rates = rates, args = args, inputs = inputs, outputs = outputs,
+    val spec = UGenSpec(name = uName, attr = uAttr, rates = rates, args = args, inputs = inputs, outputs = outputs,
       doc = uDoc, elemOption = eName)
+
+    ParsedImpl(uTypeId, spec)
   }
 }

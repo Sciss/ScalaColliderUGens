@@ -1,5 +1,5 @@
-<ugens revision="4" third-party="kuramoto">
-    <ugen name="Hopf">
+<ugens revision="5" third-party="kuramoto">
+    <ugen name="Hopf" type-id="441">
         <rate name="audio"/>
         <arg name="in" rate="ugen">
             <doc>

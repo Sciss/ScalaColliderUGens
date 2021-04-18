@@ -1,4 +1,4 @@
-// revision: 2
+// revision: 3
 package de.sciss.synth
 package ugen
 
@@ -19,7 +19,7 @@ import UGenSource._
   * 
   * This is a third-party UGen (MCLDUGens).
   */
-object InsideOut extends ProductReader[InsideOut] {
+object InsideOut extends ProductType[InsideOut] {
   /** @param in               input signal to be distorted
     */
   def kr(in: GE): InsideOut = new InsideOut(control, in)
@@ -27,6 +27,8 @@ object InsideOut extends ProductReader[InsideOut] {
   /** @param in               input signal to be distorted
     */
   def ar(in: GE): InsideOut = new InsideOut(audio, in)
+  
+  final val typeId = 434
   
   def read(in: RefMapIn, key: String, arity: Int): InsideOut = {
     require (arity == 2)
@@ -74,7 +76,7 @@ final case class InsideOut(rate: MaybeRate, in: GE) extends UGenSource.SingleOut
   * 
   * This is a third-party UGen (MCLDUGens).
   */
-object WaveLoss extends ProductReader[WaveLoss] {
+object WaveLoss extends ProductType[WaveLoss] {
   /** @param in               input signal to be distorted
     * @param drop             the number of wave segments to drop in each group of
     *                         size `chunk` .
@@ -100,6 +102,8 @@ object WaveLoss extends ProductReader[WaveLoss] {
     */
   def ar(in: GE, drop: GE = 20, chunk: GE = 40, mode: GE = 1): WaveLoss = 
     new WaveLoss(audio, in, drop, chunk, mode)
+  
+  final val typeId = 435
   
   def read(in: RefMapIn, key: String, arity: Int): WaveLoss = {
     require (arity == 5)
@@ -160,7 +164,7 @@ final case class WaveLoss(rate: MaybeRate, in: GE, drop: GE = 20, chunk: GE = 40
   * 
   * This is a third-party UGen (MCLDUGens).
   */
-object Squiz extends ProductReader[Squiz] {
+object Squiz extends ProductType[Squiz] {
   /** @param in               input signal to be distorted
     * @param pitchRatio       the ratio by which pitch will be raised, e.g. the
     *                         default value of 2 will raise by one octave. Only
@@ -192,6 +196,8 @@ object Squiz extends ProductReader[Squiz] {
     */
   def ar(in: GE, pitchRatio: GE = 2, zeroCrossings: GE = 1, maxDur: GE = 0.1f): Squiz = 
     new Squiz(audio, in, pitchRatio, zeroCrossings, maxDur)
+  
+  final val typeId = 436
   
   def read(in: RefMapIn, key: String, arity: Int): Squiz = {
     require (arity == 5)

@@ -30,7 +30,7 @@ All artifacts are published to Maven Central, and are available as follows:
     "de.sciss" %% "scalacolliderugens-core" % v
     "de.sciss" %% "scalacolliderugens-plugins" % v
 
-The current stable version `v` is `"1.21.1"`.
+The current stable version `v` is `"1.21.2"`.
 
 The `spec` contains the XML meta data, `api` contains basic types without specific UGens, `core` contains the standard 
 UGens included with SuperCollider, and `plugins` will include the third-party plugins managed by the 
@@ -144,7 +144,10 @@ UGen Attributes (`ugenAttr`) are boolean flags (all false by default) which can 
 |`fragment`    |UGen that cannot be fully represented in the spec. For example, it has hidden or currently not represented argument types|`LocalBuf`|
 |`elem`        |Client facing class name differing from UGen|`JPverbRaw`|
 
-Part of this information is used by ScalaCollider when building the UGen graph. For example, subtrees which do not 
+Furthermore, each UGen definition now must have a `type-id` attribute with integer value, giving a unique
+serialization id (positive value).
+
+Part of the attribute information is used by ScalaCollider when building the UGen graph. For example, subtrees which do not 
 have any side effects are automatically removed. UGens which have side effects are those for which either of the 
 following flags is set: `writes-bus` | `writes-buf` | `writes-fft` | `side-effect`. Furthermore, multiple occurrences 
 of UGens which are functionally equivalent are collapsed. UGens are _functionally not equivalent_ if either of the 

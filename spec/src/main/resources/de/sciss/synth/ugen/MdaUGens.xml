@@ -1,6 +1,6 @@
-<ugens revision="2" third-party="MdaUGens"> <!-- extension from sc3-plugins -->
+<ugens revision="3" third-party="MdaUGens"> <!-- extension from sc3-plugins -->
     <!-- all documented -->
-    <ugen name="MdaPiano">
+    <ugen name="MdaPiano" type-id="437">
         <rate name="audio"/>
         <output name="left">
             <doc>

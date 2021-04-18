@@ -1,6 +1,6 @@
-<ugens revision="1">
+<ugens revision="2">
     <!-- all documented -->
-    <ugen name="CuspN">
+    <ugen name="CuspN" type-id="3">
         <rate name="audio"/>
         <doc>
             <text>
@@ -41,7 +41,7 @@
             </doc>
         </arg>
     </ugen>
-    <ugen name="CuspL">
+    <ugen name="CuspL" type-id="4">
         <rate name="audio"/>
         <doc>
             <text>
@@ -82,7 +82,7 @@
             </doc>
         </arg>
     </ugen>
-    <ugen name="FBSineN">
+    <ugen name="FBSineN" type-id="5">
         <rate name="audio"/>
         <doc>
             <text>
@@ -154,7 +154,7 @@
             </doc>
         </arg>
     </ugen>
-    <ugen name="FBSineL">
+    <ugen name="FBSineL" type-id="6">
         <rate name="audio"/>
         <doc>
             <text>
@@ -226,7 +226,7 @@
             </doc>
         </arg>
     </ugen>
-    <ugen name="FBSineC">
+    <ugen name="FBSineC" type-id="7">
         <rate name="audio"/>
         <doc>
             <text>
@@ -298,7 +298,7 @@
             </doc>
         </arg>
     </ugen>
-    <ugen name="GbmanN">
+    <ugen name="GbmanN" type-id="8">
         <rate name="audio"/>
         <doc>
             <text>
@@ -340,7 +340,7 @@
             </doc>
         </arg>
     </ugen>
-    <ugen name="GbmanL">
+    <ugen name="GbmanL" type-id="9">
         <rate name="audio"/>
         <arg name="freq" default="nyquist">
             <doc>
@@ -382,7 +382,7 @@
             <see>ugen.GbmanN</see>
         </doc>
     </ugen>
-    <ugen name="HenonN">
+    <ugen name="HenonN" type-id="10">
         <rate name="audio"/>
         <arg name="freq" default="nyquist">
             <doc>
@@ -438,7 +438,7 @@
             <see>ugen.HenonC</see>
         </doc>
     </ugen>
-    <ugen name="HenonL">
+    <ugen name="HenonL" type-id="11">
         <rate name="audio"/>
         <arg name="freq" default="nyquist">
             <doc>
@@ -494,7 +494,7 @@
             <see>ugen.HenonC</see>
         </doc>
     </ugen>
-    <ugen name="HenonC">
+    <ugen name="HenonC" type-id="12">
         <rate name="audio"/>
         <arg name="freq" default="nyquist">
             <doc>
@@ -550,7 +550,7 @@
             <see>ugen.HenonC</see>
         </doc>
     </ugen>
-    <ugen name="LatoocarfianN">
+    <ugen name="LatoocarfianN" type-id="13">
         <rate name="audio"/>
         <arg name="freq" default="nyquist">
             <doc>
@@ -616,7 +616,7 @@
             <see>ugen.LatoocarfianC</see>
         </doc>
     </ugen>
-    <ugen name="LatoocarfianL">
+    <ugen name="LatoocarfianL" type-id="14">
         <rate name="audio"/>
         <arg name="freq" default="nyquist">
             <doc>
@@ -682,7 +682,7 @@
             <see>ugen.LatoocarfianC</see>
         </doc>
     </ugen>
-    <ugen name="LatoocarfianC">
+    <ugen name="LatoocarfianC" type-id="15">
         <rate name="audio"/>
         <arg name="freq" default="nyquist">
             <doc>
@@ -748,7 +748,7 @@
             <see>ugen.LatoocarfianL</see>
         </doc>
     </ugen>
-    <ugen name="LinCongN">
+    <ugen name="LinCongN" type-id="16">
         <rate name="audio"/>
         <doc>
             <text>
@@ -808,7 +808,7 @@
             </doc>
         </arg>
     </ugen>
-    <ugen name="LinCongL">
+    <ugen name="LinCongL" type-id="17">
         <rate name="audio"/>
         <doc>
             <text>
@@ -868,7 +868,7 @@
             </doc>
         </arg>
     </ugen>
-    <ugen name="LinCongC">
+    <ugen name="LinCongC" type-id="18">
         <rate name="audio"/>
         <doc>
             <text>
@@ -928,7 +928,7 @@
             </doc>
         </arg>
     </ugen>
-    <ugen name="LorenzL">
+    <ugen name="LorenzL" type-id="19">
         <rate name="audio"/>
         <doc>
             <text>
@@ -998,7 +998,7 @@
             </doc>
         </arg>
     </ugen>
-    <ugen name="QuadN">
+    <ugen name="QuadN" type-id="20">
         <rate name="audio"/>
         <doc>
             <text>
@@ -1048,7 +1048,7 @@
             </doc>
         </arg>
     </ugen>
-    <ugen name="QuadL">
+    <ugen name="QuadL" type-id="21">
         <rate name="audio"/>
         <doc>
             <text>
@@ -1098,7 +1098,7 @@
             </doc>
         </arg>
     </ugen>
-    <ugen name="QuadC">
+    <ugen name="QuadC" type-id="22">
         <rate name="audio"/>
         <doc>
             <text>
@@ -1148,7 +1148,7 @@
             </doc>
         </arg>
     </ugen>
-    <ugen name="StandardN">
+    <ugen name="StandardN" type-id="23">
         <rate name="audio"/>
         <doc>
             <text>
@@ -1192,7 +1192,7 @@
             </doc>
         </arg>
     </ugen>
-    <ugen name="StandardL">
+    <ugen name="StandardL" type-id="24">
         <rate name="audio"/>
         <doc>
             <text>

@@ -14,18 +14,20 @@
 package de.sciss.synth
 package ugen
 
-import de.sciss.synth.UGenSource.{ProductReader, RefMapIn}
+import de.sciss.synth.UGenSource.{ProductReader, ProductType, RefMapIn}
 
 import scala.collection.immutable.{IndexedSeq => Vec}
 
-object KlangSpec extends ProductReader[KlangSpec] {
+object KlangSpec extends ProductType[KlangSpec] {
   def fill(n: Int)(thunk: => (GE, GE, GE)): Seq =
     Seq(Vec.fill[(GE, GE, GE)](n)(thunk).map(tup => KlangSpec(tup._1, tup._2, tup._3)))
 
   def tabulate(n: Int)(func: Int => (GE, GE, GE)): Seq =
     Seq(Vec.tabulate[(GE, GE, GE)](n)(func).map(tup => KlangSpec(tup._1, tup._2, tup._3)))
 
-  object Seq extends ProductReader[KlangSpec.Seq] {
+  object Seq extends ProductType[KlangSpec.Seq] {
+    final val typeId = 337
+
     override def read(in: RefMapIn, key: String, arity: Int): KlangSpec.Seq = {
       require (arity == 1)
       val _elems = in.readVec(in.readProductT[KlangSpec]())
@@ -40,6 +42,8 @@ object KlangSpec extends ProductReader[KlangSpec] {
 
     def expand                : UGenInLike  = UGenInGroup(elems.flatMap(_.expand.outputs))
   }
+
+  final val typeId = 336
 
   override def read(in: RefMapIn, key: String, arity: Int): KlangSpec = {
     require (arity == 3)

@@ -1,6 +1,6 @@
-<ugens revision="4">
+<ugens revision="5">
     <!-- all documented -->
-    <ugen name="LFDNoise0" random="true">
+    <ugen name="LFDNoise0" type-id="105" random="true">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="freq" default="500.0">
@@ -28,7 +28,7 @@
             <see>ugen.TRand</see>
         </doc>
     </ugen>
-    <ugen name="LFDNoise1" random="true">
+    <ugen name="LFDNoise1" type-id="106" random="true">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="freq" default="500.0">
@@ -56,7 +56,7 @@
             <see>ugen.Ramp</see>
         </doc>
     </ugen>
-    <ugen name="LFDNoise3" random="true">
+    <ugen name="LFDNoise3" type-id="107" random="true">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="freq" default="500.0">
@@ -86,7 +86,7 @@
             <see>ugen.LFDNoise1</see>
         </doc>
     </ugen>
-    <ugen name="LFDClipNoise" random="true">
+    <ugen name="LFDClipNoise" type-id="108" random="true">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="freq" default="500.0">

@@ -1,5 +1,5 @@
-<ugens revision="2">
-    <ugen name="Gendy1" random="true">
+<ugens revision="3">
+    <ugen name="Gendy1" type-id="208" random="true">
         <rate name="audio"/>
         <rate name="control"/>
         <arg name="ampDist" default="1.0"/>
@@ -14,7 +14,7 @@
         <arg name="kNum" default="12"/>
         <!-- TODO: doc -->
     </ugen>
-    <ugen name="Gendy2" random="true">
+    <ugen name="Gendy2" type-id="209" random="true">
         <rate name="audio"/>
         <rate name="control"/>
         <arg name="ampDist" default="1.0"/>
@@ -31,7 +31,7 @@
         <arg name="c" default="0.31"/>
         <!-- TODO: doc -->
     </ugen>
-    <ugen name="Gendy3" random="true">
+    <ugen name="Gendy3" type-id="210" random="true">
         <rate name="audio"/>
         <rate name="control"/>
         <arg name="ampDist" default="1.0"/>

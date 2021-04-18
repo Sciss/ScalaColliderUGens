@@ -1,4 +1,4 @@
-// revision: 11
+// revision: 12
 package de.sciss.synth
 package ugen
 
@@ -23,7 +23,7 @@ import UGenSource._
   * @see [[de.sciss.synth.ugen.LFNoise0$ LFNoise0]]
   * @see [[de.sciss.synth.ugen.Dust$ Dust]]
   */
-object WhiteNoise extends ProductReader[WhiteNoise] {
+object WhiteNoise extends ProductType[WhiteNoise] {
   def kr: WhiteNoise = kr()
   
   /** @param mul              Not actually a UGen input, this argument produces a
@@ -41,6 +41,8 @@ object WhiteNoise extends ProductReader[WhiteNoise] {
     *                         of multiple independent noise generators.
     */
   def ar(mul: GE = 1.0f): WhiteNoise = new WhiteNoise(audio, mul)
+  
+  final val typeId = 285
   
   def read(in: RefMapIn, key: String, arity: Int): WhiteNoise = {
     require (arity == 2)
@@ -97,7 +99,7 @@ final case class WhiteNoise(rate: Rate, mul: GE = 1.0f) extends UGenSource.Singl
   * @see [[de.sciss.synth.ugen.LFNoise0$ LFNoise0]]
   * @see [[de.sciss.synth.ugen.Dust$ Dust]]
   */
-object GrayNoise extends ProductReader[GrayNoise] {
+object GrayNoise extends ProductType[GrayNoise] {
   def kr: GrayNoise = kr()
   
   /** @param mul              Not actually a UGen input, this argument produces a
@@ -115,6 +117,8 @@ object GrayNoise extends ProductReader[GrayNoise] {
     *                         of multiple independent noise generators.
     */
   def ar(mul: GE = 1.0f): GrayNoise = new GrayNoise(audio, mul)
+  
+  final val typeId = 286
   
   def read(in: RefMapIn, key: String, arity: Int): GrayNoise = {
     require (arity == 2)
@@ -172,7 +176,7 @@ final case class GrayNoise(rate: Rate, mul: GE = 1.0f) extends UGenSource.Single
   * @see [[de.sciss.synth.ugen.LFNoise0$ LFNoise0]]
   * @see [[de.sciss.synth.ugen.Dust$ Dust]]
   */
-object ClipNoise extends ProductReader[ClipNoise] {
+object ClipNoise extends ProductType[ClipNoise] {
   def kr: ClipNoise = kr()
   
   /** @param mul              Not actually a UGen input, this argument produces a
@@ -190,6 +194,8 @@ object ClipNoise extends ProductReader[ClipNoise] {
     *                         of multiple independent noise generators.
     */
   def ar(mul: GE = 1.0f): ClipNoise = new ClipNoise(audio, mul)
+  
+  final val typeId = 287
   
   def read(in: RefMapIn, key: String, arity: Int): ClipNoise = {
     require (arity == 2)
@@ -245,7 +251,7 @@ final case class ClipNoise(rate: Rate, mul: GE = 1.0f) extends UGenSource.Single
   * @see [[de.sciss.synth.ugen.ClipNoise$ ClipNoise]]
   * @see [[de.sciss.synth.ugen.RandSeed$ RandSeed]]
   */
-object PinkNoise extends ProductReader[PinkNoise] {
+object PinkNoise extends ProductType[PinkNoise] {
   def kr: PinkNoise = kr()
   
   /** @param mul              Not actually a UGen input, this argument produces a
@@ -263,6 +269,8 @@ object PinkNoise extends ProductReader[PinkNoise] {
     *                         of multiple independent noise generators.
     */
   def ar(mul: GE = 1.0f): PinkNoise = new PinkNoise(audio, mul)
+  
+  final val typeId = 288
   
   def read(in: RefMapIn, key: String, arity: Int): PinkNoise = {
     require (arity == 2)
@@ -315,7 +323,7 @@ final case class PinkNoise(rate: Rate, mul: GE = 1.0f) extends UGenSource.Single
   * @see [[de.sciss.synth.ugen.ClipNoise$ ClipNoise]]
   * @see [[de.sciss.synth.ugen.RandSeed$ RandSeed]]
   */
-object BrownNoise extends ProductReader[BrownNoise] {
+object BrownNoise extends ProductType[BrownNoise] {
   def kr: BrownNoise = kr()
   
   /** @param mul              Not actually a UGen input, this argument produces a
@@ -333,6 +341,8 @@ object BrownNoise extends ProductReader[BrownNoise] {
     *                         of multiple independent noise generators.
     */
   def ar(mul: GE = 1.0f): BrownNoise = new BrownNoise(audio, mul)
+  
+  final val typeId = 289
   
   def read(in: RefMapIn, key: String, arity: Int): BrownNoise = {
     require (arity == 2)
@@ -386,7 +396,7 @@ final case class BrownNoise(rate: Rate, mul: GE = 1.0f) extends UGenSource.Singl
   * @see [[de.sciss.synth.ugen.GrayNoise$ GrayNoise]]
   * @see [[de.sciss.synth.ugen.CoinGate$ CoinGate]]
   */
-object Dust extends ProductReader[Dust] {
+object Dust extends ProductType[Dust] {
   def kr: Dust = kr()
   
   /** @param density          the average number of impulses per second
@@ -398,6 +408,8 @@ object Dust extends ProductReader[Dust] {
   /** @param density          the average number of impulses per second
     */
   def ar(density: GE = 1.0f): Dust = new Dust(audio, density)
+  
+  final val typeId = 290
   
   def read(in: RefMapIn, key: String, arity: Int): Dust = {
     require (arity == 2)
@@ -447,7 +459,7 @@ final case class Dust(rate: Rate, density: GE = 1.0f) extends UGenSource.SingleO
   * @see [[de.sciss.synth.ugen.ClipNoise$ ClipNoise]]
   * @see [[de.sciss.synth.ugen.CoinGate$ CoinGate]]
   */
-object Dust2 extends ProductReader[Dust2] {
+object Dust2 extends ProductType[Dust2] {
   def kr: Dust2 = kr()
   
   /** @param density          the average number of impulses per second
@@ -459,6 +471,8 @@ object Dust2 extends ProductReader[Dust2] {
   /** @param density          the average number of impulses per second
     */
   def ar(density: GE = 1.0f): Dust2 = new Dust2(audio, density)
+  
+  final val typeId = 291
   
   def read(in: RefMapIn, key: String, arity: Int): Dust2 = {
     require (arity == 2)
@@ -504,7 +518,7 @@ final case class Dust2(rate: Rate, density: GE = 1.0f) extends UGenSource.Single
   * @see [[de.sciss.synth.ugen.LatoocarfianN$ LatoocarfianN]]
   * @see [[de.sciss.synth.ugen.Logistic$ Logistic]]
   */
-object Crackle extends ProductReader[Crackle] {
+object Crackle extends ProductType[Crackle] {
   def kr: Crackle = kr()
   
   /** @param chaos            A parameter of the chaotic function with useful values
@@ -524,6 +538,8 @@ object Crackle extends ProductReader[Crackle] {
     *                         crackling sound appears with a value of `1.33` .
     */
   def ar(chaos: GE = 1.5f): Crackle = new Crackle(audio, chaos)
+  
+  final val typeId = 292
   
   def read(in: RefMapIn, key: String, arity: Int): Crackle = {
     require (arity == 2)
@@ -568,7 +584,7 @@ final case class Crackle(rate: Rate, chaos: GE = 1.5f) extends UGenSource.Single
   * @see [[de.sciss.synth.ugen.Crackle$ Crackle]]
   * @see [[de.sciss.synth.ugen.LatoocarfianN$ LatoocarfianN]]
   */
-object Logistic extends ProductReader[Logistic] {
+object Logistic extends ProductType[Logistic] {
   def kr: Logistic = kr()
   
   /** @param chaos            a parameter of the chaotic function with useful values
@@ -594,6 +610,8 @@ object Logistic extends ProductReader[Logistic] {
     */
   def ar(chaos: GE = 3.0f, freq: GE = 1000.0f, init: GE = 0.5f): Logistic = 
     new Logistic(audio, chaos, freq, init)
+  
+  final val typeId = 293
   
   def read(in: RefMapIn, key: String, arity: Int): Logistic = {
     require (arity == 4)
@@ -653,7 +671,7 @@ final case class Logistic(rate: Rate, chaos: GE = 3.0f, freq: GE = 1000.0f, init
   * }
   * }}}
   */
-object Hasher extends ProductReader[Hasher] {
+object Hasher extends ProductType[Hasher] {
   /** @param in               input to calculate the hash function for
     */
   def kr(in: GE): Hasher = new Hasher(control, in)
@@ -661,6 +679,8 @@ object Hasher extends ProductReader[Hasher] {
   /** @param in               input to calculate the hash function for
     */
   def ar(in: GE): Hasher = new Hasher(audio, in)
+  
+  final val typeId = 294
   
   def read(in: RefMapIn, key: String, arity: Int): Hasher = {
     require (arity == 2)
@@ -700,7 +720,7 @@ final case class Hasher(rate: MaybeRate, in: GE) extends UGenSource.SingleOut {
   * }
   * }}}
   */
-object MantissaMask extends ProductReader[MantissaMask] {
+object MantissaMask extends ProductType[MantissaMask] {
   /** @param in               input signal to quantize
     * @param bits             The number of mantissa bits to preserve, from 0 to 23.
     */
@@ -710,6 +730,8 @@ object MantissaMask extends ProductReader[MantissaMask] {
     * @param bits             The number of mantissa bits to preserve, from 0 to 23.
     */
   def ar(in: GE, bits: GE = 3): MantissaMask = new MantissaMask(audio, in, bits)
+  
+  final val typeId = 295
   
   def read(in: RefMapIn, key: String, arity: Int): MantissaMask = {
     require (arity == 3)
@@ -765,7 +787,7 @@ final case class MantissaMask(rate: MaybeRate, in: GE, bits: GE = 3) extends UGe
   * @see [[de.sciss.synth.ugen.LFNoise0$ LFNoise0]]
   * @see [[de.sciss.synth.ugen.LFDClipNoise$ LFDClipNoise]]
   */
-object LFClipNoise extends ProductReader[LFClipNoise] {
+object LFClipNoise extends ProductType[LFClipNoise] {
   def kr: LFClipNoise = kr()
   
   /** @param freq             rate at which to generate random values.
@@ -777,6 +799,8 @@ object LFClipNoise extends ProductReader[LFClipNoise] {
   /** @param freq             rate at which to generate random values.
     */
   def ar(freq: GE = 500.0f): LFClipNoise = new LFClipNoise(audio, freq)
+  
+  final val typeId = 296
   
   def read(in: RefMapIn, key: String, arity: Int): LFClipNoise = {
     require (arity == 2)
@@ -827,7 +851,7 @@ final case class LFClipNoise(rate: Rate, freq: GE = 500.0f) extends UGenSource.S
   * @see [[de.sciss.synth.ugen.Dust$ Dust]]
   * @see [[de.sciss.synth.ugen.RandSeed$ RandSeed]]
   */
-object LFNoise0 extends ProductReader[LFNoise0] {
+object LFNoise0 extends ProductType[LFNoise0] {
   def kr: LFNoise0 = kr()
   
   /** @param freq             rate at which to generate random values.
@@ -839,6 +863,8 @@ object LFNoise0 extends ProductReader[LFNoise0] {
   /** @param freq             rate at which to generate random values.
     */
   def ar(freq: GE = 500.0f): LFNoise0 = new LFNoise0(audio, freq)
+  
+  final val typeId = 297
   
   def read(in: RefMapIn, key: String, arity: Int): LFNoise0 = {
     require (arity == 2)
@@ -893,7 +919,7 @@ final case class LFNoise0(rate: Rate, freq: GE = 500.0f) extends UGenSource.Sing
   * @see [[de.sciss.synth.ugen.LFNoise2$ LFNoise2]]
   * @see [[de.sciss.synth.ugen.Ramp$ Ramp]]
   */
-object LFNoise1 extends ProductReader[LFNoise1] {
+object LFNoise1 extends ProductType[LFNoise1] {
   def kr: LFNoise1 = kr()
   
   /** @param freq             rate at which to generate new breakpoints.
@@ -905,6 +931,8 @@ object LFNoise1 extends ProductReader[LFNoise1] {
   /** @param freq             rate at which to generate new breakpoints.
     */
   def ar(freq: GE = 500.0f): LFNoise1 = new LFNoise1(audio, freq)
+  
+  final val typeId = 298
   
   def read(in: RefMapIn, key: String, arity: Int): LFNoise1 = {
     require (arity == 2)
@@ -958,7 +986,7 @@ final case class LFNoise1(rate: Rate, freq: GE = 500.0f) extends UGenSource.Sing
   * @see [[de.sciss.synth.ugen.LFNoise0$ LFNoise0]]
   * @see [[de.sciss.synth.ugen.LFNoise1$ LFNoise1]]
   */
-object LFNoise2 extends ProductReader[LFNoise2] {
+object LFNoise2 extends ProductType[LFNoise2] {
   def kr: LFNoise2 = kr()
   
   /** @param freq             rate at which to generate new breakpoints.
@@ -970,6 +998,8 @@ object LFNoise2 extends ProductReader[LFNoise2] {
   /** @param freq             rate at which to generate new breakpoints.
     */
   def ar(freq: GE = 500.0f): LFNoise2 = new LFNoise2(audio, freq)
+  
+  final val typeId = 299
   
   def read(in: RefMapIn, key: String, arity: Int): LFNoise2 = {
     require (arity == 2)
@@ -1020,7 +1050,9 @@ final case class LFNoise2(rate: Rate, freq: GE = 500.0f) extends UGenSource.Sing
   * @see [[de.sciss.synth.ugen.ExpRand$ ExpRand]]
   * @see [[de.sciss.synth.ugen.RandSeed$ RandSeed]]
   */
-object Rand extends ProductReader[Rand] {
+object Rand extends ProductType[Rand] {
+  final val typeId = 300
+  
   def read(in: RefMapIn, key: String, arity: Int): Rand = {
     require (arity == 2)
     val _lo = in.readGE()
@@ -1066,7 +1098,9 @@ final case class Rand(lo: GE = 0.0f, hi: GE = 1.0f)
   * @see [[de.sciss.synth.ugen.ExpRand$ ExpRand]]
   * @see [[de.sciss.synth.ugen.RandSeed$ RandSeed]]
   */
-object IRand extends ProductReader[IRand] {
+object IRand extends ProductType[IRand] {
+  final val typeId = 301
+  
   def read(in: RefMapIn, key: String, arity: Int): IRand = {
     require (arity == 2)
     val _lo = in.readGE()
@@ -1116,7 +1150,7 @@ final case class IRand(lo: GE = 0, hi: GE = 127)
   * @see [[de.sciss.synth.ugen.ExpRand$ ExpRand]]
   * @see [[de.sciss.synth.ugen.RandSeed$ RandSeed]]
   */
-object TRand extends ProductReader[TRand] {
+object TRand extends ProductType[TRand] {
   /** @param lo               lower limit of the output range
     * @param hi               upper limit of the output range
     * @param trig             signal to trigger new random number
@@ -1128,6 +1162,8 @@ object TRand extends ProductReader[TRand] {
     * @param trig             signal to trigger new random number
     */
   def ar(lo: GE = 0.0f, hi: GE = 1.0f, trig: GE): TRand = new TRand(audio, lo, hi, trig)
+  
+  final val typeId = 302
   
   def read(in: RefMapIn, key: String, arity: Int): TRand = {
     require (arity == 4)
@@ -1188,7 +1224,7 @@ final case class TRand(rate: Rate, lo: GE = 0.0f, hi: GE = 1.0f, trig: GE)
   * @see [[de.sciss.synth.ugen.ExpRand$ ExpRand]]
   * @see [[de.sciss.synth.ugen.RandSeed$ RandSeed]]
   */
-object TExpRand extends ProductReader[TExpRand] {
+object TExpRand extends ProductType[TExpRand] {
   /** @param lo               lower limit of the output range
     * @param hi               upper limit of the output range
     * @param trig             signal to trigger new random number
@@ -1200,6 +1236,8 @@ object TExpRand extends ProductReader[TExpRand] {
     * @param trig             signal to trigger new random number
     */
   def ar(lo: GE = 0.01f, hi: GE = 1.0f, trig: GE): TExpRand = new TExpRand(audio, lo, hi, trig)
+  
+  final val typeId = 303
   
   def read(in: RefMapIn, key: String, arity: Int): TExpRand = {
     require (arity == 4)
@@ -1258,7 +1296,7 @@ final case class TExpRand(rate: Rate, lo: GE = 0.01f, hi: GE = 1.0f, trig: GE)
   * @see [[de.sciss.synth.ugen.IRand$ IRand]]
   * @see [[de.sciss.synth.ugen.TRand$ TRand]]
   */
-object TIRand extends ProductReader[TIRand] {
+object TIRand extends ProductType[TIRand] {
   /** @param lo               lower limit of the output range
     * @param hi               upper limit of the output range (inclusive)
     * @param trig             signal to trigger new random number
@@ -1270,6 +1308,8 @@ object TIRand extends ProductReader[TIRand] {
     * @param trig             signal to trigger new random number
     */
   def ar(lo: GE = 0, hi: GE = 127, trig: GE): TIRand = new TIRand(audio, lo, hi, trig)
+  
+  final val typeId = 304
   
   def read(in: RefMapIn, key: String, arity: Int): TIRand = {
     require (arity == 4)
@@ -1326,7 +1366,9 @@ final case class TIRand(rate: Rate, lo: GE = 0, hi: GE = 127, trig: GE)
   * @see [[de.sciss.synth.ugen.ExpRand$ ExpRand]]
   * @see [[de.sciss.synth.ugen.RandSeed$ RandSeed]]
   */
-object NRand extends ProductReader[NRand] {
+object NRand extends ProductType[NRand] {
+  final val typeId = 305
+  
   def read(in: RefMapIn, key: String, arity: Int): NRand = {
     require (arity == 3)
     val _lo = in.readGE()
@@ -1385,7 +1427,9 @@ final case class NRand(lo: GE = 0.0f, hi: GE = 1.0f, n: GE = 2)
   * @see [[de.sciss.synth.ugen.NRand$ NRand]]
   * @see [[de.sciss.synth.ugen.RandSeed$ RandSeed]]
   */
-object LinRand extends ProductReader[LinRand] {
+object LinRand extends ProductType[LinRand] {
+  final val typeId = 306
+  
   def read(in: RefMapIn, key: String, arity: Int): LinRand = {
     require (arity == 3)
     val _lo     = in.readGE()
@@ -1439,7 +1483,9 @@ final case class LinRand(lo: GE = 0.0f, hi: GE = 1.0f, minMax: GE = 0)
   * @see [[de.sciss.synth.ugen.TExpRand$ TExpRand]]
   * @see [[de.sciss.synth.ugen.RandSeed$ RandSeed]]
   */
-object ExpRand extends ProductReader[ExpRand] {
+object ExpRand extends ProductType[ExpRand] {
+  final val typeId = 307
+  
   def read(in: RefMapIn, key: String, arity: Int): ExpRand = {
     require (arity == 2)
     val _lo = in.readGE()
@@ -1486,7 +1532,7 @@ final case class ExpRand(lo: GE = 0.01f, hi: GE = 1.0f)
   * @see [[de.sciss.synth.ugen.PulseDivider$ PulseDivider]]
   * @see [[de.sciss.synth.ugen.TRand$ TRand]]
   */
-object CoinGate extends ProductReader[CoinGate] {
+object CoinGate extends ProductType[CoinGate] {
   /** @param in               the input triggers to filter
     * @param prob             the probability between zero (no trigger passed) and 1
     *                         (all triggers passed)
@@ -1498,6 +1544,8 @@ object CoinGate extends ProductReader[CoinGate] {
     *                         (all triggers passed)
     */
   def ar(in: GE, prob: GE = 0.5f): CoinGate = new CoinGate(audio, in, prob)
+  
+  final val typeId = 308
   
   def read(in: RefMapIn, key: String, arity: Int): CoinGate = {
     require (arity == 3)
@@ -1554,7 +1602,7 @@ final case class CoinGate(rate: MaybeRate, in: GE, prob: GE = 0.5f)
   * @see [[de.sciss.synth.ugen.IRand$ IRand]]
   * @see [[de.sciss.synth.ugen.WhiteNoise$ WhiteNoise]]
   */
-object RandSeed extends ProductReader[RandSeed] {
+object RandSeed extends ProductType[RandSeed] {
   def ir: RandSeed = ir()
   
   /** @param trig             trigger that causes the seed to be set
@@ -1570,6 +1618,8 @@ object RandSeed extends ProductReader[RandSeed] {
     *                         moment the trigger arrives.
     */
   def kr(trig: GE = 1, seed: GE = 56789): RandSeed = new RandSeed(control, trig, seed)
+  
+  final val typeId = 309
   
   def read(in: RefMapIn, key: String, arity: Int): RandSeed = {
     require (arity == 3)
@@ -1629,7 +1679,7 @@ final case class RandSeed(rate: Rate, trig: GE = 1, seed: GE = 56789)
   * @see [[de.sciss.synth.ugen.IRand$ IRand]]
   * @see [[de.sciss.synth.ugen.WhiteNoise$ WhiteNoise]]
   */
-object RandID extends ProductReader[RandID] {
+object RandID extends ProductType[RandID] {
   def ir: RandID = ir()
   
   /** @param id               the random number generator identifier from zero until
@@ -1645,6 +1695,8 @@ object RandID extends ProductReader[RandID] {
     *                         server switch `-r` (default: 64)
     */
   def kr(id: GE = 0): RandID = new RandID(control, id)
+  
+  final val typeId = 310
   
   def read(in: RefMapIn, key: String, arity: Int): RandID = {
     require (arity == 2)

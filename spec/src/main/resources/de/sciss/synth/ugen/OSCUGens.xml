@@ -1,6 +1,6 @@
-<ugens revision="9">
+<ugens revision="10">
     <!-- all documented, except: Shaper, SinOscFB, VOsc, VOsc3, Osc, OscN, COsc, Klang, Klank -->
-    <ugen name="DegreeToKey" reads-buf="true">
+    <ugen name="DegreeToKey" type-id="311" reads-buf="true">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="buf" type="buf">
@@ -44,7 +44,7 @@
             <see>ugen.WrapIndex</see>
         </doc>
     </ugen>
-    <ugen name="Select">
+    <ugen name="Select" type-id="312">
         <rate name="scalar"/>
         <rate name="control"/>
         <rate name="audio">
@@ -73,7 +73,7 @@
             <see>ugen.TWindex</see>
         </doc>
     </ugen>
-    <ugen name="TWindex">
+    <ugen name="TWindex" type-id="313">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="trig" type="trig">
@@ -110,7 +110,7 @@
             <see>ugen.Select</see>
         </doc>
     </ugen>
-    <ugen name="Index" reads-buf="true">
+    <ugen name="Index" type-id="314" reads-buf="true">
         <rate name="scalar"/>
         <rate name="control"/>
         <rate name="audio"/>
@@ -144,7 +144,7 @@
             <see>ugen.DetectIndex</see>
         </doc>
     </ugen>
-    <ugen name="IndexL" reads-buf="true">
+    <ugen name="IndexL" type-id="315" reads-buf="true">
         <rate name="scalar"/>
         <rate name="control"/>
         <rate name="audio"/>
@@ -176,7 +176,7 @@
         </doc>
     </ugen>
     <!-- this should exist according to plugin sources... -->
-    <ugen name="FoldIndex" reads-buf="true">
+    <ugen name="FoldIndex" type-id="316" reads-buf="true">
         <rate name="scalar"/>
         <rate name="control"/>
         <rate name="audio"/>
@@ -211,7 +211,7 @@
             <see>ugen.IndexL</see>
         </doc>
     </ugen>
-    <ugen name="WrapIndex" reads-buf="true">
+    <ugen name="WrapIndex" type-id="317" reads-buf="true">
         <rate name="scalar"/>
         <rate name="control"/>
         <rate name="audio"/>
@@ -243,7 +243,7 @@
             <see>ugen.IndexL</see>
         </doc>
     </ugen>
-    <ugen name="IndexInBetween" reads-buf="true">
+    <ugen name="IndexInBetween" type-id="318" reads-buf="true">
         <rate name="scalar"/>
         <rate name="control"/>
         <rate name="audio"/>
@@ -282,7 +282,7 @@
             <see>ugen.IndexL</see>
         </doc>
     </ugen>
-    <ugen name="DetectIndex" reads-buf="true">
+    <ugen name="DetectIndex" type-id="319" reads-buf="true">
         <rate name="scalar"/>
         <rate name="control"/>
         <rate name="audio"/>
@@ -303,7 +303,7 @@
             <see>ugen.IndexInBetween</see>
         </doc>
     </ugen>
-    <ugen name="Shaper" reads-buf="true">
+    <ugen name="Shaper" type-id="320" reads-buf="true">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="buf" type="buf">
@@ -335,9 +335,9 @@
         </doc>
     </ugen>
     <!-- this should exist according to plugin sources...
-    <ugen name="SigOsc"/>
+    <ugen name="SigOsc" type-id="321"/>
     -->
-    <ugen name="FSinOsc">
+    <ugen name="FSinOsc" type-id="322">
         <rate name="audio"/>
         <rate name="control"/>
         <arg name="freq" default="440.0">
@@ -369,7 +369,7 @@
             <see>ugen.SinOscFB</see>
         </doc>
     </ugen>
-    <ugen name="SinOsc">
+    <ugen name="SinOsc" type-id="323">
         <rate name="audio"/>
         <rate name="control"/>
         <arg name="freq" default="440.0">
@@ -404,7 +404,7 @@
             <see>ugen.SinOscFB</see>
         </doc>
     </ugen>
-    <ugen name="SinOscFB">
+    <ugen name="SinOscFB" type-id="324">
         <rate name="audio"/>
         <rate name="control"/>
         <arg name="freq" default="440.0">
@@ -431,7 +431,7 @@
             <see>ugen.FSinOsc</see>
         </doc>
     </ugen>
-    <ugen name="VOsc" reads-buf="true">
+    <ugen name="VOsc" type-id="325" reads-buf="true">
         <rate name="audio"/>
         <rate name="control"/>
         <arg name="bufPos"/> <!-- type="buf" ? -->
@@ -439,7 +439,7 @@
         <arg name="phase" default="0.0"/>
         <!-- TODO: doc -->
     </ugen>
-    <ugen name="VOsc3" reads-buf="true">
+    <ugen name="VOsc3" type-id="326" reads-buf="true">
         <rate name="audio"/>
         <rate name="control"/>
         <arg name="bufPos"/> <!-- type="buf" ? -->
@@ -448,7 +448,7 @@
         <arg name="freq3" default="440.0"/>
         <!-- TODO: doc -->
     </ugen>
-    <ugen name="Osc" reads-buf="true">
+    <ugen name="Osc" type-id="327" reads-buf="true">
         <rate name="audio"/>
         <rate name="control"/>
         <arg name="buf" type="buf">
@@ -493,7 +493,7 @@
             <see>ugen.SinOsc</see>
         </doc>
     </ugen>
-    <ugen name="OscN" reads-buf="true">
+    <ugen name="OscN" type-id="328" reads-buf="true">
         <rate name="audio"/>
         <rate name="control"/>
         <arg name="buf" type="buf"/>
@@ -501,14 +501,14 @@
         <arg name="phase" default="0.0"/>
         <!-- TODO: doc -->
     </ugen>
-    <ugen name="COsc" reads-buf="true">
+    <ugen name="COsc" type-id="329" reads-buf="true">
         <rate name="audio"/>
         <arg name="buf" type="buf"/>
         <arg name="freq" default="440.0"/>
         <arg name="beats" default="0.5"/>
         <!-- TODO: doc -->
     </ugen>
-    <ugen name="Formant">
+    <ugen name="Formant" type-id="330">
         <rate name="audio"/>
         <arg name="fundFreq" default="440.0">
             <doc>
@@ -546,7 +546,7 @@
             </example>
         </doc>
     </ugen>
-    <ugen name="Blip">
+    <ugen name="Blip" type-id="331">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="freq" default="440.0">
@@ -575,7 +575,7 @@
             <see>ugen.Impulse</see>
         </doc>
     </ugen>
-    <ugen name="Saw">
+    <ugen name="Saw" type-id="332">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="freq" default="440.0">
@@ -596,7 +596,7 @@
             <see>ugen.LFSaw</see>
         </doc>
     </ugen>
-    <ugen name="Pulse">
+    <ugen name="Pulse" type-id="333">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="freq" default="440.0">
@@ -630,14 +630,14 @@
         </doc>
     </ugen>
 
-    <ugen name="Klang">
+    <ugen name="Klang" type-id="334">
         <rate name="audio" implied="true"/>
         <arg name="freqScale" default="1.0" init="true" pos="1"/>
         <arg name="freqOffset" default="0.0" init="true" pos="2"/>
         <arg name="specs" variadic="true" init="true" pos="0"/>
         <!-- TODO: doc -->
     </ugen>
-    <ugen name="Klank">
+    <ugen name="Klank" type-id="335">
         <rate name="audio" implied="true"/>
         <arg name="in" pos="1"/>
         <arg name="freqScale" default="1.0" init="true" pos="2"/>
@@ -658,6 +658,6 @@
             <see>ugen.Ringz</see>
         </doc>
     </ugen>
-    <adjunct reader="KlangSpec" self="true" />
-    <adjunct reader="KlangSpec.Seq" self="true" />
+    <adjunct reader="KlangSpec" type-id="336" self="true" />
+    <adjunct reader="KlangSpec.Seq" type-id="337" self="true" />
 </ugens>

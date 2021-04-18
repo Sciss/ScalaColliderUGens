@@ -1,4 +1,4 @@
-// revision: 9
+// revision: 10
 package de.sciss.synth
 package ugen
 
@@ -33,7 +33,7 @@ import UGenSource._
   * @see [[de.sciss.synth.ugen.Duty$ Duty]]
   * @see [[de.sciss.synth.ugen.TDuty$ TDuty]]
   */
-object Demand extends ProductReader[Demand] {
+object Demand extends ProductType[Demand] {
   /** @param trig             trigger. Can be any signal. A trigger happens when the
     *                         signal changes from non-positive to positive.
     * @param in               a demand-rate signal (possibly multi-channel) which is
@@ -49,6 +49,8 @@ object Demand extends ProductReader[Demand] {
     * @param reset            trigger. Resets the list of ugens (`in`) when triggered.
     */
   def ar(trig: GE, in: GE, reset: GE = 0): Demand = new Demand(audio, trig, in, reset)
+  
+  final val typeId = 78
   
   def read(in: RefMapIn, key: String, arity: Int): Demand = {
     require (arity == 4)
@@ -119,7 +121,7 @@ final case class Demand(rate: MaybeRate, trig: GE, in: GE, reset: GE = 0)
   * @see [[de.sciss.synth.ugen.Demand$ Demand]]
   * @see [[de.sciss.synth.DoneAction DoneAction]]
   */
-object Duty extends ProductReader[Duty] {
+object Duty extends ProductType[Duty] {
   /** @param dur              the provider of time values. Can be a demand-rate ugen
     *                         or any signal. The next poll is acquired after the
     *                         previous duration.
@@ -147,6 +149,8 @@ object Duty extends ProductReader[Duty] {
     */
   def ar(dur: GE = 1.0f, level: GE, reset: GE = 0, doneAction: GE = doNothing): Duty = 
     new Duty(audio, dur, level, reset, doneAction)
+  
+  final val typeId = 79
   
   def read(in: RefMapIn, key: String, arity: Int): Duty = {
     require (arity == 5)
@@ -203,7 +207,7 @@ final case class Duty(rate: Rate, dur: GE = 1.0f, level: GE, reset: GE = 0, done
   * @see [[de.sciss.synth.ugen.Demand$ Demand]]
   * @see [[de.sciss.synth.DoneAction DoneAction]]
   */
-object TDuty extends ProductReader[TDuty] {
+object TDuty extends ProductType[TDuty] {
   def kr: TDuty = kr()
   
   /** @param dur              the provider of time values. Can be a demand-rate ugen
@@ -247,6 +251,8 @@ object TDuty extends ProductReader[TDuty] {
     */
   def ar(dur: GE = 1.0f, level: GE = 1.0f, reset: GE = 0, doneAction: GE = doNothing, gapFirst: GE = 0): TDuty = 
     new TDuty(audio, dur, level, reset, doneAction, gapFirst)
+  
+  final val typeId = 80
   
   def read(in: RefMapIn, key: String, arity: Int): TDuty = {
     require (arity == 6)
@@ -307,7 +313,7 @@ final case class TDuty(rate: Rate, dur: GE = 1.0f, level: GE = 1.0f, reset: GE =
   * @see [[de.sciss.synth.ugen.Env$ Env]]
   * @see [[de.sciss.synth.DoneAction DoneAction]]
   */
-object DemandEnvGen extends ProductReader[DemandEnvGen] {
+object DemandEnvGen extends ProductType[DemandEnvGen] {
   /** @param levels           demand-rate ugen (or other ugen) returning level values
     * @param durs             demand-rate ugen (or other ugen) returning duration
     *                         values
@@ -333,6 +339,8 @@ object DemandEnvGen extends ProductReader[DemandEnvGen] {
     */
   def ar(levels: GE, durs: GE, shapes: GE = 1, curvatures: GE = 0.0f, gate: GE = 1.0f, reset: GE = 1.0f, levelScale: GE = 1.0f, levelBias: GE = 0.0f, timeScale: GE = 1.0f, doneAction: GE = doNothing): DemandEnvGen = 
     new DemandEnvGen(audio, levels, durs, shapes, curvatures, gate, reset, levelScale, levelBias, timeScale, doneAction)
+  
+  final val typeId = 81
   
   def read(in: RefMapIn, key: String, arity: Int): DemandEnvGen = {
     require (arity == 11)
@@ -398,7 +406,9 @@ final case class DemandEnvGen(rate: Rate, levels: GE, durs: GE, shapes: GE = 1, 
   * @see [[de.sciss.synth.ugen.Dgeom$ Dgeom]]
   * @see [[de.sciss.synth.ugen.Dseq$ Dseq]]
   */
-object Dseries extends ProductReader[Dseries] {
+object Dseries extends ProductType[Dseries] {
+  final val typeId = 82
+  
   def read(in: RefMapIn, key: String, arity: Int): Dseries = {
     require (arity == 3)
     val _start  = in.readGE()
@@ -452,7 +462,9 @@ final case class Dseries(start: GE = 0.0f, step: GE = 1.0f, length: GE = inf)
   * @see [[de.sciss.synth.ugen.Dseries$ Dseries]]
   * @see [[de.sciss.synth.ugen.Demand$ Demand]]
   */
-object Dgeom extends ProductReader[Dgeom] {
+object Dgeom extends ProductType[Dgeom] {
+  final val typeId = 83
+  
   def read(in: RefMapIn, key: String, arity: Int): Dgeom = {
     require (arity == 3)
     val _start  = in.readGE()
@@ -506,7 +518,9 @@ final case class Dgeom(start: GE = 1.0f, grow: GE = 2.0f, length: GE = inf)
   * @see [[de.sciss.synth.ugen.WhiteNoise$ WhiteNoise]]
   * @see [[de.sciss.synth.ugen.Demand$ Demand]]
   */
-object Dwhite extends ProductReader[Dwhite] {
+object Dwhite extends ProductType[Dwhite] {
+  final val typeId = 84
+  
   def read(in: RefMapIn, key: String, arity: Int): Dwhite = {
     require (arity == 3)
     val _lo     = in.readGE()
@@ -558,7 +572,9 @@ final case class Dwhite(lo: GE = 0.0f, hi: GE = 1.0f, length: GE = inf)
   * @see [[de.sciss.synth.ugen.TIRand$ TIRand]]
   * @see [[de.sciss.synth.ugen.Demand$ Demand]]
   */
-object Diwhite extends ProductReader[Diwhite] {
+object Diwhite extends ProductType[Diwhite] {
+  final val typeId = 85
+  
   def read(in: RefMapIn, key: String, arity: Int): Diwhite = {
     require (arity == 3)
     val _lo     = in.readGE()
@@ -610,7 +626,9 @@ final case class Diwhite(lo: GE = 0, hi: GE = 1, length: GE = inf)
   * @see [[de.sciss.synth.ugen.BrownNoise$ BrownNoise]]
   * @see [[de.sciss.synth.ugen.Demand$ Demand]]
   */
-object Dbrown extends ProductReader[Dbrown] {
+object Dbrown extends ProductType[Dbrown] {
+  final val typeId = 86
+  
   def read(in: RefMapIn, key: String, arity: Int): Dbrown = {
     require (arity == 4)
     val _lo     = in.readGE()
@@ -668,7 +686,9 @@ final case class Dbrown(lo: GE = 0.0f, hi: GE = 1.0f, step: GE = 0.01f, length: 
   * @see [[de.sciss.synth.ugen.BrownNoise$ BrownNoise]]
   * @see [[de.sciss.synth.ugen.Demand$ Demand]]
   */
-object Dibrown extends ProductReader[Dibrown] {
+object Dibrown extends ProductType[Dibrown] {
+  final val typeId = 87
+  
   def read(in: RefMapIn, key: String, arity: Int): Dibrown = {
     require (arity == 4)
     val _lo     = in.readGE()
@@ -752,7 +772,9 @@ final case class Dibrown(lo: GE = 0, hi: GE = 1, step: GE = 1, length: GE = inf)
   * @see [[de.sciss.synth.ugen.Demand$ Demand]]
   * @see [[de.sciss.synth.ugen.Dser$ Dser]]
   */
-object Dseq extends ProductReader[Dseq] {
+object Dseq extends ProductType[Dseq] {
+  final val typeId = 88
+  
   def read(in: RefMapIn, key: String, arity: Int): Dseq = {
     require (arity == 2)
     val _seq      = in.readGE()
@@ -808,7 +830,9 @@ final case class Dseq(seq: GE, repeats: GE = 1)
   * @see [[de.sciss.synth.ugen.Demand$ Demand]]
   * @see [[de.sciss.synth.ugen.Dseq$ Dseq]]
   */
-object Dser extends ProductReader[Dser] {
+object Dser extends ProductType[Dser] {
+  final val typeId = 89
+  
   def read(in: RefMapIn, key: String, arity: Int): Dser = {
     require (arity == 2)
     val _seq    = in.readGE()
@@ -848,7 +872,9 @@ final case class Dser(seq: GE, length: GE = 1)
   * @see [[de.sciss.synth.ugen.BufRd$ BufRd]]
   * @see [[de.sciss.synth.ugen.Dbufwr$ Dbufwr]]
   */
-object Dbufrd extends ProductReader[Dbufrd] {
+object Dbufrd extends ProductType[Dbufrd] {
+  final val typeId = 90
+  
   def read(in: RefMapIn, key: String, arity: Int): Dbufrd = {
     require (arity == 3)
     val _buf    = in.readGE()
@@ -876,7 +902,9 @@ final case class Dbufrd(buf: GE, index: GE = 0, loop: GE = 1)
   
   protected def makeUGen(_args: Vec[UGenIn]): UGenInLike = UGen.SingleOut(name, demand, _args, isIndividual = true)
 }
-object Dbufwr extends ProductReader[Dbufwr] {
+object Dbufwr extends ProductType[Dbufwr] {
+  final val typeId = 91
+  
   def read(in: RefMapIn, key: String, arity: Int): Dbufwr = {
     require (arity == 4)
     val _in     = in.readGE()
@@ -918,7 +946,9 @@ final case class Dbufwr(in: GE, buf: GE, index: GE = 0, loop: GE = 1)
   * @see [[de.sciss.synth.ugen.Dxrand$ Dxrand]]
   * @see [[de.sciss.synth.ugen.Diwhite$ Diwhite]]
   */
-object Drand extends ProductReader[Drand] {
+object Drand extends ProductType[Drand] {
+  final val typeId = 92
+  
   def read(in: RefMapIn, key: String, arity: Int): Drand = {
     require (arity == 2)
     val _seq    = in.readGE()
@@ -970,7 +1000,9 @@ final case class Drand(seq: GE, length: GE = 1)
   * @see [[de.sciss.synth.ugen.Drand$ Drand]]
   * @see [[de.sciss.synth.ugen.Dshuf$ Dshuf]]
   */
-object Dxrand extends ProductReader[Dxrand] {
+object Dxrand extends ProductType[Dxrand] {
+  final val typeId = 93
+  
   def read(in: RefMapIn, key: String, arity: Int): Dxrand = {
     require (arity == 2)
     val _seq    = in.readGE()
@@ -1059,7 +1091,9 @@ final case class Dxrand(seq: GE, length: GE = 1)
   * @see [[de.sciss.synth.ugen.Drand$ Drand]]
   * @see [[de.sciss.synth.ugen.Dshuf$ Dshuf]]
   */
-object Dshuf extends ProductReader[Dshuf] {
+object Dshuf extends ProductType[Dshuf] {
+  final val typeId = 94
+  
   def read(in: RefMapIn, key: String, arity: Int): Dshuf = {
     require (arity == 2)
     val _seq      = in.readGE()
@@ -1091,7 +1125,9 @@ final case class Dshuf(seq: GE, repeats: GE = 1)
   
   protected def makeUGen(_args: Vec[UGenIn]): UGenInLike = UGen.SingleOut(name, demand, _args, isIndividual = true)
 }
-object Dswitch1 extends ProductReader[Dswitch1] {
+object Dswitch1 extends ProductType[Dswitch1] {
+  final val typeId = 95
+  
   def read(in: RefMapIn, key: String, arity: Int): Dswitch1 = {
     require (arity == 2)
     val _seq    = in.readGE()
@@ -1106,7 +1142,9 @@ final case class Dswitch1(seq: GE, index: GE)
   
   protected def makeUGen(_args: Vec[UGenIn]): UGenInLike = UGen.SingleOut(name, demand, _args, isIndividual = true)
 }
-object Dswitch extends ProductReader[Dswitch] {
+object Dswitch extends ProductType[Dswitch] {
+  final val typeId = 96
+  
   def read(in: RefMapIn, key: String, arity: Int): Dswitch = {
     require (arity == 2)
     val _seq    = in.readGE()
@@ -1121,7 +1159,9 @@ final case class Dswitch(seq: GE, index: GE)
   
   protected def makeUGen(_args: Vec[UGenIn]): UGenInLike = UGen.SingleOut(name, demand, _args, isIndividual = true)
 }
-object Dstutter extends ProductReader[Dstutter] {
+object Dstutter extends ProductType[Dstutter] {
+  final val typeId = 97
+  
   def read(in: RefMapIn, key: String, arity: Int): Dstutter = {
     require (arity == 2)
     val _n  = in.readGE()
@@ -1140,7 +1180,9 @@ final case class Dstutter(n: GE, in: GE) extends UGenSource.SingleOut with Deman
   * truncated so that the sum of `Dconst` 's output values will match the total
   * exactly.
   */
-object Dconst extends ProductReader[Dconst] {
+object Dconst extends ProductType[Dconst] {
+  final val typeId = 98
+  
   def read(in: RefMapIn, key: String, arity: Int): Dconst = {
     require (arity == 3)
     val _sum        = in.readGE()
@@ -1172,7 +1214,9 @@ final case class Dconst(sum: GE, in: GE, tolerance: GE = 0.001f)
   
   protected def makeUGen(_args: Vec[UGenIn]): UGenInLike = UGen.SingleOut(name, demand, _args, isIndividual = true)
 }
-object Donce extends ProductReader[Donce] {
+object Donce extends ProductType[Donce] {
+  final val typeId = 99
+  
   def read(in: RefMapIn, key: String, arity: Int): Donce = {
     require (arity == 1)
     val _in = in.readGE()
@@ -1204,7 +1248,9 @@ final case class Donce(in: GE) extends UGenSource.SingleOut with DemandRated wit
   * @see [[de.sciss.synth.ugen.Demand$ Demand]]
   * @see [[de.sciss.synth.ugen.Duty$ Duty]]
   */
-object Dreset extends ProductReader[Dreset] {
+object Dreset extends ProductType[Dreset] {
+  final val typeId = 100
+  
   def read(in: RefMapIn, key: String, arity: Int): Dreset = {
     require (arity == 2)
     val _in     = in.readGE()
@@ -1236,7 +1282,9 @@ final case class Dreset(in: GE, reset: GE) extends UGenSource.SingleOut with Dem
   * @see [[de.sciss.synth.ugen.SendTrig$ SendTrig]]
   * @see [[de.sciss.synth.ugen.Poll$ Poll]]
   */
-object Dpoll extends ProductReader[Dpoll] {
+object Dpoll extends ProductType[Dpoll] {
+  final val typeId = 101
+  
   def read(in: RefMapIn, key: String, arity: Int): Dpoll = {
     require (arity == 4)
     val _in     = in.readGE()

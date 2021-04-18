@@ -1,6 +1,6 @@
-<ugens revision="11" third-party="DEINDUGens"> <!-- extension from sc3-plugins -->
+<ugens revision="12" third-party="DEINDUGens"> <!-- extension from sc3-plugins -->
     <!-- all documented -->
-    <ugen name="JPverbRaw" elem="JPverb">
+    <ugen name="JPverbRaw" type-id="420" elem="JPverb">
         <rate name="control"/>
         <rate name="audio">
             <arg name="inL" rate="ugen"/>
@@ -121,7 +121,7 @@
             <see>ugen.Greyhole</see>
         </doc>
     </ugen>
-    <ugen name="GreyholeRaw" elem="Greyhole">
+    <ugen name="GreyholeRaw" type-id="421" elem="Greyhole">
         <rate name="audio">
             <arg name="inL" rate="ugen"/>
             <arg name="inR" rate="ugen"/>
@@ -213,7 +213,7 @@
             <see>ugen.JPverb</see>
         </doc>
     </ugen>
-    <ugen name="ComplexRes">
+    <ugen name="ComplexRes" type-id="422">
         <rate name="audio">
             <arg name="in" rate="ugen"/>
         </rate>
@@ -249,7 +249,7 @@
             <see>ugen.Ringz</see>
         </doc>
     </ugen>
-    <ugen name="DiodeRingMod">
+    <ugen name="DiodeRingMod" type-id="423">
         <rate name="audio">
             <arg name="car" rate="ugen"/>
             <arg name="mod" rate="ugen"/>
@@ -283,7 +283,7 @@
             <see>ugen.BinaryOpUGen</see>
         </doc>
     </ugen>
-    <ugen name="DNoiseRing" indiv="true" random="true">
+    <ugen name="DNoiseRing" type-id="424" indiv="true" random="true">
         <rate name="demand" implied="true" method="apply"/>
         <arg name="change" default="0.5">
             <doc>
@@ -333,7 +333,7 @@
             <see>ugen.Demand</see>
         </doc>
     </ugen>
-    <ugen name="RMS">
+    <ugen name="RMS" type-id="425">
         <rate name="control"/>
         <rate name="audio">
             <arg name="in" rate="ugen"/>

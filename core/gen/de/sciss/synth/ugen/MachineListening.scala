@@ -1,4 +1,4 @@
-// revision: 3
+// revision: 4
 package de.sciss.synth
 package ugen
 
@@ -25,7 +25,7 @@ import UGenSource._
   * 
   * '''Warning''': This UGen only works properly at 44.1 or 48.0 kHz.
   */
-object BeatTrack extends ProductReader[BeatTrack] {
+object BeatTrack extends ProductType[BeatTrack] {
   /** @param chain            the output (buffer) of an FFT UGen which transforms the
     *                         audio input to track. The expected size of FFT is 1024
     *                         for 44100 and 48000 sampling rate, and 2048 for double
@@ -37,6 +37,8 @@ object BeatTrack extends ProductReader[BeatTrack] {
     *                         goes back below 0.5. Can be control-rate modulated.
     */
   def kr(chain: GE, lock: GE = 0.0f): BeatTrack = new BeatTrack(chain, lock)
+  
+  final val typeId = 270
   
   def read(in: RefMapIn, key: String, arity: Int): BeatTrack = {
     require (arity == 2)
@@ -99,7 +101,7 @@ final case class BeatTrack(chain: GE, lock: GE = 0.0f)
   * generated every 512 audio frames, or (at control block size 64) every 8 control
   * blocks.
   */
-object Loudness extends ProductReader[Loudness] {
+object Loudness extends ProductType[Loudness] {
   /** @param chain            the output (buffer) of an FFT UGen which transforms the
     *                         audio input to track. The FFT size should be 1024 for
     *                         44.1 and 48 kHz sampling rate, and 2048 for 88.2 and 96
@@ -114,6 +116,8 @@ object Loudness extends ProductReader[Loudness] {
     *                         control-rate modulated.
     */
   def kr(chain: GE, smask: GE = 0.25f, tmask: GE = 1.0f): Loudness = new Loudness(chain, smask, tmask)
+  
+  final val typeId = 271
   
   def read(in: RefMapIn, key: String, arity: Int): Loudness = {
     require (arity == 3)
@@ -164,7 +168,7 @@ final case class Loudness(chain: GE, smask: GE = 0.25f, tmask: GE = 1.0f)
   * in all transpositions. It assumes a 440 Hz concert A reference. Output is 0-11 C
   * major to B major, 12-23 C minor to B minor.
   */
-object KeyTrack extends ProductReader[KeyTrack] {
+object KeyTrack extends ProductType[KeyTrack] {
   /** @param chain            the output (buffer) of an FFT UGen which transforms the
     *                         audio input to track. For the FFT chain, with a standard
     *                         hop of half FFT size, the FFT size should be 4096 at
@@ -179,6 +183,8 @@ object KeyTrack extends ProductReader[KeyTrack] {
     */
   def kr(chain: GE, keyDecay: GE = 2.0f, chromaLeak: GE = 0.5f): KeyTrack = 
     new KeyTrack(chain, keyDecay, chromaLeak)
+  
+  final val typeId = 272
   
   def read(in: RefMapIn, key: String, arity: Int): KeyTrack = {
     require (arity == 3)
@@ -236,7 +242,7 @@ final case class KeyTrack(chain: GE, keyDecay: GE = 2.0f, chromaLeak: GE = 0.5f)
   * generated every 512 audio frames, or (at control block size 64) every 8 control
   * blocks.
   */
-object MFCC extends ProductReader[MFCC] {
+object MFCC extends ProductType[MFCC] {
   /** @param chain            the output (buffer) of an FFT UGen which transforms the
     *                         audio input to track. For the FFT chain, with a standard
     *                         hop of half FFT size, the FFT size should be 1024 at
@@ -247,6 +253,8 @@ object MFCC extends ProductReader[MFCC] {
     *                         UGen, it has to be an `Int` .
     */
   def kr(chain: GE, numCoeffs: Int = 13): MFCC = new MFCC(chain, numCoeffs)
+  
+  final val typeId = 273
   
   def read(in: RefMapIn, key: String, arity: Int): MFCC = {
     require (arity == 2)
@@ -322,7 +330,7 @@ final case class MFCC(chain: GE, numCoeffs: Int = 13)
   * @see [[de.sciss.synth.ugen.PV_JensenAndersen$ PV_JensenAndersen]]
   * @see [[de.sciss.synth.ugen.PV_HainsworthFoote$ PV_HainsworthFoote]]
   */
-object Onsets extends ProductReader[Onsets] {
+object Onsets extends ProductType[Onsets] {
   /** @param chain            the output (buffer) of an FFT UGen which transforms the
     *                         audio input to track. For the FFT chain, you should
     *                         typically use a frame size of 512 or 1024 (at 44.1 kHz
@@ -358,6 +366,8 @@ object Onsets extends ProductReader[Onsets] {
     */
   def kr(chain: GE, thresh: GE = 0.5f, fun: GE = 3, decay: GE = 1.0f, noiseFloor: GE = 0.1f, minGap: GE = 10, medianSpan: GE = 11, whType: GE = 1, raw: GE = 0): Onsets = 
     new Onsets(chain, thresh, fun, decay, noiseFloor, minGap, medianSpan, whType, raw)
+  
+  final val typeId = 274
   
   def read(in: RefMapIn, key: String, arity: Int): Onsets = {
     require (arity == 9)
@@ -468,7 +478,7 @@ final case class Onsets(chain: GE, thresh: GE = 0.5f, fun: GE = 3, decay: GE = 1
   * control bus instead of taking a regular control input signal as its first
   * argument!
   */
-object BeatTrack2 extends ProductReader[BeatTrack2] {
+object BeatTrack2 extends ProductType[BeatTrack2] {
   /** @param bus              index of a control bus to read from. the number of
     *                         channels of that bus are expected to match the
     *                         `numChannels` argument. To track a particular audio
@@ -504,6 +514,8 @@ object BeatTrack2 extends ProductReader[BeatTrack2] {
     */
   def kr(bus: GE, numChannels: GE, winSize: GE = 2, phaseSpacing: GE = 0.02f, lock: GE = 0, weighting: GE = -2.1f): BeatTrack2 = 
     new BeatTrack2(bus, numChannels, winSize, phaseSpacing, lock, weighting)
+  
+  final val typeId = 275
   
   def read(in: RefMapIn, key: String, arity: Int): BeatTrack2 = {
     require (arity == 6)
@@ -612,10 +624,12 @@ final case class BeatTrack2(bus: GE, numChannels: GE, winSize: GE = 2, phaseSpac
   * 
   * @see [[de.sciss.synth.ugen.CheckBadValues$ CheckBadValues]]
   */
-object SpecFlatness extends ProductReader[SpecFlatness] {
+object SpecFlatness extends ProductType[SpecFlatness] {
   /** @param chain            the fft signal (buffer) to analyze
     */
   def kr(chain: GE): SpecFlatness = new SpecFlatness(chain)
+  
+  final val typeId = 276
   
   def read(in: RefMapIn, key: String, arity: Int): SpecFlatness = {
     require (arity == 1)
@@ -663,7 +677,7 @@ final case class SpecFlatness(chain: GE) extends UGenSource.SingleOut with Contr
   * generated every 512 audio frames, or (at control block size 64) every 8 control
   * blocks.
   */
-object SpecPcile extends ProductReader[SpecPcile] {
+object SpecPcile extends ProductType[SpecPcile] {
   /** @param chain            the fft signal (buffer) to analyze
     * @param percent          the percentage between 0.0 (0%) and 1.0 (100%)
     * @param interp           specifies whether interpolation should be used to try
@@ -673,6 +687,8 @@ object SpecPcile extends ProductReader[SpecPcile] {
     */
   def kr(chain: GE, percent: GE = 0.5f, interp: GE = 0): SpecPcile = 
     new SpecPcile(chain, percent, interp)
+  
+  final val typeId = 277
   
   def read(in: RefMapIn, key: String, arity: Int): SpecPcile = {
     require (arity == 3)
@@ -730,10 +746,12 @@ final case class SpecPcile(chain: GE, percent: GE = 0.5f, interp: GE = 0)
   * 
   * @see [[de.sciss.synth.ugen.SpecPcile$ SpecPcile]]
   */
-object SpecCentroid extends ProductReader[SpecCentroid] {
+object SpecCentroid extends ProductType[SpecCentroid] {
   /** @param chain            the fft signal (buffer) to analyze
     */
   def kr(chain: GE): SpecCentroid = new SpecCentroid(chain)
+  
+  final val typeId = 278
   
   def read(in: RefMapIn, key: String, arity: Int): SpecCentroid = {
     require (arity == 1)

@@ -1,6 +1,6 @@
-<ugens revision="2">
+<ugens revision="3">
     <!-- all documented -->
-    <ugen name="KeyState">
+    <ugen name="KeyState" type-id="235">
         <rate name="control" implied="true"/>
         <arg name="keyCode">
             <doc>

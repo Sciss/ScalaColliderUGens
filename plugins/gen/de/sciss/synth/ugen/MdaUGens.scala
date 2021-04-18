@@ -1,4 +1,4 @@
-// revision: 2
+// revision: 3
 package de.sciss.synth
 package ugen
 
@@ -12,7 +12,7 @@ import UGenSource._
   * 
   * This is a third-party UGen (MdaUGens).
   */
-object MdaPiano extends ProductReader[MdaPiano] {
+object MdaPiano extends ProductType[MdaPiano] {
   def ar: MdaPiano = ar()
   
   /** @param freq             Frequency of the note in Hz.
@@ -36,6 +36,8 @@ object MdaPiano extends ProductReader[MdaPiano] {
     */
   def ar(freq: GE = 440, gate: GE = 1, velocity: GE = 100, decay: GE = 0.8f, release: GE = 0.8f, hardness: GE = 0.8f, velHard: GE = 0.8f, muffle: GE = 0.8f, velMuff: GE = 0.8f, velCurve: GE = 0.8f, stereo: GE = 0.2f, tune: GE = 0.5f, random: GE = 0.1f, stretch: GE = 0.1f, sustain: GE = 0): MdaPiano = 
     new MdaPiano(audio, freq, gate, velocity, decay, release, hardness, velHard, muffle, velMuff, velCurve, stereo, tune, random, stretch, sustain)
+  
+  final val typeId = 437
   
   def read(in: RefMapIn, key: String, arity: Int): MdaPiano = {
     require (arity == 16)

@@ -14,13 +14,13 @@
 package de.sciss.synth
 
 import de.sciss.serial.{ConstFormat, DataInput, DataOutput}
-import de.sciss.synth.UGenSource.{ProductReader, RefMapIn}
+import de.sciss.synth.UGenSource.{ProductReader, ProductType, RefMapIn}
 
 import scala.annotation.switch
 import scala.language.implicitConversions
 import scala.math.{Pi, abs, cos, pow, sin, sqrt}
 
-object Curve extends ProductReader[Curve] {
+object Curve extends ProductType[Curve] {
   case object step extends Curve {
     final val id = 0
 
@@ -152,6 +152,8 @@ object Curve extends ProductReader[Curve] {
         case other          => sys.error(s"Unexpected envelope shape id $other")
       }
   }
+
+  final val typeId = 266
 
   override def read(in: RefMapIn, key: String, arity: Int): Curve = {
     val n       = key.lastIndexOf('.')

@@ -26,14 +26,18 @@ import scala.annotation.switch
   * @see  GEOps
   * @see  BinaryOpUGen
   */
-object UnaryOpUGen extends ProductReader[UnaryOpUGen] {
+object UnaryOpUGen extends ProductType[UnaryOpUGen] {
   // note: this is not optimizing, as would be `op.make(a)`, because it guarantees that the return
   // type is UnaryOpUGen. this is used in deserialization, you should prefer `op.make` instead.
   def apply(op: Op, a: GE): UnaryOpUGen = op.makeNoOptimization(a)
 
   def unapply(b: UnaryOpUGen): Option[(Op, GE)] = Some((b.selector, b.a))
 
-  object Op extends ProductReader[Op] {
+  final val typeId = 442
+
+  object Op extends ProductType[Op] {
+    final val typeId = 443
+
     def apply(id: Int): Op = (id: @switch) match {
       case Neg        .id => Neg
       case Not        .id => Not
@@ -467,14 +471,16 @@ abstract class UnaryOpUGen extends UGenSource.SingleOut {
   * @see  GEOps
   * @see  UnaryOpUGen
   */
-object BinaryOpUGen extends ProductReader[BinaryOpUGen] {
+object BinaryOpUGen extends ProductType[BinaryOpUGen] {
   // note: this is not optimizing, as would be `op.make(a, b)`, because it guarantees that the return
   // type is BinaryOpUGen. this is used in deserialization, you should prefer `op.make` instead.
   def apply(op: Op, a: GE, b: GE): BinaryOpUGen = op.makeNoOptimization(a, b)
 
   def unapply(b: BinaryOpUGen): Option[(Op, GE, GE)] = Some((b.selector, b.a, b.b))
 
-  object Op extends ProductReader[Op] {
+  final val typeId = 444
+
+  object Op extends ProductType[Op] {
     def apply(id: Int): Op = (id: @switch) match {
       case Plus     .id => Plus
       case Minus    .id => Minus
@@ -523,6 +529,8 @@ object BinaryOpUGen extends ProductReader[BinaryOpUGen] {
       case Rrand    .id => Rrand
       case Exprand  .id => Exprand
     }
+
+    final val typeId = 445
 
     override def read(in: RefMapIn, key: String, arity: Int): Op = {
       require (arity == 1)
@@ -966,7 +974,7 @@ abstract class BinaryOpUGen extends UGenSource.SingleOut {
 
   override final def productPrefix = "BinaryOpUGen"
 
-  final def rate: MaybeRate = MaybeRate.max_?( a.rate, b.rate )
+  final def rate: MaybeRate = MaybeRate.max_?(a.rate, b.rate)
 
   protected final def makeUGens: UGenInLike = unwrap(this, Vector(a.expand, b.expand))
 

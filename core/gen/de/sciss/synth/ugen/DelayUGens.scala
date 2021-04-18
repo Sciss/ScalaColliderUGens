@@ -1,4 +1,4 @@
-// revision: 12
+// revision: 13
 package de.sciss.synth
 package ugen
 
@@ -21,10 +21,12 @@ import UGenSource._
   * @see [[de.sciss.synth.ugen.ControlDur$ ControlDur]]
   * @see [[de.sciss.synth.ugen.SampleRate$ SampleRate]]
   */
-object ControlRate extends ProductReader[ControlRate] {
+object ControlRate extends ProductType[ControlRate] {
   /** 
     */
   def ir: ControlRate = new ControlRate()
+  
+  final val typeId = 25
   
   def read(in: RefMapIn, key: String, arity: Int): ControlRate = {
     require (arity == 0)
@@ -68,10 +70,12 @@ final case class ControlRate() extends UGenSource.SingleOut with ScalarRated {
   * @see [[de.sciss.synth.ugen.ControlRate$ ControlRate]]
   * @see [[de.sciss.synth.ugen.RadiansPerSample$ RadiansPerSample]]
   */
-object SampleRate extends ProductReader[SampleRate] {
+object SampleRate extends ProductType[SampleRate] {
   /** 
     */
   def ir: SampleRate = new SampleRate()
+  
+  final val typeId = 26
   
   def read(in: RefMapIn, key: String, arity: Int): SampleRate = {
     require (arity == 0)
@@ -105,10 +109,12 @@ final case class SampleRate() extends UGenSource.SingleOut with ScalarRated {
   * @see [[de.sciss.synth.ugen.SampleRate$ SampleRate]]
   * @see [[de.sciss.synth.ugen.ControlDur$ ControlDur]]
   */
-object SampleDur extends ProductReader[SampleDur] {
+object SampleDur extends ProductType[SampleDur] {
   /** 
     */
   def ir: SampleDur = new SampleDur()
+  
+  final val typeId = 27
   
   def read(in: RefMapIn, key: String, arity: Int): SampleDur = {
     require (arity == 0)
@@ -141,10 +147,12 @@ final case class SampleDur() extends UGenSource.SingleOut with ScalarRated {
   * @see [[de.sciss.synth.ugen.ControlRate$ ControlRate]]
   * @see [[de.sciss.synth.ugen.SampleDur$ SampleDur]]
   */
-object ControlDur extends ProductReader[ControlDur] {
+object ControlDur extends ProductType[ControlDur] {
   /** 
     */
   def ir: ControlDur = new ControlDur()
+  
+  final val typeId = 28
   
   def read(in: RefMapIn, key: String, arity: Int): ControlDur = {
     require (arity == 0)
@@ -208,10 +216,12 @@ final case class ControlDur() extends UGenSource.SingleOut with ScalarRated {
   * @see [[de.sciss.synth.ugen.SampleDur$ SampleDur]]
   * @see [[de.sciss.synth.ugen.OffsetOut$ OffsetOut]]
   */
-object SubsampleOffset extends ProductReader[SubsampleOffset] {
+object SubsampleOffset extends ProductType[SubsampleOffset] {
   /** 
     */
   def ir: SubsampleOffset = new SubsampleOffset()
+  
+  final val typeId = 29
   
   def read(in: RefMapIn, key: String, arity: Int): SubsampleOffset = {
     require (arity == 0)
@@ -255,10 +265,12 @@ final case class SubsampleOffset() extends UGenSource.SingleOut with ScalarRated
   * 
   * @see [[de.sciss.synth.ugen.SampleRate$ SampleRate]]
   */
-object RadiansPerSample extends ProductReader[RadiansPerSample] {
+object RadiansPerSample extends ProductType[RadiansPerSample] {
   /** 
     */
   def ir: RadiansPerSample = new RadiansPerSample()
+  
+  final val typeId = 30
   
   def read(in: RefMapIn, key: String, arity: Int): RadiansPerSample = {
     require (arity == 0)
@@ -294,10 +306,12 @@ final case class RadiansPerSample() extends UGenSource.SingleOut with ScalarRate
   * @see [[de.sciss.synth.ugen.NumOutputBuses$ NumOutputBuses]]
   * @see [[de.sciss.synth.ugen.NumRunningSynths$ NumRunningSynths]]
   */
-object NumInputBuses extends ProductReader[NumInputBuses] {
+object NumInputBuses extends ProductType[NumInputBuses] {
   /** 
     */
   def ir: NumInputBuses = new NumInputBuses()
+  
+  final val typeId = 31
   
   def read(in: RefMapIn, key: String, arity: Int): NumInputBuses = {
     require (arity == 0)
@@ -334,10 +348,12 @@ final case class NumInputBuses() extends UGenSource.SingleOut with ScalarRated {
   * @see [[de.sciss.synth.ugen.NumInputBuses$ NumInputBuses]]
   * @see [[de.sciss.synth.ugen.NumRunningSynths$ NumRunningSynths]]
   */
-object NumOutputBuses extends ProductReader[NumOutputBuses] {
+object NumOutputBuses extends ProductType[NumOutputBuses] {
   /** 
     */
   def ir: NumOutputBuses = new NumOutputBuses()
+  
+  final val typeId = 32
   
   def read(in: RefMapIn, key: String, arity: Int): NumOutputBuses = {
     require (arity == 0)
@@ -374,10 +390,12 @@ final case class NumOutputBuses() extends UGenSource.SingleOut with ScalarRated 
   * @see [[de.sciss.synth.ugen.NumOutputBuses$ NumOutputBuses]]
   * @see [[de.sciss.synth.ugen.NumRunningSynths$ NumRunningSynths]]
   */
-object NumAudioBuses extends ProductReader[NumAudioBuses] {
+object NumAudioBuses extends ProductType[NumAudioBuses] {
   /** 
     */
   def ir: NumAudioBuses = new NumAudioBuses()
+  
+  final val typeId = 33
   
   def read(in: RefMapIn, key: String, arity: Int): NumAudioBuses = {
     require (arity == 0)
@@ -414,10 +432,12 @@ final case class NumAudioBuses() extends UGenSource.SingleOut with ScalarRated {
   * @see [[de.sciss.synth.ugen.NumOutputBuses$ NumOutputBuses]]
   * @see [[de.sciss.synth.ugen.NumRunningSynths$ NumRunningSynths]]
   */
-object NumControlBuses extends ProductReader[NumControlBuses] {
+object NumControlBuses extends ProductType[NumControlBuses] {
   /** 
     */
   def ir: NumControlBuses = new NumControlBuses()
+  
+  final val typeId = 34
   
   def read(in: RefMapIn, key: String, arity: Int): NumControlBuses = {
     require (arity == 0)
@@ -454,10 +474,12 @@ final case class NumControlBuses() extends UGenSource.SingleOut with ScalarRated
   * @see [[de.sciss.synth.ugen.NumOutputBuses$ NumOutputBuses]]
   * @see [[de.sciss.synth.ugen.NumRunningSynths$ NumRunningSynths]]
   */
-object NumBuffers extends ProductReader[NumBuffers] {
+object NumBuffers extends ProductType[NumBuffers] {
   /** 
     */
   def ir: NumBuffers = new NumBuffers()
+  
+  final val typeId = 35
   
   def read(in: RefMapIn, key: String, arity: Int): NumBuffers = {
     require (arity == 0)
@@ -492,10 +514,12 @@ final case class NumBuffers() extends UGenSource.SingleOut with ScalarRated {
   * @see [[de.sciss.synth.ugen.Poll$ Poll]]
   * @see [[de.sciss.synth.ugen.NumRunningSynths$ NumRunningSynths]]
   */
-object NodeID extends ProductReader[NodeID] {
+object NodeID extends ProductType[NodeID] {
   /** 
     */
   def ir: NodeID = new NodeID()
+  
+  final val typeId = 36
   
   def read(in: RefMapIn, key: String, arity: Int): NodeID = {
     require (arity == 0)
@@ -530,10 +554,12 @@ final case class NodeID() extends UGenSource.SingleOut with ScalarRated {
   * @see [[de.sciss.synth.ugen.NumInputBuses$ NumInputBuses]]
   * @see [[de.sciss.synth.ugen.NumOutputBuses$ NumOutputBuses]]
   */
-object NumRunningSynths extends ProductReader[NumRunningSynths] {
+object NumRunningSynths extends ProductType[NumRunningSynths] {
   /** 
     */
   def ir: NumRunningSynths = new NumRunningSynths()
+  
+  final val typeId = 37
   
   def read(in: RefMapIn, key: String, arity: Int): NumRunningSynths = {
     require (arity == 0)
@@ -570,7 +596,7 @@ final case class NumRunningSynths() extends UGenSource.SingleOut with ScalarRate
   * @see [[de.sciss.synth.ugen.SampleRate$ SampleRate]]
   * @see [[de.sciss.synth.ugen.BufRateScale$ BufRateScale]]
   */
-object BufSampleRate extends ProductReader[BufSampleRate] {
+object BufSampleRate extends ProductType[BufSampleRate] {
   /** @param buf              Buffer id.
     */
   def ir(buf: GE): BufSampleRate = new BufSampleRate(scalar, buf)
@@ -578,6 +604,8 @@ object BufSampleRate extends ProductReader[BufSampleRate] {
   /** @param buf              Buffer id.
     */
   def kr(buf: GE): BufSampleRate = new BufSampleRate(control, buf)
+  
+  final val typeId = 38
   
   def read(in: RefMapIn, key: String, arity: Int): BufSampleRate = {
     require (arity == 2)
@@ -621,7 +649,7 @@ final case class BufSampleRate(rate: Rate, buf: GE) extends UGenSource.SingleOut
   * @see [[de.sciss.synth.ugen.SampleRate$ SampleRate]]
   * @see [[de.sciss.synth.ugen.PlayBuf$ PlayBuf]]
   */
-object BufRateScale extends ProductReader[BufRateScale] {
+object BufRateScale extends ProductType[BufRateScale] {
   /** @param buf              Buffer id.
     */
   def ir(buf: GE): BufRateScale = new BufRateScale(scalar, buf)
@@ -629,6 +657,8 @@ object BufRateScale extends ProductReader[BufRateScale] {
   /** @param buf              Buffer id.
     */
   def kr(buf: GE): BufRateScale = new BufRateScale(control, buf)
+  
+  final val typeId = 39
   
   def read(in: RefMapIn, key: String, arity: Int): BufRateScale = {
     require (arity == 2)
@@ -681,7 +711,7 @@ final case class BufRateScale(rate: Rate, buf: GE) extends UGenSource.SingleOut 
   * @see [[de.sciss.synth.ugen.BufChannels$ BufChannels]]
   * @see [[de.sciss.synth.ugen.BufDur$ BufDur]]
   */
-object BufSamples extends ProductReader[BufSamples] {
+object BufSamples extends ProductType[BufSamples] {
   /** @param buf              Buffer id.
     */
   def ir(buf: GE): BufSamples = new BufSamples(scalar, buf)
@@ -689,6 +719,8 @@ object BufSamples extends ProductReader[BufSamples] {
   /** @param buf              Buffer id.
     */
   def kr(buf: GE): BufSamples = new BufSamples(control, buf)
+  
+  final val typeId = 40
   
   def read(in: RefMapIn, key: String, arity: Int): BufSamples = {
     require (arity == 2)
@@ -736,7 +768,7 @@ final case class BufSamples(rate: Rate, buf: GE) extends UGenSource.SingleOut {
   * @see [[de.sciss.synth.ugen.BufChannels$ BufChannels]]
   * @see [[de.sciss.synth.ugen.BufDur$ BufDur]]
   */
-object BufFrames extends ProductReader[BufFrames] {
+object BufFrames extends ProductType[BufFrames] {
   /** @param buf              Buffer id.
     */
   def ir(buf: GE): BufFrames = new BufFrames(scalar, buf)
@@ -744,6 +776,8 @@ object BufFrames extends ProductReader[BufFrames] {
   /** @param buf              Buffer id.
     */
   def kr(buf: GE): BufFrames = new BufFrames(control, buf)
+  
+  final val typeId = 41
   
   def read(in: RefMapIn, key: String, arity: Int): BufFrames = {
     require (arity == 2)
@@ -782,7 +816,7 @@ final case class BufFrames(rate: Rate, buf: GE) extends UGenSource.SingleOut {
   * @see [[de.sciss.synth.ugen.BufFrames$ BufFrames]]
   * @see [[de.sciss.synth.ugen.BufSamples$ BufSamples]]
   */
-object BufChannels extends ProductReader[BufChannels] {
+object BufChannels extends ProductType[BufChannels] {
   /** @param buf              Buffer id.
     */
   def ir(buf: GE): BufChannels = new BufChannels(scalar, buf)
@@ -790,6 +824,8 @@ object BufChannels extends ProductReader[BufChannels] {
   /** @param buf              Buffer id.
     */
   def kr(buf: GE): BufChannels = new BufChannels(control, buf)
+  
+  final val typeId = 42
   
   def read(in: RefMapIn, key: String, arity: Int): BufChannels = {
     require (arity == 2)
@@ -828,7 +864,7 @@ final case class BufChannels(rate: Rate, buf: GE) extends UGenSource.SingleOut {
   * @see [[de.sciss.synth.ugen.BufRateScale$ BufRateScale]]
   * @see [[de.sciss.synth.ugen.SampleDur$ SampleDur]]
   */
-object BufDur extends ProductReader[BufDur] {
+object BufDur extends ProductType[BufDur] {
   /** @param buf              Buffer id.
     */
   def ir(buf: GE): BufDur = new BufDur(scalar, buf)
@@ -836,6 +872,8 @@ object BufDur extends ProductReader[BufDur] {
   /** @param buf              Buffer id.
     */
   def kr(buf: GE): BufDur = new BufDur(control, buf)
+  
+  final val typeId = 43
   
   def read(in: RefMapIn, key: String, arity: Int): BufDur = {
     require (arity == 2)
@@ -875,7 +913,7 @@ final case class BufDur(rate: Rate, buf: GE) extends UGenSource.SingleOut {
   * @see [[de.sciss.synth.ugen.BufRateScale$ BufRateScale]]
   * @see [[de.sciss.synth.ugen.BufFrames$ BufFrames]]
   */
-object PlayBuf extends ProductReader[PlayBuf] {
+object PlayBuf extends ProductType[PlayBuf] {
   /** @param numChannels      the number of channels that the buffer will be. Since
     *                         this is a constant, a change in number of channels of
     *                         the underlying bus must be reflected by creating
@@ -929,6 +967,8 @@ object PlayBuf extends ProductReader[PlayBuf] {
     */
   def ar(numChannels: Int, buf: GE, speed: GE = 1.0f, trig: GE = 1, offset: GE = 0.0f, loop: GE = 1, doneAction: GE = doNothing): PlayBuf = 
     new PlayBuf(audio, numChannels, buf, speed, trig, offset, loop, doneAction)
+  
+  final val typeId = 44
   
   def read(in: RefMapIn, key: String, arity: Int): PlayBuf = {
     require (arity == 8)
@@ -1025,7 +1065,7 @@ final case class PlayBuf(rate: Rate, numChannels: Int, buf: GE, speed: GE = 1.0f
   * @see [[de.sciss.synth.ugen.BufRateScale$ BufRateScale]]
   * @see [[de.sciss.synth.ugen.BufFrames$ BufFrames]]
   */
-object RecordBuf extends ProductReader[RecordBuf] {
+object RecordBuf extends ProductType[RecordBuf] {
   /** @param in               the signal to record
     * @param buf              the identifier of the buffer to use
     * @param offset           sample frame to begin writing from. This is read when a
@@ -1075,6 +1115,8 @@ object RecordBuf extends ProductReader[RecordBuf] {
     */
   def ar(in: GE, buf: GE, offset: GE = 0, recLevel: GE = 1.0f, preLevel: GE = 0.0f, run: GE = 1, loop: GE = 1, trig: GE = 1, doneAction: GE = doNothing): RecordBuf = 
     new RecordBuf(audio, in, buf, offset, recLevel, preLevel, run, loop, trig, doneAction)
+  
+  final val typeId = 45
   
   def read(in: RefMapIn, key: String, arity: Int): RecordBuf = {
     require (arity == 10)
@@ -1178,7 +1220,7 @@ final case class RecordBuf(rate: Rate, in: GE, buf: GE, offset: GE = 0, recLevel
   * @see [[de.sciss.synth.ugen.BufFrames$ BufFrames]]
   * @see [[de.sciss.synth.ugen.BufRateScale$ BufRateScale]]
   */
-object BufRd extends ProductReader[BufRd] {
+object BufRd extends ProductType[BufRd] {
   /** @param numChannels      number of channels that the buffer will be. Since this
     *                         is an integer constant, a change in the number of
     *                         channels must be reflected by creating different
@@ -1223,6 +1265,8 @@ object BufRd extends ProductReader[BufRd] {
     */
   def ar(numChannels: Int, buf: GE, index: GE = 0.0f, loop: GE = 1, interp: GE = 2): BufRd = 
     new BufRd(audio, numChannels, buf, index, loop, interp)
+  
+  final val typeId = 46
   
   def read(in: RefMapIn, key: String, arity: Int): BufRd = {
     require (arity == 6)
@@ -1321,7 +1365,7 @@ final case class BufRd(rate: Rate, numChannels: Int, buf: GE, index: GE = 0.0f, 
   * @see [[de.sciss.synth.ugen.BufFrames$ BufFrames]]
   * @see [[de.sciss.synth.ugen.BufRateScale$ BufRateScale]]
   */
-object BufWr extends ProductReader[BufWr] {
+object BufWr extends ProductType[BufWr] {
   /** @param in               input signal to record
     * @param buf              the identifier of the buffer to use
     * @param index            audio rate frame-index into the buffer.
@@ -1347,6 +1391,8 @@ object BufWr extends ProductReader[BufWr] {
     *                         modulated.
     */
   def ar(in: GE, buf: GE, index: GE = 0.0f, loop: GE = 1): BufWr = new BufWr(audio, in, buf, index, loop)
+  
+  final val typeId = 47
   
   def read(in: RefMapIn, key: String, arity: Int): BufWr = {
     require (arity == 5)
@@ -1427,7 +1473,7 @@ final case class BufWr(rate: Rate, in: GE, buf: GE, index: GE = 0.0f, loop: GE =
   * }
   * }}}
   */
-object Pitch extends ProductReader[Pitch] {
+object Pitch extends ProductType[Pitch] {
   /** @param in               The signal to be analyzed.
     * @param initFreq         The initial value of the `freq` output, until the first
     *                         valid pitch is found. ''(init-time only)''
@@ -1475,6 +1521,8 @@ object Pitch extends ProductReader[Pitch] {
     */
   def kr(in: GE, initFreq: GE = 440.0f, minFreq: GE = 60.0f, maxFreq: GE = 4000.0f, execFreq: GE = 100.0f, binsPerOct: GE = 16, median: GE = 1, ampThresh: GE = 0.01f, peakThresh: GE = 0.5f, downSample: GE = 1, clarity: GE = 0): Pitch = 
     new Pitch(control, in, initFreq, minFreq, maxFreq, execFreq, binsPerOct, median, ampThresh, peakThresh, downSample, clarity)
+  
+  final val typeId = 48
   
   def read(in: RefMapIn, key: String, arity: Int): Pitch = {
     require (arity == 12)
@@ -1599,7 +1647,7 @@ final case class Pitch(rate: Rate, in: GE, initFreq: GE = 440.0f, minFreq: GE = 
   * @see [[de.sciss.synth.ugen.BufDelayL$ BufDelayL]]
   * @see [[de.sciss.synth.ugen.BufDelayC$ BufDelayC]]
   */
-object BufDelayN extends ProductReader[BufDelayN] {
+object BufDelayN extends ProductType[BufDelayN] {
   /** @param buf              Buffer id.
     * @param in               The input signal.
     * @param delayTime        Delay time in seconds.
@@ -1611,6 +1659,8 @@ object BufDelayN extends ProductReader[BufDelayN] {
     * @param delayTime        Delay time in seconds.
     */
   def ar(buf: GE, in: GE, delayTime: GE = 0.2f): BufDelayN = new BufDelayN(audio, buf, in, delayTime)
+  
+  final val typeId = 49
   
   def read(in: RefMapIn, key: String, arity: Int): BufDelayN = {
     require (arity == 4)
@@ -1659,7 +1709,7 @@ final case class BufDelayN(rate: Rate, buf: GE, in: GE, delayTime: GE = 0.2f)
   * @see [[de.sciss.synth.ugen.BufDelayN$ BufDelayN]]
   * @see [[de.sciss.synth.ugen.BufDelayC$ BufDelayC]]
   */
-object BufDelayL extends ProductReader[BufDelayL] {
+object BufDelayL extends ProductType[BufDelayL] {
   /** @param buf              Buffer id.
     * @param in               The input signal.
     * @param delayTime        Delay time in seconds.
@@ -1671,6 +1721,8 @@ object BufDelayL extends ProductReader[BufDelayL] {
     * @param delayTime        Delay time in seconds.
     */
   def ar(buf: GE, in: GE, delayTime: GE = 0.2f): BufDelayL = new BufDelayL(audio, buf, in, delayTime)
+  
+  final val typeId = 50
   
   def read(in: RefMapIn, key: String, arity: Int): BufDelayL = {
     require (arity == 4)
@@ -1719,7 +1771,7 @@ final case class BufDelayL(rate: Rate, buf: GE, in: GE, delayTime: GE = 0.2f)
   * @see [[de.sciss.synth.ugen.BufDelayN$ BufDelayN]]
   * @see [[de.sciss.synth.ugen.BufDelayL$ BufDelayL]]
   */
-object BufDelayC extends ProductReader[BufDelayC] {
+object BufDelayC extends ProductType[BufDelayC] {
   /** @param buf              Buffer id.
     * @param in               The input signal.
     * @param delayTime        Delay time in seconds.
@@ -1731,6 +1783,8 @@ object BufDelayC extends ProductReader[BufDelayC] {
     * @param delayTime        Delay time in seconds.
     */
   def ar(buf: GE, in: GE, delayTime: GE = 0.2f): BufDelayC = new BufDelayC(audio, buf, in, delayTime)
+  
+  final val typeId = 51
   
   def read(in: RefMapIn, key: String, arity: Int): BufDelayC = {
     require (arity == 4)
@@ -1814,7 +1868,7 @@ final case class BufDelayC(rate: Rate, buf: GE, in: GE, delayTime: GE = 0.2f)
   * @see [[de.sciss.synth.ugen.BufCombL$ BufCombL]]
   * @see [[de.sciss.synth.ugen.BufCombC$ BufCombC]]
   */
-object BufCombN extends ProductReader[BufCombN] {
+object BufCombN extends ProductType[BufCombN] {
   /** @param buf              Buffer id.
     * @param in               The input signal.
     * @param delayTime        Delay time in seconds.
@@ -1825,6 +1879,8 @@ object BufCombN extends ProductReader[BufCombN] {
     */
   def ar(buf: GE, in: GE, delayTime: GE = 0.2f, decayTime: GE = 1.0f): BufCombN = 
     new BufCombN(audio, buf, in, delayTime, decayTime)
+  
+  final val typeId = 52
   
   def read(in: RefMapIn, key: String, arity: Int): BufCombN = {
     require (arity == 5)
@@ -1901,7 +1957,7 @@ final case class BufCombN(rate: Rate, buf: GE, in: GE, delayTime: GE = 0.2f, dec
   * @see [[de.sciss.synth.ugen.BufCombN$ BufCombN]]
   * @see [[de.sciss.synth.ugen.BufCombC$ BufCombC]]
   */
-object BufCombL extends ProductReader[BufCombL] {
+object BufCombL extends ProductType[BufCombL] {
   /** @param buf              Buffer id.
     * @param in               The input signal.
     * @param delayTime        Delay time in seconds.
@@ -1916,6 +1972,8 @@ object BufCombL extends ProductReader[BufCombL] {
     */
   def ar(buf: GE, in: GE, delayTime: GE = 0.2f, decayTime: GE = 1.0f): BufCombL = 
     new BufCombL(audio, buf, in, delayTime, decayTime)
+  
+  final val typeId = 53
   
   def read(in: RefMapIn, key: String, arity: Int): BufCombL = {
     require (arity == 5)
@@ -1991,7 +2049,7 @@ final case class BufCombL(rate: Rate, buf: GE, in: GE, delayTime: GE = 0.2f, dec
   * @see [[de.sciss.synth.ugen.BufCombN$ BufCombN]]
   * @see [[de.sciss.synth.ugen.BufCombL$ BufCombL]]
   */
-object BufCombC extends ProductReader[BufCombC] {
+object BufCombC extends ProductType[BufCombC] {
   /** @param buf              Buffer id.
     * @param in               The input signal.
     * @param delayTime        Delay time in seconds.
@@ -2006,6 +2064,8 @@ object BufCombC extends ProductReader[BufCombC] {
     */
   def ar(buf: GE, in: GE, delayTime: GE = 0.2f, decayTime: GE = 1.0f): BufCombC = 
     new BufCombC(audio, buf, in, delayTime, decayTime)
+  
+  final val typeId = 54
   
   def read(in: RefMapIn, key: String, arity: Int): BufCombC = {
     require (arity == 5)
@@ -2101,7 +2161,7 @@ final case class BufCombC(rate: Rate, buf: GE, in: GE, delayTime: GE = 0.2f, dec
   * @see [[de.sciss.synth.ugen.BufAllpassL$ BufAllpassL]]
   * @see [[de.sciss.synth.ugen.BufAllpassC$ BufAllpassC]]
   */
-object BufAllpassN extends ProductReader[BufAllpassN] {
+object BufAllpassN extends ProductType[BufAllpassN] {
   /** @param buf              Buffer id.
     * @param in               The input signal.
     * @param delayTime        Delay time in seconds.
@@ -2112,6 +2172,8 @@ object BufAllpassN extends ProductReader[BufAllpassN] {
     */
   def ar(buf: GE, in: GE, delayTime: GE = 0.2f, decayTime: GE = 1.0f): BufAllpassN = 
     new BufAllpassN(audio, buf, in, delayTime, decayTime)
+  
+  final val typeId = 55
   
   def read(in: RefMapIn, key: String, arity: Int): BufAllpassN = {
     require (arity == 5)
@@ -2197,7 +2259,7 @@ final case class BufAllpassN(rate: Rate, buf: GE, in: GE, delayTime: GE = 0.2f, 
   * @see [[de.sciss.synth.ugen.BufAllpassN$ BufAllpassN]]
   * @see [[de.sciss.synth.ugen.BufAllpassC$ BufAllpassC]]
   */
-object BufAllpassL extends ProductReader[BufAllpassL] {
+object BufAllpassL extends ProductType[BufAllpassL] {
   /** @param buf              Buffer id.
     * @param in               The input signal.
     * @param delayTime        Delay time in seconds.
@@ -2208,6 +2270,8 @@ object BufAllpassL extends ProductReader[BufAllpassL] {
     */
   def ar(buf: GE, in: GE, delayTime: GE = 0.2f, decayTime: GE = 1.0f): BufAllpassL = 
     new BufAllpassL(audio, buf, in, delayTime, decayTime)
+  
+  final val typeId = 56
   
   def read(in: RefMapIn, key: String, arity: Int): BufAllpassL = {
     require (arity == 5)
@@ -2293,7 +2357,7 @@ final case class BufAllpassL(rate: Rate, buf: GE, in: GE, delayTime: GE = 0.2f, 
   * @see [[de.sciss.synth.ugen.BufAllpassN$ BufAllpassN]]
   * @see [[de.sciss.synth.ugen.BufAllpassL$ BufAllpassL]]
   */
-object BufAllpassC extends ProductReader[BufAllpassC] {
+object BufAllpassC extends ProductType[BufAllpassC] {
   /** @param buf              Buffer id.
     * @param in               The input signal.
     * @param delayTime        Delay time in seconds.
@@ -2304,6 +2368,8 @@ object BufAllpassC extends ProductReader[BufAllpassC] {
     */
   def ar(buf: GE, in: GE, delayTime: GE = 0.2f, decayTime: GE = 1.0f): BufAllpassC = 
     new BufAllpassC(audio, buf, in, delayTime, decayTime)
+  
+  final val typeId = 57
   
   def read(in: RefMapIn, key: String, arity: Int): BufAllpassC = {
     require (arity == 5)
@@ -2373,7 +2439,7 @@ final case class BufAllpassC(rate: Rate, buf: GE, in: GE, delayTime: GE = 0.2f, 
   * @see [[de.sciss.synth.ugen.DelayL$ DelayL]]
   * @see [[de.sciss.synth.ugen.DelayC$ DelayC]]
   */
-object DelayN extends ProductReader[DelayN] {
+object DelayN extends ProductType[DelayN] {
   /** @param in               The input signal.
     * @param maxDelayTime     The maximum delay time in seconds. used to initialize
     *                         the delay buffer size. ''(init-time only)''
@@ -2389,6 +2455,8 @@ object DelayN extends ProductReader[DelayN] {
     */
   def ar(in: GE, maxDelayTime: GE = 0.2f, delayTime: GE = 0.2f): DelayN = 
     new DelayN(audio, in, maxDelayTime, delayTime)
+  
+  final val typeId = 58
   
   def read(in: RefMapIn, key: String, arity: Int): DelayN = {
     require (arity == 4)
@@ -2427,7 +2495,7 @@ final case class DelayN(rate: Rate, in: GE, maxDelayTime: GE = 0.2f, delayTime: 
   * @see [[de.sciss.synth.ugen.DelayN$ DelayN]]
   * @see [[de.sciss.synth.ugen.DelayC$ DelayC]]
   */
-object DelayL extends ProductReader[DelayL] {
+object DelayL extends ProductType[DelayL] {
   /** @param in               The input signal.
     * @param maxDelayTime     The maximum delay time in seconds. used to initialize
     *                         the delay buffer size. ''(init-time only)''
@@ -2443,6 +2511,8 @@ object DelayL extends ProductReader[DelayL] {
     */
   def ar(in: GE, maxDelayTime: GE = 0.2f, delayTime: GE = 0.2f): DelayL = 
     new DelayL(audio, in, maxDelayTime, delayTime)
+  
+  final val typeId = 59
   
   def read(in: RefMapIn, key: String, arity: Int): DelayL = {
     require (arity == 4)
@@ -2481,7 +2551,7 @@ final case class DelayL(rate: Rate, in: GE, maxDelayTime: GE = 0.2f, delayTime: 
   * @see [[de.sciss.synth.ugen.DelayN$ DelayN]]
   * @see [[de.sciss.synth.ugen.DelayL$ DelayL]]
   */
-object DelayC extends ProductReader[DelayC] {
+object DelayC extends ProductType[DelayC] {
   /** @param in               The input signal.
     * @param maxDelayTime     The maximum delay time in seconds. used to initialize
     *                         the delay buffer size. ''(init-time only)''
@@ -2497,6 +2567,8 @@ object DelayC extends ProductReader[DelayC] {
     */
   def ar(in: GE, maxDelayTime: GE = 0.2f, delayTime: GE = 0.2f): DelayC = 
     new DelayC(audio, in, maxDelayTime, delayTime)
+  
+  final val typeId = 60
   
   def read(in: RefMapIn, key: String, arity: Int): DelayC = {
     require (arity == 4)
@@ -2535,7 +2607,7 @@ final case class DelayC(rate: Rate, in: GE, maxDelayTime: GE = 0.2f, delayTime: 
   * @see [[de.sciss.synth.ugen.CombL$ CombL]]
   * @see [[de.sciss.synth.ugen.CombC$ CombC]]
   */
-object CombN extends ProductReader[CombN] {
+object CombN extends ProductType[CombN] {
   /** @param in               The input signal.
     * @param maxDelayTime     The maximum delay time in seconds. used to initialize
     *                         the delay buffer size. ''(init-time only)''
@@ -2559,6 +2631,8 @@ object CombN extends ProductReader[CombN] {
     */
   def ar(in: GE, maxDelayTime: GE = 0.2f, delayTime: GE = 0.2f, decayTime: GE = 1.0f): CombN = 
     new CombN(audio, in, maxDelayTime, delayTime, decayTime)
+  
+  final val typeId = 61
   
   def read(in: RefMapIn, key: String, arity: Int): CombN = {
     require (arity == 5)
@@ -2602,7 +2676,7 @@ final case class CombN(rate: Rate, in: GE, maxDelayTime: GE = 0.2f, delayTime: G
   * @see [[de.sciss.synth.ugen.CombN$ CombN]]
   * @see [[de.sciss.synth.ugen.CombC$ CombC]]
   */
-object CombL extends ProductReader[CombL] {
+object CombL extends ProductType[CombL] {
   /** @param in               The input signal.
     * @param maxDelayTime     The maximum delay time in seconds. used to initialize
     *                         the delay buffer size. ''(init-time only)''
@@ -2626,6 +2700,8 @@ object CombL extends ProductReader[CombL] {
     */
   def ar(in: GE, maxDelayTime: GE = 0.2f, delayTime: GE = 0.2f, decayTime: GE = 1.0f): CombL = 
     new CombL(audio, in, maxDelayTime, delayTime, decayTime)
+  
+  final val typeId = 62
   
   def read(in: RefMapIn, key: String, arity: Int): CombL = {
     require (arity == 5)
@@ -2669,7 +2745,7 @@ final case class CombL(rate: Rate, in: GE, maxDelayTime: GE = 0.2f, delayTime: G
   * @see [[de.sciss.synth.ugen.CombN$ CombN]]
   * @see [[de.sciss.synth.ugen.CombL$ CombL]]
   */
-object CombC extends ProductReader[CombC] {
+object CombC extends ProductType[CombC] {
   /** @param in               The input signal.
     * @param maxDelayTime     The maximum delay time in seconds. used to initialize
     *                         the delay buffer size. ''(init-time only)''
@@ -2693,6 +2769,8 @@ object CombC extends ProductReader[CombC] {
     */
   def ar(in: GE, maxDelayTime: GE = 0.2f, delayTime: GE = 0.2f, decayTime: GE = 1.0f): CombC = 
     new CombC(audio, in, maxDelayTime, delayTime, decayTime)
+  
+  final val typeId = 63
   
   def read(in: RefMapIn, key: String, arity: Int): CombC = {
     require (arity == 5)
@@ -2736,7 +2814,7 @@ final case class CombC(rate: Rate, in: GE, maxDelayTime: GE = 0.2f, delayTime: G
   * @see [[de.sciss.synth.ugen.AllpassL$ AllpassL]]
   * @see [[de.sciss.synth.ugen.AllpassC$ AllpassC]]
   */
-object AllpassN extends ProductReader[AllpassN] {
+object AllpassN extends ProductType[AllpassN] {
   /** @param in               The input signal.
     * @param maxDelayTime     The maximum delay time in seconds. used to initialize
     *                         the delay buffer size. ''(init-time only)''
@@ -2760,6 +2838,8 @@ object AllpassN extends ProductReader[AllpassN] {
     */
   def ar(in: GE, maxDelayTime: GE = 0.2f, delayTime: GE = 0.2f, decayTime: GE = 1.0f): AllpassN = 
     new AllpassN(audio, in, maxDelayTime, delayTime, decayTime)
+  
+  final val typeId = 64
   
   def read(in: RefMapIn, key: String, arity: Int): AllpassN = {
     require (arity == 5)
@@ -2803,7 +2883,7 @@ final case class AllpassN(rate: Rate, in: GE, maxDelayTime: GE = 0.2f, delayTime
   * @see [[de.sciss.synth.ugen.AllpassN$ AllpassN]]
   * @see [[de.sciss.synth.ugen.AllpassC$ AllpassC]]
   */
-object AllpassL extends ProductReader[AllpassL] {
+object AllpassL extends ProductType[AllpassL] {
   /** @param in               The input signal.
     * @param maxDelayTime     The maximum delay time in seconds. used to initialize
     *                         the delay buffer size. ''(init-time only)''
@@ -2827,6 +2907,8 @@ object AllpassL extends ProductReader[AllpassL] {
     */
   def ar(in: GE, maxDelayTime: GE = 0.2f, delayTime: GE = 0.2f, decayTime: GE = 1.0f): AllpassL = 
     new AllpassL(audio, in, maxDelayTime, delayTime, decayTime)
+  
+  final val typeId = 65
   
   def read(in: RefMapIn, key: String, arity: Int): AllpassL = {
     require (arity == 5)
@@ -2870,7 +2952,7 @@ final case class AllpassL(rate: Rate, in: GE, maxDelayTime: GE = 0.2f, delayTime
   * @see [[de.sciss.synth.ugen.AllpassN$ AllpassN]]
   * @see [[de.sciss.synth.ugen.AllpassL$ AllpassL]]
   */
-object AllpassC extends ProductReader[AllpassC] {
+object AllpassC extends ProductType[AllpassC] {
   /** @param in               The input signal.
     * @param maxDelayTime     The maximum delay time in seconds. used to initialize
     *                         the delay buffer size. ''(init-time only)''
@@ -2894,6 +2976,8 @@ object AllpassC extends ProductReader[AllpassC] {
     */
   def ar(in: GE, maxDelayTime: GE = 0.2f, delayTime: GE = 0.2f, decayTime: GE = 1.0f): AllpassC = 
     new AllpassC(audio, in, maxDelayTime, delayTime, decayTime)
+  
+  final val typeId = 66
   
   def read(in: RefMapIn, key: String, arity: Int): AllpassC = {
     require (arity == 5)
@@ -2935,7 +3019,7 @@ final case class AllpassC(rate: Rate, in: GE, maxDelayTime: GE = 0.2f, delayTime
 /** A time domain granular pitch shifter. Grains have a triangular amplitude
   * envelope and an overlap of 4:1.
   */
-object PitchShift extends ProductReader[PitchShift] {
+object PitchShift extends ProductType[PitchShift] {
   /** @param in               The input signal.
     * @param winSize          The size of the grain window in seconds. ''(init-time
     *                         only)''
@@ -2950,6 +3034,8 @@ object PitchShift extends ProductReader[PitchShift] {
     */
   def ar(in: GE, winSize: GE = 0.2f, pitchRatio: GE = 1.0f, pitchDispersion: GE = 0.0f, timeDispersion: GE = 0.0f): PitchShift = 
     new PitchShift(in, winSize, pitchRatio, pitchDispersion, timeDispersion)
+  
+  final val typeId = 67
   
   def read(in: RefMapIn, key: String, arity: Int): PitchShift = {
     require (arity == 5)
@@ -2996,7 +3082,7 @@ final case class PitchShift(in: GE, winSize: GE = 0.2f, pitchRatio: GE = 1.0f, p
   * 
   * @see [[de.sciss.synth.ugen.GrainBuf$ GrainBuf]]
   */
-object TGrains extends ProductReader[TGrains] {
+object TGrains extends ProductType[TGrains] {
   /** @param numChannels      Number of output channels.
     * @param trig             At each trigger, the following arguments are sampled
     *                         and used as the arguments of a new grain. A trigger
@@ -3020,6 +3106,8 @@ object TGrains extends ProductReader[TGrains] {
     */
   def ar(numChannels: Int, trig: GE, buf: GE, speed: GE = 1.0f, centerPos: GE = 0.0f, dur: GE = 0.1f, pan: GE = 0.0f, amp: GE = 0.1f, interp: GE = 4): TGrains = 
     new TGrains(numChannels, trig, buf, speed, centerPos, dur, pan, amp, interp)
+  
+  final val typeId = 68
   
   def read(in: RefMapIn, key: String, arity: Int): TGrains = {
     require (arity == 9)
@@ -3076,10 +3164,12 @@ final case class TGrains(numChannels: Int, trig: GE, buf: GE, speed: GE = 1.0f, 
   protected def makeUGen(_args: Vec[UGenIn]): UGenInLike = 
     UGen.MultiOut(name, audio, Vector.fill(numChannels)(audio), _args, isIndividual = true)
 }
-object ScopeOut extends ProductReader[ScopeOut] {
+object ScopeOut extends ProductType[ScopeOut] {
   def kr(buf: GE, in: GE): ScopeOut = new ScopeOut(control, buf, in)
   
   def ar(buf: GE, in: GE): ScopeOut = new ScopeOut(audio, buf, in)
+  
+  final val typeId = 69
   
   def read(in: RefMapIn, key: String, arity: Int): ScopeOut = {
     require (arity == 3)
@@ -3096,12 +3186,14 @@ final case class ScopeOut(rate: Rate, buf: GE, in: GE)
   
   protected def makeUGen(_args: Vec[UGenIn]): Unit = UGen.ZeroOut(name, rate, _args, isIndividual = true)
 }
-object ScopeOut2 extends ProductReader[ScopeOut2] {
+object ScopeOut2 extends ProductType[ScopeOut2] {
   def kr(buf: GE, in: GE, maxFrames: GE = 4096, frames: GE): ScopeOut2 = 
     new ScopeOut2(control, buf, in, maxFrames, frames)
   
   def ar(buf: GE, in: GE, maxFrames: GE = 4096, frames: GE): ScopeOut2 = 
     new ScopeOut2(audio, buf, in, maxFrames, frames)
+  
+  final val typeId = 70
   
   def read(in: RefMapIn, key: String, arity: Int): ScopeOut2 = {
     require (arity == 5)
@@ -3124,7 +3216,7 @@ final case class ScopeOut2(rate: Rate, buf: GE, in: GE, maxFrames: GE = 4096, fr
 
 /** A Karplus-Strong UGen.
   */
-object Pluck extends ProductReader[Pluck] {
+object Pluck extends ProductType[Pluck] {
   /** @param in               An excitation signal.
     * @param trig             Upon a negative to positive transition, the excitation
     *                         signal will be fed into the delay line.
@@ -3139,6 +3231,8 @@ object Pluck extends ProductReader[Pluck] {
     */
   def ar(in: GE, trig: GE = 1, maxDelayTime: GE = 0.2f, delayTime: GE = 0.2f, decayTime: GE = 1.0f, coeff: GE = 0.5f): Pluck = 
     new Pluck(in, trig, maxDelayTime, delayTime, decayTime, coeff)
+  
+  final val typeId = 71
   
   def read(in: RefMapIn, key: String, arity: Int): Pluck = {
     require (arity == 6)
@@ -3179,7 +3273,7 @@ final case class Pluck(in: GE, trig: GE = 1, maxDelayTime: GE = 0.2f, delayTime:
   * 
   * @see [[de.sciss.synth.ugen.DelTapRd$ DelTapRd]]
   */
-object DelTapWr extends ProductReader[DelTapWr] {
+object DelTapWr extends ProductType[DelTapWr] {
   /** @param buf              The buffer to write signal into. Max delay time is
     *                         based on buffer size. `DelTapWr` outputs its current
     *                         sample value for use in the `phase` argument of
@@ -3195,6 +3289,8 @@ object DelTapWr extends ProductReader[DelTapWr] {
     * @param in               The input signal.
     */
   def ar(buf: GE, in: GE): DelTapWr = new DelTapWr(audio, buf, in)
+  
+  final val typeId = 72
   
   def read(in: RefMapIn, key: String, arity: Int): DelTapWr = {
     require (arity == 3)
@@ -3228,7 +3324,7 @@ final case class DelTapWr(rate: Rate, buf: GE, in: GE)
   * 
   * @see [[de.sciss.synth.ugen.DelTapWr$ DelTapWr]]
   */
-object DelTapRd extends ProductReader[DelTapRd] {
+object DelTapRd extends ProductType[DelTapRd] {
   /** @param buf              Buffer where DelTapWr has written signal. Max delay
     *                         time is based on buffer size.
     * @param phase            the current phase of the DelTapWr UGen. This is the
@@ -3250,6 +3346,8 @@ object DelTapRd extends ProductReader[DelTapRd] {
     */
   def ar(buf: GE, phase: GE, delayTime: GE, interp: GE = 1): DelTapRd = 
     new DelTapRd(audio, buf, phase, delayTime, interp)
+  
+  final val typeId = 73
   
   def read(in: RefMapIn, key: String, arity: Int): DelTapRd = {
     require (arity == 5)
@@ -3289,12 +3387,14 @@ final case class DelTapRd(rate: Rate, buf: GE, phase: GE, delayTime: GE, interp:
   * @see [[de.sciss.synth.ugen.LocalBuf$ LocalBuf]]
   * @see [[de.sciss.synth.ugen.ClearBuf$ ClearBuf]]
   */
-object SetBuf extends ProductReader[SetBuf] {
+object SetBuf extends ProductType[SetBuf] {
   /** @param buf              the buffer to write the values into
     * @param values           values to write into the buffer
     * @param offset           frame offset into the buffer
     */
   def ir(buf: GE, values: GE, offset: GE = 0): SetBuf = new SetBuf(buf, values, offset)
+  
+  final val typeId = 76
   
   def read(in: RefMapIn, key: String, arity: Int): SetBuf = {
     require (arity == 3)
@@ -3333,10 +3433,12 @@ final case class SetBuf(buf: GE, values: GE, offset: GE = 0)
   * @see [[de.sciss.synth.ugen.LocalBuf$ LocalBuf]]
   * @see [[de.sciss.synth.ugen.SetBuf$ SetBuf]]
   */
-object ClearBuf extends ProductReader[ClearBuf] {
+object ClearBuf extends ProductType[ClearBuf] {
   /** @param buf              the buffer to clear
     */
   def ir(buf: GE): ClearBuf = new ClearBuf(buf)
+  
+  final val typeId = 77
   
   def read(in: RefMapIn, key: String, arity: Int): ClearBuf = {
     require (arity == 1)

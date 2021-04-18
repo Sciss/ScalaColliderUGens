@@ -1,5 +1,5 @@
-<ugens revision="7">
-    <ugen name="Unpack1FFT" reads-fft="true">
+<ugens revision="8">
+    <ugen name="Unpack1FFT" type-id="389" reads-fft="true">
         <rate name="demand" implied="true" method="apply"/>
         <arg name="chain" type="fft"/>
         <arg name="fftSize" type="ge-int"/>
@@ -8,7 +8,7 @@
         <!-- TODO: doc -->
     </ugen>
 
-    <ugen name="PackFFT" writes-fft="true">    <!-- accepts demand rate -->
+    <ugen name="PackFFT" type-id="390" writes-fft="true">    <!-- accepts demand rate -->
         <rate name="control" implied="true" method="apply"/>
         <arg name="chain" type="fft" pos="0"/>
         <arg name="fftSize" type="ge-int" pos="1"/>

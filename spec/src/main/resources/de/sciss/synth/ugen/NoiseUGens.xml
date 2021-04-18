@@ -1,6 +1,6 @@
-<ugens revision="11">
+<ugens revision="12">
     <!-- all documented -->
-    <ugen name="WhiteNoise" random="true">
+    <ugen name="WhiteNoise" type-id="285" random="true">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="mul" default="1.0" type="mul">
@@ -27,7 +27,7 @@
             <see>ugen.Dust</see>
         </doc>
     </ugen>
-    <ugen name="GrayNoise" random="true">
+    <ugen name="GrayNoise" type-id="286" random="true">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="mul" default="1.0" type="mul">
@@ -58,7 +58,7 @@
             <see>ugen.Dust</see>
         </doc>
     </ugen>
-    <ugen name="ClipNoise" random="true">
+    <ugen name="ClipNoise" type-id="287" random="true">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="mul" default="1.0" type="mul">
@@ -86,7 +86,7 @@
             <see>ugen.Dust</see>
         </doc>
     </ugen>
-    <ugen name="PinkNoise" random="true">
+    <ugen name="PinkNoise" type-id="288" random="true">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="mul" default="1.0" type="mul">
@@ -114,7 +114,7 @@
             <see>ugen.RandSeed</see>
         </doc>
     </ugen>
-    <ugen name="BrownNoise" random="true">
+    <ugen name="BrownNoise" type-id="289" random="true">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="mul" default="1.0" type="mul">
@@ -139,7 +139,7 @@
             <see>ugen.RandSeed</see>
         </doc>
     </ugen>
-    <ugen name="Dust" random="true">
+    <ugen name="Dust" type-id="290" random="true">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="density" default="1.0">
@@ -168,7 +168,7 @@
             <see>ugen.CoinGate</see>
         </doc>
     </ugen>
-    <ugen name="Dust2" random="true">
+    <ugen name="Dust2" type-id="291" random="true">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="density" default="1.0">
@@ -192,7 +192,7 @@
             <see>ugen.CoinGate</see>
         </doc>
     </ugen>
-    <ugen name="Crackle" random="true">
+    <ugen name="Crackle" type-id="292" random="true">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="chaos" default="1.5">
@@ -218,7 +218,7 @@
             <see>ugen.Logistic</see>
         </doc>
     </ugen>
-    <ugen name="Logistic">
+    <ugen name="Logistic" type-id="293">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="chaos" default="3.0">
@@ -252,7 +252,7 @@
             <see>ugen.LatoocarfianN</see>
         </doc>
     </ugen>
-    <ugen name="Hasher">
+    <ugen name="Hasher" type-id="294">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="in" rate="ugen">
@@ -278,7 +278,7 @@
             </example>
         </doc>
     </ugen>
-    <ugen name="MantissaMask">
+    <ugen name="MantissaMask" type-id="295">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="in" rate="ugen">
@@ -302,7 +302,7 @@
             </example>
         </doc>
     </ugen>
-    <ugen name="LFClipNoise" random="true">
+    <ugen name="LFClipNoise" type-id="296" random="true">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="freq" default="500.0">
@@ -332,7 +332,7 @@
             <see>ugen.LFDClipNoise</see>
         </doc>
     </ugen>
-    <ugen name="LFNoise0" random="true">
+    <ugen name="LFNoise0" type-id="297" random="true">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="freq" default="500.0">
@@ -361,7 +361,7 @@
             <see>ugen.RandSeed</see>
         </doc>
     </ugen>
-    <ugen name="LFNoise1" random="true">
+    <ugen name="LFNoise1" type-id="298" random="true">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="freq" default="500.0">
@@ -388,7 +388,7 @@
             <see>ugen.Ramp</see>
         </doc>
     </ugen>
-    <ugen name="LFNoise2" random="true">
+    <ugen name="LFNoise2" type-id="299" random="true">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="freq" default="500.0">
@@ -416,7 +416,7 @@
             <see>ugen.LFNoise1</see>
         </doc>
     </ugen>
-    <ugen name="Rand" random="true">
+    <ugen name="Rand" type-id="300" random="true">
         <rate name="scalar" implied="true" method="apply"/>
         <arg name="lo" default="0.0">
             <doc>
@@ -443,7 +443,7 @@
             <see>ugen.RandSeed</see>
         </doc>
     </ugen>
-    <ugen name="IRand" random="true">
+    <ugen name="IRand" type-id="301" random="true">
         <rate name="scalar" implied="true" method="apply"/>
         <arg name="lo" default="0">
             <doc>
@@ -470,7 +470,7 @@
             <see>ugen.RandSeed</see>
         </doc>
     </ugen>
-    <ugen name="TRand" random="true">
+    <ugen name="TRand" type-id="302" random="true">
         <rate name="control"/>
         <rate name="audio">
             <arg name="lo" rate="control"/>
@@ -510,7 +510,7 @@
             <see>ugen.RandSeed</see>
         </doc>
     </ugen>
-    <ugen name="TExpRand" random="true">
+    <ugen name="TExpRand" type-id="303" random="true">
         <rate name="control"/>
         <rate name="audio">
             <arg name="lo" rate="control"/>
@@ -550,7 +550,7 @@
             <see>ugen.RandSeed</see>
         </doc>
     </ugen>
-    <ugen name="TIRand" random="true">
+    <ugen name="TIRand" type-id="304" random="true">
         <rate name="control"/>
         <rate name="audio">
             <arg name="lo" rate="control"/>
@@ -588,7 +588,7 @@
             <see>ugen.TRand</see>
         </doc>
     </ugen>
-    <ugen name="NRand" random="true">
+    <ugen name="NRand" type-id="305" random="true">
         <rate name="scalar" implied="true" method="apply"/>
         <arg name="lo" default="0.0">
             <doc>
@@ -625,7 +625,7 @@
             <see>ugen.RandSeed</see>
         </doc>
     </ugen>
-    <ugen name="LinRand" random="true">
+    <ugen name="LinRand" type-id="306" random="true">
         <rate name="scalar" implied="true" method="apply"/>
         <arg name="lo" default="0.0">
             <doc>
@@ -665,7 +665,7 @@
             <see>ugen.RandSeed</see>
         </doc>
     </ugen>
-    <ugen name="ExpRand" random="true">
+    <ugen name="ExpRand" type-id="307" random="true">
         <rate name="scalar" implied="true" method="apply"/>
         <arg name="lo" default="0.01">
             <doc>
@@ -692,7 +692,7 @@
             <see>ugen.RandSeed</see>
         </doc>
     </ugen>
-    <ugen name="CoinGate" random="true">
+    <ugen name="CoinGate" type-id="308" random="true">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="prob" default="0.5" pos="1">
@@ -719,7 +719,7 @@
             <see>ugen.TRand</see>
         </doc>
     </ugen>
-    <ugen name="RandSeed" side-effect="true">
+    <ugen name="RandSeed" type-id="309" side-effect="true">
         <rate name="scalar"/>
         <rate name="control"/>
         <arg name="trig" default="high">
@@ -750,7 +750,7 @@
             <see>ugen.WhiteNoise</see>
         </doc>
     </ugen>
-    <ugen name="RandID" side-effect="true">
+    <ugen name="RandID" type-id="310" side-effect="true">
         <rate name="scalar"/>
         <rate name="control"/>
         <arg name="id" default="0">

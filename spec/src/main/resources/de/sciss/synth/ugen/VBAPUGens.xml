@@ -1,6 +1,6 @@
-<ugens revision="6" third-party="VBAPUGens"> <!-- extension from sc3-plugins -->
+<ugens revision="7" third-party="VBAPUGens"> <!-- extension from sc3-plugins -->
     <!-- all documented, except example for CircleRamp -->
-    <ugen name="VBAP">
+    <ugen name="VBAP" type-id="439">
         <output variadic="numChannels"/>
         <rate name="audio"/>
         <rate name="control"/>
@@ -79,7 +79,7 @@
         </doc>
     </ugen>
 
-    <ugen name="CircleRamp">
+    <ugen name="CircleRamp" type-id="440">
         <rate name="audio"/>
         <rate name="control"/>
         <arg name="in" rate="ugen">

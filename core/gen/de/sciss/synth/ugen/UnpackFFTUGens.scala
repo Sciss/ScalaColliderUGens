@@ -1,9 +1,11 @@
-// revision: 7
+// revision: 8
 package de.sciss.synth
 package ugen
 
 import UGenSource._
-object Unpack1FFT extends ProductReader[Unpack1FFT] {
+object Unpack1FFT extends ProductType[Unpack1FFT] {
+  final val typeId = 389
+  
   def read(in: RefMapIn, key: String, arity: Int): Unpack1FFT = {
     require (arity == 4)
     val _chain    = in.readGE()
@@ -54,7 +56,9 @@ final case class Unpack1FFT(chain: GE, fftSize: GE, bin: GE, which: GE = 0)
   * @see [[de.sciss.synth.ugen.IFFT$ IFFT]]
   * @see [[de.sciss.synth.ugen.SetBuf$ SetBuf]]
   */
-object PackFFT extends ProductReader[PackFFT] {
+object PackFFT extends ProductType[PackFFT] {
+  final val typeId = 390
+  
   def read(in: RefMapIn, key: String, arity: Int): PackFFT = {
     require (arity == 6)
     val _chain    = in.readGE()

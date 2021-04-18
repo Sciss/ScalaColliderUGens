@@ -1,6 +1,6 @@
-<ugens revision="3" third-party="TJUGens"> <!-- extension from sc3-plugins -->
+<ugens revision="4" third-party="TJUGens"> <!-- extension from sc3-plugins -->
     <!-- all documented -->
-    <ugen name="DFM1">
+    <ugen name="DFM1" type-id="438">
         <rate name="audio"/>
         <arg name="in">
             <doc>

@@ -1,4 +1,4 @@
-// revision: 2
+// revision: 3
 package de.sciss.synth
 package ugen
 
@@ -35,7 +35,7 @@ import UGenSource._
   * @see [[de.sciss.synth.ugen.MouseY$ MouseY]]
   * @see [[de.sciss.synth.ugen.MouseButton$ MouseButton]]
   */
-object KeyState extends ProductReader[KeyState] {
+object KeyState extends ProductType[KeyState] {
   /** @param keyCode          hardware code for the key to monitor. This is likely
     *                         platform dependent. For example, on Linux, key-codes 24
     *                         to 29 correspond to 'Q', 'W', 'E', 'R', 'T', 'Y'.
@@ -47,6 +47,8 @@ object KeyState extends ProductReader[KeyState] {
     */
   def kr(keyCode: GE, lo: GE = 0.0f, hi: GE = 1.0f, lag: GE = 0.2f): KeyState = 
     new KeyState(keyCode, lo, hi, lag)
+  
+  final val typeId = 235
   
   def read(in: RefMapIn, key: String, arity: Int): KeyState = {
     require (arity == 4)

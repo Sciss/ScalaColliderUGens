@@ -1,6 +1,6 @@
-<ugens revision="10" third-party="MCLDUGens"> <!-- extension from sc3-plugins -->
+<ugens revision="11" third-party="MCLDUGens"> <!-- extension from sc3-plugins -->
     <!-- all documented. missing: GaussClass -->
-    <ugen name="Logger" writes-buf="true">
+    <ugen name="Logger" type-id="426" writes-buf="true">
         <rate name="control"/>
         <arg name="buf" type="buf" pos="0">
             <doc>
@@ -56,7 +56,7 @@
             <see>ugen.ListTrig</see>
         </doc>
     </ugen>
-    <ugen name="ListTrig" reads-buf="true">
+    <ugen name="ListTrig" type-id="427" reads-buf="true">
         <rate name="control"/>
         <arg name="buf" type="buf" pos="0">
             <doc>
@@ -111,7 +111,7 @@
             <see>ugen.Timer</see>
         </doc>
     </ugen>
-    <ugen name="ListTrig2" reads-buf="true">
+    <ugen name="ListTrig2" type-id="428" reads-buf="true">
         <rate name="control"/>
         <arg name="buf" type="buf" pos="0">
             <doc>
@@ -160,8 +160,8 @@
             <see>ugen.ListTrig2</see>
         </doc>
     </ugen>
-    <!-- XXX TODO: GaussClass -->
-    <ugen name="BufMax" reads-buf="true">
+    <!-- XXX TODO: GaussClass  type-id="429" -->
+    <ugen name="BufMax" type-id="430" reads-buf="true">
         <rate name="scalar"/>
         <rate name="control"/>
         <output name="value"/>
@@ -205,7 +205,7 @@
             <see>ugen.ArrayMax</see>
         </doc>
     </ugen>
-    <ugen name="BufMin" reads-buf="true">
+    <ugen name="BufMin" type-id="431" reads-buf="true">
         <rate name="scalar"/>
         <rate name="control"/>
         <output name="value"/>
@@ -249,7 +249,7 @@
             <see>ugen.ArrayMin</see>
         </doc>
     </ugen>
-    <ugen name="ArrayMax">
+    <ugen name="ArrayMax" type-id="432">
         <rate name="scalar"/>
         <rate name="control"/>
         <rate name="audio"/>
@@ -278,7 +278,7 @@
             <see>ugen.BufMax</see>
         </doc>
     </ugen>
-    <ugen name="ArrayMin">
+    <ugen name="ArrayMin" type-id="433">
         <rate name="scalar"/>
         <rate name="control"/>
         <rate name="audio"/>

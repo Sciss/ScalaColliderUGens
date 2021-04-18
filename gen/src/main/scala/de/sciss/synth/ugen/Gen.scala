@@ -117,11 +117,11 @@ object Gen extends App {
          |import ugen._
          |
          |object ${input.mapName} {
-         |  private lazy val _init: Unit = UGenSource.addProductReaders(map)
+         |  private lazy val _init: Unit = UGenSource.addProductTypes(map)
          |
          |  def init(): Unit = _init
          |
-         |  type V = ProductReader[Product]
+         |  type V = ProductType[Product]
          |
          |  private def map = Map[String, V](
          |$pairs

@@ -1,4 +1,4 @@
-// revision: 5
+// revision: 6
 package de.sciss.synth
 package ugen
 
@@ -15,7 +15,7 @@ import UGenSource._
   * @see [[de.sciss.synth.ugen.VDiskIn$ VDiskIn]]
   * @see [[de.sciss.synth.ugen.PlayBuf$ PlayBuf]]
   */
-object DiskIn extends ProductReader[DiskIn] {
+object DiskIn extends ProductType[DiskIn] {
   /** @param numChannels      the amount of channels the file and the buffer will
     *                         have. This is an Int and hence must be pre-determined.
     *                         Different SynthDefs must be created for different
@@ -25,6 +25,8 @@ object DiskIn extends ProductReader[DiskIn] {
     * @param loop             whether the file should loop when its end is reached
     */
   def ar(numChannels: Int, buf: GE, loop: GE = 0): DiskIn = new DiskIn(audio, numChannels, buf, loop)
+  
+  final val typeId = 102
   
   def read(in: RefMapIn, key: String, arity: Int): DiskIn = {
     require (arity == 4)
@@ -78,7 +80,7 @@ final case class DiskIn(rate: Rate, numChannels: Int, buf: GE, loop: GE = 0)
   * @see [[de.sciss.synth.ugen.DiskIn$ DiskIn]]
   * @see [[de.sciss.synth.ugen.RecordBuf$ RecordBuf]]
   */
-object DiskOut extends ProductReader[DiskOut] {
+object DiskOut extends ProductType[DiskOut] {
   /** @param buf              the buffer used internally by the UGen. this number of
     *                         frames in the buffer must be a power of two (this is
     *                         currently not checked!). The buffer must have been
@@ -91,6 +93,8 @@ object DiskOut extends ProductReader[DiskOut] {
     * @param in               the signal to be recorded
     */
   def ar(buf: GE, in: GE): DiskOut = new DiskOut(audio, buf, in)
+  
+  final val typeId = 103
   
   def read(in: RefMapIn, key: String, arity: Int): DiskOut = {
     require (arity == 3)
@@ -152,7 +156,7 @@ final case class DiskOut(rate: Rate, buf: GE, in: GE)
   * @see [[de.sciss.synth.ugen.DiskOut$ DiskOut]]
   * @see [[de.sciss.synth.ugen.PlayBuf$ PlayBuf]]
   */
-object VDiskIn extends ProductReader[VDiskIn] {
+object VDiskIn extends ProductType[VDiskIn] {
   /** @param numChannels      the amount of channels the file and the buffer will
     *                         have. This is an Int and hence must be pre-determined.
     *                         Different SynthDefs must be created for different
@@ -175,6 +179,8 @@ object VDiskIn extends ProductReader[VDiskIn] {
     */
   def ar(numChannels: Int, buf: GE, speed: GE = 1.0f, loop: GE = 0, sendId: GE = 0): VDiskIn = 
     new VDiskIn(audio, numChannels, buf, speed, loop, sendId)
+  
+  final val typeId = 104
   
   def read(in: RefMapIn, key: String, arity: Int): VDiskIn = {
     require (arity == 6)

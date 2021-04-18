@@ -1,6 +1,6 @@
-<ugens revision="7">
+<ugens revision="8">
     <!-- all documented -->
-    <ugen name="Pan2">
+    <ugen name="Pan2" type-id="338">
         <rate name="control"/>
         <rate name="audio">
             <arg name="in" rate="ugen"/>
@@ -45,7 +45,7 @@
             <see>ugen.XFade2</see>
         </doc>
     </ugen>
-    <ugen name="Pan4">
+    <ugen name="Pan4" type-id="339">
         <rate name="control"/>
         <rate name="audio">
             <arg name="in" rate="ugen"/>
@@ -108,7 +108,7 @@
             <see>ugen.PanAz</see>
         </doc>
     </ugen>
-    <ugen name="LinPan2">
+    <ugen name="LinPan2" type-id="340">
         <rate name="control"/>
         <rate name="audio">
             <arg name="in" rate="ugen"/>
@@ -152,7 +152,7 @@
             <see>ugen.LinXFade2</see>
         </doc>
     </ugen>
-    <ugen name="Balance2">
+    <ugen name="Balance2" type-id="341">
         <rate name="control"/>
         <rate name="audio">
             <arg name="inL" rate="ugen"/>
@@ -189,7 +189,7 @@
             <see>ugen.Pan2</see>
         </doc>
     </ugen>
-    <ugen name="Rotate2">
+    <ugen name="Rotate2" type-id="342">
         <rate name="control"/>
         <rate name="audio">
             <arg name="x" rate="ugen"/>
@@ -249,7 +249,7 @@
             </example>
         </doc>
     </ugen>
-    <ugen name="XFade2">
+    <ugen name="XFade2" type-id="343">
         <rate name="control"/>
         <rate name="audio">
             <arg name="inA" rate="ugen"/>
@@ -290,7 +290,7 @@
             <see>ugen.XOut</see>
         </doc>
     </ugen>
-    <ugen name="LinXFade2">
+    <ugen name="LinXFade2" type-id="344">
         <rate name="control"/>
         <rate name="audio">
             <arg name="inA" rate="ugen"/>
@@ -331,7 +331,7 @@
             <see>ugen.XOut</see>
         </doc>
     </ugen>
-    <ugen name="PanB">
+    <ugen name="PanB" type-id="345">
         <rate name="control"/>
         <rate name="audio">
             <arg name="in" rate="ugen"/>
@@ -389,7 +389,7 @@
             <see>ugen.DecodeB2</see>
         </doc>
     </ugen>
-    <ugen name="PanB2">
+    <ugen name="PanB2" type-id="346">
         <rate name="control"/>
         <rate name="audio">
             <arg name="in" rate="ugen"/>
@@ -449,7 +449,7 @@
             <see>ugen.Pan2</see>
         </doc>
     </ugen>
-    <ugen name="BiPanB2">
+    <ugen name="BiPanB2" type-id="347">
         <rate name="control"/>
         <rate name="audio">
             <arg name="inA" rate="ugen"/>
@@ -503,7 +503,7 @@
             <see>ugen.DecodeB2</see>
         </doc>
     </ugen>
-    <ugen name="PanAz">
+    <ugen name="PanAz" type-id="348">
         <rate name="control"/>
         <rate name="audio">
             <arg name="in" rate="ugen"/>
@@ -575,7 +575,7 @@
             <see>ugen.SplayAz</see>
         </doc>
     </ugen>
-    <ugen name="DecodeB2">
+    <ugen name="DecodeB2" type-id="349">
         <rate name="control"/>
         <rate name="audio">
             <arg name="w" rate="ugen"/>

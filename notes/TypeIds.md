@@ -1,0 +1,4 @@
+- ids   `1` to `445` are used in ScalaColliderUGens.
+- ids `600` to `626` are used in SoundProcesses.
+- ids `700` to `710` are used in SoundProcesses.
+- ids `800` to `805` are used in ScalaCollider-If.

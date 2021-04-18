@@ -1,6 +1,6 @@
-<ugens revision="3">
+<ugens revision="4">
     <!-- all documented -->
-    <ugen name="BeatTrack" reads-fft="true">
+    <ugen name="BeatTrack" type-id="270" reads-fft="true">
         <rate name="control" implied="true"/>
         <arg name="chain" type="fft">
             <doc>
@@ -39,7 +39,7 @@
             <!-- TODO: example -->
         </doc>
     </ugen>
-    <ugen name="Loudness" reads-fft="true">
+    <ugen name="Loudness" type-id="271" reads-fft="true">
         <rate name="control" implied="true"/>
         <arg name="chain" type="fft">
             <doc>
@@ -74,7 +74,7 @@
             <!-- TODO: example -->
         </doc>
     </ugen>
-    <ugen name="KeyTrack" reads-fft="true">
+    <ugen name="KeyTrack" type-id="272" reads-fft="true">
         <rate name="control" implied="true"/>
         <arg name="chain" type="fft">
             <doc>
@@ -105,7 +105,7 @@
             <!-- TODO: example -->
         </doc>
     </ugen>
-    <ugen name="MFCC" reads-fft="true">
+    <ugen name="MFCC" type-id="273" reads-fft="true">
         <rate name="control" implied="true"/>
         <output variadic="numCoeffs"/>
         <arg name="chain" type="fft">
@@ -142,7 +142,7 @@
             <!-- TODO: example -->
         </doc>
     </ugen>
-    <ugen name="Onsets" reads-fft="true">
+    <ugen name="Onsets" type-id="274" reads-fft="true">
         <rate name="control" implied="true"/>
         <arg name="chain" type="fft">
             <doc>
@@ -232,7 +232,7 @@
         </doc>
     </ugen>
 
-    <ugen name="BeatTrack2" reads-fft="true">
+    <ugen name="BeatTrack2" type-id="275" reads-fft="true">
         <rate name="control" implied="true"/>
         <output name="beatTick"/>
         <output name="eighthTick"/>
@@ -307,7 +307,7 @@
         </doc>
     </ugen>
 
-    <ugen name="SpecFlatness" reads-fft="true">
+    <ugen name="SpecFlatness" type-id="276" reads-fft="true">
         <rate name="control" implied="true"/>
         <arg name="chain" type="fft">
             <doc>
@@ -333,7 +333,7 @@
             <see>ugen.CheckBadValues</see>
         </doc>
     </ugen>
-    <ugen name="SpecPcile" reads-fft="true">
+    <ugen name="SpecPcile" type-id="277" reads-fft="true">
         <rate name="control" implied="true"/>
         <arg name="chain" type="fft">
             <doc>
@@ -367,7 +367,7 @@
             <!-- TODO: example -->
         </doc>
     </ugen>
-    <ugen name="SpecCentroid" reads-fft="true">
+    <ugen name="SpecCentroid" type-id="278" reads-fft="true">
         <rate name="control" implied="true"/>
         <arg name="chain" type="fft">
             <doc>

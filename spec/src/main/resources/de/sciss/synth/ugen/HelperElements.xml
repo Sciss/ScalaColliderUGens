@@ -1,8 +1,6 @@
 <!-- these are graph elements that do not constitute genuine UGens -->
-<ugens revision="5">
-    <!-- TODO: missing (because these have new types): Reduce (uses `Reduce.Op`), WrapOut (uses `Double`) -->
-    <!-- TODO: missing: PhysicalIn (uses `Seq[Int]`), Zip (uses var-args) -->
-    <ugen name="ChannelIndices" helper="true" sourcecode="true">
+<ugens revision="6">
+    <ugen name="ChannelIndices" type-id="400" helper="true" sourcecode="true">
         <rate name="scalar" implied="true" method="apply"/>
         <arg name="in">
             <doc>
@@ -26,7 +24,7 @@
             <see>ugen.NumChannels</see>
         </doc>
     </ugen>
-    <ugen name="ChannelProxy" helper="true" sourcecode="true">
+    <ugen name="ChannelProxy" type-id="401" helper="true" sourcecode="true">
         <rate name="scalar" implied="true" method="apply"/>
         <arg name="elem">
             <doc>
@@ -70,7 +68,7 @@
             <see>ugen.ChannelRangeProxy</see>
         </doc>
     </ugen>
-    <ugen name="ChannelRangeProxy" helper="true" sourcecode="true">
+    <ugen name="ChannelRangeProxy" type-id="402" helper="true" sourcecode="true">
         <rate name="scalar" implied="true" method="apply"/>
         <arg name="elem">
             <doc>
@@ -123,7 +121,7 @@
             <see>ugen.RepeatChannels</see>
         </doc>
     </ugen>
-    <ugen name="Flatten" helper="true" sourcecode="true">
+    <ugen name="Flatten" type-id="403" helper="true" sourcecode="true">
         <arg name="elem">
             <doc>
                 a (possibly multi-channel) element all of whose channels will be
@@ -144,7 +142,7 @@
             <see>ugen.Mix</see>
         </doc>
     </ugen>
-    <ugen name="LinLin" helper="true" sourcecode="true">
+    <ugen name="LinLin" type-id="404" helper="true" sourcecode="true">
         <arg name="in">
             <doc>
                 The input signal to convert.
@@ -187,7 +185,7 @@
             <see>ugen.MulAdd</see>
         </doc>
     </ugen>
-    <ugen name="Mix" helper="true" sourcecode="true">
+    <ugen name="Mix" type-id="405" helper="true" sourcecode="true">
         <arg name="elem">
             <doc>
                 the graph element whose channels to mix together
@@ -278,7 +276,7 @@
             </example>
         </doc>
     </ugen>
-    <ugen name="Mix.Mono" helper="true" sourcecode="true">
+    <ugen name="Mix.Mono" type-id="406" helper="true" sourcecode="true">
         <arg name="elem">
             <doc>
                 the graph element whose channels to mix together
@@ -293,7 +291,7 @@
             <see>ugen.Mix</see>
         </doc>
     </ugen>
-    <ugen name="NumChannels" helper="true" sourcecode="true">
+    <ugen name="NumChannels" type-id="407" helper="true" sourcecode="true">
         <rate name="scalar" implied="true" method="apply"/>
         <arg name="in">
             <doc>
@@ -319,7 +317,7 @@
             <see>ugen.ChannelIndices</see>
         </doc>
     </ugen>
-    <ugen name="Nyquist" helper="true" sourcecode="true">
+    <ugen name="Nyquist" type-id="408" helper="true" sourcecode="true">
         <rate name="scalar" implied="true" method="apply"/>
         <doc>
             <text>
@@ -331,7 +329,7 @@
             <see>ugen.SampleRate</see>
         </doc>
     </ugen>
-    <ugen name="Pad" helper="true" sourcecode="true">
+    <ugen name="Pad" type-id="409" helper="true" sourcecode="true">
         <arg name="in">
             <doc>
                 the element to replicate
@@ -352,10 +350,10 @@
             <!-- TODO: example -->
         </doc>
     </ugen>
-    <ugen name="PhysicalIn" helper="true" sourcecode="true" fragment="true" reads-bus="true">
+    <ugen name="PhysicalIn" type-id="410" helper="true" sourcecode="true" fragment="true" reads-bus="true">
         <rate name="audio" implied="true"/>
     </ugen>
-    <ugen name="PhysicalOut" helper="true" sourcecode="true" writes-bus="true">
+    <ugen name="PhysicalOut" type-id="411" helper="true" sourcecode="true" writes-bus="true">
         <no-outputs/>
         <rate name="audio" implied="true"/>
         <arg name="indices" default="0">
@@ -388,8 +386,8 @@
             <see>ugen.PhysicalIn</see>
         </doc>
     </ugen>
-    <ugen name="Reduce" helper="true" sourcecode="true" fragment="true" />
-    <ugen name="RepeatChannels" helper="true" sourcecode="true">
+    <ugen name="Reduce" type-id="412" helper="true" sourcecode="true" fragment="true" />
+    <ugen name="RepeatChannels" type-id="413" helper="true" sourcecode="true">
         <arg name="a">
             <doc>
                 the signal whose channels to repeat
@@ -457,7 +455,7 @@
             <see>ugen.ChannelRangeProxy</see>
         </doc>
     </ugen>
-    <ugen name="Silent" helper="true" sourcecode="true">
+    <ugen name="Silent" type-id="414" helper="true" sourcecode="true">
         <rate name="audio" implied="true"/>
         <arg name="numChannels" type="int" default="1">
             <doc>
@@ -473,7 +471,7 @@
             <see>ugen.DC</see>
         </doc>
     </ugen>
-    <ugen name="SplayAz" helper="true" sourcecode="true">
+    <ugen name="SplayAz" type-id="415" helper="true" sourcecode="true">
         <rate name="audio"/>
         <arg name="numChannels" type="int">
             <doc>
@@ -526,12 +524,12 @@
             <see>ugen.PanAz</see>
         </doc>
     </ugen>
-    <ugen name="WrapOut" helper="true" sourcecode="true" fragment="true" writes-bus="true">
+    <ugen name="WrapOut" type-id="416" helper="true" sourcecode="true" fragment="true" writes-bus="true">
         <no-outputs />
     </ugen>
-    <ugen name="Zip" helper="true" sourcecode="true" fragment="true" />
+    <ugen name="Zip" type-id="417" helper="true" sourcecode="true" fragment="true" />
 
     <!-- other helpers -->
-    <ugen name="GESeq" helper="true" sourcecode="true" fragment="true" />
-    <ugen name="UGenInSeq" helper="true" sourcecode="true" fragment="true" />
+    <ugen name="GESeq" type-id="418" helper="true" sourcecode="true" fragment="true" />
+    <ugen name="UGenInSeq" type-id="419" helper="true" sourcecode="true" fragment="true" />
 </ugens>

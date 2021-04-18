@@ -1,12 +1,13 @@
 package de.sciss.synth.ugen
 
 import de.sciss.synth.UGenSpec
+import de.sciss.synth.UGenSpec.Parsed
 import org.scalatest.flatspec.AnyFlatSpec
 
 /*
  To run only this test:
 
- test-only de.sciss.synth.ugen.ParserSpec
+ testOnly de.sciss.synth.ugen.ParserSpec
 
  */
 class ParserSpec extends AnyFlatSpec {
@@ -28,7 +29,11 @@ class ParserSpec extends AnyFlatSpec {
 
   "A ClassGenerator" should "be able to process a spec" in {
     val cusp  = UGenSpec.standardUGens("Dseries")
+    val cuspP = new Parsed {
+      val typeId: Int       = -1
+      val spec  : UGenSpec  = cusp
+    }
     val gen   = new ClassGenerator
-    gen.performSpec(cusp, thirdParty = None)
+    gen.performSpec(cuspP, thirdParty = None)
   }
 }

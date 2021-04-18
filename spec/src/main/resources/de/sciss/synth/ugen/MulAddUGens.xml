@@ -1,5 +1,5 @@
-<ugens revision="3">
-    <ugen name="MulAdd" optimized="true" sourcecode="true">
+<ugens revision="4">
+    <ugen name="MulAdd" type-id="282" optimized="true" sourcecode="true">
         <!--<rate name="scalar"/>-->
         <!--<rate name="control"/>-->
         <!--<rate name="audio"/>-->
@@ -45,7 +45,7 @@
             <see>ugen.Sum4</see>
         </doc>
     </ugen>
-    <ugen name="Sum3" optimized="true" sourcecode="true">
+    <ugen name="Sum3" type-id="283" optimized="true" sourcecode="true">
         <!--<rate name="scalar"/>-->
         <!--<rate name="control"/>-->
         <!--<rate name="audio"/>-->
@@ -76,7 +76,7 @@
             <see>ugen.Sum4</see>
         </doc>
     </ugen>
-    <ugen name="Sum4" optimized="true" sourcecode="true">
+    <ugen name="Sum4" type-id="284" optimized="true" sourcecode="true">
         <!--<rate name="scalar"/>-->
         <!--<rate name="control"/>-->
         <!--<rate name="audio"/>-->

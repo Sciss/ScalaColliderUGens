@@ -1,6 +1,6 @@
-<ugens revision="1">
-    <ugen name="UnaryOpUGen" fragment="true" optimized="true" sourcecode="true" />
-    <adjunct reader="UnaryOpUGen.Op" self="true"/>
-    <ugen name="BinaryOpUGen" fragment="true" optimized="true" sourcecode="true" />
-    <adjunct reader="BinaryOpUGen.Op" self="true"/>
+<ugens revision="2">
+    <ugen name="UnaryOpUGen" type-id="442" fragment="true" optimized="true" sourcecode="true" />
+    <adjunct reader="UnaryOpUGen.Op" type-id="443" self="true"/>
+    <ugen name="BinaryOpUGen" type-id="444" fragment="true" optimized="true" sourcecode="true" />
+    <adjunct reader="BinaryOpUGen.Op" type-id="445" self="true"/>
 </ugens>

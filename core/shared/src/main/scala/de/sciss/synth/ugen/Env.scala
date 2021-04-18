@@ -14,16 +14,16 @@
 package de.sciss.synth
 package ugen
 
-import de.sciss.synth.{Curve => SCurve}
 import de.sciss.synth.Curve.{sine => sin, step => _step, _}
-import de.sciss.synth.GEOps.{fromGE => geOps}  // N.B. renamed to shadow ScalaCollider's package object's `geOps` (unidoc!)
-import de.sciss.synth.UGenSource.{ProductReader, RefMapIn}
+import de.sciss.synth.GEOps.{fromGE => geOps}
+import de.sciss.synth.UGenSource.{ProductType, RefMapIn}
 import de.sciss.synth.ugen.Env.Segment
+import de.sciss.synth.{Curve => SCurve}
 
 import scala.collection.immutable.{IndexedSeq => Vec}
 import scala.language.implicitConversions
 
-sealed trait EnvFactory[V] extends ProductReader[V] {
+sealed trait EnvFactory[V] extends ProductType[V] {
   import Env.{Segment => Seg}
 
   protected def create(startLevel: GE, segments: Vec[Seg]): V
@@ -63,7 +63,7 @@ sealed trait EnvLike extends GE {
 }
 
 object Env extends EnvFactory[Env] {
-  object Curve extends ProductReader[Curve] {
+  object Curve extends ProductType[Curve] {
     implicit def const(peer: SCurve): Curve = Const(peer)
 
     implicit def fromDouble(d: Double): Curve = parametric(d.toFloat)
@@ -95,6 +95,8 @@ object Env extends EnvFactory[Env] {
       override def toString = s"Env.Curve($id, $curvature)"
     }
 
+    final val typeId = 265
+
     override def read(in: RefMapIn, key: String, arity: Int): Curve = {
       key match {
         case Const.`readerKey` =>
@@ -115,13 +117,15 @@ object Env extends EnvFactory[Env] {
     def curvature: GE
   }
 
-  object Segment extends ProductReader[Segment] {
+  object Segment extends ProductType[Segment] {
     implicit def fromTuple3[D, L, S](tup: (D, L, S))
                                     (implicit durView: D => GE, levelView: L => GE, curveView: S => Curve): Segment =
       Segment(durView(tup._1), levelView(tup._2), curveView(tup._3))
 
     implicit def fromTuple2[D, L](tup: (D, L))(implicit durView: D => GE, levelView: L => GE): Segment =
       Segment(durView(tup._1), levelView(tup._2), linear)
+
+    final val typeId = 264
 
     override def read(in: RefMapIn, key: String, arity: Int): Segment = {
       require (arity == 3)
@@ -185,6 +189,8 @@ object Env extends EnvFactory[Env] {
 
   // ---- serialization ----
 
+  final val typeId = 263
+
   override def read(in: RefMapIn, key: String, arity: Int): Env = {
     require (arity == 4)
     val _startLevel   = in.readGE()
@@ -218,6 +224,8 @@ object IEnv extends EnvFactory[IEnv] {
   protected def create(startLevel: GE, segments: Vec[Env.Segment]) = new IEnv(startLevel, segments)
 
   // ---- serialization ----
+
+  final val typeId = 269
 
   override def read(in: RefMapIn, key: String, arity: Int): IEnv = {
     require (arity == 4)

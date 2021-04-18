@@ -75,16 +75,16 @@ final class ClassGenerator {
       }
     }
     val (hasFile, classNames) = {
-      val specs0 = (node \ "ugen") map { uNode =>
-        UGenSpec.parse(uNode, docs = docs, verify = true)
+      val parsed = (node \ "ugen") map { uNode =>
+        UGenSpec.parseFull(uNode, docs = docs, verify = true)
       }
       val _hasFile = !write || {
-        val specs = specs0.filterNot(_.attr.contains(HasSourceCode))
+        val specs = parsed.filterNot(_.spec.attr.contains(HasSourceCode))
         val res = specs.nonEmpty
         if (res) performSpecs(specs, f, revision = revision, thirdParty = thirdParty)
         res
       }
-      (_hasFile, specs0.map(_.className))
+      (_hasFile, parsed.map(_.spec.className))
     }
     if (hasFile) println(f.absolutePath)
     classNames.toIndexedSeq
@@ -105,10 +105,10 @@ final class ClassGenerator {
     }
   }
 
-  def performSpecs(specs: SSeq[UGenSpec], file: File, revision: Int, thirdParty: Option[String]): Unit =
+  def performSpecs(parsed: SSeq[Parsed], file: File, revision: Int, thirdParty: Option[String]): Unit =
     writeTextFile(file) {
       // create class trees
-      val classes: List[Tree] = specs.iterator.flatMap(spec => performSpec(spec, thirdParty = thirdParty)).toList
+      val classes: List[Tree] = parsed.iterator.flatMap(spec => performSpec(spec, thirdParty = thirdParty)).toList
 
       val header =
         """package de.sciss.synth
@@ -237,13 +237,14 @@ final class ClassGenerator {
     def mkString: String = "this"
   }
 
-  private case class ValDef(name: String, tpe: Option[String] = None, rhs: Tree)
+  private case class ValDef(name: String, tpe: Option[String] = None, rhs: Tree, isFinal: Boolean = false)
     extends Tree {
 
     def mkString: String = {
       val base  = tpe.fold(name)(t => s"name: $t")
       val res0  = if (rhs == EmptyTree) base else s"$base = ${rhs.mkString}"
-      s"val $res0"
+      val mod   = if (isFinal) "final val" else "val"
+      s"$mod $res0"
     }
   }
 
@@ -625,7 +626,8 @@ final class ClassGenerator {
   private val strMake1            = "make1"
   private val strTimes            = "Times"
 
-  def performSpec(spec: UGenSpec, thirdParty: Option[String]): List[Tree] = {
+  def performSpec(parsed: Parsed, thirdParty: Option[String]): List[Tree] = {
+    val spec = parsed.spec
     import spec.{name => uName, _}
 
     val impliedRate = rates match {
@@ -670,6 +672,13 @@ final class ClassGenerator {
     } else Vector.empty
 
 //    val readerType = if (outputs.isEmpty) "Lazy" else "GE"
+
+    val objectDefType: Tree =
+      ValDef(
+        name    = "typeId",
+        isFinal = true,
+        rhs    = IntLiteral(parsed.typeId)
+      )
 
     val objectDefRead: Tree = {
       val namePadSize = {
@@ -795,14 +804,14 @@ final class ClassGenerator {
       }
     }
 
-    val objectMethodDefs = objectDefCons :+ objectDefRead
+    val objectMethodDefs = objectDefCons :+ objectDefType :+ objectDefRead
 
     // the complete companion object. this is given as a List[Tree],
     // because there might be no object (in that case objectDef is Nil).
     val objectDef = /*if (forceCompanion || objectMethodDefs.nonEmpty)*/ {
       val mod = ObjectDef(
         name    = className,
-        parents = s"ProductReader[$className]" :: Nil, // s"Reader[$readerType]" :: Nil,
+        parents = s"ProductType[$className]" :: Nil, // s"Reader[$readerType]" :: Nil,
         body    = objectMethodDefs  // body
       )
       wrapDoc(spec, mod, /* indent = 0, */ body = true, args = false, examples = true, thirdParty = thirdParty) :: Nil

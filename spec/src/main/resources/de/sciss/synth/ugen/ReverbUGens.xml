@@ -1,6 +1,6 @@
-<ugens revision="4">
+<ugens revision="5">
     <!-- all documented -->
-    <ugen name="FreeVerb">
+    <ugen name="FreeVerb" type-id="353">
         <rate name="audio" implied="true"/>
         <arg name="in" rate="ugen">
             <doc>
@@ -39,7 +39,7 @@
             <see>ugen.GVerb</see>
         </doc>
     </ugen>
-    <ugen name="FreeVerb2">
+    <ugen name="FreeVerb2" type-id="354">
         <rate name="audio" implied="true">
             <arg name="inL" rate="ugen"/>
             <arg name="inR" rate="ugen"/>
@@ -99,7 +99,7 @@
             <see>ugen.GVerb</see>
         </doc>
     </ugen>
-    <ugen name="GVerb">
+    <ugen name="GVerb" type-id="355">
         <rate name="audio" implied="true">
             <arg name="in" rate="ugen"/>
         </rate>

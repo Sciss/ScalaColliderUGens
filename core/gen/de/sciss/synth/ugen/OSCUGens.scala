@@ -1,4 +1,4 @@
-// revision: 9
+// revision: 10
 package de.sciss.synth
 package ugen
 
@@ -34,7 +34,7 @@ import UGenSource._
   * 
   * @see [[de.sciss.synth.ugen.WrapIndex$ WrapIndex]]
   */
-object DegreeToKey extends ProductReader[DegreeToKey] {
+object DegreeToKey extends ProductType[DegreeToKey] {
   /** @param buf              buffer which contains the steps for each scale degree.
     * @param in               input index signal
     * @param octave           number of steps per octave in the scale.
@@ -46,6 +46,8 @@ object DegreeToKey extends ProductReader[DegreeToKey] {
     * @param octave           number of steps per octave in the scale.
     */
   def ar(buf: GE, in: GE, octave: GE = 12): DegreeToKey = new DegreeToKey(audio, buf, in, octave)
+  
+  final val typeId = 311
   
   def read(in: RefMapIn, key: String, arity: Int): DegreeToKey = {
     require (arity == 4)
@@ -81,7 +83,7 @@ final case class DegreeToKey(rate: Rate, buf: GE, in: GE, octave: GE = 12)
   * 
   * @see [[de.sciss.synth.ugen.TWindex$ TWindex]]
   */
-object Select extends ProductReader[Select] {
+object Select extends ProductType[Select] {
   /** @param index            an index signal into the channels of the `in` argument.
     *                         The index is automatically clipped to lie between `0`
     *                         and `in.numOutputs - 1` . The index is truncated to its
@@ -111,6 +113,8 @@ object Select extends ProductReader[Select] {
     *                         indexed.
     */
   def ar(index: GE, in: GE): Select = new Select(audio, index, in)
+  
+  final val typeId = 312
   
   def read(in: RefMapIn, key: String, arity: Int): Select = {
     require (arity == 3)
@@ -157,7 +161,7 @@ final case class Select(rate: Rate, index: GE, in: GE) extends UGenSource.Single
   * 
   * @see [[de.sciss.synth.ugen.Select$ Select]]
   */
-object TWindex extends ProductReader[TWindex] {
+object TWindex extends ProductType[TWindex] {
   /** @param trig             the trigger used to calculate a new index. a trigger
     *                         occurs when passing from non-positive to positive
     * @param prob             a multi-channel graph element, where the output
@@ -181,6 +185,8 @@ object TWindex extends ProductReader[TWindex] {
     *                         provide the normalization.
     */
   def ar(trig: GE, prob: GE, normalize: GE = 0): TWindex = new TWindex(audio, trig, prob, normalize)
+  
+  final val typeId = 313
   
   def read(in: RefMapIn, key: String, arity: Int): TWindex = {
     require (arity == 4)
@@ -239,7 +245,7 @@ final case class TWindex(rate: Rate, trig: GE, prob: GE, normalize: GE = 0) exte
   * @see [[de.sciss.synth.ugen.IndexInBetween$ IndexInBetween]]
   * @see [[de.sciss.synth.ugen.DetectIndex$ DetectIndex]]
   */
-object Index extends ProductReader[Index] {
+object Index extends ProductType[Index] {
   /** @param buf              The buffer to read from.
     * @param in               The sample index into the buffer. This is truncated to
     *                         an integer automatically.
@@ -257,6 +263,8 @@ object Index extends ProductReader[Index] {
     *                         an integer automatically.
     */
   def ar(buf: GE, in: GE = 0): Index = new Index(audio, buf, in)
+  
+  final val typeId = 314
   
   def read(in: RefMapIn, key: String, arity: Int): Index = {
     require (arity == 3)
@@ -308,7 +316,7 @@ final case class Index(rate: Rate, buf: GE, in: GE = 0) extends UGenSource.Singl
   * @see [[de.sciss.synth.ugen.Index$ Index]]
   * @see [[de.sciss.synth.ugen.IndexInBetween$ IndexInBetween]]
   */
-object IndexL extends ProductReader[IndexL] {
+object IndexL extends ProductType[IndexL] {
   /** @param buf              The buffer to read from.
     * @param in               The sample index into the buffer. This can have a
     *                         fractional part.
@@ -326,6 +334,8 @@ object IndexL extends ProductReader[IndexL] {
     *                         fractional part.
     */
   def ar(buf: GE, in: GE = 0): IndexL = new IndexL(audio, buf, in)
+  
+  final val typeId = 315
   
   def read(in: RefMapIn, key: String, arity: Int): IndexL = {
     require (arity == 3)
@@ -378,7 +388,7 @@ final case class IndexL(rate: Rate, buf: GE, in: GE = 0) extends UGenSource.Sing
   * @see [[de.sciss.synth.ugen.WrapIndex$ WrapIndex]]
   * @see [[de.sciss.synth.ugen.IndexL$ IndexL]]
   */
-object FoldIndex extends ProductReader[FoldIndex] {
+object FoldIndex extends ProductType[FoldIndex] {
   /** @param buf              The buffer to read from.
     * @param in               The sample index into the buffer. This is truncated to
     *                         an integer automatically.
@@ -396,6 +406,8 @@ object FoldIndex extends ProductReader[FoldIndex] {
     *                         an integer automatically.
     */
   def ar(buf: GE, in: GE = 0): FoldIndex = new FoldIndex(audio, buf, in)
+  
+  final val typeId = 316
   
   def read(in: RefMapIn, key: String, arity: Int): FoldIndex = {
     require (arity == 3)
@@ -449,7 +461,7 @@ final case class FoldIndex(rate: Rate, buf: GE, in: GE = 0) extends UGenSource.S
   * @see [[de.sciss.synth.ugen.FoldIndex$ FoldIndex]]
   * @see [[de.sciss.synth.ugen.IndexL$ IndexL]]
   */
-object WrapIndex extends ProductReader[WrapIndex] {
+object WrapIndex extends ProductType[WrapIndex] {
   /** @param buf              The buffer to read from.
     * @param in               The sample index into the buffer. This is truncated to
     *                         an integer automatically.
@@ -467,6 +479,8 @@ object WrapIndex extends ProductReader[WrapIndex] {
     *                         an integer automatically.
     */
   def ar(buf: GE, in: GE = 0): WrapIndex = new WrapIndex(audio, buf, in)
+  
+  final val typeId = 317
   
   def read(in: RefMapIn, key: String, arity: Int): WrapIndex = {
     require (arity == 3)
@@ -527,7 +541,7 @@ final case class WrapIndex(rate: Rate, buf: GE, in: GE = 0) extends UGenSource.S
   * @see [[de.sciss.synth.ugen.DetectIndex$ DetectIndex]]
   * @see [[de.sciss.synth.ugen.IndexL$ IndexL]]
   */
-object IndexInBetween extends ProductReader[IndexInBetween] {
+object IndexInBetween extends ProductType[IndexInBetween] {
   /** @param buf              The buffer to search in.
     * @param in               The input signal whose value is looked up in the buffer.
     */
@@ -542,6 +556,8 @@ object IndexInBetween extends ProductReader[IndexInBetween] {
     * @param in               The input signal whose value is looked up in the buffer.
     */
   def ar(buf: GE, in: GE): IndexInBetween = new IndexInBetween(audio, buf, in)
+  
+  final val typeId = 318
   
   def read(in: RefMapIn, key: String, arity: Int): IndexInBetween = {
     require (arity == 3)
@@ -597,7 +613,7 @@ final case class IndexInBetween(rate: Rate, buf: GE, in: GE) extends UGenSource.
   * @see [[de.sciss.synth.ugen.Index$ Index]]
   * @see [[de.sciss.synth.ugen.IndexInBetween$ IndexInBetween]]
   */
-object DetectIndex extends ProductReader[DetectIndex] {
+object DetectIndex extends ProductType[DetectIndex] {
   /** 
     */
   def ir(buf: GE, in: GE): DetectIndex = new DetectIndex(scalar, buf, in)
@@ -609,6 +625,8 @@ object DetectIndex extends ProductReader[DetectIndex] {
   /** 
     */
   def ar(buf: GE, in: GE): DetectIndex = new DetectIndex(audio, buf, in)
+  
+  final val typeId = 319
   
   def read(in: RefMapIn, key: String, arity: Int): DetectIndex = {
     require (arity == 3)
@@ -651,7 +669,7 @@ final case class DetectIndex(rate: Rate, buf: GE, in: GE) extends UGenSource.Sin
   * @see [[de.sciss.synth.ugen.Index$ Index]]
   * @see [[de.sciss.synth.ugen.WrapIndex$ WrapIndex]]
   */
-object Shaper extends ProductReader[Shaper] {
+object Shaper extends ProductType[Shaper] {
   /** @param buf              buffer filled in wavetable format containing the
     *                         transfer function.
     * @param in               signal to be fed into the wave shaper
@@ -663,6 +681,8 @@ object Shaper extends ProductReader[Shaper] {
     * @param in               signal to be fed into the wave shaper
     */
   def ar(buf: GE, in: GE): Shaper = new Shaper(audio, buf, in)
+  
+  final val typeId = 320
   
   def read(in: RefMapIn, key: String, arity: Int): Shaper = {
     require (arity == 3)
@@ -717,7 +737,7 @@ final case class Shaper(rate: Rate, buf: GE, in: GE) extends UGenSource.SingleOu
   * @see [[de.sciss.synth.ugen.SinOsc$ SinOsc]]
   * @see [[de.sciss.synth.ugen.SinOscFB$ SinOscFB]]
   */
-object FSinOsc extends ProductReader[FSinOsc] {
+object FSinOsc extends ProductType[FSinOsc] {
   def kr: FSinOsc = kr()
   
   /** @param freq             frequency in Hertz
@@ -737,6 +757,8 @@ object FSinOsc extends ProductReader[FSinOsc] {
     *                         starts at -1, ''(init-time only)''
     */
   def ar(freq: GE = 440.0f, iphase: GE = 0.0f): FSinOsc = new FSinOsc(audio, freq, iphase)
+  
+  final val typeId = 322
   
   def read(in: RefMapIn, key: String, arity: Int): FSinOsc = {
     require (arity == 3)
@@ -797,7 +819,7 @@ final case class FSinOsc(rate: Rate, freq: GE = 440.0f, iphase: GE = 0.0f) exten
   * @see [[de.sciss.synth.ugen.FSinOsc$ FSinOsc]]
   * @see [[de.sciss.synth.ugen.SinOscFB$ SinOscFB]]
   */
-object SinOsc extends ProductReader[SinOsc] {
+object SinOsc extends ProductType[SinOsc] {
   def kr: SinOsc = kr()
   
   /** @param freq             frequency in Hertz
@@ -811,6 +833,8 @@ object SinOsc extends ProductReader[SinOsc] {
     * @param phase            phase offset or modulator in radians
     */
   def ar(freq: GE = 440.0f, phase: GE = 0.0f): SinOsc = new SinOsc(audio, freq, phase)
+  
+  final val typeId = 323
   
   def read(in: RefMapIn, key: String, arity: Int): SinOsc = {
     require (arity == 3)
@@ -856,7 +880,7 @@ final case class SinOsc(rate: Rate, freq: GE = 440.0f, phase: GE = 0.0f) extends
   * @see [[de.sciss.synth.ugen.SinOsc$ SinOsc]]
   * @see [[de.sciss.synth.ugen.FSinOsc$ FSinOsc]]
   */
-object SinOscFB extends ProductReader[SinOscFB] {
+object SinOscFB extends ProductType[SinOscFB] {
   def kr: SinOscFB = kr()
   
   /** @param freq             frequency in Hertz
@@ -872,6 +896,8 @@ object SinOscFB extends ProductReader[SinOscFB] {
     *                         zero produces a clean sine wave.
     */
   def ar(freq: GE = 440.0f, feedback: GE = 0.0f): SinOscFB = new SinOscFB(audio, freq, feedback)
+  
+  final val typeId = 324
   
   def read(in: RefMapIn, key: String, arity: Int): SinOscFB = {
     require (arity == 3)
@@ -899,10 +925,12 @@ final case class SinOscFB(rate: Rate, freq: GE = 440.0f, feedback: GE = 0.0f) ex
   
   protected def makeUGen(_args: Vec[UGenIn]): UGenInLike = UGen.SingleOut(name, rate, _args)
 }
-object VOsc extends ProductReader[VOsc] {
+object VOsc extends ProductType[VOsc] {
   def kr(bufPos: GE, freq: GE = 440.0f, phase: GE = 0.0f): VOsc = new VOsc(control, bufPos, freq, phase)
   
   def ar(bufPos: GE, freq: GE = 440.0f, phase: GE = 0.0f): VOsc = new VOsc(audio, bufPos, freq, phase)
+  
+  final val typeId = 325
   
   def read(in: RefMapIn, key: String, arity: Int): VOsc = {
     require (arity == 4)
@@ -920,12 +948,14 @@ final case class VOsc(rate: Rate, bufPos: GE, freq: GE = 440.0f, phase: GE = 0.0
   
   protected def makeUGen(_args: Vec[UGenIn]): UGenInLike = UGen.SingleOut(name, rate, _args, isIndividual = true)
 }
-object VOsc3 extends ProductReader[VOsc3] {
+object VOsc3 extends ProductType[VOsc3] {
   def kr(bufPos: GE, freq1: GE = 110.0f, freq2: GE = 220.0f, freq3: GE = 440.0f): VOsc3 = 
     new VOsc3(control, bufPos, freq1, freq2, freq3)
   
   def ar(bufPos: GE, freq1: GE = 110.0f, freq2: GE = 220.0f, freq3: GE = 440.0f): VOsc3 = 
     new VOsc3(audio, bufPos, freq1, freq2, freq3)
+  
+  final val typeId = 326
   
   def read(in: RefMapIn, key: String, arity: Int): VOsc3 = {
     require (arity == 5)
@@ -971,7 +1001,7 @@ final case class VOsc3(rate: Rate, bufPos: GE, freq1: GE = 110.0f, freq2: GE = 2
   * @see [[de.sciss.synth.ugen.VOsc$ VOsc]]
   * @see [[de.sciss.synth.ugen.SinOsc$ SinOsc]]
   */
-object Osc extends ProductReader[Osc] {
+object Osc extends ProductType[Osc] {
   /** @param buf              the buffer with the wavetable in special wavetable
     *                         format. the size must be a power of two.
     * @param freq             frequency of table scans in Hz, corresponding to the
@@ -989,6 +1019,8 @@ object Osc extends ProductReader[Osc] {
     *                         be within the range of -8*Pi to +8*Pi.
     */
   def ar(buf: GE, freq: GE = 440.0f, phase: GE = 0.0f): Osc = new Osc(audio, buf, freq, phase)
+  
+  final val typeId = 327
   
   def read(in: RefMapIn, key: String, arity: Int): Osc = {
     require (arity == 4)
@@ -1026,10 +1058,12 @@ final case class Osc(rate: Rate, buf: GE, freq: GE = 440.0f, phase: GE = 0.0f)
   
   protected def makeUGen(_args: Vec[UGenIn]): UGenInLike = UGen.SingleOut(name, rate, _args, isIndividual = true)
 }
-object OscN extends ProductReader[OscN] {
+object OscN extends ProductType[OscN] {
   def kr(buf: GE, freq: GE = 440.0f, phase: GE = 0.0f): OscN = new OscN(control, buf, freq, phase)
   
   def ar(buf: GE, freq: GE = 440.0f, phase: GE = 0.0f): OscN = new OscN(audio, buf, freq, phase)
+  
+  final val typeId = 328
   
   def read(in: RefMapIn, key: String, arity: Int): OscN = {
     require (arity == 4)
@@ -1047,8 +1081,10 @@ final case class OscN(rate: Rate, buf: GE, freq: GE = 440.0f, phase: GE = 0.0f)
   
   protected def makeUGen(_args: Vec[UGenIn]): UGenInLike = UGen.SingleOut(name, rate, _args, isIndividual = true)
 }
-object COsc extends ProductReader[COsc] {
+object COsc extends ProductType[COsc] {
   def ar(buf: GE, freq: GE = 440.0f, beats: GE = 0.5f): COsc = new COsc(audio, buf, freq, beats)
+  
+  final val typeId = 329
   
   def read(in: RefMapIn, key: String, arity: Int): COsc = {
     require (arity == 4)
@@ -1085,7 +1121,7 @@ final case class COsc(rate: Rate, buf: GE, freq: GE = 440.0f, beats: GE = 0.5f)
   * play { Formant.ar(400, 2000, XLine.kr(800, 8000, 8)) * 0.2 }
   * }}}
   */
-object Formant extends ProductReader[Formant] {
+object Formant extends ProductType[Formant] {
   def ar: Formant = ar()
   
   /** @param fundFreq         Fundamental frequency in Hertz. Read at control-rate,
@@ -1101,6 +1137,8 @@ object Formant extends ProductReader[Formant] {
     */
   def ar(fundFreq: GE = 440.0f, formFreq: GE = 1760.0f, bw: GE = 880.0f): Formant = 
     new Formant(audio, fundFreq, formFreq, bw)
+  
+  final val typeId = 330
   
   def read(in: RefMapIn, key: String, arity: Int): Formant = {
     require (arity == 4)
@@ -1153,7 +1191,7 @@ final case class Formant(rate: Rate, fundFreq: GE = 440.0f, formFreq: GE = 1760.
   * 
   * @see [[de.sciss.synth.ugen.Impulse$ Impulse]]
   */
-object Blip extends ProductReader[Blip] {
+object Blip extends ProductType[Blip] {
   def kr: Blip = kr()
   
   /** @param freq             Fundamental frequency in Hertz
@@ -1169,6 +1207,8 @@ object Blip extends ProductReader[Blip] {
     *                         to avoid aliasing.
     */
   def ar(freq: GE = 440.0f, numHarm: GE = 200): Blip = new Blip(audio, freq, numHarm)
+  
+  final val typeId = 331
   
   def read(in: RefMapIn, key: String, arity: Int): Blip = {
     require (arity == 3)
@@ -1211,7 +1251,7 @@ final case class Blip(rate: Rate, freq: GE = 440.0f, numHarm: GE = 200) extends 
   * 
   * @see [[de.sciss.synth.ugen.LFSaw$ LFSaw]]
   */
-object Saw extends ProductReader[Saw] {
+object Saw extends ProductType[Saw] {
   def kr: Saw = kr()
   
   /** @param freq             Fundamental frequency in Hertz
@@ -1223,6 +1263,8 @@ object Saw extends ProductReader[Saw] {
   /** @param freq             Fundamental frequency in Hertz
     */
   def ar(freq: GE = 440.0f): Saw = new Saw(audio, freq)
+  
+  final val typeId = 332
   
   def read(in: RefMapIn, key: String, arity: Int): Saw = {
     require (arity == 2)
@@ -1268,7 +1310,7 @@ final case class Saw(rate: Rate, freq: GE = 440.0f) extends UGenSource.SingleOut
   * 
   * @see [[de.sciss.synth.ugen.LFPulse$ LFPulse]]
   */
-object Pulse extends ProductReader[Pulse] {
+object Pulse extends ProductType[Pulse] {
   def kr: Pulse = kr()
   
   /** @param freq             Fundamental frequency in Hertz
@@ -1284,6 +1326,8 @@ object Pulse extends ProductReader[Pulse] {
     *                         square wave.
     */
   def ar(freq: GE = 440.0f, width: GE = 0.5f): Pulse = new Pulse(audio, freq, width)
+  
+  final val typeId = 333
   
   def read(in: RefMapIn, key: String, arity: Int): Pulse = {
     require (arity == 3)
@@ -1312,9 +1356,11 @@ final case class Pulse(rate: Rate, freq: GE = 440.0f, width: GE = 0.5f) extends 
   
   protected def makeUGen(_args: Vec[UGenIn]): UGenInLike = UGen.SingleOut(name, rate, _args)
 }
-object Klang extends ProductReader[Klang] {
+object Klang extends ProductType[Klang] {
   def ar(specs: GE, freqScale: GE = 1.0f, freqOffset: GE = 0.0f): Klang = 
     new Klang(specs, freqScale, freqOffset)
+  
+  final val typeId = 334
   
   def read(in: RefMapIn, key: String, arity: Int): Klang = {
     require (arity == 3)
@@ -1344,7 +1390,7 @@ final case class Klang(specs: GE, freqScale: GE = 1.0f, freqOffset: GE = 0.0f)
   * @see [[de.sciss.synth.ugen.Klang$ Klang]]
   * @see [[de.sciss.synth.ugen.Ringz$ Ringz]]
   */
-object Klank extends ProductReader[Klank] {
+object Klank extends ProductType[Klank] {
   /** @param specs             ''(init-time only)''
     * @param freqScale         ''(init-time only)''
     * @param freqOffset        ''(init-time only)''
@@ -1352,6 +1398,8 @@ object Klank extends ProductReader[Klank] {
     */
   def ar(specs: GE, in: GE, freqScale: GE = 1.0f, freqOffset: GE = 0.0f, decayScale: GE = 1.0f): Klank = 
     new Klank(specs, in, freqScale, freqOffset, decayScale)
+  
+  final val typeId = 335
   
   def read(in: RefMapIn, key: String, arity: Int): Klank = {
     require (arity == 5)

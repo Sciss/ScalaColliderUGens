@@ -1,6 +1,6 @@
-<ugens revision="12">
+<ugens revision="13">
     <!-- all documented -->
-    <ugen name="ControlRate">
+    <ugen name="ControlRate" type-id="25">
         <rate name="scalar" implied="true"/>    <!-- method="" -->
         <doc>
             <text>
@@ -17,7 +17,7 @@
             <see>ugen.SampleRate</see>
         </doc>
     </ugen>
-    <ugen name="SampleRate">
+    <ugen name="SampleRate" type-id="26">
         <rate name="scalar" implied="true"/>    <!-- method="" -->
         <doc>
             <text>
@@ -39,7 +39,7 @@
             <see>ugen.RadiansPerSample</see>
         </doc>
     </ugen>
-    <ugen name="SampleDur">
+    <ugen name="SampleDur" type-id="27">
         <rate name="scalar" implied="true"/>     <!-- method="" -->
         <doc>
             <text>
@@ -53,7 +53,7 @@
             <see>ugen.ControlDur</see>
         </doc>
     </ugen>
-    <ugen name="ControlDur">
+    <ugen name="ControlDur" type-id="28">
         <rate name="scalar" implied="true"/>     <!-- method="" -->
         <doc>
             <text>
@@ -67,7 +67,7 @@
             <see>ugen.SampleDur</see>
         </doc>
     </ugen>
-    <ugen name="SubsampleOffset">
+    <ugen name="SubsampleOffset" type-id="29">
         <rate name="scalar" implied="true"/>     <!-- method="" -->
         <doc>
             <text>
@@ -113,7 +113,7 @@
             <see>ugen.OffsetOut</see>
         </doc>
     </ugen>
-    <ugen name="RadiansPerSample">
+    <ugen name="RadiansPerSample" type-id="30">
         <rate name="scalar" implied="true"/>     <!-- method="" -->
         <doc>
             <text>
@@ -127,7 +127,7 @@
             <see>ugen.SampleRate</see>
         </doc>
     </ugen>
-    <ugen name="NumInputBuses">
+    <ugen name="NumInputBuses" type-id="31">
         <rate name="scalar" implied="true"/>     <!-- method="" -->
         <doc>
             <text>Number of input buses.</text>
@@ -141,7 +141,7 @@
             <see>ugen.NumRunningSynths</see>
         </doc>
     </ugen>
-    <ugen name="NumOutputBuses">
+    <ugen name="NumOutputBuses" type-id="32">
         <rate name="scalar" implied="true"/>     <!-- method="" -->
         <doc>
             <text>Number of output buses.</text>
@@ -155,7 +155,7 @@
             <see>ugen.NumRunningSynths</see>
         </doc>
     </ugen>
-    <ugen name="NumAudioBuses">
+    <ugen name="NumAudioBuses" type-id="33">
         <rate name="scalar" implied="true"/>     <!-- method="" -->
         <doc>
             <text>Number of audio buses.</text>
@@ -169,7 +169,7 @@
             <see>ugen.NumRunningSynths</see>
         </doc>
     </ugen>
-    <ugen name="NumControlBuses">
+    <ugen name="NumControlBuses" type-id="34">
         <rate name="scalar" implied="true"/>     <!-- method="" -->
         <doc>
             <text>Number of control buses.</text>
@@ -183,7 +183,7 @@
             <see>ugen.NumRunningSynths</see>
         </doc>
     </ugen>
-    <ugen name="NumBuffers">
+    <ugen name="NumBuffers" type-id="35">
         <rate name="scalar" implied="true"/>     <!-- method="" -->
         <doc>
             <text>Maximum number of audio buffers.</text>
@@ -197,7 +197,7 @@
             <see>ugen.NumRunningSynths</see>
         </doc>
     </ugen>
-    <ugen name="NodeID">
+    <ugen name="NodeID" type-id="36">
         <rate name="scalar" implied="true"/>
         <doc>
             <text>Identifier of the node which contains the UGen.</text>
@@ -209,7 +209,7 @@
             <see>ugen.NumRunningSynths</see>
         </doc>
     </ugen>
-    <ugen name="NumRunningSynths">
+    <ugen name="NumRunningSynths" type-id="37">
         <rate name="scalar" implied="true"/>     <!-- method="" -->
         <doc>
             <text>Number of currently running synths.</text>
@@ -223,8 +223,7 @@
             <see>ugen.NumOutputBuses</see>
         </doc>
     </ugen>
-
-    <ugen name="BufSampleRate">
+    <ugen name="BufSampleRate" type-id="38">
         <rate name="scalar"/>
         <doc>
             <text>
@@ -244,7 +243,7 @@
             </doc>
         </arg>
     </ugen>
-    <ugen name="BufRateScale">
+    <ugen name="BufRateScale" type-id="39">
         <rate name="control"/>
         <rate name="scalar"/>
         <doc>
@@ -269,7 +268,7 @@
             </doc>
         </arg>
     </ugen>
-    <ugen name="BufSamples">
+    <ugen name="BufSamples" type-id="40">
         <rate name="control"/>
         <rate name="scalar"/>
         <doc>
@@ -295,7 +294,7 @@
             </doc>
         </arg>
     </ugen>
-    <ugen name="BufFrames">
+    <ugen name="BufFrames" type-id="41">
         <rate name="control"/>
         <rate name="scalar"/>
         <doc>
@@ -316,7 +315,7 @@
             </doc>
         </arg>
     </ugen>
-    <ugen name="BufChannels">
+    <ugen name="BufChannels" type-id="42">
         <rate name="control"/>
         <rate name="scalar"/>
         <doc>
@@ -336,7 +335,7 @@
             </doc>
         </arg>
     </ugen>
-    <ugen name="BufDur">
+    <ugen name="BufDur" type-id="43">
         <rate name="control"/>
         <rate name="scalar"/>
         <doc>
@@ -357,8 +356,7 @@
             </doc>
         </arg>
     </ugen>
-
-    <ugen name="PlayBuf" reads-buf="true" side-effect="true" done-flag="true">
+    <ugen name="PlayBuf" type-id="44" reads-buf="true" side-effect="true" done-flag="true">
         <rate name="control"/>
         <rate name="audio"/>
         <output variadic="numChannels"/>
@@ -424,7 +422,7 @@
             <see>ugen.BufFrames</see>
         </doc>
     </ugen>
-    <ugen name="RecordBuf" writes-buf="true" side-effect="true" done-flag="true">
+    <ugen name="RecordBuf" type-id="45" writes-buf="true" side-effect="true" done-flag="true">
         <rate name="audio"/>
         <rate name="control"/>
         <doc>
@@ -507,7 +505,7 @@
             </doc>
         </arg>
     </ugen>
-    <ugen name="BufRd" reads-buf="true" done-flag="true">
+    <ugen name="BufRd" type-id="46" reads-buf="true" done-flag="true">
         <rate name="scalar"/>
         <rate name="control"/>
         <rate name="audio">
@@ -582,7 +580,7 @@
             <see>ugen.BufRateScale</see>
         </doc>
     </ugen>
-    <ugen name="BufWr" writes-buf="true" done-flag="true">
+    <ugen name="BufWr" type-id="47" writes-buf="true" done-flag="true">
         <rate name="scalar"/>
         <rate name="control"/>
         <rate name="audio">
@@ -650,7 +648,7 @@
             <see>ugen.BufRateScale</see>
         </doc>
     </ugen>
-    <ugen name="Pitch">
+    <ugen name="Pitch" type-id="48">
         <rate name="control"/>
         <output name="freq"/>
         <output name="hasFreq"/>
@@ -757,8 +755,7 @@
             </example>
         </doc>
     </ugen>
-
-    <ugen name="BufDelayN" reads-buf="true" writes-buf="true">
+    <ugen name="BufDelayN" type-id="49" reads-buf="true" writes-buf="true">
         <rate name="control"/>
         <rate name="audio">
             <arg name="in" rate="ugen"/>
@@ -805,7 +802,7 @@
             <see>ugen.BufDelayC</see>
         </doc>
     </ugen>
-    <ugen name="BufDelayL" reads-buf="true" writes-buf="true">
+    <ugen name="BufDelayL" type-id="50" reads-buf="true" writes-buf="true">
         <rate name="control"/>
         <rate name="audio">
             <arg name="in" rate="ugen"/>
@@ -838,7 +835,7 @@
             <see>ugen.BufDelayC</see>
         </doc>
     </ugen>
-    <ugen name="BufDelayC" reads-buf="true" writes-buf="true">
+    <ugen name="BufDelayC" type-id="51" reads-buf="true" writes-buf="true">
         <rate name="control"/>
         <rate name="audio">
             <arg name="in" rate="ugen"/>
@@ -871,7 +868,7 @@
             <see>ugen.BufDelayL</see>
         </doc>
     </ugen>
-    <ugen name="BufCombN" reads-buf="true" writes-buf="true">
+    <ugen name="BufCombN" type-id="52" reads-buf="true" writes-buf="true">
         <rate name="audio">
             <arg name="in" rate="ugen"/>
         </rate>
@@ -938,7 +935,7 @@
             <see>ugen.BufCombC</see>
         </doc>
     </ugen>
-    <ugen name="BufCombL" reads-buf="true" writes-buf="true">
+    <ugen name="BufCombL" type-id="53" reads-buf="true" writes-buf="true">
         <rate name="audio">
             <arg name="in" rate="ugen"/>
         </rate>
@@ -998,7 +995,7 @@
             <see>ugen.BufCombC</see>
         </doc>
     </ugen>
-    <ugen name="BufCombC" reads-buf="true" writes-buf="true">
+    <ugen name="BufCombC" type-id="54" reads-buf="true" writes-buf="true">
         <rate name="audio">
             <arg name="in" rate="ugen"/>
         </rate>
@@ -1058,7 +1055,7 @@
             <see>ugen.BufCombL</see>
         </doc>
     </ugen>
-    <ugen name="BufAllpassN" reads-buf="true" writes-buf="true">
+    <ugen name="BufAllpassN" type-id="55" reads-buf="true" writes-buf="true">
         <rate name="audio">
             <arg name="in" rate="ugen"/>
         </rate>
@@ -1132,7 +1129,7 @@
             <see>ugen.BufAllpassC</see>
         </doc>
     </ugen>
-    <ugen name="BufAllpassL" reads-buf="true" writes-buf="true">
+    <ugen name="BufAllpassL" type-id="56" reads-buf="true" writes-buf="true">
         <rate name="audio">
             <arg name="in" rate="ugen"/>
         </rate>
@@ -1196,7 +1193,7 @@
             <see>ugen.BufAllpassC</see>
         </doc>
     </ugen>
-    <ugen name="BufAllpassC" reads-buf="true" writes-buf="true">
+    <ugen name="BufAllpassC" type-id="57" reads-buf="true" writes-buf="true">
         <rate name="audio">
             <arg name="in" rate="ugen"/>
         </rate>
@@ -1260,7 +1257,7 @@
             <see>ugen.BufAllpassL</see>
         </doc>
     </ugen>
-    <ugen name="DelayN">
+    <ugen name="DelayN" type-id="58">
         <rate name="control"/>
         <rate name="audio">
             <arg name="in" rate="ugen"/>
@@ -1301,7 +1298,7 @@
             <see>ugen.DelayC</see>
         </doc>
     </ugen>
-    <ugen name="DelayL">
+    <ugen name="DelayL" type-id="59">
         <rate name="control"/>
         <rate name="audio">
             <arg name="in" rate="ugen"/>
@@ -1330,7 +1327,7 @@
             <see>ugen.DelayC</see>
         </doc>
     </ugen>
-    <ugen name="DelayC">
+    <ugen name="DelayC" type-id="60">
         <rate name="control"/>
         <rate name="audio">
             <arg name="in" rate="ugen"/>
@@ -1359,7 +1356,7 @@
             <see>ugen.DelayL</see>
         </doc>
     </ugen>
-    <ugen name="CombN">
+    <ugen name="CombN" type-id="61">
         <rate name="control"/>
         <rate name="audio">
             <arg name="in" rate="ugen"/>
@@ -1394,7 +1391,7 @@
             <!-- TODO: example -->
         </doc>
     </ugen>
-    <ugen name="CombL">
+    <ugen name="CombL" type-id="62">
         <rate name="control"/>
         <rate name="audio">
             <arg name="in" rate="ugen"/>
@@ -1429,7 +1426,7 @@
             <!-- TODO: example -->
         </doc>
     </ugen>
-    <ugen name="CombC">
+    <ugen name="CombC" type-id="63">
         <rate name="control"/>
         <rate name="audio">
             <arg name="in" rate="ugen"/>
@@ -1464,7 +1461,7 @@
             <!-- TODO: example -->
         </doc>
     </ugen>
-    <ugen name="AllpassN">
+    <ugen name="AllpassN" type-id="64">
         <rate name="control"/>
         <rate name="audio">
             <arg name="in" rate="ugen"/>
@@ -1499,7 +1496,7 @@
             <!-- TODO: example -->
         </doc>
     </ugen>
-    <ugen name="AllpassL">
+    <ugen name="AllpassL" type-id="65">
         <rate name="control"/>
         <rate name="audio">
             <arg name="in" rate="ugen"/>
@@ -1534,7 +1531,7 @@
             <!-- TODO: example -->
         </doc>
     </ugen>
-    <ugen name="AllpassC">
+    <ugen name="AllpassC" type-id="66">
         <rate name="control"/>
         <rate name="audio">
             <arg name="in" rate="ugen"/>
@@ -1569,7 +1566,7 @@
             <!-- TODO: example -->
         </doc>
     </ugen>
-    <ugen name="PitchShift">
+    <ugen name="PitchShift" type-id="67">
         <rate name="audio" implied="true"/>
         <arg name="in">
             <doc>
@@ -1609,7 +1606,7 @@
     <!-- this should exist according to plugin sources...
     <ugen name="GrainTap"/>
     -->
-    <ugen name="TGrains" reads-buf="true">  <!-- accepts demand rate -->
+    <ugen name="TGrains" type-id="68" reads-buf="true">  <!-- accepts demand rate -->
         <rate name="audio" implied="true"/>
         <output variadic="numChannels"/>
         <arg name="numChannels" type="int">
@@ -1675,14 +1672,14 @@
             <!-- TODO: example -->
         </doc>
     </ugen>
-    <ugen name="ScopeOut" writes-buf="true">
+    <ugen name="ScopeOut" type-id="69" writes-buf="true">
         <no-outputs/>   <!-- XXX zero outputs? -->
         <rate name="audio"/>
         <rate name="control"/>
         <arg name="buf" type="buf"/>
         <arg name="in" variadic="true"/>
     </ugen>
-    <ugen name="ScopeOut2" writes-buf="true">
+    <ugen name="ScopeOut2" type-id="70" writes-buf="true">
         <no-outputs/>   <!-- XXX zero outputs? -->
         <rate name="audio"/>
         <rate name="control"/>
@@ -1691,7 +1688,7 @@
         <arg name="frames" pos="3"/>
         <arg name="in" variadic="true" pos="1"/>
     </ugen>
-    <ugen name="Pluck">
+    <ugen name="Pluck" type-id="71">
         <rate name="audio" implied="true"/>
         <arg name="in">
             <doc>
@@ -1731,7 +1728,7 @@
             <!-- TODO: example -->
         </doc>
     </ugen>
-    <ugen name="DelTapWr" writes-buf="true">
+    <ugen name="DelTapWr" type-id="72" writes-buf="true">
         <rate name="audio"/>
         <rate name="control"/>
         <arg name="buf" type="buf">
@@ -1755,7 +1752,7 @@
             <!-- TODO: example -->
         </doc>
     </ugen>
-    <ugen name="DelTapRd" reads-buf="true">
+    <ugen name="DelTapRd" type-id="73" reads-buf="true">
         <rate name="audio"/>
         <rate name="control"/>
         <arg name="buf" type="buf">
@@ -1786,8 +1783,7 @@
             <!-- TODO: example -->
         </doc>
     </ugen>
-
-    <ugen name="MaxLocalBufs" sourcecode="true" fragment="true" side-effect="true">
+    <ugen name="MaxLocalBufs" type-id="74" sourcecode="true" fragment="true" side-effect="true">
         <rate name="scalar" implied="true"/>
         <doc>
             <text>
@@ -1796,8 +1792,7 @@
             <see>ugen.LocalBuf</see>
         </doc>
     </ugen>
-
-    <ugen name="LocalBuf" sourcecode="true" fragment="true" indiv="true">
+    <ugen name="LocalBuf" type-id="75" sourcecode="true" fragment="true" indiv="true">
         <rate name="scalar" implied="true"/>
         <arg name="numFrames">
             <doc>
@@ -1821,8 +1816,7 @@
             <!-- TODO: example -->
         </doc>
     </ugen>
-
-    <ugen name="SetBuf" writes-buf="true">
+    <ugen name="SetBuf" type-id="76" writes-buf="true">
         <rate name="scalar" implied="true"/>
         <arg name="buf" pos="0">
             <doc>
@@ -1848,8 +1842,7 @@
             <!-- TODO: example -->
         </doc>
     </ugen>
-
-    <ugen name="ClearBuf" writes-buf="true">
+    <ugen name="ClearBuf" type-id="77" writes-buf="true">
         <rate name="scalar" implied="true"/>
         <arg name="buf">
             <doc>

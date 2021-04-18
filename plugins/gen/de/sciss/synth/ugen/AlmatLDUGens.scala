@@ -1,4 +1,4 @@
-// revision: 4
+// revision: 5
 package de.sciss.synth
 package ugen
 
@@ -26,12 +26,14 @@ import UGenSource._
   * 
   * @see [[de.sciss.synth.ugen.Kuramoto$ Kuramoto]]
   */
-object Hopf extends ProductReader[Hopf] {
+object Hopf extends ProductType[Hopf] {
   /** @param in               Input signal (force) to track.
     * @param coupling         Strength of coupling.
     * @param radius           Limit cycle radius (amplitude attractor).
     */
   def ar(in: GE, coupling: GE, radius: GE = 1.0f): Hopf = new Hopf(audio, in, coupling, radius)
+  
+  final val typeId = 441
   
   def read(in: RefMapIn, key: String, arity: Int): Hopf = {
     require (arity == 4)

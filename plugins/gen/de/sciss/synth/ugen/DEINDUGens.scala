@@ -1,4 +1,4 @@
-// revision: 11
+// revision: 12
 package de.sciss.synth
 package ugen
 
@@ -47,7 +47,7 @@ import UGenSource._
   * @see [[de.sciss.synth.ugen.GVerb$ GVerb]]
   * @see [[de.sciss.synth.ugen.Greyhole$ Greyhole]]
   */
-object JPverb extends ProductReader[JPverb] {
+object JPverb extends ProductType[JPverb] {
   /** @param inL              left input signal to be reverberated
     * @param inR              right input signal to be reverberated
     * @param revTime          approximate reverberation time in seconds (T60 - the
@@ -115,6 +115,8 @@ object JPverb extends ProductReader[JPverb] {
     */
   def ar(inL: GE, inR: GE, revTime: GE = 1.0f, damp: GE = 0.0f, size: GE = 1.0f, earlyDiff: GE = 0.707f, modDepth: GE = 0.1f, modFreq: GE = 2.0f, low: GE = 1.0f, mid: GE = 1.0f, high: GE = 1.0f, lowCut: GE = 500.0f, highCut: GE = 2000.0f): JPverb = 
     new JPverb(audio, inL, inR, revTime, damp, size, earlyDiff, modDepth, modFreq, low, mid, high, lowCut, highCut)
+  
+  final val typeId = 420
   
   def read(in: RefMapIn, key: String, arity: Int): JPverb = {
     require (arity == 14)
@@ -229,7 +231,7 @@ final case class JPverb(rate: Rate, inL: GE, inR: GE, revTime: GE = 1.0f, damp: 
   * 
   * @see [[de.sciss.synth.ugen.JPverb$ JPverb]]
   */
-object Greyhole extends ProductReader[Greyhole] {
+object Greyhole extends ProductType[Greyhole] {
   /** @param inL              left input signal
     * @param inR              right input signal
     * @param delayTime        approximate delay time in seconds. (0.1..60)
@@ -257,6 +259,8 @@ object Greyhole extends ProductReader[Greyhole] {
     */
   def ar(inL: GE, inR: GE, delayTime: GE = 2.0f, damp: GE = 0.0f, size: GE = 1.0f, diff: GE = 0.707f, feedback: GE = 0.9f, modDepth: GE = 0.1f, modFreq: GE = 2.0f): Greyhole = 
     new Greyhole(audio, inL, inR, delayTime, damp, size, diff, feedback, modDepth, modFreq)
+  
+  final val typeId = 421
   
   def read(in: RefMapIn, key: String, arity: Int): Greyhole = {
     require (arity == 10)
@@ -348,7 +352,7 @@ final case class Greyhole(rate: Rate, inL: GE, inR: GE, delayTime: GE = 2.0f, da
   * @see [[de.sciss.synth.ugen.RLPF$ RLPF]]
   * @see [[de.sciss.synth.ugen.Ringz$ Ringz]]
   */
-object ComplexRes extends ProductReader[ComplexRes] {
+object ComplexRes extends ProductType[ComplexRes] {
   /** @param in               input signal to be filtered
     * @param freq             resonating frequency in Hz, can be modulated at audio
     *                         rate
@@ -356,6 +360,8 @@ object ComplexRes extends ProductReader[ComplexRes] {
     */
   def ar(in: GE, freq: GE = 440.0f, decay: GE = 0.2f): ComplexRes = 
     new ComplexRes(audio, in, freq, decay)
+  
+  final val typeId = 422
   
   def read(in: RefMapIn, key: String, arity: Int): ComplexRes = {
     require (arity == 4)
@@ -424,11 +430,13 @@ final case class ComplexRes(rate: Rate, in: GE, freq: GE = 440.0f, decay: GE = 0
   * 
   * @see [[de.sciss.synth.ugen.BinaryOpUGen$ BinaryOpUGen]]
   */
-object DiodeRingMod extends ProductReader[DiodeRingMod] {
+object DiodeRingMod extends ProductType[DiodeRingMod] {
   /** @param car              carrier signal
     * @param mod              modulator signal
     */
   def ar(car: GE, mod: GE): DiodeRingMod = new DiodeRingMod(audio, car, mod)
+  
+  final val typeId = 423
   
   def read(in: RefMapIn, key: String, arity: Int): DiodeRingMod = {
     require (arity == 3)
@@ -497,7 +505,9 @@ final case class DiodeRingMod(rate: Rate, car: GE, mod: GE) extends UGenSource.S
   * @see [[de.sciss.synth.ugen.Duty$ Duty]]
   * @see [[de.sciss.synth.ugen.Demand$ Demand]]
   */
-object DNoiseRing extends ProductReader[DNoiseRing] {
+object DNoiseRing extends ProductType[DNoiseRing] {
+  final val typeId = 424
+  
   def read(in: RefMapIn, key: String, arity: Int): DNoiseRing = {
     require (arity == 5)
     val _change   = in.readGE()
@@ -560,7 +570,7 @@ final case class DNoiseRing(change: GE = 0.5f, chance: GE = 0.5f, shift: GE = 1,
   * 
   * @see [[de.sciss.synth.ugen.Amplitude$ Amplitude]]
   */
-object RMS extends ProductReader[RMS] {
+object RMS extends ProductType[RMS] {
   /** @param in               input signal to be analyzed
     * @param lpf              low-pass filter frequency in Hz
     */
@@ -570,6 +580,8 @@ object RMS extends ProductReader[RMS] {
     * @param lpf              low-pass filter frequency in Hz
     */
   def ar(in: GE, lpf: GE = 2.0f): RMS = new RMS(audio, in, lpf)
+  
+  final val typeId = 425
   
   def read(in: RefMapIn, key: String, arity: Int): RMS = {
     require (arity == 3)

@@ -20,12 +20,14 @@ import scala.collection.immutable.{IndexedSeq => Vec}
 
 // ---------- Control ----------
 
-object Control extends ProductReader[Control] {
+object Control extends ProductType[Control] {
   /** Note: we are not providing further convenience methods,
     * as that is the task of ControlProxyFactory...
     */
   def ir(values: ControlValues, name: Option[String] = None): Control = apply(scalar , values.seq, name)
   def kr(values: ControlValues, name: Option[String] = None): Control = apply(control, values.seq, name)
+
+  final val typeId = 222
 
   override def read(in: RefMapIn, key: String, arity: Int): Control = {
     require (arity == 3)
@@ -47,9 +49,11 @@ final case class Control(rate: Rate, values: Vec[Float], ctrlName: Option[String
   }
 }
 
-object ControlProxy extends ProductReader[ControlProxy] {
+object ControlProxy extends ProductType[ControlProxy] {
   private val scalarFactory  = new ControlFactory(scalar )
   private val controlFactory = new ControlFactory(control)
+
+  final val typeId = 223
 
   override def read(in: RefMapIn, key: String, arity: Int): ControlProxy = {
     require (arity == 3)
@@ -76,8 +80,10 @@ final class ControlFactory(rate: Rate) extends ControlFactoryLike {
 
 // ---------- TrigControl ----------
 
-object TrigControl extends ProductReader[TrigControl] {
+object TrigControl extends ProductType[TrigControl] {
   def kr(values: ControlValues, name: Option[String] = None): TrigControl = apply(values.seq, name)
+
+  final val typeId = 224
 
   override def read(in: RefMapIn, key: String, arity: Int): TrigControl = {
     require (arity == 2)
@@ -98,11 +104,13 @@ final case class TrigControl(values: Vec[Float], ctrlName: Option[String])
   }
 }
 
-object TrigControlProxy extends ProductReader[TrigControlProxy] {
+object TrigControlProxy extends ProductType[TrigControlProxy] {
   private object factory extends ControlFactoryLike {
     protected def makeUGen(numChannels: Int, specialIndex: Int): UGen =
       impl.ControlImpl("TrigControl", control, numChannels = numChannels, specialIndex = specialIndex)
   }
+
+  final val typeId = 225
 
   override def read(in: RefMapIn, key: String, arity: Int): TrigControlProxy = {
     require (arity == 2)
@@ -118,8 +126,10 @@ final case class TrigControlProxy(values: Vec[Float], name: Option[String])
 
 // ---------- AudioControl ----------
 
-object AudioControl extends ProductReader[AudioControl] {
+object AudioControl extends ProductType[AudioControl] {
   def ar(values: ControlValues, name: Option[String] = None): AudioControl = apply(values.seq, name)
+
+  final val typeId = 220
 
   override def read(in: RefMapIn, key: String, arity: Int): AudioControl = {
     require (arity == 2)
@@ -140,11 +150,13 @@ final case class AudioControl(values: Vec[Float], ctrlName: Option[String])
   }
 }
 
-object AudioControlProxy extends ProductReader[AudioControlProxy] {
+object AudioControlProxy extends ProductType[AudioControlProxy] {
   private object factory extends ControlFactoryLike {
     protected def makeUGen(numChannels: Int, specialIndex: Int): UGen =
       impl.ControlImpl("AudioControl", audio, numChannels = numChannels, specialIndex = specialIndex)
   }
+
+  final val typeId = 221
 
   override def read(in: RefMapIn, key: String, arity: Int): AudioControlProxy = {
     require (arity == 2)

@@ -4,11 +4,11 @@ import UGenSource._
 import ugen._
 
 object StandardUGens {
-  private lazy val _init: Unit = UGenSource.addProductReaders(map)
+  private lazy val _init: Unit = UGenSource.addProductTypes(map)
 
   def init(): Unit = _init
 
-  type V = ProductReader[Product]
+  type V = ProductType[Product]
 
   private def map = Map[String, V](
     ("A2K", A2K),

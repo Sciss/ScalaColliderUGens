@@ -1,4 +1,4 @@
-// revision: 3
+// revision: 4
 package de.sciss.synth
 package ugen
 
@@ -10,7 +10,7 @@ import UGenSource._
   * 
   * This is a third-party UGen (TJUGens).
   */
-object DFM1 extends ProductReader[DFM1] {
+object DFM1 extends ProductType[DFM1] {
   /** @param in               Input signal to filter.
     * @param freq             Cutoff frequency in Hertz.
     * @param res              Resonance of the filter. Resonance is minimal at `0.0`
@@ -23,6 +23,8 @@ object DFM1 extends ProductReader[DFM1] {
     */
   def ar(in: GE, freq: GE = 440, res: GE = 0.1f, gain: GE = 1.0f, mode: GE = 0, noise: GE = 3.0E-4f): DFM1 = 
     new DFM1(audio, in, freq, res, gain, mode, noise)
+  
+  final val typeId = 438
   
   def read(in: RefMapIn, key: String, arity: Int): DFM1 = {
     require (arity == 7)

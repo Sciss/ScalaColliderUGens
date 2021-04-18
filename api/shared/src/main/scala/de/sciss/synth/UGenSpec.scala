@@ -76,6 +76,13 @@ object UGenSpec {
   def parse(node: scala.xml.Node, docs: Boolean = false, verify: Boolean = false): UGenSpec =
     ParserImpl.parse(node, docs = docs, verify = verify)
 
+  def parseFull(node: scala.xml.Node, docs: Boolean, verify: Boolean): Parsed =
+    ParserImpl.parseFull(node, docs = docs, verify = verify)
+
+  abstract class Parsed {
+    def typeId: Int
+    def spec  : UGenSpec
+  }
   // ---- UGen attributes ----
 
   object Attribute {

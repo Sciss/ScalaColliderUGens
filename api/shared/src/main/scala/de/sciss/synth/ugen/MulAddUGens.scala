@@ -17,7 +17,9 @@ package ugen
 import de.sciss.synth.UGenSource._
 import de.sciss.synth.ugen.Constant.{C0, C1, Cm1}
 
-object MulAdd extends ProductReader[MulAdd] {
+object MulAdd extends ProductType[MulAdd] {
+  final val typeId = 282
+
   override def read(in: RefMapIn, key: String, arity: Int): MulAdd = {
     require (arity == 3)
     val _in   = in.readGE()
@@ -101,7 +103,7 @@ final case class MulAdd(in: GE, mul: GE, add: GE)
   * @see [[de.sciss.synth.ugen.MulAdd MulAdd]]
   * @see [[de.sciss.synth.ugen.Sum4$ Sum4]]
   */
-object Sum3 extends ProductReader[Sum3] {
+object Sum3 extends ProductType[Sum3] {
   private[ugen] def make1(args: Vec[UGenIn]): UGenIn = {
     val in0i = args(0)
     val in1i = args(1)
@@ -119,6 +121,8 @@ object Sum3 extends ProductReader[Sum3] {
       UGen.SingleOut("Sum3", rate, argsM)
     }
   }
+
+  final val typeId = 283
 
   override def read(in: RefMapIn, key: String, arity: Int): Sum3 = {
     require (arity == 3)
@@ -155,7 +159,7 @@ final case class Sum3(in0: GE, in1: GE, in2: GE) extends UGenSource.SingleOut {
   * @see [[de.sciss.synth.ugen.MulAdd MulAdd]]
   * @see [[de.sciss.synth.ugen.Sum3$ Sum3]]
   */
-object Sum4 extends ProductReader[Sum4] {
+object Sum4 extends ProductType[Sum4] {
   private[ugen] def make1(args: Vec[UGenIn]): UGenIn = {
     val in0i = args(0)
     val in1i = args(1)
@@ -176,6 +180,8 @@ object Sum4 extends ProductReader[Sum4] {
       UGen.SingleOut("Sum4", rate, argsM)
     }
   }
+
+  final val typeId = 284
 
   override def read(in: RefMapIn, key: String, arity: Int): Sum4 = {
     require (arity == 4)

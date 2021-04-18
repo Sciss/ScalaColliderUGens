@@ -1,4 +1,4 @@
-// revision: 4
+// revision: 5
 package de.sciss.synth
 package ugen
 
@@ -24,7 +24,7 @@ import UGenSource._
   * @see [[de.sciss.synth.ugen.FreeVerb2$ FreeVerb2]]
   * @see [[de.sciss.synth.ugen.GVerb$ GVerb]]
   */
-object FreeVerb extends ProductReader[FreeVerb] {
+object FreeVerb extends ProductType[FreeVerb] {
   /** @param in               input signal to reverberate
     * @param mix              dry/wet balance from zero (only dry) to one (only wet)
     * @param room             room size
@@ -32,6 +32,8 @@ object FreeVerb extends ProductReader[FreeVerb] {
     */
   def ar(in: GE, mix: GE = 0.33f, room: GE = 0.5f, damp: GE = 0.5f): FreeVerb = 
     new FreeVerb(in, mix, room, damp)
+  
+  final val typeId = 353
   
   def read(in: RefMapIn, key: String, arity: Int): FreeVerb = {
     require (arity == 4)
@@ -90,7 +92,7 @@ final case class FreeVerb(in: GE, mix: GE = 0.33f, room: GE = 0.5f, damp: GE = 0
   * @see [[de.sciss.synth.ugen.FreeVerb$ FreeVerb]]
   * @see [[de.sciss.synth.ugen.GVerb$ GVerb]]
   */
-object FreeVerb2 extends ProductReader[FreeVerb2] {
+object FreeVerb2 extends ProductType[FreeVerb2] {
   /** @param inL              left channel of input signal to reverberate
     * @param inR              right channel of input signal to reverberate
     * @param mix              dry/wet balance from zero (only dry) to one (only wet)
@@ -99,6 +101,8 @@ object FreeVerb2 extends ProductReader[FreeVerb2] {
     */
   def ar(inL: GE, inR: GE, mix: GE = 0.33f, room: GE = 0.5f, damp: GE = 0.5f): FreeVerb2 = 
     new FreeVerb2(inL, inR, mix, room, damp)
+  
+  final val typeId = 354
   
   def read(in: RefMapIn, key: String, arity: Int): FreeVerb2 = {
     require (arity == 5)
@@ -168,7 +172,7 @@ final case class FreeVerb2(inL: GE, inR: GE, mix: GE = 0.33f, room: GE = 0.5f, d
   * @see [[de.sciss.synth.ugen.FreeVerb$ FreeVerb]]
   * @see [[de.sciss.synth.ugen.FreeVerb2$ FreeVerb2]]
   */
-object GVerb extends ProductReader[GVerb] {
+object GVerb extends ProductType[GVerb] {
   /** @param roomSize         Size of the virtual room in meters. It must not be
     *                         greater than `maxRoomSize` . Note that quick changes in
     *                         `roomSize` may result in zipper noise and an audible
@@ -186,6 +190,8 @@ object GVerb extends ProductReader[GVerb] {
     */
   def ar(in: GE, roomSize: GE = 10.0f, revTime: GE = 3.0f, damping: GE = 0.5f, inputBW: GE = 0.5f, spread: GE = 15.0f, dryLevel: GE = 1.0f, earlyRefLevel: GE = 0.7f, tailLevel: GE = 0.5f, maxRoomSize: GE = 300.0f): GVerb = 
     new GVerb(in, roomSize, revTime, damping, inputBW, spread, dryLevel, earlyRefLevel, tailLevel, maxRoomSize)
+  
+  final val typeId = 355
   
   def read(in: RefMapIn, key: String, arity: Int): GVerb = {
     require (arity == 10)

@@ -1,7 +1,7 @@
 lazy val baseName       = "ScalaColliderUGens"
 lazy val baseNameL      = baseName.toLowerCase
 
-lazy val projectVersion = "1.21.1"
+lazy val projectVersion = "1.21.2-SNAPSHOT"
 lazy val mimaVersion    = "1.21.0"
 
 // sonatype plugin requires that these are in global
@@ -30,7 +30,7 @@ lazy val deps = new {
     val numbers      = "0.2.1"
     val scalaXML     = "1.3.0"
     val scalaXMLDotty = "2.0.0-RC1"  // no stable release available at the moment :-/
-    val serial       = "2.0.1"
+    val serial       = "2.0.2-SNAPSHOT"
   }
   val test = new {
     val scalaTest    = "3.2.7"
@@ -205,6 +205,9 @@ lazy val plugins = crossProject(JVMPlatform, JSPlatform).in(file("plugins"))
 //      runUGenGenerator(description.value, outputDir = src, cp = cp.files, log = st.log, args = "--plugins" :: Nil)
 //    },
     Compile / unmanagedSourceDirectories += genSources(baseDirectory.value),
+    libraryDependencies ++= Seq(
+      "org.scalatest" %%% "scalatest" % deps.test.scalaTest % Test
+    ),
     mimaPreviousArtifacts := Set("de.sciss" %% s"$baseNameL-plugins" % mimaVersion)
   )
 

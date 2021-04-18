@@ -1,4 +1,4 @@
-// revision: 6
+// revision: 7
 package de.sciss.synth
 package ugen
 
@@ -47,7 +47,7 @@ import UGenSource._
   * 
   * @see [[de.sciss.synth.ugen.CircleRamp$ CircleRamp]]
   */
-object VBAP extends ProductReader[VBAP] {
+object VBAP extends ProductType[VBAP] {
   /** @param numChannels      the number of output channels
     * @param in               the signal to be panned
     * @param buf              id of a buffer containing data calculated by
@@ -79,6 +79,8 @@ object VBAP extends ProductReader[VBAP] {
     */
   def ar(numChannels: Int, in: GE, buf: GE, azimuth: GE = 0, elevation: GE = 1, spread: GE = 0): VBAP = 
     new VBAP(audio, numChannels, in, buf, azimuth, elevation, spread)
+  
+  final val typeId = 439
   
   def read(in: RefMapIn, key: String, arity: Int): VBAP = {
     require (arity == 7)
@@ -142,7 +144,7 @@ final case class VBAP(rate: MaybeRate, numChannels: Int, in: GE, buf: GE, azimut
   * @see [[de.sciss.synth.ugen.Ramp$ Ramp]]
   * @see [[de.sciss.synth.ugen.Lag$ Lag]]
   */
-object CircleRamp extends ProductReader[CircleRamp] {
+object CircleRamp extends ProductType[CircleRamp] {
   /** @param in               The signal to be smoothed.
     * @param dur              Ramp duration in seconds
     * @param lo               The lower wrap value
@@ -158,6 +160,8 @@ object CircleRamp extends ProductReader[CircleRamp] {
     */
   def ar(in: GE, dur: GE = 0.1f, lo: GE = -180, hi: GE = 180): CircleRamp = 
     new CircleRamp(audio, in, dur, lo, hi)
+  
+  final val typeId = 440
   
   def read(in: RefMapIn, key: String, arity: Int): CircleRamp = {
     require (arity == 5)

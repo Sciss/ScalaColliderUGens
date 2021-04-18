@@ -4,11 +4,11 @@ import UGenSource._
 import ugen._
 
 object ThirdPartyUGens {
-  private lazy val _init: Unit = UGenSource.addProductReaders(map)
+  private lazy val _init: Unit = UGenSource.addProductTypes(map)
 
   def init(): Unit = _init
 
-  type V = ProductReader[Product]
+  type V = ProductType[Product]
 
   private def map = Map[String, V](
     ("ArrayMax", ArrayMax),

@@ -1,4 +1,4 @@
-// revision: 3
+// revision: 4
 package de.sciss.synth
 package ugen
 
@@ -24,7 +24,7 @@ import UGenSource._
   * @see [[de.sciss.synth.ugen.Convolution2L$ Convolution2L]]
   * @see [[de.sciss.synth.ugen.Convolution2$ Convolution2]]
   */
-object Convolution extends ProductReader[Convolution] {
+object Convolution extends ProductType[Convolution] {
   /** @param in               first operand of the convolution
     * @param kernel           second operand of the convolution
     * @param frameSize        convolution size in sample frames, which is half of the
@@ -33,6 +33,8 @@ object Convolution extends ProductReader[Convolution] {
     *                         ''(init-time only)''
     */
   def ar(in: GE, kernel: GE, frameSize: GE): Convolution = new Convolution(audio, in, kernel, frameSize)
+  
+  final val typeId = 109
   
   def read(in: RefMapIn, key: String, arity: Int): Convolution = {
     require (arity == 4)
@@ -111,7 +113,7 @@ final case class Convolution(rate: Rate, in: GE, kernel: GE, frameSize: GE)
   * @see [[de.sciss.synth.ugen.Convolution2L$ Convolution2L]]
   * @see [[de.sciss.synth.ugen.Convolution$ Convolution]]
   */
-object Convolution2 extends ProductReader[Convolution2] {
+object Convolution2 extends ProductType[Convolution2] {
   /** @param in               the realtime input to be convolved
     * @param kernel           buffer identifier for the fixed kernel, which may be
     *                         modulated in combination with the trigger. Even a
@@ -127,6 +129,8 @@ object Convolution2 extends ProductReader[Convolution2] {
     */
   def ar(in: GE, kernel: GE, trig: GE = 1, frameSize: GE): Convolution2 = 
     new Convolution2(audio, in, kernel, trig, frameSize)
+  
+  final val typeId = 110
   
   def read(in: RefMapIn, key: String, arity: Int): Convolution2 = {
     require (arity == 5)
@@ -222,7 +226,7 @@ final case class Convolution2(rate: Rate, in: GE, kernel: GE, trig: GE = 1, fram
   * @see [[de.sciss.synth.ugen.Convolution2$ Convolution2]]
   * @see [[de.sciss.synth.ugen.Convolution$ Convolution]]
   */
-object Convolution2L extends ProductReader[Convolution2L] {
+object Convolution2L extends ProductType[Convolution2L] {
   /** @param in               the realtime input to be convolved
     * @param kernel           buffer identifier for the fixed kernel, which may be
     *                         modulated in combination with the trigger. Even if the
@@ -243,6 +247,8 @@ object Convolution2L extends ProductReader[Convolution2L] {
     */
   def ar(in: GE, kernel: GE, trig: GE = 1, frameSize: GE, fadePeriods: GE = 1): Convolution2L = 
     new Convolution2L(audio, in, kernel, trig, frameSize, fadePeriods)
+  
+  final val typeId = 111
   
   def read(in: RefMapIn, key: String, arity: Int): Convolution2L = {
     require (arity == 6)
@@ -314,7 +320,7 @@ final case class Convolution2L(rate: Rate, in: GE, kernel: GE, trig: GE = 1, fra
   * @see [[de.sciss.synth.ugen.Convolution$ Convolution]]
   * @see [[de.sciss.synth.ugen.Convolution2L$ Convolution2L]]
   */
-object StereoConvolution2L extends ProductReader[StereoConvolution2L] {
+object StereoConvolution2L extends ProductType[StereoConvolution2L] {
   /** @param in               the realtime input to be convolved
     * @param kernelL          buffer identifier for the left channel's fixed kernel,
     *                         which may be modulated in combination with the trigger
@@ -336,6 +342,8 @@ object StereoConvolution2L extends ProductReader[StereoConvolution2L] {
     */
   def ar(in: GE, kernelL: GE, kernelR: GE, trig: GE = 1, frameSize: GE, fadePeriods: GE = 1): StereoConvolution2L = 
     new StereoConvolution2L(audio, in, kernelL, kernelR, trig, frameSize, fadePeriods)
+  
+  final val typeId = 112
   
   def read(in: RefMapIn, key: String, arity: Int): StereoConvolution2L = {
     require (arity == 7)
@@ -406,7 +414,7 @@ final case class StereoConvolution2L(rate: Rate, in: GE, kernelL: GE, kernelR: G
   * @see [[de.sciss.synth.ugen.Convolution$ Convolution]]
   * @see [[de.sciss.synth.ugen.Convolution2L$ Convolution2L]]
   */
-object Convolution3 extends ProductReader[Convolution3] {
+object Convolution3 extends ProductType[Convolution3] {
   /** @param in               the realtime input to be convolved
     * @param kernel           buffer identifier for the fixed kernel, which may be
     *                         modulated in combination with the trigger. Even a
@@ -417,6 +425,8 @@ object Convolution3 extends ProductReader[Convolution3] {
     */
   def ar(in: GE, kernel: GE, trig: GE = 1, frameSize: GE): Convolution3 = 
     new Convolution3(audio, in, kernel, trig, frameSize)
+  
+  final val typeId = 113
   
   def read(in: RefMapIn, key: String, arity: Int): Convolution3 = {
     require (arity == 5)
@@ -481,7 +491,9 @@ final case class Convolution3(rate: Rate, in: GE, kernel: GE, trig: GE = 1, fram
   * }
   * }}}
   */
-object PV_ConformalMap extends ProductReader[PV_ConformalMap] {
+object PV_ConformalMap extends ProductType[PV_ConformalMap] {
+  final val typeId = 114
+  
   def read(in: RefMapIn, key: String, arity: Int): PV_ConformalMap = {
     require (arity == 3)
     val _chain  = in.readGE()
@@ -536,7 +548,7 @@ final case class PV_ConformalMap(chain: GE, real: GE = 0.0f, imag: GE = 0.0f)
   * @see [[de.sciss.synth.ugen.Onsets$ Onsets]]
   * @see [[de.sciss.synth.ugen.PV_HainsworthFoote$ PV_HainsworthFoote]]
   */
-object PV_JensenAndersen extends ProductReader[PV_JensenAndersen] {
+object PV_JensenAndersen extends ProductType[PV_JensenAndersen] {
   /** @param chain            the fft signal (buffer) to analyze
     * @param centroid         proportion (0 to 1) of spectral centroid feature
     * @param hfe              proportion (0 to 1) of high frequency energy feature
@@ -549,6 +561,8 @@ object PV_JensenAndersen extends ProductReader[PV_JensenAndersen] {
     */
   def ar(chain: GE, centroid: GE = 0.25f, hfe: GE = 0.25f, hfc: GE = 0.25f, flux: GE = 0.25f, thresh: GE = 1.0f, waitTime: GE = 0.04f): PV_JensenAndersen = 
     new PV_JensenAndersen(audio, chain, centroid, hfe, hfc, flux, thresh, waitTime)
+  
+  final val typeId = 115
   
   def read(in: RefMapIn, key: String, arity: Int): PV_JensenAndersen = {
     require (arity == 8)
@@ -618,7 +632,7 @@ final case class PV_JensenAndersen(rate: Rate, chain: GE, centroid: GE = 0.25f, 
   * @see [[de.sciss.synth.ugen.Onsets$ Onsets]]
   * @see [[de.sciss.synth.ugen.PV_JensenAndersen$ PV_JensenAndersen]]
   */
-object PV_HainsworthFoote extends ProductReader[PV_HainsworthFoote] {
+object PV_HainsworthFoote extends ProductType[PV_HainsworthFoote] {
   /** @param chain            the fft signal (buffer) to analyze
     * @param hainsworth       what strength of detection signal from Hainsworth
     *                         metric (0 to 1) to use.
@@ -631,6 +645,8 @@ object PV_HainsworthFoote extends ProductReader[PV_HainsworthFoote] {
     */
   def ar(chain: GE, hainsworth: GE = 0.0f, foote: GE = 0.0f, thresh: GE = 1.0f, waitTime: GE = 0.04f): PV_HainsworthFoote = 
     new PV_HainsworthFoote(audio, chain, hainsworth, foote, thresh, waitTime)
+  
+  final val typeId = 116
   
   def read(in: RefMapIn, key: String, arity: Int): PV_HainsworthFoote = {
     require (arity == 6)
@@ -696,7 +712,7 @@ final case class PV_HainsworthFoote(rate: Rate, chain: GE, hainsworth: GE = 0.0f
   * @see [[de.sciss.synth.ugen.Median$ Median]]
   * @see [[de.sciss.synth.ugen.PulseCount$ PulseCount]]
   */
-object RunningSum extends ProductReader[RunningSum] {
+object RunningSum extends ProductType[RunningSum] {
   /** @param in               the input signal to sum up
     * @param length           the length of the sliding window over the input signal.
     *                         these are the number of audio sample-frames for
@@ -714,6 +730,8 @@ object RunningSum extends ProductReader[RunningSum] {
     *                         UGen crashes when length is zero. ''(init-time only)''
     */
   def ar(in: GE, length: GE = 440): RunningSum = new RunningSum(audio, in, length)
+  
+  final val typeId = 117
   
   def read(in: RefMapIn, key: String, arity: Int): RunningSum = {
     require (arity == 3)

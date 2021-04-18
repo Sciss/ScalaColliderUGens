@@ -1,5 +1,5 @@
-<ugens revision="9">
-    <ugen name="Demand" done-flag="true"> <!-- set done flag, but doesn't have done action -->
+<ugens revision="10">
+    <ugen name="Demand" type-id="78" done-flag="true"> <!-- set done flag, but doesn't have done action -->
         <rate name="control"/>
         <rate name="audio"/>
         <output variadic="in"/>
@@ -44,7 +44,7 @@
             <see>ugen.TDuty</see>
         </doc>
     </ugen>
-    <ugen name="Duty" side-effect="true"> <!-- has done action, but does not set done flag -->
+    <ugen name="Duty" type-id="79" side-effect="true"> <!-- has done action, but does not set done flag -->
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="dur" default="1.0" pos="0">
@@ -83,7 +83,7 @@
             <see>DoneAction</see>
         </doc>
     </ugen>
-    <ugen name="TDuty" side-effect="true"> <!-- has done action, but does not set done flag -->
+    <ugen name="TDuty" type-id="80" side-effect="true"> <!-- has done action, but does not set done flag -->
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="dur" default="1.0" pos="0">
@@ -132,7 +132,7 @@
             <see>DoneAction</see>
         </doc>
     </ugen>
-    <ugen name="DemandEnvGen" side-effect="true"> <!-- has done action, but does not set done flag -->
+    <ugen name="DemandEnvGen" type-id="81" side-effect="true"> <!-- has done action, but does not set done flag -->
         <!-- XXX TODO: tricky rate constraint: if either of gate
          and reset is audio-rate, the other needs to be, too.
          The UGen is the worst constructed entity ever. It interprets
@@ -208,7 +208,7 @@
             <see>DoneAction</see>
         </doc>
     </ugen>
-    <ugen name="Dseries" indiv="true">
+    <ugen name="Dseries" type-id="82" indiv="true">
         <rate name="demand" implied="true" method="apply"/>
         <arg name="length" type="ge-int" default="inf" pos="2">
             <doc>
@@ -237,7 +237,7 @@
             <see>ugen.Dseq</see>
         </doc>
     </ugen>
-    <ugen name="Dgeom" indiv="true">
+    <ugen name="Dgeom" type-id="83" indiv="true">
         <rate name="demand" implied="true" method="apply"/>
         <arg name="length" type="ge-int" default="inf" pos="2">
             <doc>
@@ -277,7 +277,7 @@
             </example>
         </doc>
     </ugen>
-    <ugen name="Dwhite" indiv="true" random="true">
+    <ugen name="Dwhite" type-id="84" indiv="true" random="true">
         <rate name="demand" implied="true" method="apply"/>
         <arg name="length" type="ge-int" default="inf" pos="2">
             <doc>
@@ -314,7 +314,7 @@
             </example>
         </doc>
     </ugen>
-    <ugen name="Diwhite" indiv="true" random="true">
+    <ugen name="Diwhite" type-id="85" indiv="true" random="true">
         <rate name="demand" implied="true" method="apply"/>
         <arg name="length" type="ge-int" default="inf" pos="2">
             <doc>
@@ -351,7 +351,7 @@
             </example>
         </doc>
     </ugen>
-    <ugen name="Dbrown" indiv="true" random="true">
+    <ugen name="Dbrown" type-id="86" indiv="true" random="true">
         <rate name="demand" implied="true" method="apply"/>
         <arg name="length" type="ge-int" default="inf" pos="3">
             <doc>
@@ -393,7 +393,7 @@
             </example>
         </doc>
     </ugen>
-    <ugen name="Dibrown" indiv="true" random="true">
+    <ugen name="Dibrown" type-id="87" indiv="true" random="true">
         <rate name="demand" implied="true" method="apply"/>
         <arg name="length" type="ge-int" default="inf" pos="3">
             <doc>
@@ -439,7 +439,7 @@
             </example>
         </doc>
     </ugen>
-    <ugen name="Dseq" indiv="true">
+    <ugen name="Dseq" type-id="88" indiv="true">
         <rate name="demand" implied="true" method="apply"/>
         <arg name="repeats" default="1" pos="1">
             <doc>
@@ -491,7 +491,7 @@
             <see>ugen.Dser</see>
         </doc>
     </ugen>
-    <ugen name="Dser" indiv="true">
+    <ugen name="Dser" type-id="89" indiv="true">
         <rate name="demand" implied="true" method="apply"/>
         <arg name="length" default="1" pos="1">
             <doc>
@@ -529,7 +529,7 @@
             <see>ugen.Dseq</see>
         </doc>
     </ugen>
-    <ugen name="Dbufrd" indiv="true" reads-buf="true" done-flag="true">
+    <ugen name="Dbufrd" type-id="90" indiv="true" reads-buf="true" done-flag="true">
         <rate name="demand" implied="true" method="apply"/>
         <arg name="buf" type="buf">
             <doc>
@@ -556,7 +556,7 @@
             <see>ugen.Dbufwr</see>
         </doc>
     </ugen>
-    <ugen name="Dbufwr" indiv="true" writes-buf="true" done-flag="true">
+    <ugen name="Dbufwr" type-id="91" indiv="true" writes-buf="true" done-flag="true">
         <rate name="demand" implied="true" method="apply"/>
         <arg name="buf" type="buf" pos="1"/>
         <arg name="index" default="0" pos="2"/>
@@ -564,7 +564,7 @@
         <arg name="loop" default="true" pos="3"/>
         <!-- TODO: doc -->
     </ugen>
-    <ugen name="Drand" indiv="true" random="true">
+    <ugen name="Drand" type-id="92" indiv="true" random="true">
         <rate name="demand" implied="true" method="apply"/>
         <arg name="length" default="1" pos="1">
             <doc>
@@ -598,7 +598,7 @@
             <see>ugen.Diwhite</see>
         </doc>
     </ugen>
-    <ugen name="Dxrand" indiv="true" random="true">
+    <ugen name="Dxrand" type-id="93" indiv="true" random="true">
         <rate name="demand" implied="true" method="apply"/>
         <arg name="length" default="1" pos="1">
             <doc>
@@ -631,7 +631,7 @@
             <see>ugen.Dshuf</see>
         </doc>
     </ugen>
-    <ugen name="Dshuf" indiv="true" random="true">
+    <ugen name="Dshuf" type-id="94" indiv="true" random="true">
         <rate name="demand" implied="true" method="apply"/>
         <arg name="repeats" default="1" pos="1">
             <doc>
@@ -692,25 +692,25 @@
             <see>ugen.Dshuf</see>
         </doc>
     </ugen>
-    <ugen name="Dswitch1" indiv="true">
+    <ugen name="Dswitch1" type-id="95" indiv="true">
         <rate name="demand" implied="true" method="apply"/>
         <arg name="index" pos="1"/>
         <arg name="seq" variadic="true" pos="0"/>
         <!-- TODO: doc -->
     </ugen>
-    <ugen name="Dswitch" indiv="true">
+    <ugen name="Dswitch" type-id="96" indiv="true">
         <rate name="demand" implied="true" method="apply"/>
         <arg name="index" pos="1"/>
         <arg name="seq" variadic="true" pos="0"/>
         <!-- TODO: doc -->
     </ugen>
-    <ugen name="Dstutter" indiv="true">
+    <ugen name="Dstutter" type-id="97" indiv="true">
         <rate name="demand" implied="true" method="apply"/>
         <arg name="n" type="ge-int"/>
         <arg name="in"/>
         <!-- TODO: doc -->
     </ugen>
-    <ugen name="Dconst" indiv="true">
+    <ugen name="Dconst" type-id="98" indiv="true">
         <rate name="demand" implied="true" method="apply"/>
         <arg name="sum">
             <doc>
@@ -740,12 +740,12 @@
             </text>
         </doc>
     </ugen>
-    <ugen name="Donce" indiv="true">
+    <ugen name="Donce" type-id="99" indiv="true">
         <rate name="demand" implied="true" method="apply"/>
         <arg name="in"/>
         <!-- TODO: doc -->
     </ugen>
-    <ugen name="Dreset" indiv="true">
+    <ugen name="Dreset" type-id="100" indiv="true">
         <rate name="demand" implied="true" method="apply"/>
         <arg name="in">
             <doc>
@@ -775,7 +775,7 @@
             <see>ugen.Duty</see>
         </doc>
     </ugen>
-    <ugen name="Dpoll" indiv="true" side-effect="true">
+    <ugen name="Dpoll" type-id="101" indiv="true" side-effect="true">
         <rate name="demand" implied="true" method="apply"/>
         <arg name="in" pos="0">
             <doc>

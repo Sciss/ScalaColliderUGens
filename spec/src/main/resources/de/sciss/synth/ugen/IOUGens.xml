@@ -1,6 +1,6 @@
-<ugens revision="4">
+<ugens revision="5">
     <!-- all documented. NOT: controls are missing! -->
-    <ugen name="OffsetOut" writes-bus="true">
+    <ugen name="OffsetOut" type-id="216" writes-bus="true">
         <no-outputs/>
         <rate name="audio" implied="true">
             <arg name="in" rate="ugen"/>
@@ -58,7 +58,7 @@
             <see>ugen.SubsampleOffset</see>
         </doc>
     </ugen>
-    <ugen name="LocalIn">
+    <ugen name="LocalIn" type-id="217">
         <output variadic="init"/>
         <rate name="control"/>
         <rate name="audio"/>
@@ -138,7 +138,7 @@
             <see>ugen.ControlDur</see>
         </doc>
     </ugen>
-    <ugen name="XOut" writes-bus="true">
+    <ugen name="XOut" type-id="218" writes-bus="true">
         <no-outputs/>
         <rate name="audio">
             <arg name="in" rate="ugen"/>
@@ -186,28 +186,28 @@
         </doc>
     </ugen>
 <!--    TODO: missing:-->
-<!--    <ugen name="LagControl"/>-->
-    <ugen name="AudioControl" fragment="true" sourcecode="true">
+<!--    <ugen name="LagControl" type-id="219"/>-->
+    <ugen name="AudioControl" type-id="220" fragment="true" sourcecode="true">
         <rate name="audio" implied="true" />
     </ugen>
-    <ugen name="AudioControlProxy" fragment="true" sourcecode="true" helper="true">
+    <ugen name="AudioControlProxy" type-id="221" fragment="true" sourcecode="true" helper="true">
         <rate name="audio" implied="true" />
     </ugen>
-    <ugen name="Control" fragment="true" sourcecode="true">
+    <ugen name="Control" type-id="222" fragment="true" sourcecode="true">
         <rate name="control" />
         <rate name="scalar" />
     </ugen>
-    <ugen name="ControlProxy" fragment="true" sourcecode="true" helper="true">
+    <ugen name="ControlProxy" type-id="223" fragment="true" sourcecode="true" helper="true">
         <rate name="control" />
         <rate name="scalar" />
     </ugen>
-    <ugen name="TrigControl" fragment="true" sourcecode="true">
+    <ugen name="TrigControl" type-id="224" fragment="true" sourcecode="true">
         <rate name="control" implied="true" />
     </ugen>
-    <ugen name="TrigControlProxy" fragment="true" sourcecode="true" helper="true">
+    <ugen name="TrigControlProxy" type-id="225" fragment="true" sourcecode="true" helper="true">
         <rate name="control" implied="true" />
     </ugen>
-    <ugen name="ReplaceOut" writes-bus="true">
+    <ugen name="ReplaceOut" type-id="226" writes-bus="true">
         <no-outputs/>
         <rate name="audio" implied="true">
             <arg name="in" rate="ugen"/>
@@ -259,7 +259,7 @@
             <see>ugen.XOut</see>
         </doc>
     </ugen>
-    <ugen name="Out" writes-bus="true">
+    <ugen name="Out" type-id="227" writes-bus="true">
         <no-outputs/>
         <rate name="audio">
             <arg name="in" rate="ugen"/>
@@ -320,7 +320,7 @@
             <see>de.sciss.synth.Bus</see>
         </doc>
     </ugen>
-    <ugen name="LocalOut">
+    <ugen name="LocalOut" type-id="228">
         <no-outputs/>
         <rate name="control"/>
         <rate name="audio">
@@ -359,7 +359,7 @@
             <see>ugen.ControlDur</see>
         </doc>
     </ugen>
-    <ugen name="In" reads-bus="true">
+    <ugen name="In" type-id="229" reads-bus="true">
         <output variadic="numChannels"/>
         <rate name="scalar"/>
         <rate name="control"/>
@@ -421,7 +421,7 @@
             <see>de.sciss.synth.Bus</see>
         </doc>
     </ugen>
-    <ugen name="LagIn" reads-bus="true">
+    <ugen name="LagIn" type-id="230" reads-bus="true">
         <output variadic="numChannels"/>
         <rate name="control"/>
         <arg name="bus" type="bus">
@@ -462,7 +462,7 @@
             <see>ugen.Lag</see>
         </doc>
     </ugen>
-    <ugen name="InFeedback" reads-bus="true">
+    <ugen name="InFeedback" type-id="231" reads-bus="true">
         <output variadic="numChannels"/>
         <rate name="audio" implied="true"/>
         <arg name="bus" type="bus">
@@ -530,7 +530,7 @@
             <see>ugen.ControlDur</see>
         </doc>
     </ugen>
-    <ugen name="InTrig" reads-bus="true">
+    <ugen name="InTrig" type-id="232" reads-bus="true">
         <output variadic="numChannels"/>
         <rate name="control" implied="true"/>
         <arg name="bus" type="bus">
@@ -574,7 +574,7 @@
         </doc>
     </ugen>
     <!-- these require an in-process server and are currently not supported:
-    <ugen name="SharedOut"/>
-    <ugen name="SharedIn"/>
+    <ugen name="SharedOut" type-id="233"/>
+    <ugen name="SharedIn" type-id="234"/>
     -->
 </ugens>

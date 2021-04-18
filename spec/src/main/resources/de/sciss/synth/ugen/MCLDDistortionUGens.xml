@@ -1,6 +1,6 @@
-<ugens revision="2" third-party="MCLDUGens"> <!-- extension from sc3-plugins -->
+<ugens revision="3" third-party="MCLDUGens"> <!-- extension from sc3-plugins -->
     <!-- all documented -->
-    <ugen name="InsideOut">
+    <ugen name="InsideOut" type-id="434">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="in" rate="ugen">
@@ -20,7 +20,7 @@
             </example>
         </doc>
     </ugen>
-    <ugen name="WaveLoss" reads-buf="true">
+    <ugen name="WaveLoss" type-id="435" reads-buf="true">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="in" rate="ugen">
@@ -58,7 +58,7 @@
             </example>
         </doc>
     </ugen>
-    <ugen name="Squiz">
+    <ugen name="Squiz" type-id="436">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="in"> <!-- works with rate mismatch, but glitchy -->

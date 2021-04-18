@@ -1,4 +1,4 @@
-// revision: 4
+// revision: 5
 package de.sciss.synth
 package ugen
 
@@ -50,7 +50,7 @@ import UGenSource._
   * @see [[de.sciss.synth.ugen.XOut$ XOut]]
   * @see [[de.sciss.synth.ugen.SubsampleOffset$ SubsampleOffset]]
   */
-object OffsetOut extends ProductReader[OffsetOut] {
+object OffsetOut extends ProductType[OffsetOut] {
   /** @param bus              bus index to write to. For an audio-rate UGen, this is
     *                         an audio-bus, for a control-rate UGen, this is a
     *                         control-bus.
@@ -58,6 +58,8 @@ object OffsetOut extends ProductReader[OffsetOut] {
     *                         the input must also be audio-rate.
     */
   def ar(bus: GE, in: GE): OffsetOut = new OffsetOut(bus, in)
+  
+  final val typeId = 216
   
   def read(in: RefMapIn, key: String, arity: Int): OffsetOut = {
     require (arity == 2)
@@ -195,7 +197,7 @@ final case class OffsetOut(bus: GE, in: GE)
   * @see [[de.sciss.synth.ugen.InFeedback$ InFeedback]]
   * @see [[de.sciss.synth.ugen.ControlDur$ ControlDur]]
   */
-object LocalIn extends ProductReader[LocalIn] {
+object LocalIn extends ProductType[LocalIn] {
   def kr: LocalIn = kr()
   
   /** @param init             the initial state of the UGen. The number of channels
@@ -211,6 +213,8 @@ object LocalIn extends ProductReader[LocalIn] {
     *                         written via `LocalOut` .
     */
   def ar(init: GE = 0): LocalIn = new LocalIn(audio, init)
+  
+  final val typeId = 217
   
   def read(in: RefMapIn, key: String, arity: Int): LocalIn = {
     require (arity == 2)
@@ -278,7 +282,7 @@ final case class LocalIn(rate: Rate, init: GE = 0) extends UGenSource.MultiOut {
   * @see [[de.sciss.synth.ugen.Out$ Out]]
   * @see [[de.sciss.synth.ugen.XOut$ XOut]]
   */
-object XOut extends ProductReader[XOut] {
+object XOut extends ProductType[XOut] {
   /** @param bus              bus index to write to. For an audio-rate UGen, this is
     *                         an audio-bus, for a control-rate UGen, this is a
     *                         control-bus.
@@ -298,6 +302,8 @@ object XOut extends ProductReader[XOut] {
     *                         `old_bus_content * (1 - xfade) + in * xfade`
     */
   def ar(bus: GE, in: GE, xfade: GE): XOut = new XOut(audio, bus, in, xfade)
+  
+  final val typeId = 218
   
   def read(in: RefMapIn, key: String, arity: Int): XOut = {
     require (arity == 4)
@@ -378,7 +384,7 @@ final case class XOut(rate: Rate, bus: GE, in: GE, xfade: GE)
   * @see [[de.sciss.synth.ugen.Out$ Out]]
   * @see [[de.sciss.synth.ugen.XOut$ XOut]]
   */
-object ReplaceOut extends ProductReader[ReplaceOut] {
+object ReplaceOut extends ProductType[ReplaceOut] {
   /** @param bus              bus index to write to. For an audio-rate UGen, this is
     *                         an audio-bus, for a control-rate UGen, this is a
     *                         control-bus.
@@ -386,6 +392,8 @@ object ReplaceOut extends ProductReader[ReplaceOut] {
     *                         the input must also be audio-rate.
     */
   def ar(bus: GE, in: GE): ReplaceOut = new ReplaceOut(bus, in)
+  
+  final val typeId = 226
   
   def read(in: RefMapIn, key: String, arity: Int): ReplaceOut = {
     require (arity == 2)
@@ -479,7 +487,7 @@ final case class ReplaceOut(bus: GE, in: GE)
   * @see [[de.sciss.synth.ugen.LocalOut$ LocalOut]]
   * @see [[de.sciss.synth.Bus Bus]]
   */
-object Out extends ProductReader[Out] {
+object Out extends ProductType[Out] {
   /** @param bus              bus index to write to. For an audio-rate UGen, this is
     *                         an audio-bus, for a control-rate UGen, this is a
     *                         control-bus. '''Note''' that the bus index can only be
@@ -497,6 +505,8 @@ object Out extends ProductReader[Out] {
     *                         the input must also be audio-rate.
     */
   def ar(bus: GE, in: GE): Out = new Out(audio, bus, in)
+  
+  final val typeId = 227
   
   def read(in: RefMapIn, key: String, arity: Int): Out = {
     require (arity == 3)
@@ -580,7 +590,7 @@ final case class Out(rate: Rate, bus: GE, in: GE)
   * @see [[de.sciss.synth.ugen.Out$ Out]]
   * @see [[de.sciss.synth.ugen.ControlDur$ ControlDur]]
   */
-object LocalOut extends ProductReader[LocalOut] {
+object LocalOut extends ProductType[LocalOut] {
   /** @param in               signal to be written to the synth-local bus. The
     *                         signal's number of channels must be the same number of
     *                         channels as were declared in the corresponding `LocalIn`
@@ -594,6 +604,8 @@ object LocalOut extends ProductReader[LocalOut] {
     *                         .
     */
   def ar(in: GE): LocalOut = new LocalOut(audio, in)
+  
+  final val typeId = 228
   
   def read(in: RefMapIn, key: String, arity: Int): LocalOut = {
     require (arity == 2)
@@ -681,7 +693,7 @@ final case class LocalOut(rate: Rate, in: GE) extends UGenSource.ZeroOut {
   * @see [[de.sciss.synth.ugen.LocalIn$ LocalIn]]
   * @see [[de.sciss.synth.Bus Bus]]
   */
-object In extends ProductReader[In] {
+object In extends ProductType[In] {
   /** @param bus              index of the bus to read from. When `numChannels` is
     *                         greater than one, the other channels or read from the
     *                         adjacent indices.
@@ -702,6 +714,8 @@ object In extends ProductReader[In] {
     * @param numChannels      number of channels to read
     */
   def ar(bus: GE, numChannels: Int = 1): In = new In(audio, bus, numChannels)
+  
+  final val typeId = 229
   
   def read(in: RefMapIn, key: String, arity: Int): In = {
     require (arity == 3)
@@ -776,7 +790,7 @@ final case class In(rate: Rate, bus: GE, numChannels: Int = 1)
   * @see [[de.sciss.synth.ugen.Out$ Out]]
   * @see [[de.sciss.synth.ugen.Lag$ Lag]]
   */
-object LagIn extends ProductReader[LagIn] {
+object LagIn extends ProductType[LagIn] {
   /** @param bus              index of the bus to read from. When `numChannels` is
     *                         greater than one, the other channels or read from the
     *                         adjacent indices.
@@ -785,6 +799,8 @@ object LagIn extends ProductReader[LagIn] {
     */
   def kr(bus: GE, numChannels: Int = 1, time: GE = 0.1f): LagIn = 
     new LagIn(control, bus, numChannels, time)
+  
+  final val typeId = 230
   
   def read(in: RefMapIn, key: String, arity: Int): LagIn = {
     require (arity == 4)
@@ -879,7 +895,7 @@ final case class LagIn(rate: Rate, bus: GE, numChannels: Int = 1, time: GE = 0.1
   * @see [[de.sciss.synth.ugen.LocalIn$ LocalIn]]
   * @see [[de.sciss.synth.ugen.ControlDur$ ControlDur]]
   */
-object InFeedback extends ProductReader[InFeedback] {
+object InFeedback extends ProductType[InFeedback] {
   /** @param bus              the index of the audio bus to read in from.
     * @param numChannels      the number of channels (i.e. adjacent buses) to read
     *                         in. Since this is a constant, a change in number of
@@ -887,6 +903,8 @@ object InFeedback extends ProductReader[InFeedback] {
     *                         creating different SynthDefs.
     */
   def ar(bus: GE, numChannels: Int = 1): InFeedback = new InFeedback(bus, numChannels)
+  
+  final val typeId = 231
   
   def read(in: RefMapIn, key: String, arity: Int): InFeedback = {
     require (arity == 2)
@@ -970,7 +988,7 @@ final case class InFeedback(bus: GE, numChannels: Int = 1)
   * @see [[de.sciss.synth.ugen.In$ In]]
   * @see [[de.sciss.synth.ugen.TrigControl$ TrigControl]]
   */
-object InTrig extends ProductReader[InTrig] {
+object InTrig extends ProductType[InTrig] {
   /** @param bus              the index of the control bus to read in from.
     * @param numChannels      the number of channels (i.e. adjacent buses) to read
     *                         in. Since this is a constant, a change in number of
@@ -978,6 +996,8 @@ object InTrig extends ProductReader[InTrig] {
     *                         creating different SynthDefs.
     */
   def kr(bus: GE, numChannels: Int = 1): InTrig = new InTrig(bus, numChannels)
+  
+  final val typeId = 232
   
   def read(in: RefMapIn, key: String, arity: Int): InTrig = {
     require (arity == 2)

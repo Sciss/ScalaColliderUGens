@@ -1,6 +1,6 @@
-<ugens revision="12">
+<ugens revision="13">
     <!-- all documented -->
-    <ugen name="Vibrato">
+    <ugen name="Vibrato" type-id="236">
         <rate name="control"/>
         <rate name="audio">
             <arg name="freq" rate="ugen"/>
@@ -75,7 +75,7 @@
             </example>
         </doc>
     </ugen>
-    <ugen name="LFPulse">
+    <ugen name="LFPulse" type-id="237">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="freq" default="440.0">
@@ -121,7 +121,7 @@
             <see>ugen.Pulse</see>
         </doc>
     </ugen>
-    <ugen name="LFSaw">
+    <ugen name="LFSaw" type-id="238">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="freq" default="440.0">
@@ -155,7 +155,7 @@
             <see>ugen.Saw</see>
         </doc>
     </ugen>
-    <ugen name="LFPar">
+    <ugen name="LFPar" type-id="239">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="freq" default="440.0">
@@ -185,7 +185,7 @@
             <see>ugen.LFCub</see>
         </doc>
     </ugen>
-    <ugen name="LFCub">
+    <ugen name="LFCub" type-id="240">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="freq" default="440.0">
@@ -214,7 +214,7 @@
             <see>ugen.LFPar</see>
         </doc>
     </ugen>
-    <ugen name="LFTri">
+    <ugen name="LFTri" type-id="241">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="freq" default="440.0">
@@ -249,7 +249,7 @@
             </example>
         </doc>
     </ugen>
-    <ugen name="LFGauss">
+    <ugen name="LFGauss" type-id="242">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="dur" default="1.0">
@@ -305,7 +305,7 @@
             </example>
         </doc>
     </ugen>
-    <ugen name="Impulse">
+    <ugen name="Impulse" type-id="243">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="freq" default="440.0">
@@ -336,7 +336,7 @@
             <see>ugen.Blip</see>
         </doc>
     </ugen>
-    <ugen name="VarSaw">
+    <ugen name="VarSaw" type-id="244">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="freq" default="440.0">
@@ -379,7 +379,7 @@
             <see>ugen.SyncSaw</see>
         </doc>
     </ugen>
-    <ugen name="SyncSaw">
+    <ugen name="SyncSaw" type-id="245">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="syncFreq" default="440.0">
@@ -409,7 +409,7 @@
             <see>ugen.LFSaw</see>
         </doc>
     </ugen>
-    <ugen name="K2A">
+    <ugen name="K2A" type-id="246">
         <rate name="audio" implied="true"/>
         <arg name="in">
             <doc>
@@ -439,7 +439,7 @@
             <see>ugen.DC</see>
         </doc>
     </ugen>
-    <ugen name="A2K">
+    <ugen name="A2K" type-id="247">
         <rate name="control" implied="true"/>
         <arg name="in">
             <doc>
@@ -457,7 +457,7 @@
             <see>ugen.T2K</see>
         </doc>
     </ugen>
-    <ugen name="T2K">
+    <ugen name="T2K" type-id="248">
         <rate name="control" implied="true"/>
         <arg name="in" rate="audio" type="trig">
             <doc>
@@ -481,7 +481,7 @@
             <see>ugen.Trig</see>
         </doc>
     </ugen>
-    <ugen name="T2A">
+    <ugen name="T2A" type-id="249">
         <rate name="audio" implied="true"/>
         <arg name="in" type="trig">
             <doc>
@@ -504,7 +504,7 @@
             <see>ugen.Trig</see>
         </doc>
     </ugen>
-    <ugen name="DC">
+    <ugen name="DC" type-id="250">
         <rate name="control"/>
         <rate name="audio"/>
         <!-- NOT: <output variadic="in"/> -->
@@ -535,7 +535,7 @@
                 <output variadic="numChannels"/>
                 <arg name="numChannels" type="int" default="1"/>
             </ugen> -->
-    <ugen name="Line" side-effect="true" done-flag="true">
+    <ugen name="Line" type-id="251" side-effect="true" done-flag="true">
         <rate name="audio"/>
         <rate name="control"/>
         <arg name="start" default="0.0" init="true">
@@ -571,7 +571,7 @@
             <see>ugen.Ramp</see>
         </doc>
     </ugen>
-    <ugen name="XLine" side-effect="true" done-flag="true">
+    <ugen name="XLine" type-id="252" side-effect="true" done-flag="true">
         <rate name="audio"/>
         <rate name="control"/>
         <arg name="start" default="1.0" init="true">
@@ -613,7 +613,7 @@
         </doc>
     </ugen>
 
-    <ugen name="Wrap">
+    <ugen name="Wrap" type-id="253">
         <rate name="scalar"/>
         <rate name="control"/>
         <rate name="audio"/>
@@ -651,7 +651,7 @@
             <see>ugen.Clip</see>
         </doc>
     </ugen>
-    <ugen name="Fold">
+    <ugen name="Fold" type-id="254">
         <rate name="scalar"/>
         <rate name="control"/>
         <rate name="audio"/>
@@ -694,7 +694,7 @@
             <see>ugen.Clip</see>
         </doc>
     </ugen>
-    <ugen name="Clip">
+    <ugen name="Clip" type-id="255">
         <rate name="scalar"/>
         <rate name="control"/>
         <rate name="audio"/>
@@ -744,9 +744,9 @@
         </doc>
     </ugen>
     <!-- this should exist according to plugin sources...
-    <ugen name="Unwrap"/>
+    <ugen name="Unwrap" type-id="256"/>
     -->
-    <ugen name="AmpComp">
+    <ugen name="AmpComp" type-id="257">
         <rate name="scalar"/>
         <rate name="control"/>
         <rate name="audio">
@@ -795,7 +795,7 @@
             <see>ugen.AmpCompA</see>
         </doc>
     </ugen>
-    <ugen name="AmpCompA">
+    <ugen name="AmpCompA" type-id="258">
         <rate name="scalar"/>
         <rate name="control"/>
         <rate name="audio">
@@ -843,7 +843,7 @@
             <see>ugen.AmpComp</see>
         </doc>
     </ugen>
-    <ugen name="InRange">
+    <ugen name="InRange" type-id="259">
         <rate name="scalar"/>
         <rate name="control"/>
         <rate name="audio"/>
@@ -876,7 +876,7 @@
             <see>ugen.Schmidt</see>
         </doc>
     </ugen>
-    <ugen name="InRect">
+    <ugen name="InRect" type-id="260">
         <rate name="scalar"/>
         <rate name="control"/>
         <rate name="audio"/>
@@ -928,7 +928,7 @@
             <see>ugen.Clip</see>
         </doc>
     </ugen>
-    <ugen name="LinExp"> <!-- XXX TODO: first arg rate has to be rate ? -->
+    <ugen name="LinExp" type-id="261"> <!-- XXX TODO: first arg rate has to be rate ? -->
         <rate name="scalar"/>
         <rate name="control"/>
         <rate name="audio"/>
@@ -1016,7 +1016,7 @@
                 </doc>
             </ugen>
     -->
-    <ugen name="EnvGen" side-effect="true" done-flag="true">
+    <ugen name="EnvGen" type-id="262" side-effect="true" done-flag="true">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="gate" default="open" pos="1">  <!-- negative values have special meaning, though... -->
@@ -1114,7 +1114,7 @@
             </example>
             <example name="control gate and done-action" type="full">
                 val x = play {
-                  var gen = EnvGen.kr(Env.adsr(), "gate".kr(0), doneAction = "done".kr(0))
+                  val gen = EnvGen.kr(Env.adsr(), "gate".kr(0), doneAction = "done".kr(0))
                   SinOsc.ar(440) * gen * 0.1
                 }
 
@@ -1138,13 +1138,13 @@
             <see>ugen.Decay</see>
         </doc>
     </ugen>
-    <adjunct reader="Env" self="true" />
-    <adjunct reader="Env.Segment" self="true" />
-    <adjunct reader="Env.Curve">
+    <adjunct reader="Env" type-id="263" self="true" />
+    <adjunct reader="Env.Segment" type-id="264" self="true" />
+    <adjunct reader="Env.Curve" type-id="265">
         <prefix name="Env$Curve$Apply" />
         <prefix name="Env$Curve$Const" />
     </adjunct>
-    <adjunct reader="de.sciss.synth.Curve">
+    <adjunct reader="de.sciss.synth.Curve" type-id="266">
         <prefix name="de.sciss.synth.Curve$step" />
         <prefix name="de.sciss.synth.Curve$linear" />
         <prefix name="de.sciss.synth.Curve$exponential" />
@@ -1154,7 +1154,7 @@
         <prefix name="de.sciss.synth.Curve$squared" />
         <prefix name="de.sciss.synth.Curve$cubed" />
     </adjunct>
-    <ugen name="Linen" side-effect="true" done-flag="true">
+    <ugen name="Linen" type-id="267" side-effect="true" done-flag="true">
         <rate name="control"/>
         <!-- NOT SUPPORTED: <rate name="audio"/> -->
         <arg name="gate" default="open">
@@ -1211,7 +1211,7 @@
             <see>ugen.EnvGen</see>
         </doc>
     </ugen>
-    <ugen name="IEnvGen">
+    <ugen name="IEnvGen" type-id="268">
         <rate name="control"/>
         <rate name="audio"/>
         <arg name="index" pos="1">  <!-- default="1.0" -->
@@ -1257,5 +1257,5 @@
             <see>ugen.EnvGen</see>
         </doc>
     </ugen>
-    <adjunct reader="IEnv" self="true" />
+    <adjunct reader="IEnv" type-id="269" self="true" />
 </ugens>

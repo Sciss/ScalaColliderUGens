@@ -29,8 +29,10 @@ import de.sciss.synth.UGenSource._
   *
   * @see [[de.sciss.synth.ugen.SampleRate$ SampleRate]]
   */
-object Nyquist extends ProductReader[Nyquist] {
+object Nyquist extends ProductType[Nyquist] {
   def ir: Nyquist = new Nyquist()
+
+  final val typeId = 408
 
   override def read(in: RefMapIn, key: String, arity: Int): Nyquist = {
     require (arity == 0)

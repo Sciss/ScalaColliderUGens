@@ -1,4 +1,4 @@
-// revision: 4
+// revision: 5
 package de.sciss.synth
 package ugen
 
@@ -21,7 +21,7 @@ import UGenSource._
   * @see [[de.sciss.synth.ugen.LFDNoise3$ LFDNoise3]]
   * @see [[de.sciss.synth.ugen.TRand$ TRand]]
   */
-object LFDNoise0 extends ProductReader[LFDNoise0] {
+object LFDNoise0 extends ProductType[LFDNoise0] {
   def kr: LFDNoise0 = kr()
   
   /** @param freq             rate at which to generate random values.
@@ -33,6 +33,8 @@ object LFDNoise0 extends ProductReader[LFDNoise0] {
   /** @param freq             rate at which to generate random values.
     */
   def ar(freq: GE = 500.0f): LFDNoise0 = new LFDNoise0(audio, freq)
+  
+  final val typeId = 105
   
   def read(in: RefMapIn, key: String, arity: Int): LFDNoise0 = {
     require (arity == 2)
@@ -84,7 +86,7 @@ final case class LFDNoise0(rate: Rate, freq: GE = 500.0f) extends UGenSource.Sin
   * @see [[de.sciss.synth.ugen.LFDNoise3$ LFDNoise3]]
   * @see [[de.sciss.synth.ugen.Ramp$ Ramp]]
   */
-object LFDNoise1 extends ProductReader[LFDNoise1] {
+object LFDNoise1 extends ProductType[LFDNoise1] {
   def kr: LFDNoise1 = kr()
   
   /** @param freq             rate at which to generate random values.
@@ -96,6 +98,8 @@ object LFDNoise1 extends ProductReader[LFDNoise1] {
   /** @param freq             rate at which to generate random values.
     */
   def ar(freq: GE = 500.0f): LFDNoise1 = new LFDNoise1(audio, freq)
+  
+  final val typeId = 106
   
   def read(in: RefMapIn, key: String, arity: Int): LFDNoise1 = {
     require (arity == 2)
@@ -156,7 +160,7 @@ final case class LFDNoise1(rate: Rate, freq: GE = 500.0f) extends UGenSource.Sin
   * @see [[de.sciss.synth.ugen.LFDNoise0$ LFDNoise0]]
   * @see [[de.sciss.synth.ugen.LFDNoise1$ LFDNoise1]]
   */
-object LFDNoise3 extends ProductReader[LFDNoise3] {
+object LFDNoise3 extends ProductType[LFDNoise3] {
   def kr: LFDNoise3 = kr()
   
   /** @param freq             rate at which to generate random values.
@@ -168,6 +172,8 @@ object LFDNoise3 extends ProductReader[LFDNoise3] {
   /** @param freq             rate at which to generate random values.
     */
   def ar(freq: GE = 500.0f): LFDNoise3 = new LFDNoise3(audio, freq)
+  
+  final val typeId = 107
   
   def read(in: RefMapIn, key: String, arity: Int): LFDNoise3 = {
     require (arity == 2)
@@ -228,7 +234,7 @@ final case class LFDNoise3(rate: Rate, freq: GE = 500.0f) extends UGenSource.Sin
   * @see [[de.sciss.synth.ugen.Schmidt$ Schmidt]]
   * @see [[de.sciss.synth.ugen.GrayNoise$ GrayNoise]]
   */
-object LFDClipNoise extends ProductReader[LFDClipNoise] {
+object LFDClipNoise extends ProductType[LFDClipNoise] {
   def kr: LFDClipNoise = kr()
   
   /** @param freq             rate at which to generate random values.
@@ -240,6 +246,8 @@ object LFDClipNoise extends ProductReader[LFDClipNoise] {
   /** @param freq             rate at which to generate random values.
     */
   def ar(freq: GE = 500.0f): LFDClipNoise = new LFDClipNoise(audio, freq)
+  
+  final val typeId = 108
   
   def read(in: RefMapIn, key: String, arity: Int): LFDClipNoise = {
     require (arity == 2)

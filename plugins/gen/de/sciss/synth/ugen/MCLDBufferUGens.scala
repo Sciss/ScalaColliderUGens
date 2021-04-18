@@ -1,4 +1,4 @@
-// revision: 10
+// revision: 11
 package de.sciss.synth
 package ugen
 
@@ -39,7 +39,7 @@ import UGenSource._
   * 
   * @see [[de.sciss.synth.ugen.ListTrig$ ListTrig]]
   */
-object Logger extends ProductReader[Logger] {
+object Logger extends ProductType[Logger] {
   /** @param buf              identifier of the buffer to write to. Its number of
     *                         channels should match those of `in` .
     * @param in               (multi-channel) signal to write to the buffer. Its
@@ -52,6 +52,8 @@ object Logger extends ProductReader[Logger] {
     *                         buffer was full, the UGen output switches back to zero.
     */
   def kr(buf: GE, in: GE, trig: GE, reset: GE = 0): Logger = new Logger(control, buf, in, trig, reset)
+  
+  final val typeId = 426
   
   def read(in: RefMapIn, key: String, arity: Int): Logger = {
     require (arity == 5)
@@ -137,7 +139,7 @@ final case class Logger(rate: Rate, buf: GE, in: GE, trig: GE, reset: GE = 0)
   * @see [[de.sciss.synth.ugen.Dbufrd$ Dbufrd]]
   * @see [[de.sciss.synth.ugen.Timer$ Timer]]
   */
-object ListTrig extends ProductReader[ListTrig] {
+object ListTrig extends ProductType[ListTrig] {
   /** @param buf              identifier of the buffer containing the offsets for the
     *                         triggers in seconds. The offsets are taken against the
     *                         start time of the synth or the last time a `reset` was
@@ -155,6 +157,8 @@ object ListTrig extends ProductReader[ListTrig] {
     */
   def kr(buf: GE, size: GE, reset: GE = 0, delay: GE = 0): ListTrig = 
     new ListTrig(control, buf, size, reset, delay)
+  
+  final val typeId = 427
   
   def read(in: RefMapIn, key: String, arity: Int): ListTrig = {
     require (arity == 5)
@@ -241,7 +245,7 @@ final case class ListTrig(rate: Rate, buf: GE, size: GE, reset: GE = 0, delay: G
   * @see [[de.sciss.synth.ugen.Dbufrd$ Dbufrd]]
   * @see [[de.sciss.synth.ugen.ListTrig2$ ListTrig2]]
   */
-object ListTrig2 extends ProductReader[ListTrig2] {
+object ListTrig2 extends ProductType[ListTrig2] {
   /** @param buf              identifier of the buffer containing the durations for
     *                         the triggers in seconds. A value represents a relative
     *                         offsets with respect to its predecessor. The first value
@@ -254,6 +258,8 @@ object ListTrig2 extends ProductReader[ListTrig2] {
     *                         again at the start of the buffer.
     */
   def kr(buf: GE, size: GE, reset: GE = 0): ListTrig2 = new ListTrig2(control, buf, size, reset)
+  
+  final val typeId = 428
   
   def read(in: RefMapIn, key: String, arity: Int): ListTrig2 = {
     require (arity == 4)
@@ -331,7 +337,7 @@ final case class ListTrig2(rate: Rate, buf: GE, size: GE, reset: GE = 0)
   * @see [[de.sciss.synth.ugen.BufMin$ BufMin]]
   * @see [[de.sciss.synth.ugen.ArrayMax$ ArrayMax]]
   */
-object BufMax extends ProductReader[BufMax] {
+object BufMax extends ProductType[BufMax] {
   /** @param buf              identifier of the buffer containing the values to
     *                         analyze. It treats multi-channel buffers as monophonic,
     *                         and indices will refer to the de-interleaved frames and
@@ -347,6 +353,8 @@ object BufMax extends ProductReader[BufMax] {
     * @param gate             when closed (zero), holds the last output value.
     */
   def kr(buf: GE, gate: GE = 1): BufMax = new BufMax(control, buf, gate)
+  
+  final val typeId = 430
   
   def read(in: RefMapIn, key: String, arity: Int): BufMax = {
     require (arity == 3)
@@ -414,7 +422,7 @@ final case class BufMax(rate: Rate, buf: GE, gate: GE = 1) extends UGenSource.Mu
   * @see [[de.sciss.synth.ugen.BufMax$ BufMax]]
   * @see [[de.sciss.synth.ugen.ArrayMin$ ArrayMin]]
   */
-object BufMin extends ProductReader[BufMin] {
+object BufMin extends ProductType[BufMin] {
   /** @param buf              identifier of the buffer containing the values to
     *                         analyze. It treats multi-channel buffers as monophonic,
     *                         and indices will refer to the de-interleaved frames and
@@ -430,6 +438,8 @@ object BufMin extends ProductReader[BufMin] {
     * @param gate             when closed (zero), holds the last output value.
     */
   def kr(buf: GE, gate: GE = 1): BufMin = new BufMin(control, buf, gate)
+  
+  final val typeId = 431
   
   def read(in: RefMapIn, key: String, arity: Int): BufMin = {
     require (arity == 3)
@@ -488,7 +498,7 @@ final case class BufMin(rate: Rate, buf: GE, gate: GE = 1) extends UGenSource.Mu
   * @see [[de.sciss.synth.ugen.ArrayMin$ ArrayMin]]
   * @see [[de.sciss.synth.ugen.BufMax$ BufMax]]
   */
-object ArrayMax extends ProductReader[ArrayMax] {
+object ArrayMax extends ProductType[ArrayMax] {
   /** @param in               multi-channel signal to analyze
     */
   def ir(in: GE): ArrayMax = new ArrayMax(scalar, in)
@@ -500,6 +510,8 @@ object ArrayMax extends ProductReader[ArrayMax] {
   /** @param in               multi-channel signal to analyze
     */
   def ar(in: GE): ArrayMax = new ArrayMax(audio, in)
+  
+  final val typeId = 432
   
   def read(in: RefMapIn, key: String, arity: Int): ArrayMax = {
     require (arity == 2)
@@ -552,7 +564,7 @@ final case class ArrayMax(rate: Rate, in: GE) extends UGenSource.MultiOut {
   * @see [[de.sciss.synth.ugen.ArrayMax$ ArrayMax]]
   * @see [[de.sciss.synth.ugen.BufMin$ BufMin]]
   */
-object ArrayMin extends ProductReader[ArrayMin] {
+object ArrayMin extends ProductType[ArrayMin] {
   /** @param in               multi-channel signal to analyze
     */
   def ir(in: GE): ArrayMin = new ArrayMin(scalar, in)
@@ -564,6 +576,8 @@ object ArrayMin extends ProductReader[ArrayMin] {
   /** @param in               multi-channel signal to analyze
     */
   def ar(in: GE): ArrayMin = new ArrayMin(audio, in)
+  
+  final val typeId = 433
   
   def read(in: RefMapIn, key: String, arity: Int): ArrayMin = {
     require (arity == 2)

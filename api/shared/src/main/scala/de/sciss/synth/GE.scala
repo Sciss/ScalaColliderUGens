@@ -96,10 +96,12 @@ trait GE extends Product {
 
 package ugen {
 
-  import de.sciss.synth.UGenSource.{ProductReader, RefMapIn}
+  import de.sciss.synth.UGenSource.{ProductReader, ProductType, RefMapIn}
 
-  object GESeq extends ProductReader[GESeq] {
+  object GESeq extends ProductType[GESeq] {
     def apply(elems: GE*): GESeq = new GESeq(elems.toIndexedSeq)
+
+    final val typeId = 418
 
     override def read(in: RefMapIn, key: String, arity: Int): GESeq = {
       require (arity == 1)
@@ -115,7 +117,10 @@ package ugen {
     override def toString: String = elems.mkString("GESeq(", ",", ")")
   }
 
-  private[synth] object UGenInSeq extends ProductReader[UGenInSeq] {
+  private[synth] object UGenInSeq extends ProductType[UGenInSeq] {
+
+    final val typeId = 419
+
     override def read(in: RefMapIn, key: String, arity: Int): UGenInSeq = {
       require (arity == 1)
       val _elems = in.readVec(in.readProductT[UGenIn]())

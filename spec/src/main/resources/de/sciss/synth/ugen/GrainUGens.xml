@@ -1,5 +1,5 @@
-<ugens name="GrainUGens" revision="4">
-    <ugen name="GrainIn" reads-buf="true">  <!-- accepts demand rate -->
+<ugens name="GrainUGens" revision="5">
+    <ugen name="GrainIn" type-id="211" reads-buf="true">  <!-- accepts demand rate -->
         <rate name="audio" implied="true"/>
         <output variadic="numChannels"/>
         <arg name="numChannels" type="int" default="1"/>
@@ -11,7 +11,7 @@
         <arg name="maxGrains" default="512"/>
         <!-- TODO: doc -->
     </ugen>
-    <ugen name="GrainSin" reads-buf="true">  <!-- accepts demand rate -->
+    <ugen name="GrainSin" type-id="212" reads-buf="true">  <!-- accepts demand rate -->
         <rate name="audio" implied="true"/>
         <output variadic="numChannels"/>
         <arg name="numChannels" type="int" default="1"/>
@@ -23,7 +23,7 @@
         <arg name="maxGrains" default="512"/>
         <!-- TODO: doc -->
     </ugen>
-    <ugen name="GrainFM" reads-buf="true"> <!-- accepts demand rate -->
+    <ugen name="GrainFM" type-id="213" reads-buf="true"> <!-- accepts demand rate -->
         <rate name="audio" implied="true"/>
         <output variadic="numChannels"/>
         <arg name="numChannels" type="int" default="1"/>
@@ -37,7 +37,7 @@
         <arg name="maxGrains" default="512"/>
         <!-- TODO: doc -->
     </ugen>
-    <ugen name="GrainBuf" reads-buf="true">  <!-- accepts demand rate -->
+    <ugen name="GrainBuf" type-id="214" reads-buf="true">  <!-- accepts demand rate -->
         <rate name="audio" implied="true"/>
         <output variadic="numChannels"/>
         <arg name="numChannels" type="int" default="1">
@@ -109,7 +109,7 @@
             <see>ugen.PanAz</see>
         </doc>
     </ugen>
-    <ugen name="Warp1" reads-buf="true">  <!-- accepts demand rate -->
+    <ugen name="Warp1" type-id="215" reads-buf="true">  <!-- accepts demand rate -->
         <rate name="audio" implied="true"/>
         <output variadic="numChannels"/>
         <arg name="numChannels" type="int"/>

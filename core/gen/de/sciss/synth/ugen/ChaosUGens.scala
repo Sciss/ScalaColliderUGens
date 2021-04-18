@@ -1,4 +1,4 @@
-// revision: 1
+// revision: 2
 package de.sciss.synth
 package ugen
 
@@ -27,7 +27,7 @@ import UGenSource._
   * 
   * @see [[de.sciss.synth.ugen.CuspL$ CuspL]]
   */
-object CuspN extends ProductReader[CuspN] {
+object CuspN extends ProductType[CuspN] {
   def ar: CuspN = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -37,6 +37,8 @@ object CuspN extends ProductReader[CuspN] {
     */
   def ar(freq: GE = Nyquist(), a: GE = 1.0f, b: GE = 1.9f, xi: GE = 0.0f): CuspN = 
     new CuspN(audio, freq, a, b, xi)
+  
+  final val typeId = 3
   
   def read(in: RefMapIn, key: String, arity: Int): CuspN = {
     require (arity == 5)
@@ -94,7 +96,7 @@ final case class CuspN(rate: Rate, freq: GE = Nyquist(), a: GE = 1.0f, b: GE = 1
   * 
   * @see [[de.sciss.synth.ugen.CuspN$ CuspN]]
   */
-object CuspL extends ProductReader[CuspL] {
+object CuspL extends ProductType[CuspL] {
   def ar: CuspL = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -104,6 +106,8 @@ object CuspL extends ProductReader[CuspL] {
     */
   def ar(freq: GE = Nyquist(), a: GE = 1.0f, b: GE = 1.9f, xi: GE = 0.0f): CuspL = 
     new CuspL(audio, freq, a, b, xi)
+  
+  final val typeId = 4
   
   def read(in: RefMapIn, key: String, arity: Int): CuspL = {
     require (arity == 5)
@@ -180,7 +184,7 @@ final case class CuspL(rate: Rate, freq: GE = Nyquist(), a: GE = 1.0f, b: GE = 1
   * @see [[de.sciss.synth.ugen.FBSineL$ FBSineL]]
   * @see [[de.sciss.synth.ugen.FBSineC$ FBSineC]]
   */
-object FBSineN extends ProductReader[FBSineN] {
+object FBSineN extends ProductType[FBSineN] {
   def ar: FBSineN = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -193,6 +197,8 @@ object FBSineN extends ProductReader[FBSineN] {
     */
   def ar(freq: GE = Nyquist(), im: GE = 1.0f, fb: GE = 0.1f, a: GE = 1.1f, c: GE = 0.5f, xi: GE = 0.1f, yi: GE = 0.1f): FBSineN = 
     new FBSineN(audio, freq, im, fb, a, c, xi, yi)
+  
+  final val typeId = 5
   
   def read(in: RefMapIn, key: String, arity: Int): FBSineN = {
     require (arity == 8)
@@ -278,7 +284,7 @@ final case class FBSineN(rate: Rate, freq: GE = Nyquist(), im: GE = 1.0f, fb: GE
   * @see [[de.sciss.synth.ugen.FBSineN$ FBSineN]]
   * @see [[de.sciss.synth.ugen.FBSineC$ FBSineC]]
   */
-object FBSineL extends ProductReader[FBSineL] {
+object FBSineL extends ProductType[FBSineL] {
   def ar: FBSineL = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -291,6 +297,8 @@ object FBSineL extends ProductReader[FBSineL] {
     */
   def ar(freq: GE = Nyquist(), im: GE = 1.0f, fb: GE = 0.1f, a: GE = 1.1f, c: GE = 0.5f, xi: GE = 0.1f, yi: GE = 0.1f): FBSineL = 
     new FBSineL(audio, freq, im, fb, a, c, xi, yi)
+  
+  final val typeId = 6
   
   def read(in: RefMapIn, key: String, arity: Int): FBSineL = {
     require (arity == 8)
@@ -376,7 +384,7 @@ final case class FBSineL(rate: Rate, freq: GE = Nyquist(), im: GE = 1.0f, fb: GE
   * @see [[de.sciss.synth.ugen.FBSineN$ FBSineN]]
   * @see [[de.sciss.synth.ugen.FBSineL$ FBSineL]]
   */
-object FBSineC extends ProductReader[FBSineC] {
+object FBSineC extends ProductType[FBSineC] {
   def ar: FBSineC = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -389,6 +397,8 @@ object FBSineC extends ProductReader[FBSineC] {
     */
   def ar(freq: GE = Nyquist(), im: GE = 1.0f, fb: GE = 0.1f, a: GE = 1.1f, c: GE = 0.5f, xi: GE = 0.1f, yi: GE = 0.1f): FBSineC = 
     new FBSineC(audio, freq, im, fb, a, c, xi, yi)
+  
+  final val typeId = 7
   
   def read(in: RefMapIn, key: String, arity: Int): FBSineC = {
     require (arity == 8)
@@ -461,13 +471,15 @@ final case class FBSineC(rate: Rate, freq: GE = Nyquist(), im: GE = 1.0f, fb: GE
   * 
   * @see [[de.sciss.synth.ugen.GbmanL$ GbmanL]]
   */
-object GbmanN extends ProductReader[GbmanN] {
+object GbmanN extends ProductType[GbmanN] {
   def ar: GbmanN = ar()
   
   /** @param freq             Iteration frequency in Hertz
     * @param yi               Initial value of y
     */
   def ar(freq: GE = Nyquist(), xi: GE = 1.2f, yi: GE = 2.1f): GbmanN = new GbmanN(audio, freq, xi, yi)
+  
+  final val typeId = 8
   
   def read(in: RefMapIn, key: String, arity: Int): GbmanN = {
     require (arity == 4)
@@ -499,13 +511,15 @@ final case class GbmanN(rate: Rate, freq: GE = Nyquist(), xi: GE = 1.2f, yi: GE 
   
   protected def makeUGen(_args: Vec[UGenIn]): UGenInLike = UGen.SingleOut(name, rate, _args)
 }
-object GbmanL extends ProductReader[GbmanL] {
+object GbmanL extends ProductType[GbmanL] {
   def ar: GbmanL = ar()
   
   /** @param freq             Iteration frequency in Hertz
     * @param yi               Initial value of y
     */
   def ar(freq: GE = Nyquist(), xi: GE = 1.2f, yi: GE = 2.1f): GbmanL = new GbmanL(audio, freq, xi, yi)
+  
+  final val typeId = 9
   
   def read(in: RefMapIn, key: String, arity: Int): GbmanL = {
     require (arity == 4)
@@ -563,7 +577,7 @@ final case class GbmanL(rate: Rate, freq: GE = Nyquist(), xi: GE = 1.2f, yi: GE 
   * @see [[de.sciss.synth.ugen.HenonL$ HenonL]]
   * @see [[de.sciss.synth.ugen.HenonC$ HenonC]]
   */
-object HenonN extends ProductReader[HenonN] {
+object HenonN extends ProductType[HenonN] {
   def ar: HenonN = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -574,6 +588,8 @@ object HenonN extends ProductReader[HenonN] {
     */
   def ar(freq: GE = Nyquist(), a: GE = 1.4f, b: GE = 0.3f, x0: GE = 0.0f, x1: GE = 0.0f): HenonN = 
     new HenonN(audio, freq, a, b, x0, x1)
+  
+  final val typeId = 10
   
   def read(in: RefMapIn, key: String, arity: Int): HenonN = {
     require (arity == 6)
@@ -647,7 +663,7 @@ final case class HenonN(rate: Rate, freq: GE = Nyquist(), a: GE = 1.4f, b: GE = 
   * @see [[de.sciss.synth.ugen.HenonL$ HenonL]]
   * @see [[de.sciss.synth.ugen.HenonC$ HenonC]]
   */
-object HenonL extends ProductReader[HenonL] {
+object HenonL extends ProductType[HenonL] {
   def ar: HenonL = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -658,6 +674,8 @@ object HenonL extends ProductReader[HenonL] {
     */
   def ar(freq: GE = Nyquist(), a: GE = 1.4f, b: GE = 0.3f, x0: GE = 0.0f, x1: GE = 0.0f): HenonL = 
     new HenonL(audio, freq, a, b, x0, x1)
+  
+  final val typeId = 11
   
   def read(in: RefMapIn, key: String, arity: Int): HenonL = {
     require (arity == 6)
@@ -731,7 +749,7 @@ final case class HenonL(rate: Rate, freq: GE = Nyquist(), a: GE = 1.4f, b: GE = 
   * @see [[de.sciss.synth.ugen.HenonL$ HenonL]]
   * @see [[de.sciss.synth.ugen.HenonC$ HenonC]]
   */
-object HenonC extends ProductReader[HenonC] {
+object HenonC extends ProductType[HenonC] {
   def ar: HenonC = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -742,6 +760,8 @@ object HenonC extends ProductReader[HenonC] {
     */
   def ar(freq: GE = Nyquist(), a: GE = 1.4f, b: GE = 0.3f, x0: GE = 0.0f, x1: GE = 0.0f): HenonC = 
     new HenonC(audio, freq, a, b, x0, x1)
+  
+  final val typeId = 12
   
   def read(in: RefMapIn, key: String, arity: Int): HenonC = {
     require (arity == 6)
@@ -814,7 +834,7 @@ final case class HenonC(rate: Rate, freq: GE = Nyquist(), a: GE = 1.4f, b: GE = 
   * @see [[de.sciss.synth.ugen.LatoocarfianL$ LatoocarfianL]]
   * @see [[de.sciss.synth.ugen.LatoocarfianC$ LatoocarfianC]]
   */
-object LatoocarfianN extends ProductReader[LatoocarfianN] {
+object LatoocarfianN extends ProductType[LatoocarfianN] {
   def ar: LatoocarfianN = ar()
   
   /** @param freq             Iteration frequency in Hertz.
@@ -827,6 +847,8 @@ object LatoocarfianN extends ProductReader[LatoocarfianN] {
     */
   def ar(freq: GE = Nyquist(), a: GE = 1.0f, b: GE = 3.0f, c: GE = 0.5f, d: GE = 0.5f, xi: GE = 0.5f, yi: GE = 0.5f): LatoocarfianN = 
     new LatoocarfianN(audio, freq, a, b, c, d, xi, yi)
+  
+  final val typeId = 13
   
   def read(in: RefMapIn, key: String, arity: Int): LatoocarfianN = {
     require (arity == 8)
@@ -908,7 +930,7 @@ final case class LatoocarfianN(rate: Rate, freq: GE = Nyquist(), a: GE = 1.0f, b
   * @see [[de.sciss.synth.ugen.LatoocarfianN$ LatoocarfianN]]
   * @see [[de.sciss.synth.ugen.LatoocarfianC$ LatoocarfianC]]
   */
-object LatoocarfianL extends ProductReader[LatoocarfianL] {
+object LatoocarfianL extends ProductType[LatoocarfianL] {
   def ar: LatoocarfianL = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -921,6 +943,8 @@ object LatoocarfianL extends ProductReader[LatoocarfianL] {
     */
   def ar(freq: GE = Nyquist(), a: GE = 1.0f, b: GE = 3.0f, c: GE = 0.5f, d: GE = 0.5f, xi: GE = 0.5f, yi: GE = 0.5f): LatoocarfianL = 
     new LatoocarfianL(audio, freq, a, b, c, d, xi, yi)
+  
+  final val typeId = 14
   
   def read(in: RefMapIn, key: String, arity: Int): LatoocarfianL = {
     require (arity == 8)
@@ -1002,7 +1026,7 @@ final case class LatoocarfianL(rate: Rate, freq: GE = Nyquist(), a: GE = 1.0f, b
   * @see [[de.sciss.synth.ugen.LatoocarfianN$ LatoocarfianN]]
   * @see [[de.sciss.synth.ugen.LatoocarfianL$ LatoocarfianL]]
   */
-object LatoocarfianC extends ProductReader[LatoocarfianC] {
+object LatoocarfianC extends ProductType[LatoocarfianC] {
   def ar: LatoocarfianC = ar()
   
   /** @param freq             Iteration frequency in Hertz.
@@ -1015,6 +1039,8 @@ object LatoocarfianC extends ProductReader[LatoocarfianC] {
     */
   def ar(freq: GE = Nyquist(), a: GE = 1.0f, b: GE = 3.0f, c: GE = 0.5f, d: GE = 0.5f, xi: GE = 0.5f, yi: GE = 0.5f): LatoocarfianC = 
     new LatoocarfianC(audio, freq, a, b, c, d, xi, yi)
+  
+  final val typeId = 15
   
   def read(in: RefMapIn, key: String, arity: Int): LatoocarfianC = {
     require (arity == 8)
@@ -1102,7 +1128,7 @@ final case class LatoocarfianC(rate: Rate, freq: GE = Nyquist(), a: GE = 1.0f, b
   * @see [[de.sciss.synth.ugen.LinCongL$ LinCongL]]
   * @see [[de.sciss.synth.ugen.LinCongC$ LinCongC]]
   */
-object LinCongN extends ProductReader[LinCongN] {
+object LinCongN extends ProductType[LinCongN] {
   def ar: LinCongN = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -1113,6 +1139,8 @@ object LinCongN extends ProductReader[LinCongN] {
     */
   def ar(freq: GE = Nyquist(), a: GE = 1.1f, c: GE = 0.13f, m: GE = 1.0f, xi: GE = 0.0f): LinCongN = 
     new LinCongN(audio, freq, a, c, m, xi)
+  
+  final val typeId = 16
   
   def read(in: RefMapIn, key: String, arity: Int): LinCongN = {
     require (arity == 6)
@@ -1190,7 +1218,7 @@ final case class LinCongN(rate: Rate, freq: GE = Nyquist(), a: GE = 1.1f, c: GE 
   * @see [[de.sciss.synth.ugen.LinCongN$ LinCongN]]
   * @see [[de.sciss.synth.ugen.LinCongC$ LinCongC]]
   */
-object LinCongL extends ProductReader[LinCongL] {
+object LinCongL extends ProductType[LinCongL] {
   def ar: LinCongL = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -1201,6 +1229,8 @@ object LinCongL extends ProductReader[LinCongL] {
     */
   def ar(freq: GE = Nyquist(), a: GE = 1.1f, c: GE = 0.13f, m: GE = 1.0f, xi: GE = 0.0f): LinCongL = 
     new LinCongL(audio, freq, a, c, m, xi)
+  
+  final val typeId = 17
   
   def read(in: RefMapIn, key: String, arity: Int): LinCongL = {
     require (arity == 6)
@@ -1278,7 +1308,7 @@ final case class LinCongL(rate: Rate, freq: GE = Nyquist(), a: GE = 1.1f, c: GE 
   * @see [[de.sciss.synth.ugen.LinCongN$ LinCongN]]
   * @see [[de.sciss.synth.ugen.LinCongL$ LinCongL]]
   */
-object LinCongC extends ProductReader[LinCongC] {
+object LinCongC extends ProductType[LinCongC] {
   def ar: LinCongC = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -1289,6 +1319,8 @@ object LinCongC extends ProductReader[LinCongC] {
     */
   def ar(freq: GE = Nyquist(), a: GE = 1.1f, c: GE = 0.13f, m: GE = 1.0f, xi: GE = 0.0f): LinCongC = 
     new LinCongC(audio, freq, a, c, m, xi)
+  
+  final val typeId = 18
   
   def read(in: RefMapIn, key: String, arity: Int): LinCongC = {
     require (arity == 6)
@@ -1360,7 +1392,7 @@ final case class LinCongC(rate: Rate, freq: GE = Nyquist(), a: GE = 1.1f, c: GE 
   * play { SinOsc.ar(Lag.ar(LorenzL.ar(MouseX.kr(1, 200)), 3e-3) * 800 + 900) * 0.4 }
   * }}}
   */
-object LorenzL extends ProductReader[LorenzL] {
+object LorenzL extends ProductType[LorenzL] {
   def ar: LorenzL = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -1374,6 +1406,8 @@ object LorenzL extends ProductReader[LorenzL] {
     */
   def ar(freq: GE = Nyquist(), s: GE = 10.0f, r: GE = 28.0f, b: GE = 2.667f, h: GE = 0.05f, xi: GE = 0.1f, yi: GE = 0.0f, zi: GE = 0.0f): LorenzL = 
     new LorenzL(audio, freq, s, r, b, h, xi, yi, zi)
+  
+  final val typeId = 19
   
   def read(in: RefMapIn, key: String, arity: Int): LorenzL = {
     require (arity == 9)
@@ -1451,7 +1485,7 @@ final case class LorenzL(rate: Rate, freq: GE = Nyquist(), s: GE = 10.0f, r: GE 
   * @see [[de.sciss.synth.ugen.QuadL$ QuadL]]
   * @see [[de.sciss.synth.ugen.QuadC$ QuadC]]
   */
-object QuadN extends ProductReader[QuadN] {
+object QuadN extends ProductType[QuadN] {
   def ar: QuadN = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -1462,6 +1496,8 @@ object QuadN extends ProductReader[QuadN] {
     */
   def ar(freq: GE = Nyquist(), a: GE = 1.0f, b: GE = -1.0f, c: GE = -0.75f, xi: GE = 0.0f): QuadN = 
     new QuadN(audio, freq, a, b, c, xi)
+  
+  final val typeId = 20
   
   def read(in: RefMapIn, key: String, arity: Int): QuadN = {
     require (arity == 6)
@@ -1530,7 +1566,7 @@ final case class QuadN(rate: Rate, freq: GE = Nyquist(), a: GE = 1.0f, b: GE = -
   * @see [[de.sciss.synth.ugen.QuadN$ QuadN]]
   * @see [[de.sciss.synth.ugen.QuadC$ QuadC]]
   */
-object QuadL extends ProductReader[QuadL] {
+object QuadL extends ProductType[QuadL] {
   def ar: QuadL = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -1541,6 +1577,8 @@ object QuadL extends ProductReader[QuadL] {
     */
   def ar(freq: GE = Nyquist(), a: GE = 1.0f, b: GE = -1.0f, c: GE = -0.75f, xi: GE = 0.0f): QuadL = 
     new QuadL(audio, freq, a, b, c, xi)
+  
+  final val typeId = 21
   
   def read(in: RefMapIn, key: String, arity: Int): QuadL = {
     require (arity == 6)
@@ -1609,7 +1647,7 @@ final case class QuadL(rate: Rate, freq: GE = Nyquist(), a: GE = 1.0f, b: GE = -
   * @see [[de.sciss.synth.ugen.QuadN$ QuadN]]
   * @see [[de.sciss.synth.ugen.QuadL$ QuadL]]
   */
-object QuadC extends ProductReader[QuadC] {
+object QuadC extends ProductType[QuadC] {
   def ar: QuadC = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -1620,6 +1658,8 @@ object QuadC extends ProductReader[QuadC] {
     */
   def ar(freq: GE = Nyquist(), a: GE = 1.0f, b: GE = -1.0f, c: GE = -0.75f, xi: GE = 0.0f): QuadC = 
     new QuadC(audio, freq, a, b, c, xi)
+  
+  final val typeId = 22
   
   def read(in: RefMapIn, key: String, arity: Int): QuadC = {
     require (arity == 6)
@@ -1682,7 +1722,7 @@ final case class QuadC(rate: Rate, freq: GE = Nyquist(), a: GE = 1.0f, b: GE = -
   * 
   * @see [[de.sciss.synth.ugen.StandardL$ StandardL]]
   */
-object StandardN extends ProductReader[StandardN] {
+object StandardN extends ProductType[StandardN] {
   def ar: StandardN = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -1692,6 +1732,8 @@ object StandardN extends ProductReader[StandardN] {
     */
   def ar(freq: GE = Nyquist(), k: GE = 1.0f, xi: GE = 0.5f, yi: GE = 0.0f): StandardN = 
     new StandardN(audio, freq, k, xi, yi)
+  
+  final val typeId = 23
   
   def read(in: RefMapIn, key: String, arity: Int): StandardN = {
     require (arity == 5)
@@ -1753,7 +1795,7 @@ final case class StandardN(rate: Rate, freq: GE = Nyquist(), k: GE = 1.0f, xi: G
   * 
   * @see [[de.sciss.synth.ugen.StandardN$ StandardN]]
   */
-object StandardL extends ProductReader[StandardL] {
+object StandardL extends ProductType[StandardL] {
   def ar: StandardL = ar()
   
   /** @param freq             Iteration frequency in Hertz
@@ -1763,6 +1805,8 @@ object StandardL extends ProductReader[StandardL] {
     */
   def ar(freq: GE = Nyquist(), k: GE = 1.0f, xi: GE = 0.5f, yi: GE = 0.0f): StandardL = 
     new StandardL(audio, freq, k, xi, yi)
+  
+  final val typeId = 24
   
   def read(in: RefMapIn, key: String, arity: Int): StandardL = {
     require (arity == 5)

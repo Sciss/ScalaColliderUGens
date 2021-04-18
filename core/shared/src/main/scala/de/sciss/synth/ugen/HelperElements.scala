@@ -20,7 +20,10 @@ import de.sciss.synth.ugen.ControlProxyFactory._
 
 import scala.annotation.{switch, tailrec}
 
-object Flatten extends ProductReader[Flatten] {
+object Flatten extends ProductType[Flatten] {
+
+  final val typeId = 403
+
   override def read(in: RefMapIn, key: String, arity: Int): Flatten = {
     require (arity == 1)
     val _elem = in.readGE()
@@ -144,7 +147,7 @@ final case class Flatten(elem: GE) extends GE.Lazy {
   * @see [[de.sciss.synth.ugen.Reduce$ Reduce]]
   * @see [[de.sciss.synth.ugen.BinaryOpUGen$ BinaryOpUGen]]
   */
-object Mix extends ProductReader[Mix] {
+object Mix extends ProductType[Mix] {
   /** A mixing idiom that corresponds to `Seq.tabulate` and to `Array.fill` in sclang. */
   def tabulate(n: Int)(fun: Int => GE): GE = Mix(GESeq(Vector.tabulate(n)(i => fun(i))))
 
@@ -176,13 +179,18 @@ object Mix extends ProductReader[Mix] {
     */
   def fold(elem: GE, n: Int)(fun: GE => GE): GE = (1 to n).foldLeft(elem) { (res, _) => fun(res) }
 
+  final val typeId = 405
+
   override def read(in: RefMapIn, key: String, arity: Int): Mix = {
     require (arity == 1)
     val _elem = in.readGE()
     new Mix(_elem)
   }
 
-  object Mono extends ProductReader[Mono] {
+  object Mono extends ProductType[Mono] {
+
+    final val typeId = 406
+
     override def read(in: RefMapIn, key: String, arity: Int): Mono = {
       require (arity == 1)
       val _elem = in.readGE()
@@ -278,7 +286,10 @@ final case class Mix(elem: GE) extends UGenSource.SingleOut {  // XXX TODO: shou
   }
 }
 
-object Zip extends ProductReader[Zip] {
+object Zip extends ProductType[Zip] {
+
+  final val typeId = 417
+
   override def read(in: RefMapIn, key: String, arity: Int): Zip = {
     require (arity == 1)
     val _elems = in.readVec(in.readGE())
@@ -322,7 +333,7 @@ final case class Zip(elems: GE*) extends GE.Lazy {
   }
 }
 
-object Reduce extends ProductReader[Reduce] {
+object Reduce extends ProductType[Reduce] {
   import BinaryOpUGen._
   /** Same result as `Mix( _ )` */
   def +  (elem: GE): Reduce = apply(elem, Plus  )
@@ -334,6 +345,8 @@ object Reduce extends ProductReader[Reduce] {
   def &  (elem: GE): Reduce = apply(elem, BitAnd)
   def |  (elem: GE): Reduce = apply(elem, BitOr )
   def ^  (elem: GE): Reduce = apply(elem, BitXor)
+
+  final val typeId = 412
 
   override def read(in: RefMapIn, key: String, arity: Int): Reduce = {
     require (arity == 2)
@@ -361,7 +374,7 @@ final case class Reduce(elem: GE, op: BinaryOpUGen.Op) extends UGenSource.Single
   * given, an envelope is added with a control named `"gate"` which can be used to release
   * the synth. The bus is given by a control named `"out"` and defaults to zero.
   */
-object WrapOut extends ProductReader[WrapOut] {
+object WrapOut extends ProductType[WrapOut] {
   private def makeFadeEnv(fadeTime: Double): UGenIn = {
     val cFadeTime = "fadeTime".kr(fadeTime)
     val cGate     = "gate".kr(1f)
@@ -370,6 +383,8 @@ object WrapOut extends ProductReader[WrapOut] {
     val res       = EnvGen.kr(env, gate = cGate, timeScale = cFadeTime, doneAction = freeSelf)
     res.expand.flatOutputs.head
   }
+
+  final val typeId = 416
 
   override def read(in: RefMapIn, key: String, arity: Int): WrapOut = {
     require (arity == 2)
@@ -422,7 +437,7 @@ final case class WrapOut(in: GE, fadeTime: Double = 0.02) extends UGenSource.Zer
   *
   * @see  [[de.sciss.synth.ugen.PanAz$ PanAz]]
   */
-object SplayAz extends ProductReader[SplayAz] {
+object SplayAz extends ProductType[SplayAz] {
   /** @param numChannels  the number of output channels
     * @param in           the input signal
     * @param spread       the spacing between input channels with respect to the output panning
@@ -434,6 +449,8 @@ object SplayAz extends ProductReader[SplayAz] {
   def ar(numChannels: Int, in: GE, spread: GE = 1f, center: GE = 0f, level: GE = 1f,
          width: GE = 2f, orient: GE = 0f): SplayAz =
     apply(audio, numChannels, in, spread, center, level, width, orient)
+
+  final val typeId = 415
 
   override def read(in: RefMapIn, key: String, arity: Int): SplayAz = {
     require (arity == 8)
@@ -484,7 +501,10 @@ final case class SplayAz(rate: Rate, numChannels: Int, in: GE, spread: GE, cente
   }
 }
 
-object LinLin extends ProductReader[LinLin] {
+object LinLin extends ProductType[LinLin] {
+
+  final val typeId = 404
+
   override def read(in: RefMapIn, key: String, arity: Int): LinLin = {
     require (arity == 5)
     val _in     = in.readGE()
@@ -538,10 +558,12 @@ final case class LinLin(/* rate: MaybeRate, */ in: GE, srcLo: GE = 0f, srcHi: GE
   *
   * @see [[de.sciss.synth.ugen.DC$ DC]]
   */
-object Silent extends ProductReader[Silent] {
+object Silent extends ProductType[Silent] {
   def ar: Silent = ar()
 
   def ar(numChannels: Int = 1): Silent = apply(numChannels)
+
+  final val typeId = 414
 
   override def read(in: RefMapIn, key: String, arity: Int): Silent = {
     require (arity == 1)
@@ -581,7 +603,7 @@ final case class Silent(numChannels: Int) extends GE.Lazy with AudioRated {
   * If SuperCollider runs with less physical inputs than requested by this UGen,
   * invalid channels are muted.
   */
-object PhysicalIn extends ProductReader[PhysicalIn] {
+object PhysicalIn extends ProductType[PhysicalIn] {
   /** Short cut for reading a mono signal from the first physical input. */
   def ar: PhysicalIn = ar()
 
@@ -600,6 +622,8 @@ object PhysicalIn extends ProductReader[PhysicalIn] {
     *                      if the sequence has less elements than indices has channels.
     */
   def ar(indices: GE, numChannels: Seq[Int]): PhysicalIn = apply(indices, numChannels)
+
+  final val typeId = 410
 
   override def read(in: RefMapIn, key: String, arity: Int): PhysicalIn = {
     require (arity == 2)
@@ -677,7 +701,7 @@ final case class PhysicalIn(indices: GE, numChannels: Seq[Int]) extends GE.Lazy 
   * }
   * }}}
   */
-object PhysicalOut extends ProductReader[PhysicalOut] {
+object PhysicalOut extends ProductType[PhysicalOut] {
   /** @param indices       the physical index to write to (beginning at zero which corresponds to
     *                      the first channel of the audio interface or sound driver). may be a
     *                      multichannel argument to specify discrete channels. In this case, any
@@ -685,6 +709,8 @@ object PhysicalOut extends ProductReader[PhysicalOut] {
     * @param in            the signal to write
     */
   def ar(indices: GE = 0, in: GE): PhysicalOut = apply(indices, in)
+
+  final val typeId = 411
 
   override def read(in: RefMapIn, key: String, arity: Int): PhysicalOut = {
     require (arity == 2)
@@ -734,7 +760,10 @@ final case class PhysicalOut(indices: GE, in: GE) extends UGenSource.ZeroOut wit
   protected def makeUGen(args: Vec[UGenIn]): Unit = () // XXX not used, ugly
 }
 
-object RepeatChannels extends ProductReader[RepeatChannels] {
+object RepeatChannels extends ProductType[RepeatChannels] {
+
+  final val typeId = 413
+
   override def read(in: RefMapIn, key: String, arity: Int): RepeatChannels = {
     require (arity == 2)
     val _a    = in.readGE()
@@ -806,7 +835,9 @@ final case class RepeatChannels(a: GE, num: Int) extends GE.Lazy {
   }
 }
 
-object ChannelRangeProxy extends ProductReader[ChannelRangeProxy] {
+object ChannelRangeProxy extends ProductType[ChannelRangeProxy] {
+  final val typeId = 402
+
   override def read(in: RefMapIn, key: String, arity: Int): ChannelRangeProxy = {
     require (arity == 4)
     val _elem   = in.readGE()
@@ -867,7 +898,9 @@ final case class ChannelRangeProxy(elem: GE, from: Int, until: Int, step: Int) e
   }
 }
 
-object ChannelIndices extends ProductReader[ChannelIndices] {
+object ChannelIndices extends ProductType[ChannelIndices] {
+  final val typeId = 400
+
   override def read(in: RefMapIn, key: String, arity: Int): ChannelIndices = {
     require (arity == 1)
     val _in = in.readGE()
@@ -902,7 +935,10 @@ final case class ChannelIndices(in: GE) extends UGenSource.SingleOut with Scalar
   protected def makeUGen(args: Vec[UGenIn]): UGenInLike = args.indices: GE
 }
 
-object NumChannels extends ProductReader[NumChannels] {
+object NumChannels extends ProductType[NumChannels] {
+
+  final val typeId = 407
+
   override def read(in: RefMapIn, key: String, arity: Int): NumChannels = {
     require (arity == 1)
     val _in = in.readGE()
@@ -942,12 +978,14 @@ final case class NumChannels(in: GE) extends UGenSource.SingleOut with ScalarRat
   * its `in` argument to match the `to` argument by padding (extending
   * and wrapping) it.
   */
-object Pad extends ProductReader[Pad] {
+object Pad extends ProductType[Pad] {
   /** Enforces multi-channel expansion for the input argument
     * even if it is passed into a vararg input of another UGen.
     * This is done by wrapping it in a `GESeq`.
     */
   def Split(in: GE): GE = GESeq(Vector(in))
+
+  final val typeId = 409
 
   override def read(in: RefMapIn, key: String, arity: Int): Pad = {
     require (arity == 2)

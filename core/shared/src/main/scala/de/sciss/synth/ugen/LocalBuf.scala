@@ -21,7 +21,10 @@ import UGenSource._
   *
   * @see [[de.sciss.synth.ugen.FFT]]
   */
-object LocalBuf extends ProductReader[LocalBuf] {
+object LocalBuf extends ProductType[LocalBuf] {
+
+  final val typeId = 75
+
   override def read(in: RefMapIn, key: String, arity: Int): LocalBuf = {
     require (arity == 2)
     val _numFrames    = in.readGE()
@@ -62,7 +65,10 @@ final case class LocalBuf(numFrames: GE, numChannels: GE = 1)
   // XXX TODO: def set(values: GE, offset: GE = 0): this.type = { SetBuf(this, values, offset); this }
 }
 
-private[synth] object MaxLocalBufs extends ProductReader[MaxLocalBufs] {
+private[synth] object MaxLocalBufs extends ProductType[MaxLocalBufs] {
+
+  final val typeId = 74
+
   override def read(in: RefMapIn, key: String, arity: Int): MaxLocalBufs = {
     require (arity == 0)
     new MaxLocalBufs
