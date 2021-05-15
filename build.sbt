@@ -16,24 +16,24 @@ lazy val commonSettings = Seq(
   scalaVersion       := "2.13.5",
   scalacOptions      ++= Seq("-deprecation", "-unchecked", "-feature", "-encoding", "utf8", "-Xlint", "-Xsource:2.13"),
   initialCommands in console := """import de.sciss.synth._""",
-  sources in (Compile, doc) := {
-    if (isDotty.value) Nil else (sources in (Compile, doc)).value // dottydoc is hopelessly broken
-  },
+  // sources in (Compile, doc) := {
+  //   if (isDotty.value) Nil else (sources in (Compile, doc)).value // dottydoc is hopelessly broken
+  // },
 ) ++ publishSettings
 
 lazy val commonJvmSettings = Seq(
-  crossScalaVersions := Seq("3.0.0-RC3", "2.13.5", "2.12.13"),
+  crossScalaVersions := Seq("3.0.0", "2.13.5", "2.12.13"),
 )
 
 lazy val deps = new {
   val main = new {
     val numbers      = "0.2.1"
     val scalaXML     = "1.3.0"
-    val scalaXMLDotty = "2.0.0-RC1"  // no stable release available at the moment :-/
+    val scalaXMLDotty = "2.0.0"  // to-do: unify
     val serial       = "2.0.1"
   }
   val test = new {
-    val scalaTest    = "3.2.8"
+    val scalaTest    = "3.2.9"
   }
   // --- gen project (not published, thus not subject to major version concerns) ---
   val gen = new {
@@ -97,7 +97,8 @@ lazy val api = crossProject(JVMPlatform, JSPlatform).in(file("api"))
       "de.sciss" %%% "serial"  % deps.main.serial,
     ),
     libraryDependencies += {
-      val v = if (isDotty.value) deps.main.scalaXMLDotty else deps.main.scalaXML
+      val isDot = scalaVersion.value.startsWith("3.")
+      val v = if (isDot) deps.main.scalaXMLDotty else deps.main.scalaXML
       "org.scala-lang.modules" %%% "scala-xml" % v
     },
     buildInfoKeys := Seq(name, organization, version, scalaVersion, description,
@@ -125,7 +126,8 @@ lazy val gen = /*crossProject(JVMPlatform)*/ project.in(file("gen"))
     description := "Source code generator for ScalaCollider UGens",
     licenses    := lgpl,
     libraryDependencies ++= {
-      if (isDotty.value) Nil else Seq(
+      val isDot = scalaVersion.value.startsWith("3.")
+      if (isDot) Nil else Seq(
         "de.sciss"        %% "fileutil"       % deps.gen.fileUtil,
         "org.scala-lang"  %  "scala-compiler" % scalaVersion.value,
         "org.rogach"      %% "scallop"        % deps.gen.scallop,
